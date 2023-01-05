@@ -10,15 +10,14 @@ type IBoxView =
 module BoxView =
     let WidgetKey = Widgets.register<BoxView>()
 
-    let Color =
-        Attributes.defineBindableAppThemeColor BoxView.ColorProperty
+    let Color = Attributes.defineBindableAppThemeColor BoxView.ColorProperty
 
-    let CornerRadius =
-        Attributes.defineBindableFloat BoxView.CornerRadiusProperty
+    let CornerRadius = Attributes.defineBindableFloat BoxView.CornerRadiusProperty
 
 [<AutoOpen>]
 module BoxViewBuilders =
     type Fabulous.Maui.View with
+
         static member inline BoxView<'msg>(light: FabColor, ?dark: FabColor) =
             WidgetBuilder<'msg, IBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(AppTheme.create light dark))
 

@@ -24,27 +24,22 @@ module TabbedPage =
         Attributes.defineBindableAppThemeColor TabbedPage.UnselectedTabColorProperty
 
     let ToolbarPlacement =
-        Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
-            "TabbedPage_ToolbarPlacement"
-            (fun _ newValueOpt node ->
-                let tabbedPage = node.Target :?> TabbedPage
+        Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement> "TabbedPage_ToolbarPlacement" (fun _ newValueOpt node ->
+            let tabbedPage = node.Target :?> TabbedPage
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
+                | ValueSome v -> v
 
-                AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
+            AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
 
 [<AutoOpen>]
 module TabbedPageBuilders =
     type Fabulous.Maui.View with
+
         static member inline TabbedPage<'msg>(title: string) =
-            CollectionBuilder<'msg, ITabbedPage, IPage>(
-                TabbedPage.WidgetKey,
-                MultiPageOfPage.Children,
-                Page.Title.WithValue(title)
-            )
+            CollectionBuilder<'msg, ITabbedPage, IPage>(TabbedPage.WidgetKey, MultiPageOfPage.Children, Page.Title.WithValue(title))
 
 [<Extension>]
 type TabbedPageModifiers =

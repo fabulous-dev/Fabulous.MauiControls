@@ -15,13 +15,10 @@ module XFView =
     let VerticalOptions =
         Attributes.defineSmallBindable<LayoutOptions> View.VerticalOptionsProperty SmallScalars.LayoutOptions.decode
 
-    let Margin =
-        Attributes.defineBindableWithEquality<Thickness> View.MarginProperty
+    let Margin = Attributes.defineBindableWithEquality<Thickness> View.MarginProperty
 
     let GestureRecognizers =
-        Attributes.defineListWidgetCollection<IGestureRecognizer>
-            "View_GestureRecognizers"
-            (fun target -> (target :?> View).GestureRecognizers)
+        Attributes.defineListWidgetCollection<IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> View).GestureRecognizers)
 
 [<Extension>]
 type ViewModifiers =
@@ -80,18 +77,9 @@ type ViewModifiers =
         ViewModifiers.margin(this, Thickness(value))
 
     [<Extension>]
-    static member inline margin
-        (
-            this: WidgetBuilder<'msg, #IView>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline margin(this: WidgetBuilder<'msg, #IView>, left: float, top: float, right: float, bottom: float) =
         ViewModifiers.margin(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =
-        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.Maui.IGestureRecognizer>
-            XFView.GestureRecognizers
-            this
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.Maui.IGestureRecognizer> XFView.GestureRecognizers this

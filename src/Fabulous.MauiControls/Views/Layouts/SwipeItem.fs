@@ -14,8 +14,7 @@ module SwipeItem =
     let BackgroundColor =
         Attributes.defineBindableAppThemeColor SwipeItem.BackgroundColorProperty
 
-    let IsVisible =
-        Attributes.defineBindableBool SwipeItem.IsVisibleProperty
+    let IsVisible = Attributes.defineBindableBool SwipeItem.IsVisibleProperty
 
     let Clicked =
         Attributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
@@ -24,6 +23,7 @@ module SwipeItem =
 module SwipeItemBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline SwipeItem<'msg>(onInvoked: 'msg) =
             WidgetBuilder<'msg, ISwipeItem>(SwipeItem.WidgetKey, SwipeItem.Clicked.WithValue(fun _ -> onInvoked |> box))
 

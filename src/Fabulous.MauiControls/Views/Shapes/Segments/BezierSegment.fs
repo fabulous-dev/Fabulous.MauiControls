@@ -23,6 +23,7 @@ module BezierSegment =
 module BezierSegmentBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline BezierSegment<'msg>(point1: Point, point2: Point, point3: Point) =
             WidgetBuilder<'msg, IBezierSegment>(
                 BezierSegment.WidgetKey,

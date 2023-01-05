@@ -12,12 +12,11 @@ module TransformGroup =
     let WidgetKey = Widgets.register<TransformGroup>()
 
     let Children =
-        Attributes.defineListWidgetCollection
-            "TransformGroup_Children"
-            (fun target -> (target :?> TransformGroup).Children :> IList<_>)
+        Attributes.defineListWidgetCollection "TransformGroup_Children" (fun target -> (target :?> TransformGroup).Children :> IList<_>)
 
 [<AutoOpen>]
 module TransformGroupBuilders =
     type Fabulous.Maui.View with
+
         static member inline TransformGroup<'msg>() =
             CollectionBuilder<'msg, ITransformGroup, ITransform>(TransformGroup.WidgetKey, TransformGroup.Children)

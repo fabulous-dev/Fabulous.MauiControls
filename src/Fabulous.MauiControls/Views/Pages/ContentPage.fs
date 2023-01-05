@@ -12,29 +12,19 @@ type IContentPage =
 module ContentPage =
     let WidgetKey = Widgets.register<FabulousContentPage>()
 
-    let Content =
-        Attributes.defineBindableWidget ContentPage.ContentProperty
+    let Content = Attributes.defineBindableWidget ContentPage.ContentProperty
 
     let SizeAllocated =
-        Attributes.defineEvent<SizeAllocatedEventArgs>
-            "ContentPage_SizeAllocated"
-            (fun target -> (target :?> FabulousContentPage).SizeAllocated)
+        Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabulousContentPage).SizeAllocated)
 
 [<AutoOpen>]
 module ContentPageBuilders =
     type Fabulous.Maui.View with
-        static member inline ContentPage<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
-            (
-                title: string,
-                content: WidgetBuilder<'msg, 'marker>
-            ) =
+
+        static member inline ContentPage<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(title: string, content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IContentPage>(
                 ContentPage.WidgetKey,
-                AttributesBundle(
-                    StackList.one(Page.Title.WithValue(title)),
-                    ValueSome [| ContentPage.Content.WithValue(content.Compile()) |],
-                    ValueNone
-                )
+                AttributesBundle(StackList.one(Page.Title.WithValue(title)), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
 [<Extension>]

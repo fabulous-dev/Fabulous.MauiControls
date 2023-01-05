@@ -12,8 +12,7 @@ type IRefreshView =
 module RefreshView =
     let WidgetKey = Widgets.register<RefreshView>()
 
-    let IsRefreshing =
-        Attributes.defineBindableBool RefreshView.IsRefreshingProperty
+    let IsRefreshing = Attributes.defineBindableBool RefreshView.IsRefreshingProperty
 
     let RefreshColor =
         Attributes.defineBindableAppThemeColor RefreshView.RefreshColorProperty
@@ -24,19 +23,12 @@ module RefreshView =
 [<AutoOpen>]
 module RefreshViewBuilders =
     type Fabulous.Maui.View with
-        static member inline RefreshView<'msg, 'marker when 'marker :> IView>
-            (
-                isRefreshing: bool,
-                onRefreshing: 'msg,
-                content: WidgetBuilder<'msg, 'marker>
-            ) =
+
+        static member inline RefreshView<'msg, 'marker when 'marker :> IView>(isRefreshing: bool, onRefreshing: 'msg, content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IRefreshView>(
                 RefreshView.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        RefreshView.IsRefreshing.WithValue(isRefreshing),
-                        RefreshView.Refreshing.WithValue(onRefreshing)
-                    ),
+                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.Refreshing.WithValue(onRefreshing)),
                     ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )

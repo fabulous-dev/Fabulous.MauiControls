@@ -12,24 +12,19 @@ module CheckBox =
 
     let WidgetKey = Widgets.register<CheckBox>()
 
-    let Color =
-        Attributes.defineBindableAppThemeColor CheckBox.ColorProperty
+    let Color = Attributes.defineBindableAppThemeColor CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
-        Attributes.defineBindableWithEvent
-            "CheckBox_CheckedChanged"
-            CheckBox.IsCheckedProperty
-            (fun target -> (target :?> CheckBox).CheckedChanged)
+        Attributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
 
 [<AutoOpen>]
 module CheckBoxBuilders =
     type Fabulous.Maui.View with
+
         static member inline CheckBox<'msg>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
             WidgetBuilder<'msg, ICheckBox>(
                 CheckBox.WidgetKey,
-                CheckBox.IsCheckedWithEvent.WithValue(
-                    ValueEventData.create isChecked (fun args -> onCheckedChanged args.Value |> box)
-                )
+                CheckBox.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun args -> onCheckedChanged args.Value |> box))
             )
 
 [<Extension>]

@@ -25,25 +25,21 @@ module BindableHelpers =
 /// Create a DataTemplate for a specific root type (TextCell, ViewCell, etc.)
 /// that listen for BindingContext change to apply the Widget content to the cell
 type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Widget) =
-    inherit DataTemplate(fun () ->
-        let bindableObject =
-            Activator.CreateInstance ``type`` :?> BindableObject
+    inherit
+        DataTemplate(fun () ->
+            let bindableObject = Activator.CreateInstance ``type`` :?> BindableObject
 
-        let viewNode =
-            ViewNode(Some parent, parent.TreeContext, WeakReference(bindableObject))
+            let viewNode =
+                ViewNode(Some parent, parent.TreeContext, WeakReference(bindableObject))
 
-        bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
+            bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
-        let onBindingContextChanged =
-            BindableHelpers.createOnBindingContextChanged
-                parent.TreeContext.CanReuseView
-                parent.TreeContext.GetViewNode
-                templateFn
-                bindableObject
+            let onBindingContextChanged =
+                BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView parent.TreeContext.GetViewNode templateFn bindableObject
 
-        bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged())
+            bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged())
 
-        bindableObject :> obj)
+            bindableObject :> obj)
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
 type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Widget) =
@@ -60,8 +56,7 @@ type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Wi
         match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->
-            let dataTemplate =
-                WidgetDataTemplate(node, targetType, templateFn) :> DataTemplate
+            let dataTemplate = WidgetDataTemplate(node, targetType, templateFn) :> DataTemplate
 
             cache.Add(targetType, dataTemplate)
             dataTemplate

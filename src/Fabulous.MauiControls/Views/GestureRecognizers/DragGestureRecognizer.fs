@@ -8,26 +8,21 @@ type IDragGestureRecognizer =
     inherit Fabulous.Maui.IGestureRecognizer
 
 module DragGestureRecognizer =
-    let WidgetKey =
-        Widgets.register<DragGestureRecognizer>()
+    let WidgetKey = Widgets.register<DragGestureRecognizer>()
 
-    let CanDrag =
-        Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
+    let CanDrag = Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
 
     let DragStarting =
-        Attributes.defineEvent<DragStartingEventArgs>
-            "DragGestureRecognizer_DragStarting"
-            (fun target -> (target :?> DragGestureRecognizer).DragStarting)
+        Attributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
 
     let DropCompleted =
-        Attributes.defineEvent<DropCompletedEventArgs>
-            "DragGestureRecognizer_DropCompleted"
-            (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
+        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
 
 
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
             WidgetBuilder<'msg, IDragGestureRecognizer>(
                 DragGestureRecognizer.WidgetKey,

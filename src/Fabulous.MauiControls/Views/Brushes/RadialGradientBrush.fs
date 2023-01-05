@@ -15,12 +15,12 @@ module RadialGradientBrush =
     let Center =
         Attributes.defineBindableWithEquality<Point> RadialGradientBrush.CenterProperty
 
-    let Radius =
-        Attributes.defineBindableFloat RadialGradientBrush.RadiusProperty
+    let Radius = Attributes.defineBindableFloat RadialGradientBrush.RadiusProperty
 
 [<AutoOpen>]
 module RadialGradientBrushBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>RadialGradientBrush paints an area with a radial gradient, which blends two or more colors across a circle.</summary>
         /// <param name="center">Center, of type Point, which represents the center point of the circle for the radial gradient. The default value of this property is (0.5,0.5).</param>
         /// <param name="radius">Radius, of type float, which represents the radius of the circle for the radial gradient. The default value of this property is 0.5.</param>

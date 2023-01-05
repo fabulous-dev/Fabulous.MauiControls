@@ -12,15 +12,14 @@ module GradientStop =
 
     let WidgetKey = Widgets.register<GradientStop>()
 
-    let Color =
-        Attributes.defineBindableAppThemeColor GradientStop.ColorProperty
+    let Color = Attributes.defineBindableAppThemeColor GradientStop.ColorProperty
 
-    let Offset =
-        Attributes.defineBindableFloat GradientStop.OffsetProperty
+    let Offset = Attributes.defineBindableFloat GradientStop.OffsetProperty
 
 [<AutoOpen>]
 module GradientStopBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>GradientStop objects to the LinearGradientBrush.GradientStops collection, that specify the colors in the gradient and their positions.</summary>
         /// <param name="light">The color in light theme.</param>
         /// <param name="dark">The color in dark theme.</param>

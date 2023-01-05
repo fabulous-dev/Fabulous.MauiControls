@@ -14,47 +14,32 @@ module Polygon =
     let WidgetKey = Widgets.register<Polygon>()
 
     let PointsString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Polygon_PointsString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Polygon_PointsString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Polygon.PointsProperty)
-                | ValueSome string ->
-                    target.SetValue(
-                        Polygon.PointsProperty,
-                        PointCollectionConverter()
-                            .ConvertFromInvariantString(string)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Polygon.PointsProperty)
+            | ValueSome string -> target.SetValue(Polygon.PointsProperty, PointCollectionConverter().ConvertFromInvariantString(string)))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point array>
-            "Polygon_PointsList"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<Point array> "Polygon_PointsList" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Polygon.PointsProperty)
-                | ValueSome points ->
-                    let coll = PointCollection()
-                    points |> Array.iter coll.Add
-                    target.SetValue(Polygon.PointsProperty, coll))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Polygon.PointsProperty)
+            | ValueSome points ->
+                let coll = PointCollection()
+                points |> Array.iter coll.Add
+                target.SetValue(Polygon.PointsProperty, coll))
 
-    let FillRule =
-        Attributes.defineBindableEnum<FillRule> Polygon.FillRuleProperty
+    let FillRule = Attributes.defineBindableEnum<FillRule> Polygon.FillRuleProperty
 
 [<AutoOpen>]
 module PolygonBuilders =
 
     type Fabulous.Maui.View with
-        static member inline Polygon<'msg>
-            (
-                points: string,
-                strokeThickness: float,
-                strokeLight: Brush,
-                ?strokeDark: Brush
-            ) =
+
+        static member inline Polygon<'msg>(points: string, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IPolygon>(
                 Polygon.WidgetKey,
                 Polygon.PointsString.WithValue(points),
@@ -62,13 +47,7 @@ module PolygonBuilders =
                 Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )
 
-        static member inline Polygon<'msg>
-            (
-                points: Point list,
-                strokeThickness: float,
-                strokeLight: Brush,
-                ?strokeDark: Brush
-            ) =
+        static member inline Polygon<'msg>(points: Point list, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IPolygon>(
                 Polygon.WidgetKey,
                 Polygon.PointsList.WithValue(Array.ofList points),

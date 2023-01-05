@@ -15,8 +15,7 @@ module CarouselView =
     let IsBounceEnabled =
         Attributes.defineBindableBool CarouselView.IsBounceEnabledProperty
 
-    let IsDragging =
-        Attributes.defineBindableBool CarouselView.IsDraggingProperty
+    let IsDragging = Attributes.defineBindableBool CarouselView.IsDraggingProperty
 
     let IsScrollAnimated =
         Attributes.defineBindableBool CarouselView.IsScrollAnimatedProperty
@@ -24,74 +23,65 @@ module CarouselView =
     let IsSwipeEnabled =
         Attributes.defineBindableBool CarouselView.IsSwipeEnabledProperty
 
-    let Loop =
-        Attributes.defineBindableBool CarouselView.LoopProperty
+    let Loop = Attributes.defineBindableBool CarouselView.LoopProperty
 
     let PeekAreaInsets =
         Attributes.defineBindableWithEquality<Thickness> CarouselView.PeekAreaInsetsProperty
 
     let IndicatorView =
-        Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>>
-            "CarouselView_IndicatorView"
-            (fun oldValueOpt newValueOpt node ->
-                let handlerOpt =
-                    node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
+        Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>> "CarouselView_IndicatorView" (fun oldValueOpt newValueOpt node ->
+            let handlerOpt =
+                node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
 
-                // Clean up previous handler
-                if handlerOpt.IsSome then
-                    match struct (oldValueOpt, newValueOpt) with
-                    | struct (ValueSome prev, _) -> prev.Attached.RemoveHandler(handlerOpt.Value)
+            // Clean up previous handler
+            if handlerOpt.IsSome then
+                match struct (oldValueOpt, newValueOpt) with
+                | struct (ValueSome prev, _) -> prev.Attached.RemoveHandler(handlerOpt.Value)
 
-                    | struct (ValueNone, ValueSome curr) ->
-                        // Despite not having a previous value, we might still be reusing the same ViewRef
-                        // So we still need to clean up
-                        curr.Attached.RemoveHandler(handlerOpt.Value)
+                | struct (ValueNone, ValueSome curr) ->
+                    // Despite not having a previous value, we might still be reusing the same ViewRef
+                    // So we still need to clean up
+                    curr.Attached.RemoveHandler(handlerOpt.Value)
 
-                    | struct (ValueNone, ValueNone) -> ()
+                | struct (ValueNone, ValueNone) -> ()
 
-                    node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
+                node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
 
-                let handler =
-                    match handlerOpt with
-                    | ValueSome handler -> handler
-                    | ValueNone ->
-                        let newHandler =
-                            EventHandler<IndicatorView>
-                                (fun viewRef indicatorView ->
-                                    let carouselView = node.Target :?> CarouselView
+            let handler =
+                match handlerOpt with
+                | ValueSome handler -> handler
+                | ValueNone ->
+                    let newHandler =
+                        EventHandler<IndicatorView>(fun viewRef indicatorView ->
+                            let carouselView = node.Target :?> CarouselView
 
-                                    if carouselView <> null then
-                                        carouselView.IndicatorView <- indicatorView
-                                    else
-                                        // CarouselView has been disposed, clean up the handler
-                                        let handler =
-                                            node
-                                                .TryGetHandler<EventHandler<IndicatorView>>(
-                                                    ViewRefAttributes.ViewRef.Name
-                                                )
-                                                .Value
+                            if carouselView <> null then
+                                carouselView.IndicatorView <- indicatorView
+                            else
+                                // CarouselView has been disposed, clean up the handler
+                                let handler =
+                                    node
+                                        .TryGetHandler<EventHandler<IndicatorView>>(
+                                            ViewRefAttributes.ViewRef.Name
+                                        )
+                                        .Value
 
-                                        (viewRef :?> ViewRef<IndicatorView>)
-                                            .Attached.RemoveHandler(handler))
+                                (viewRef :?> ViewRef<IndicatorView>).Attached.RemoveHandler(handler))
 
-                        newHandler
+                    newHandler
 
-                match newValueOpt with
-                | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
-                | ValueSome curr ->
-                    curr.Attached.AddHandler(handler)
-                    node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueSome handler))
+            match newValueOpt with
+            | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
+            | ValueSome curr ->
+                curr.Attached.AddHandler(handler)
+                node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueSome handler))
 
 [<AutoOpen>]
 module CarouselViewBuilders =
     type Fabulous.Maui.View with
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> Fabulous.Maui.IView>
-            (items: seq<'itemData>)
-            =
-            WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker>
-                CarouselView.WidgetKey
-                ItemsView.ItemsSource
-                items
+
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> Fabulous.Maui.IView>(items: seq<'itemData>) =
+            WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items
 
 [<Extension>]
 type CarouselViewModifiers =
@@ -134,14 +124,7 @@ type CarouselViewModifiers =
         CarouselViewModifiers.peekAreaInsets(this, Thickness(value))
 
     [<Extension>]
-    static member inline peekAreaInsets
-        (
-            this: WidgetBuilder<'msg, #ICarouselView>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #ICarouselView>, left: float, top: float, right: float, bottom: float) =
         CarouselViewModifiers.peekAreaInsets(this, Thickness(left, top, right, bottom))
 
     [<Extension>]

@@ -21,6 +21,7 @@ module LinearGradientBrush =
 [<AutoOpen>]
 module LinearGradientBrushBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>LinearGradientBrush paints an area with a linear gradient, which blends two or more colors along a line known as the gradient axis. </summary>
         /// <param name="endPoint">EndPoint, of type Point, which represents the ending two-dimensional coordinates of the linear gradient. The default value of this property is (1,1).</param>
         /// <param name="startPoint">StartPoint, of type Point, which represents the starting two-dimensional coordinates of the linear gradient. The default value of this property is (0,0).</param>

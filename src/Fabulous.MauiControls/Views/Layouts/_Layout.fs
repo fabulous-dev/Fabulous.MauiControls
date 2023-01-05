@@ -32,14 +32,7 @@ type LayoutModifiers =
         LayoutModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding
-        (
-            this: WidgetBuilder<'msg, #ILayout>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline padding(this: WidgetBuilder<'msg, #ILayout>, left: float, top: float, right: float, bottom: float) =
         LayoutModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]

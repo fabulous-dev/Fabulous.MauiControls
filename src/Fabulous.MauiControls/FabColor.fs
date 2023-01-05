@@ -3,14 +3,15 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Microsoft.Maui.Graphics
 
-/// Fabulous specific representation of a Color for XamarinForms.
+/// Fabulous specific representation of a Color for Maui.Controls.
 /// Note that it is limited to 4 bytes (vs other representations that might use float for a channel)
 /// to optimize allocations and CPU cache misses in diffing algorithm.
 /// For all practical use-cases 4 bytes is likely to be more than enough to represent a color,
-/// however you can use XamarinForms.Color directly if you need absolute color precision with custom declared attributes.
+/// however you can use Maui.Controls.Color directly if you need absolute color precision with custom declared attributes.
 [<Struct>]
 type FabColor =
     { RGBA: uint32 }
+
     member inline x.R: uint8 = (x.RGBA &&& 0xFF000000u) >>> 24 |> uint8
 
     member inline x.G: uint8 = (x.RGBA &&& 0x00FF0000u) >>> 16 |> uint8
@@ -37,14 +38,10 @@ type ColorConversion() =
 
 module FabColor =
     /// Converts hex string into FabColor.
-    /// It uses XamarinForms.Color to parse, thus it expects the same format.
+    /// It uses Maui.Controls.Color to parse, thus it expects the same format.
     /// Expected format: "AARRGGBB","RRGGBB", "ARGB" or "RGB"
     let inline fromHex (hex: string) : FabColor = Color.FromArgb(hex).ToFabColor()
 
     /// Creates a FabColor from 4 byte size components. Expects RGBA ordering.
     let inline fromRGBA (r: uint8) (g: uint8) (b: uint8) (a: uint8) : FabColor =
-        { RGBA =
-              ((uint32 r <<< 24)
-               ||| (uint32 g <<< 16)
-               ||| (uint32 b <<< 8)
-               ||| uint32 a) }
+        { RGBA = ((uint32 r <<< 24) ||| (uint32 g <<< 16) ||| (uint32 b <<< 8) ||| uint32 a) }

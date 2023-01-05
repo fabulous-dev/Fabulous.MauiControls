@@ -28,12 +28,8 @@ module FlyoutPage =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
     let IsPresented =
-        Attributes.defineBindableWithEvent<bool, bool>
-            "FlyoutPage_IsPresentedChanged"
-            FlyoutPage.IsPresentedProperty
-            (fun target ->
-                (target :?> CustomFlyoutPage)
-                    .CustomIsPresentedChanged)
+        Attributes.defineBindableWithEvent<bool, bool> "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
+            (target :?> CustomFlyoutPage).CustomIsPresentedChanged)
 
     let Flyout =
         Attributes.definePropertyWidget
@@ -77,13 +73,12 @@ module FlyoutPage =
     //             flyoutPage.DetailBounds <- value)
 
     let BackButtonPressed =
-        Attributes.defineEvent<BackButtonPressedEventArgs>
-            "FlyoutPage_BackButtonPressed"
-            (fun target -> (target :?> FlyoutPage).BackButtonPressed)
+        Attributes.defineEvent<BackButtonPressedEventArgs> "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
 [<AutoOpen>]
 module FlyoutPageBuilders =
     type Fabulous.Maui.View with
+
         static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IPage and 'detail :> IPage>
             (
                 flyout: WidgetBuilder<'msg, 'flyout>,
@@ -122,11 +117,7 @@ type FlyoutPageModifiers =
     //     this.AddScalar(FlyoutPage.DetailBounds.WithValue(value))
 
     [<Extension>]
-    static member inline onBackButtonPressed
-        (
-            this: WidgetBuilder<'msg, #IFlyoutPage>,
-            onBackButtonPressed: bool -> 'msg
-        ) =
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFlyoutPage>, onBackButtonPressed: bool -> 'msg) =
         this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> onBackButtonPressed args.Handled |> box))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>

@@ -1,53 +1,74 @@
-# <img src="logo/logo-title.png" height="120px" alt="Fabulous.MauiControls" />
+# Fabulous for .NET MAUI (Microsoft.Maui.Controls)
 
-*F# Functional App Development, using declarative dynamic UI.*
+[![build](https://img.shields.io/github/actions/workflow/status/fabulous-dev/Fabulous.MauiControls/build.yml?branch=main)](https://github.com/fabulous-dev/Fabulous.MauiControls/actions/workflows/build.yml) [![NuGet version](https://img.shields.io/nuget/v/Fabulous.MauiControls)](https://www.nuget.org/packages/Fabulous.MauiControls) [![NuGet downloads](https://img.shields.io/nuget/dt/Fabulous.MauiControls)](https://www.nuget.org/packages/Fabulous.MauiControls) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK) [![Twitter Follow](https://img.shields.io/twitter/follow/FabulousAppDev?style=social)](https://twitter.com/FabulousAppDev)
 
-[![build](https://github.com/fabulous-dev/Fabulous.MauiControls/actions/workflows/build.yml/badge.svg)](https://github.com/fabulous-dev/Fabulous.MauiControls/actions/workflows/dotnet.yml) [![Fabulous.MauiControls NuGet version](https://badge.fury.io/nu/Fabulous.MauiControls.svg)](https://badge.fury.io/nu/Fabulous.MauiControls) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
+Fabulous.MauiControls brings the great development experience of Fabulous to .NET MAUI, allowing you to take advantage of the latest cross-platform UI framework from Microsoft with a tailored declarative UI DSL and clean architecture.
 
-Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
+Deploy to any platform supported by .NET MAUI, such as Android, iOS, macOS, Windows, Linux and more!
 
-Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
+```fs
+/// A simple Counter app
 
-## Documentation
+type Model =
+    { Count: int }
 
-Documentation is available at https://docs.fabulous.dev
+type Msg =
+    | Increment
+    | Decrement
 
-## About Fabulous
-
-Fabulous aims to provide all the tools to let you create your own mobile and desktop apps using only F# and the [Model-View-Update architecture](https://guide.elm-lang.org/architecture/) (shorten to MVU), with a great F# DSL for building dynamic UIs.  
-The combination of F# and MVU makes for a great development experience.
-
-Note that Fabulous itself does not provide UI controls, so you'll need to combine it with another framework like Microsoft.Maui.
-
-### Fabulous for Maui.Controls
-
-You will be able to combine MVU with an SwiftUI-inspired DSL in F#, while targeting several platforms (iOS, Android, and more) using the new single project format.
-
-With Fabulous for Maui.Controls, you will be able to write complete applications in F# like this:
-```fsharp
-type Model = { Text: string }
-type Msg = ButtonClicked
-
-let init () = { Text = "Hello Fabulous!" }
+let init () =
+    { Count = 0 }
 
 let update msg model =
     match msg with
-    | ButtonClicked -> { model with Text = "Thanks for using Fabulous!" }
+    | Increment -> { model with Count = model.Count + 1 }
+    | Decrement -> { model with Count = model.Count - 1 }
 
 let view model =
-    Application() {
-        NavigationPage() {                
-            ContentPage("Counter",
-                VStack(spacing = 16.) {
-                    Image(Aspect.AspectFit, "fabulous.png")
-                    Label(model.Text)
-                    Button("Click me", ButtonClicked)
-                }
-            )
-        }
+    Application(
+        ContentPage(
+            "Counter app",
+            VStack(spacing = 16.) {
+                Image(Aspect.AspectFit, "fabulous.png")
+
+                Label($"Count is {model.Count}")
+
+                Button("Increment", Increment)
+                Button("Decrement", Decrement)
+            }
+        )
     )
 ```
 
-## Credits
-This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
- 
+To learn more about Fabulous, visit https://fabulous.dev.
+
+### Getting Started
+
+You can start your new Fabulous.MauiControls app in a matter of seconds using the dotnet CLI templates.  
+For a starter guide see our [documentation](https://docs.fabulous.dev/v2/maui.controls/getting-started).
+
+```sh
+dotnet new install Fabulous.MauiControls.Templates
+dotnet new fabulous-mauicontrols -n MyApp
+```
+
+### Documentation
+
+Documentation can be found at https://docs.fabulous.dev/v2/maui.controls
+
+### Sponsor Fabulous
+
+Donating is a fantastic way to support all the efforts going into making Fabulous the best declarative UI framework for dotnet.  
+We accept donations through the GitHub Sponsors program.
+
+If you need support see Commercial Support section below.
+
+### Commercial support
+
+If you would like us to provide you with:
+
+- training and workshops,
+- support services,
+- and consulting services.
+
+Feel free to contact us: [support@fabulous.dev](mailto:support@fabulous.dev)

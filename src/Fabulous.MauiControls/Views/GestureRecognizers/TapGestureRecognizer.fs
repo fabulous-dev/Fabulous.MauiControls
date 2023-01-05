@@ -19,11 +19,9 @@ module TapGestureRecognizer =
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =
-            WidgetBuilder<'msg, ITapGestureRecognizer>(
-                TapGestureRecognizer.WidgetKey,
-                TapGestureRecognizer.Tapped.WithValue(fun _ -> box onTapped)
-            )
+            WidgetBuilder<'msg, ITapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.Tapped.WithValue(fun _ -> box onTapped))
 
 [<Extension>]
 type TapGestureRecognizerModifiers =

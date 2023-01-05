@@ -21,11 +21,9 @@ module DatePicker =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> DatePicker.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat DatePicker.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat DatePicker.FontSizeProperty
 
-    let Format =
-        Attributes.defineBindableWithEquality<string> DatePicker.FormatProperty
+    let Format = Attributes.defineBindableWithEquality<string> DatePicker.FormatProperty
 
     let MaximumDate =
         Attributes.defineBindableWithEquality<DateTime> DatePicker.MaximumDateProperty
@@ -33,40 +31,33 @@ module DatePicker =
     let MinimumDate =
         Attributes.defineBindableWithEquality<DateTime> DatePicker.MinimumDateProperty
 
-    let TextColor =
-        Attributes.defineBindableAppThemeColor DatePicker.TextColorProperty
+    let TextColor = Attributes.defineBindableAppThemeColor DatePicker.TextColorProperty
 
     let FontAutoScalingEnabled =
         Attributes.defineBindableBool DatePicker.FontAutoScalingEnabledProperty
 
     let DateWithEvent =
-        Attributes.defineBindableWithEvent
-            "DatePicker_DateSelected"
-            DatePicker.DateProperty
-            (fun target -> (target :?> DatePicker).DateSelected)
+        Attributes.defineBindableWithEvent "DatePicker_DateSelected" DatePicker.DateProperty (fun target -> (target :?> DatePicker).DateSelected)
 
     let UpdateMode =
-        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
-            "DatePicker_UpdateMode"
-            (fun _ newValueOpt node ->
-                let datePicker = node.Target :?> DatePicker
+        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode> "DatePicker_UpdateMode" (fun _ newValueOpt node ->
+            let datePicker = node.Target :?> DatePicker
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> iOSSpecific.UpdateMode.Immediately
+                | ValueSome v -> v
 
-                iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
+            iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
 
 [<AutoOpen>]
 module DatePickerBuilders =
     type Fabulous.Maui.View with
+
         static member inline DatePicker<'msg>(date: DateTime, onDateSelected: DateTime -> 'msg) =
             WidgetBuilder<'msg, IDatePicker>(
                 DatePicker.WidgetKey,
-                DatePicker.DateWithEvent.WithValue(
-                    ValueEventData.create date (fun args -> onDateSelected args.NewDate |> box)
-                )
+                DatePicker.DateWithEvent.WithValue(ValueEventData.create date (fun args -> onDateSelected args.NewDate |> box))
             )
 
 [<Extension>]

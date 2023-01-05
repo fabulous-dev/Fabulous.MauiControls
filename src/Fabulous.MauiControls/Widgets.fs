@@ -15,9 +15,7 @@ type View =
     end
 
 module Widgets =
-    let registerWithAdditionalSetup<'T when 'T :> Microsoft.Maui.Controls.BindableObject and 'T: (new: unit -> 'T)>
-        (additionalSetup: 'T -> IViewNode -> unit)
-        =
+    let registerWithAdditionalSetup<'T when 'T :> Microsoft.Maui.Controls.BindableObject and 'T: (new: unit -> 'T)> (additionalSetup: 'T -> IViewNode -> unit) =
         let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
@@ -25,26 +23,25 @@ module Widgets =
               Name = typeof<'T>.Name
               TargetType = typeof<'T>
               CreateView =
-                  fun (widget, treeContext, parentNode) ->
-                      treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
+                fun (widget, treeContext, parentNode) ->
+                    treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
 
-                      let view = new 'T()
-                      let weakReference = WeakReference(view)
+                    let view = new 'T()
+                    let weakReference = WeakReference(view)
 
-                      let parentNode =
-                          match parentNode with
-                          | ValueNone -> None
-                          | ValueSome node -> Some node
+                    let parentNode =
+                        match parentNode with
+                        | ValueNone -> None
+                        | ValueSome node -> Some node
 
-                      let node =
-                          ViewNode(parentNode, treeContext, weakReference)
+                    let node = ViewNode(parentNode, treeContext, weakReference)
 
-                      ViewNode.set node view
+                    ViewNode.set node view
 
-                      additionalSetup view node
+                    additionalSetup view node
 
-                      Reconciler.update treeContext.CanReuseView ValueNone widget node
-                      struct (node :> IViewNode, box view) }
+                    Reconciler.update treeContext.CanReuseView ValueNone widget node
+                    struct (node :> IViewNode, box view) }
 
         WidgetDefinitionStore.set key definition
         key
@@ -54,11 +51,9 @@ module Widgets =
 
 module WidgetHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, 'marker>>) =
-        items
-        |> Seq.map(fun item -> item.Compile())
-        |> Seq.toArray
+        items |> Seq.map(fun item -> item.Compile()) |> Seq.toArray
 
-    let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =
+    let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute[]) =
         WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item>

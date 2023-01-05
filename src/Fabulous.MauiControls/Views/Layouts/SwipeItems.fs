@@ -14,21 +14,19 @@ module SwipeItems =
     let WidgetKey = Widgets.register<SwipeItems>()
 
     let SwipeItems =
-        Attributes.defineListWidgetCollection
-            "SwipeItems_SwipeItems"
-            (fun target -> (target :?> SwipeItems) :> IList<_>)
+        Attributes.defineListWidgetCollection "SwipeItems_SwipeItems" (fun target -> (target :?> SwipeItems) :> IList<_>)
 
     let SwipeMode =
         Attributes.defineBindableEnum<SwipeMode> Microsoft.Maui.Controls.SwipeItems.ModeProperty
 
     let SwipeBehaviorOnInvoked =
-        Attributes.defineBindableEnum<SwipeBehaviorOnInvoked>
-            Microsoft.Maui.Controls.SwipeItems.SwipeBehaviorOnInvokedProperty
+        Attributes.defineBindableEnum<SwipeBehaviorOnInvoked> Microsoft.Maui.Controls.SwipeItems.SwipeBehaviorOnInvokedProperty
 
 [<AutoOpen>]
 module SwipeItemsBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline SwipeItems<'msg>() =
             CollectionBuilder<'msg, ISwipeItems, Fabulous.Maui.ISwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
 
@@ -39,11 +37,7 @@ type SwipeItemsModifiers() =
         this.AddScalar(SwipeItems.SwipeMode.WithValue(value))
 
     [<Extension>]
-    static member inline swipeBehaviorOnInvoked
-        (
-            this: WidgetBuilder<'msg, #ISwipeItems>,
-            value: SwipeBehaviorOnInvoked
-        ) =
+    static member inline swipeBehaviorOnInvoked(this: WidgetBuilder<'msg, #ISwipeItems>, value: SwipeBehaviorOnInvoked) =
         this.AddScalar(SwipeItems.SwipeBehaviorOnInvoked.WithValue(value))
 
     [<Extension>]

@@ -1,13 +1,16 @@
 name: Pull Request
 on: pull_request
 
+env:
+  SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+  CONFIG: Release
+
 jobs:
-  build:
+  pull_request:
     runs-on: macos-12
-    env:
-      SLN_FILE: Fabulous.MauiControls.NoSamples.sln
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout sources
+      uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -21,6 +24,6 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build ${SLN_FILE} --no-restore --configuration Release
+      run: dotnet build ${SLN_FILE} -c ${CONFIG} --no-restore
     - name: Test
-      run: dotnet test ${SLN_FILE} --no-build --configuration Release
+      run: dotnet test ${SLN_FILE} -c ${CONFIG} --no-build

@@ -11,48 +11,34 @@ type IShape =
 
 module Shape =
 
-    let Fill =
-        Attributes.defineBindableAppTheme<Brush> Shape.FillProperty
+    let Fill = Attributes.defineBindableAppTheme<Brush> Shape.FillProperty
 
-    let FillWidget =
-        Attributes.defineBindableWidget Shape.FillProperty
+    let FillWidget = Attributes.defineBindableWidget Shape.FillProperty
 
-    let Stroke =
-        Attributes.defineBindableAppTheme<Brush> Shape.StrokeProperty
+    let Stroke = Attributes.defineBindableAppTheme<Brush> Shape.StrokeProperty
 
-    let StrokeThickness =
-        Attributes.defineBindableFloat Shape.StrokeThicknessProperty
+    let StrokeThickness = Attributes.defineBindableFloat Shape.StrokeThicknessProperty
 
     let StrokeDashArrayString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Shape_StrokeDashArrayString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Shape_StrokeDashArrayString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
-                | ValueSome string ->
-                    target.SetValue(
-                        Shape.StrokeDashArrayProperty,
-                        DoubleCollectionConverter()
-                            .ConvertFromInvariantString(string)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
+            | ValueSome string -> target.SetValue(Shape.StrokeDashArrayProperty, DoubleCollectionConverter().ConvertFromInvariantString(string)))
 
     let StrokeDashArrayList =
-        Attributes.defineSimpleScalarWithEquality<float list>
-            "Shape_StrokeDashArrayList"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<float list> "Shape_StrokeDashArrayList" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
-                | ValueSome points ->
-                    let coll = DoubleCollection()
-                    points |> List.iter coll.Add
-                    target.SetValue(Shape.StrokeDashArrayProperty, coll))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
+            | ValueSome points ->
+                let coll = DoubleCollection()
+                points |> List.iter coll.Add
+                target.SetValue(Shape.StrokeDashArrayProperty, coll))
 
-    let StrokeDashOffset =
-        Attributes.defineBindableFloat Shape.StrokeDashOffsetProperty
+    let StrokeDashOffset = Attributes.defineBindableFloat Shape.StrokeDashOffsetProperty
 
     let StrokeLineCap =
         Attributes.defineBindableWithEquality<PenLineCap> Shape.StrokeLineCapProperty
@@ -60,11 +46,9 @@ module Shape =
     let StrokeLineJoin =
         Attributes.defineBindableWithEquality<PenLineJoin> Shape.StrokeLineJoinProperty
 
-    let StrokeMiterLimit =
-        Attributes.defineBindableFloat Shape.StrokeMiterLimitProperty
+    let StrokeMiterLimit = Attributes.defineBindableFloat Shape.StrokeMiterLimitProperty
 
-    let Aspect =
-        Attributes.defineBindableWithEquality<Stretch> Shape.AspectProperty
+    let Aspect = Attributes.defineBindableWithEquality<Stretch> Shape.AspectProperty
 
 
 [<Extension>]

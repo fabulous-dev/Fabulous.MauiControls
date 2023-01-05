@@ -27,62 +27,49 @@ module Picker =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Picker.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat Picker.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat Picker.FontSizeProperty
 
-    let TextColor =
-        Attributes.defineBindableAppThemeColor Picker.TextColorProperty
+    let TextColor = Attributes.defineBindableAppThemeColor Picker.TextColorProperty
 
     let FontAutoScalingEnabled =
         Attributes.defineBindableBool Picker.FontAutoScalingEnabledProperty
 
-    let Title =
-        Attributes.defineBindableWithEquality<string> Picker.TitleProperty
+    let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
-    let TitleColor =
-        Attributes.defineBindableAppThemeColor Picker.TitleColorProperty
+    let TitleColor = Attributes.defineBindableAppThemeColor Picker.TitleColorProperty
 
     let ItemsSource =
-        Attributes.defineSimpleScalarWithEquality<string array>
-            "Picker_ItemSource"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string array> "Picker_ItemSource" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
-                | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
+            | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
     let SelectedIndexWithEvent =
-        Attributes.defineBindableWithEvent
-            "Picker_SelectedIndexChanged"
-            Picker.SelectedIndexProperty
-            (fun target ->
-                (target :?> CustomPicker)
-                    .CustomSelectedIndexChanged)
+        Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
+            (target :?> CustomPicker).CustomSelectedIndexChanged)
 
     let UpdateMode =
-        Attributes.defineEnum<iOSSpecific.UpdateMode>
-            "Picker_UpdateMode"
-            (fun _ newValueOpt node ->
-                let picker = node.Target :?> Picker
+        Attributes.defineEnum<iOSSpecific.UpdateMode> "Picker_UpdateMode" (fun _ newValueOpt node ->
+            let picker = node.Target :?> Picker
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> iOSSpecific.UpdateMode.Immediately
+                | ValueSome v -> v
 
-                iOSSpecific.Picker.SetUpdateMode(picker, value))
+            iOSSpecific.Picker.SetUpdateMode(picker, value))
 
 [<AutoOpen>]
 module PickerBuilders =
     type Fabulous.Maui.View with
+
         static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
                 Picker.ItemsSource.WithValue(Array.ofList items),
-                Picker.SelectedIndexWithEvent.WithValue(
-                    ValueEventData.create selectedIndex (fun args -> onSelectedIndexChanged args.CurrentPosition |> box)
-                )
+                Picker.SelectedIndexWithEvent.WithValue(ValueEventData.create selectedIndex (fun args -> onSelectedIndexChanged args.CurrentPosition |> box))
             )
 
 [<Extension>]

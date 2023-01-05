@@ -15,11 +15,9 @@ module WebView =
 
     let WidgetKey = Widgets.register<WebView>()
 
-    let CanGoBack =
-        Attributes.defineBindableBool WebView.CanGoBackProperty
+    let CanGoBack = Attributes.defineBindableBool WebView.CanGoBackProperty
 
-    let CanGoForward =
-        Attributes.defineBindableBool WebView.CanGoForwardProperty
+    let CanGoForward = Attributes.defineBindableBool WebView.CanGoForwardProperty
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
@@ -28,9 +26,7 @@ module WebView =
         Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
 
     let Navigating =
-        Attributes.defineEvent<WebNavigatingEventArgs>
-            "WebView_Navigating"
-            (fun target -> (target :?> WebView).Navigating)
+        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
 
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
@@ -39,34 +35,31 @@ module WebView =
     //     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
     let EnableZoomControls =
-        Attributes.defineBool
-            "WebView_EnableZoomControls"
-            (fun _ newValueOpt node ->
-                let webview = node.Target :?> WebView
+        Attributes.defineBool "WebView_EnableZoomControls" (fun _ newValueOpt node ->
+            let webview = node.Target :?> WebView
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+            AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
 
     let DisplayZoomControls =
-        Attributes.defineBool
-            "WebView_DisplayZoomControls"
-            (fun _ newValueOpt node ->
-                let webview = node.Target :?> WebView
+        Attributes.defineBool "WebView_DisplayZoomControls" (fun _ newValueOpt node ->
+            let webview = node.Target :?> WebView
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
+            AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
 [<AutoOpen>]
 module WebViewBuilders =
     type Fabulous.Maui.View with
+
         static member inline WebView<'msg>(source: WebViewSource) =
             WidgetBuilder<'msg, IWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
@@ -107,11 +100,7 @@ type WebViewModifiers() =
         this.AddScalar(WebView.Cookies.WithValue(value))
 
     [<Extension>]
-    static member inline onNavigating
-        (
-            this: WidgetBuilder<'msg, #IWebView>,
-            onNavigating: WebNavigatingEventArgs -> 'msg
-        ) =
+    static member inline onNavigating(this: WidgetBuilder<'msg, #IWebView>, onNavigating: WebNavigatingEventArgs -> 'msg) =
         this.AddScalar(WebView.Navigating.WithValue(fun args -> onNavigating args |> box))
 
     [<Extension>]

@@ -19,55 +19,41 @@ module Application =
             (fun target value -> (target :?> Application).MainPage <- value)
 
     let Resources =
-        Attributes.defineSimpleScalarWithEquality<ResourceDictionary>
-            "Application_Resources"
-            (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+        Attributes.defineSimpleScalarWithEquality<ResourceDictionary> "Application_Resources" (fun _ newValueOpt node ->
+            let application = node.Target :?> Application
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> application.Resources
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> application.Resources
+                | ValueSome v -> v
 
-                application.Resources <- value)
+            application.Resources <- value)
 
     let UserAppTheme =
-        Attributes.defineEnum<AppTheme>
-            "Application_UserAppTheme"
-            (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+        Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
+            let application = node.Target :?> Application
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> AppTheme.Unspecified
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> AppTheme.Unspecified
+                | ValueSome v -> v
 
-                application.UserAppTheme <- value)
+            application.UserAppTheme <- value)
 
     let RequestedThemeChanged =
-        Attributes.defineEvent<AppThemeChangedEventArgs>
-            "Application_RequestedThemeChanged"
-            (fun target -> (target :?> Application).RequestedThemeChanged)
+        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
 
     let ModalPopped =
-        Attributes.defineEvent<ModalPoppedEventArgs>
-            "Application_ModalPopped"
-            (fun target -> (target :?> Application).ModalPopped)
+        Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
 
     let ModalPopping =
-        Attributes.defineEvent<ModalPoppingEventArgs>
-            "Application_ModalPopping"
-            (fun target -> (target :?> Application).ModalPopping)
+        Attributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
 
     let ModalPushed =
-        Attributes.defineEvent<ModalPushedEventArgs>
-            "Application_ModalPushed"
-            (fun target -> (target :?> Application).ModalPushed)
+        Attributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
 
     let ModalPushing =
-        Attributes.defineEvent<ModalPushingEventArgs>
-            "Application_ModalPushing"
-            (fun target -> (target :?> Application).ModalPushing)
+        Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
     let Start =
         Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> CustomApplication).Start)
@@ -81,10 +67,9 @@ module Application =
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.Maui.View with
+
         static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IApplication>
-                Application.WidgetKey
-                [| Application.MainPage.WithValue(mainPage.Compile()) |]
+            WidgetHelpers.buildWidgets<'msg, IApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
 [<Extension>]
 type ApplicationModifiers =
@@ -97,45 +82,23 @@ type ApplicationModifiers =
         this.AddScalar(Application.Resources.WithValue(value))
 
     [<Extension>]
-    static member inline onRequestedThemeChanged
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            onRequestedThemeChanged: AppTheme -> 'msg
-        ) =
-        this.AddScalar(
-            Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box)
-        )
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, onRequestedThemeChanged: AppTheme -> 'msg) =
+        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box))
 
     [<Extension>]
-    static member inline onModalPopped
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            onModalPopped: ModalPoppedEventArgs -> 'msg
-        ) =
+    static member inline onModalPopped(this: WidgetBuilder<'msg, #IApplication>, onModalPopped: ModalPoppedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopped.WithValue(onModalPopped >> box))
 
     [<Extension>]
-    static member inline onModalPopping
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            onModalPopping: ModalPoppingEventArgs -> 'msg
-        ) =
+    static member inline onModalPopping(this: WidgetBuilder<'msg, #IApplication>, onModalPopping: ModalPoppingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopping.WithValue(onModalPopping >> box))
 
     [<Extension>]
-    static member inline onModalPushed
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            onModalPushed: ModalPushedEventArgs -> 'msg
-        ) =
+    static member inline onModalPushed(this: WidgetBuilder<'msg, #IApplication>, onModalPushed: ModalPushedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushed.WithValue(onModalPushed >> box))
 
     [<Extension>]
-    static member inline onModalPushing
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            onModalPushing: ModalPushingEventArgs -> 'msg
-        ) =
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, onModalPushing: ModalPushingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
     /// Dispatch a message when the application starts

@@ -18,19 +18,14 @@ module Page =
     let IconImageSource =
         Attributes.defineBindableAppTheme<ImageSource> Page.IconImageSourceProperty
 
-    let IsBusy =
-        Attributes.defineBindableBool Page.IsBusyProperty
+    let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 
-    let Padding =
-        Attributes.defineBindableWithEquality<Thickness> Page.PaddingProperty
+    let Padding = Attributes.defineBindableWithEquality<Thickness> Page.PaddingProperty
 
-    let Title =
-        Attributes.defineBindableWithEquality<string> Page.TitleProperty
+    let Title = Attributes.defineBindableWithEquality<string> Page.TitleProperty
 
     let ToolbarItems =
-        Attributes.defineListWidgetCollection<ToolbarItem>
-            "Page_ToolbarItems"
-            (fun target -> (target :?> Page).ToolbarItems)
+        Attributes.defineListWidgetCollection<ToolbarItem> "Page_ToolbarItems" (fun target -> (target :?> Page).ToolbarItems)
 
     let Appearing =
         Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
@@ -42,17 +37,15 @@ module Page =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
     let UseSafeArea =
-        Attributes.defineSimpleScalarWithEquality<bool>
-            "Page_UseSafeArea"
-            (fun _ newValueOpt node ->
-                let page = node.Target :?> Page
+        Attributes.defineSimpleScalarWithEquality<bool> "Page_UseSafeArea" (fun _ newValueOpt node ->
+            let page = node.Target :?> Page
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                iOSSpecific.Page.SetUseSafeArea(page, value))
+            iOSSpecific.Page.SetUseSafeArea(page, value))
 
 [<Extension>]
 type PageModifiers =
@@ -196,14 +189,7 @@ type PageModifiers =
         PageModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding
-        (
-            this: WidgetBuilder<'msg, #IPage>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline padding(this: WidgetBuilder<'msg, #IPage>, left: float, top: float, right: float, bottom: float) =
         PageModifiers.padding(this, Thickness(left, top, right, bottom))
 
 [<Extension>]

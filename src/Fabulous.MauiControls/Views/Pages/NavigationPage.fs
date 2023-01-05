@@ -19,10 +19,7 @@ module NavigationPageUpdaters =
     let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let navigationPage = node.Target :?> CustomNavigationPage
 
-        let pages =
-            Array.ofSeq
-                (navigationPage :> INavigationPageController)
-                    .Pages
+        let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
 
         let mutable pagesLength =
             let struct (size, _) = prev
@@ -32,7 +29,7 @@ module NavigationPageUpdaters =
 
         for diff in diffs do
             match diff with
-            | WidgetCollectionItemChange.Insert (index, widget) ->
+            | WidgetCollectionItemChange.Insert(index, widget) ->
                 let struct (_, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
 
@@ -43,15 +40,13 @@ module NavigationPageUpdaters =
 
                 pagesLength <- pagesLength + 1
 
-            | WidgetCollectionItemChange.Update (index, diff) ->
-                let childNode =
-                    node.TreeContext.GetViewNode(box pages.[index])
+            | WidgetCollectionItemChange.Update(index, diff) ->
+                let childNode = node.TreeContext.GetViewNode(box pages.[index])
 
                 childNode.ApplyDiff(&diff)
 
-            | WidgetCollectionItemChange.Replace (index, _, newWidget) ->
-                let struct (_, page) =
-                    Helpers.createViewForWidget node newWidget
+            | WidgetCollectionItemChange.Replace(index, _, newWidget) ->
+                let struct (_, page) = Helpers.createViewForWidget node newWidget
 
                 let page = page :?> Page
 
@@ -72,7 +67,7 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(pages.[index])
                     navigationPage.Navigation.InsertPageBefore(page, nextPage)
 
-            | WidgetCollectionItemChange.Remove (index, _) ->
+            | WidgetCollectionItemChange.Remove(index, _) ->
                 if pagesLength > pages.Length then
                     // NavigationPage already popped the page before notifying Fabulous, we do nothing
                     pagesLength <- pagesLength - 1
@@ -95,11 +90,7 @@ module NavigationPageUpdaters =
         if popLastWithAnimation then
             navigationPage.Pop()
 
-    let updateNavigationPagePages
-        (oldValueOpt: ArraySlice<Widget> voption)
-        (newValueOpt: ArraySlice<Widget> voption)
-        (node: IViewNode)
-        =
+    let updateNavigationPagePages (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
         let navigationPage = node.Target :?> CustomNavigationPage
 
         match newValueOpt with
@@ -121,10 +112,7 @@ module NavigationPageUpdaters =
             match oldValueOpt with
             | ValueNone -> ()
             | ValueSome oldWidgets ->
-                let pages =
-                    Array.ofSeq
-                        (navigationPage :> INavigationPageController)
-                            .Pages
+                let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
 
                 let span = ArraySlice.toSpan oldWidgets
 
@@ -165,85 +153,64 @@ module NavigationPage =
         Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let BackNavigated =
-        Attributes.defineEventNoArg
-            "NavigationPage_BackNavigated"
-            (fun target -> (target :?> CustomNavigationPage).BackNavigated)
+        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> CustomNavigationPage).BackNavigated)
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg
-            "NavigationPage_BackButtonPressed"
-            (fun target ->
-                (target :?> CustomNavigationPage)
-                    .BackButtonPressed)
+        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> CustomNavigationPage).BackButtonPressed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =
-        Attributes.defineEvent<NavigationEventArgs>
-            "NavigationPage_Popped"
-            (fun target -> (target :?> NavigationPage).Popped)
+        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Popped" (fun target -> (target :?> NavigationPage).Popped)
 
     [<Obsolete("Will be removed in next major version")>]
     let Pushed =
-        Attributes.defineEvent<NavigationEventArgs>
-            "NavigationPage_Pushed"
-            (fun target -> (target :?> NavigationPage).Pushed)
+        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Pushed" (fun target -> (target :?> NavigationPage).Pushed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let PoppedToRoot =
-        Attributes.defineEvent<NavigationEventArgs>
-            "NavigationPage_PoppedToRoot"
-            (fun target -> (target :?> NavigationPage).PoppedToRoot)
+        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_PoppedToRoot" (fun target -> (target :?> NavigationPage).PoppedToRoot)
 
-    let TitleView =
-        Attributes.defineBindableWidget NavigationPage.TitleViewProperty
+    let TitleView = Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
     let HideNavigationBarSeparator =
-        Attributes.defineBool
-            "NavigationPage_HideNavigationBarSeparator"
-            (fun _ newValueOpt node ->
-                let page = node.Target :?> NavigationPage
+        Attributes.defineBool "NavigationPage_HideNavigationBarSeparator" (fun _ newValueOpt node ->
+            let page = node.Target :?> NavigationPage
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
+            iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
     let IsNavigationBarTranslucent =
-        Attributes.defineBool
-            "NavigationPage_IsNavigationBarTranslucent"
-            (fun _ newValueOpt node ->
-                let page = node.Target :?> NavigationPage
+        Attributes.defineBool "NavigationPage_IsNavigationBarTranslucent" (fun _ newValueOpt node ->
+            let page = node.Target :?> NavigationPage
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+            iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
 
     let PrefersLargeTitles =
-        Attributes.defineBool
-            "NavigationPage_PrefersLargeTitles"
-            (fun _ newValueOpt node ->
-                let page = node.Target :?> NavigationPage
+        Attributes.defineBool "NavigationPage_PrefersLargeTitles" (fun _ newValueOpt node ->
+            let page = node.Target :?> NavigationPage
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
+            iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
 
 [<AutoOpen>]
 module NavigationPageBuilders =
     type Fabulous.Maui.View with
+
         static member inline NavigationPage<'msg>() =
-            CollectionBuilder<'msg, INavigationPage, Fabulous.Maui.IPage>(
-                NavigationPage.WidgetKey,
-                NavigationPage.Pages
-            )
+            CollectionBuilder<'msg, INavigationPage, Fabulous.Maui.IPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
 
 [<Extension>]
 type NavigationPageModifiers =
@@ -251,12 +218,7 @@ type NavigationPageModifiers =
     /// <param name="light">The color of the barBackgroundColor in the light theme.</param>
     /// <param name="dark">The color of the barBackgroundColor in the dark theme.</param>
     [<Extension>]
-    static member inline barBackgroundColor
-        (
-            this: WidgetBuilder<'msg, #INavigationPage>,
-            light: FabColor,
-            ?dark: FabColor
-        ) =
+    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #INavigationPage>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(NavigationPage.BarBackgroundColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the BarBackground.</summary>

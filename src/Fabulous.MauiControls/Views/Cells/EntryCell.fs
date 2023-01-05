@@ -11,11 +11,9 @@ type IEntryCell =
 module EntryCell =
     let WidgetKey = Widgets.register<CustomEntryCell>()
 
-    let Label =
-        Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
+    let Label = Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
-    let LabelColor =
-        Attributes.defineBindableAppThemeColor EntryCell.LabelColorProperty
+    let LabelColor = Attributes.defineBindableAppThemeColor EntryCell.LabelColorProperty
 
     let Placeholder =
         Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
@@ -30,10 +28,7 @@ module EntryCell =
         Attributes.defineBindableWithEquality<Keyboard> EntryCell.KeyboardProperty
 
     let TextWithEvent =
-        Attributes.defineBindableWithEvent
-            "EntryCell_TextChanged"
-            EntryCell.TextProperty
-            (fun target -> (target :?> CustomEntryCell).TextChanged)
+        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> CustomEntryCell).TextChanged)
 
     let OnCompleted =
         Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
@@ -42,13 +37,12 @@ module EntryCell =
 module EntryCellBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline EntryCell<'msg>(label: string, text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.TextWithEvent.WithValue(
-                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
-                )
+                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
             )
 
 [<Extension>]

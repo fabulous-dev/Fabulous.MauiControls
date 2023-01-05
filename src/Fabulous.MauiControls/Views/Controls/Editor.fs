@@ -20,8 +20,7 @@ module Editor =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Editor.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat Editor.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat Editor.FontSizeProperty
 
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool Editor.IsTextPredictionEnabledProperty
@@ -29,11 +28,9 @@ module Editor =
     let FontAutoScalingEnabled =
         Attributes.defineBindableBool Editor.FontAutoScalingEnabledProperty
 
-    let CursorPosition =
-        Attributes.defineBindableInt Editor.CursorPositionProperty
+    let CursorPosition = Attributes.defineBindableInt Editor.CursorPositionProperty
 
-    let SelectionLength =
-        Attributes.defineBindableInt Editor.SelectionLengthProperty
+    let SelectionLength = Attributes.defineBindableInt Editor.SelectionLengthProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Editor.HorizontalTextAlignmentProperty
@@ -47,12 +44,11 @@ module Editor =
 [<AutoOpen>]
 module EditorBuilders =
     type Fabulous.Maui.View with
+
         static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IEditor>(
                 Editor.WidgetKey,
-                InputView.TextWithEvent.WithValue(
-                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
-                )
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
             )
 
 [<Extension>]

@@ -11,34 +11,27 @@ module ToolbarItem =
     let WidgetKey = Widgets.register<ToolbarItem>()
 
     let Order =
-        Attributes.defineEnum<ToolbarItemOrder>
-            "ToolbarItem_Order"
-            (fun _ newValueOpt node ->
-                let toolbarItem = node.Target :?> ToolbarItem
+        Attributes.defineEnum<ToolbarItemOrder> "ToolbarItem_Order" (fun _ newValueOpt node ->
+            let toolbarItem = node.Target :?> ToolbarItem
 
-                match newValueOpt with
-                | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default
-                | ValueSome order -> toolbarItem.Order <- order)
+            match newValueOpt with
+            | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default
+            | ValueSome order -> toolbarItem.Order <- order)
 
     let Priority =
-        Attributes.defineInt
-            "ToolbarItem_Priority"
-            (fun _ newValueOpt node ->
-                let toolbarItem = node.Target :?> ToolbarItem
+        Attributes.defineInt "ToolbarItem_Priority" (fun _ newValueOpt node ->
+            let toolbarItem = node.Target :?> ToolbarItem
 
-                match newValueOpt with
-                | ValueNone -> toolbarItem.Priority <- 0
-                | ValueSome priority -> toolbarItem.Priority <- priority)
+            match newValueOpt with
+            | ValueNone -> toolbarItem.Priority <- 0
+            | ValueSome priority -> toolbarItem.Priority <- priority)
 
 [<AutoOpen>]
 module ToolbarItemBuilders =
     type Fabulous.Maui.View with
+
         static member inline ToolbarItem<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IToolbarItem>(
-                ToolbarItem.WidgetKey,
-                MenuItem.Text.WithValue(text),
-                MenuItem.Clicked.WithValue(onClicked)
-            )
+            WidgetBuilder<'msg, IToolbarItem>(ToolbarItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(onClicked))
 
 [<Extension>]
 type ToolbarItemModifiers =

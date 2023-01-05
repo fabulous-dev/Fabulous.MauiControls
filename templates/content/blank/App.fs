@@ -46,10 +46,7 @@ module App =
                             .centerTextHorizontal()
 
                         Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                            .semantics(
-                                SemanticHeadingLevel.Level2,
-                                "Welcome to dot net Multi platform App U I powered by Fabulous"
-                            )
+                            .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
                             .font(size = 18.)
                             .centerTextHorizontal()
 
@@ -62,12 +59,11 @@ module App =
                         Button(text, Clicked)
                             .semantics(hint = "Counts the number of times you click")
                             .centerHorizontal()
-                     })
+                    })
                         .padding(Thickness(30., 0., 30., 0.))
                         .centerVertical()
                 )
             )
         )
 
-    let program =
-        Program.statefulWithCmdMsg init update view mapCmd
+    let program = Program.statefulWithCmdMsg init update view mapCmd

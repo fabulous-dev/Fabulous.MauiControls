@@ -10,14 +10,11 @@ type ITextCell =
 module TextCell =
     let WidgetKey = Widgets.register<TextCell>()
 
-    let Text =
-        Attributes.defineBindableWithEquality<string> TextCell.TextProperty
+    let Text = Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
-    let TextColor =
-        Attributes.defineBindableAppThemeColor TextCell.TextColorProperty
+    let TextColor = Attributes.defineBindableAppThemeColor TextCell.TextColorProperty
 
-    let Detail =
-        Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
+    let Detail = Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
     let DetailColor =
         Attributes.defineBindableAppThemeColor TextCell.DetailColorProperty
@@ -25,6 +22,7 @@ module TextCell =
 [<AutoOpen>]
 module TextCellBuilders =
     type Fabulous.Maui.View with
+
         static member inline TextCell<'msg>(text: string) =
             WidgetBuilder<'msg, ITextCell>(TextCell.WidgetKey, TextCell.Text.WithValue(text))
 

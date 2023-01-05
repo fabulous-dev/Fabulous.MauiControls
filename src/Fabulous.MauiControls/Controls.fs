@@ -47,8 +47,7 @@ type FabulousContentPage() as this =
     inherit ContentPage()
     do Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true)
 
-    let sizeAllocated =
-        Event<EventHandler<SizeAllocatedEventArgs>, _>()
+    let sizeAllocated = Event<EventHandler<SizeAllocatedEventArgs>, _>()
 
     [<CLIEvent>]
     member __.SizeAllocated = sizeAllocated.Publish
@@ -70,8 +69,7 @@ type PositionChangedEventArgs(previousPosition: int, currentPosition: int) =
 type FabulousTimePicker() =
     inherit TimePicker()
 
-    let timeSelected =
-        Event<EventHandler<TimeSelectedEventArgs>, _>()
+    let timeSelected = Event<EventHandler<TimeSelectedEventArgs>, _>()
 
     [<CLIEvent>]
     member _.TimeSelected = timeSelected.Publish
@@ -92,8 +90,7 @@ type CustomEntryCell() =
 
     let mutable oldText = ""
 
-    let textChanged =
-        Event<EventHandler<TextChangedEventArgs>, _>()
+    let textChanged = Event<EventHandler<TextChangedEventArgs>, _>()
 
     [<CLIEvent>]
     member _.TextChanged = textChanged.Publish
@@ -116,8 +113,7 @@ type CustomPicker() =
 
     let mutable oldSelectedIndex = -1
 
-    let selectedIndexChanged =
-        Event<EventHandler<PositionChangedEventArgs>, _>()
+    let selectedIndexChanged = Event<EventHandler<PositionChangedEventArgs>, _>()
 
     [<CLIEvent>]
     member _.CustomSelectedIndexChanged = selectedIndexChanged.Publish

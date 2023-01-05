@@ -30,37 +30,29 @@ module FlexLayout =
     let Direction =
         Attributes.defineBindableEnum<FlexDirection> FlexLayout.DirectionProperty
 
-    let Grow =
-        Attributes.defineBindableFloat FlexLayout.GrowProperty
+    let Grow = Attributes.defineBindableFloat FlexLayout.GrowProperty
 
     let JustifyContent =
         Attributes.defineBindableEnum<FlexJustify> FlexLayout.JustifyContentProperty
 
-    let Order =
-        Attributes.defineBindableInt FlexLayout.OrderProperty
+    let Order = Attributes.defineBindableInt FlexLayout.OrderProperty
 
     let Position =
         Attributes.defineBindableEnum<FlexPosition> FlexLayout.PositionProperty
 
-    let Shrink =
-        Attributes.defineBindableFloat FlexLayout.ShrinkProperty
+    let Shrink = Attributes.defineBindableFloat FlexLayout.ShrinkProperty
 
-    let Wrap =
-        Attributes.defineBindableEnum<FlexWrap> FlexLayout.WrapProperty
+    let Wrap = Attributes.defineBindableEnum<FlexWrap> FlexLayout.WrapProperty
 
 [<AutoOpen>]
 module FlexLayoutBuilders =
     type Fabulous.Maui.View with
+
         static member inline FlexLayout<'msg>(?wrap: FlexWrap) =
             match wrap with
             | None -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
 
-            | Some v ->
-                CollectionBuilder<'msg, IFlexLayout, IView>(
-                    FlexLayout.WidgetKey,
-                    LayoutOfView.Children,
-                    FlexLayout.Wrap.WithValue(v)
-                )
+            | Some v -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children, FlexLayout.Wrap.WithValue(v))
 
 [<Extension>]
 type FlexLayoutModifiers =

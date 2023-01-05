@@ -9,21 +9,18 @@ type ICell =
     inherit Fabulous.Maui.IElement
 
 module Cell =
-    let IsEnabled =
-        Attributes.defineBindableBool Cell.IsEnabledProperty
+    let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Height =
-        Attributes.defineFloat
-            "Cell_Height"
-            (fun _ newValueOpt node ->
-                let cell = node.Target :?> Cell
+        Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->
+            let cell = node.Target :?> Cell
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> cell.Height
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> cell.Height
+                | ValueSome v -> v
 
-                cell.Height <- value)
+            cell.Height <- value)
 
     let Appearing =
         Attributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
