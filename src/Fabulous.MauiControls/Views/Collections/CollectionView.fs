@@ -29,15 +29,9 @@ module CollectionView =
                 | ValueSome value ->
                     collectionView.IsGrouped <- true
 
-                    collectionView.SetValue(
-                        CollectionView.ItemTemplateProperty,
-                        WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate)
-                    )
+                    collectionView.SetValue(CollectionView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate))
 
-                    collectionView.SetValue(
-                        CollectionView.GroupHeaderTemplateProperty,
-                        WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)
-                    )
+                    collectionView.SetValue(CollectionView.GroupHeaderTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate))
 
                     if value.FooterTemplate.IsSome then
                         collectionView.SetValue(
@@ -50,32 +44,25 @@ module CollectionView =
     let SelectionMode =
         Attributes.defineBindableEnum<SelectionMode> CollectionView.SelectionModeProperty
 
-    let Header =
-        Attributes.defineBindableWidget CollectionView.HeaderProperty
+    let Header = Attributes.defineBindableWidget CollectionView.HeaderProperty
 
-    let Footer =
-        Attributes.defineBindableWidget CollectionView.FooterProperty
+    let Footer = Attributes.defineBindableWidget CollectionView.FooterProperty
 
     let ItemSizingStrategy =
         Attributes.defineBindableEnum<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
 
     let SelectionChanged =
-        Attributes.defineEvent<SelectionChangedEventArgs>
-            "CollectionView_SelectionChanged"
-            (fun target -> (target :?> CollectionView).SelectionChanged)
+        Attributes.defineEvent<SelectionChangedEventArgs> "CollectionView_SelectionChanged" (fun target -> (target :?> CollectionView).SelectionChanged)
 
 [<AutoOpen>]
 module CollectionViewBuilders =
     type Fabulous.Maui.View with
-        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
-            (items: seq<'itemData>)
-            =
-            WidgetHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker>
-                CollectionView.WidgetKey
-                ItemsView.ItemsSource
-                items
 
-        static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
+            WidgetHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items
+
+        static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
+            when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItems<'msg, ICollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
@@ -91,11 +78,7 @@ type CollectionViewModifiers =
         this.AddScalar(CollectionView.SelectionMode.WithValue(value))
 
     [<Extension>]
-    static member inline onSelectionChanged
-        (
-            this: WidgetBuilder<'msg, #ICollectionView>,
-            onSelectionChanged: SelectionChangedEventArgs -> 'msg
-        ) =
+    static member inline onSelectionChanged(this: WidgetBuilder<'msg, #ICollectionView>, onSelectionChanged: SelectionChangedEventArgs -> 'msg) =
         this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged args |> box))
 
     [<Extension>]

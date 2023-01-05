@@ -17,6 +17,7 @@ module Ellipse =
 module EllipseBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline Ellipse<'msg>(strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IEllipse>(
                 Ellipse.WidgetKey,

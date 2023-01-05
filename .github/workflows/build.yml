@@ -1,22 +1,28 @@
 name: Build
 on:
-   push:
-     branches: [ 'v2.1' ]
-     paths-ignore: [ 'docs/**' ]
+  push:
+    branches: [ 'main' ]
+    paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
 
 env:
-  VERSION: 2.1.0
+  VERSION: 2.1.1
+  CONFIG: Release
+  SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+  TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
 
 jobs:
   build:
     runs-on: macos-12
-    env:
-      SLN_FILE: Fabulous.MauiControls.NoSamples.sln
-      TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
     steps:
-    - uses: actions/checkout@v3
+    - name: Set nightly version
+      run: |
+        NIGHTLY_VERSION=${VERSION}-nightly-${GITHUB_RUN_ID}
+        echo "Nightly version is $NIGHTLY_VERSION"
+        echo "NIGHTLY_VERSION=$NIGHTLY_VERSION" >> "$GITHUB_ENV"
+    - name: Checkout sources
+      uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -26,14 +32,18 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-restore --configuration Release
+      run: dotnet build ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-restore
     - name: Test
-      run: dotnet test ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-build --configuration Release
+      run: dotnet test ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build
     - name: Pack
       run: |
-        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
-        dotnet pack ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs
-        dotnet pack ${TEMPLATE_PROJ} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs
+        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${NIGHTLY_VERSION}/g"
+        dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --output nupkgs
+        dotnet pack ${TEMPLATE_PROJ} -p:Version=${NIGHTLY_VERSION} -p:IsNightlyBuild=true -c ${CONFIG} --output nupkgs
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Packages
+        path: nupkgs/
     - name: Push
-      run: |
-        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

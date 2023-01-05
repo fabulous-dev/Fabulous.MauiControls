@@ -11,8 +11,7 @@ type ILabel =
 module Label =
     let WidgetKey = Widgets.register<Label>()
 
-    let CharacterSpacing =
-        Attributes.defineBindableFloat Label.CharacterSpacingProperty
+    let CharacterSpacing = Attributes.defineBindableFloat Label.CharacterSpacingProperty
 
     let FontAttributes =
         Attributes.defineBindableEnum<Microsoft.Maui.Controls.FontAttributes> Label.FontAttributesProperty
@@ -20,8 +19,7 @@ module Label =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Label.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat Label.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat Label.FontSizeProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Label.HorizontalTextAlignmentProperty
@@ -29,29 +27,23 @@ module Label =
     let LineBreakMode =
         Attributes.defineBindableEnum<Microsoft.Maui.LineBreakMode> Label.LineBreakModeProperty
 
-    let LineHeight =
-        Attributes.defineBindableFloat Label.LineHeightProperty
+    let LineHeight = Attributes.defineBindableFloat Label.LineHeightProperty
 
-    let MaxLines =
-        Attributes.defineBindableInt Label.MaxLinesProperty
+    let MaxLines = Attributes.defineBindableInt Label.MaxLinesProperty
 
-    let Padding =
-        Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
+    let Padding = Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
 
-    let TextColor =
-        Attributes.defineBindableAppThemeColor Label.TextColorProperty
+    let TextColor = Attributes.defineBindableAppThemeColor Label.TextColorProperty
 
     let TextDecorations =
         Attributes.defineBindableEnum<TextDecorations> Label.TextDecorationsProperty
 
-    let Text =
-        Attributes.defineBindableWithEquality<string> Label.TextProperty
+    let Text = Attributes.defineBindableWithEquality<string> Label.TextProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Label.TextTransformProperty
 
-    let TextType =
-        Attributes.defineBindableEnum<TextType> Label.TextTypeProperty
+    let TextType = Attributes.defineBindableEnum<TextType> Label.TextTypeProperty
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Label.VerticalTextAlignmentProperty
@@ -63,6 +55,7 @@ module Label =
 [<AutoOpen>]
 module LabelBuilders =
     type Fabulous.Maui.View with
+
         static member inline Label<'msg>(text: string) =
             WidgetBuilder<'msg, ILabel>(Label.WidgetKey, Label.Text.WithValue(text))
 
@@ -74,14 +67,7 @@ type LabelModifiers =
         this.AddScalar(Label.CharacterSpacing.WithValue(value))
 
     [<Extension>]
-    static member inline font
-        (
-            this: WidgetBuilder<'msg, #ILabel>,
-            ?size: float,
-            ?attributes: FontAttributes,
-            ?fontFamily: string,
-            ?autoScalingEnabled: bool
-        ) =
+    static member inline font(this: WidgetBuilder<'msg, #ILabel>, ?size: float, ?attributes: FontAttributes, ?fontFamily: string, ?autoScalingEnabled: bool) =
 
         let mutable res = this
 
@@ -128,14 +114,7 @@ type LabelModifiers =
         LabelModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding
-        (
-            this: WidgetBuilder<'msg, #ILabel>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, left: float, top: float, right: float, bottom: float) =
         LabelModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]

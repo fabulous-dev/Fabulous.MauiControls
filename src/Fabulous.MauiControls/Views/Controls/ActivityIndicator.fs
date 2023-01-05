@@ -10,20 +10,16 @@ type IActivityIndicator =
 module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()
 
-    let IsRunning =
-        Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
+    let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 
-    let Color =
-        Attributes.defineBindableAppThemeColor ActivityIndicator.ColorProperty
+    let Color = Attributes.defineBindableAppThemeColor ActivityIndicator.ColorProperty
 
 [<AutoOpen>]
 module ActivityIndicatorBuilders =
     type Fabulous.Maui.View with
+
         static member inline ActivityIndicator<'msg>(isRunning: bool) =
-            WidgetBuilder<'msg, IActivityIndicator>(
-                ActivityIndicator.WidgetKey,
-                ActivityIndicator.IsRunning.WithValue(isRunning)
-            )
+            WidgetBuilder<'msg, IActivityIndicator>(ActivityIndicator.WidgetKey, ActivityIndicator.IsRunning.WithValue(isRunning))
 
 [<Extension>]
 type ActivityIndicatorModifiers =

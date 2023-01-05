@@ -20,9 +20,6 @@ module ItemsViewOfCell =
                     itemsView.ClearValue(ItemsView<Cell>.ItemTemplateProperty)
                     itemsView.ClearValue(ItemsView<Cell>.ItemsSourceProperty)
                 | ValueSome value ->
-                    itemsView.SetValue(
-                        ItemsView<Cell>.ItemTemplateProperty,
-                        WidgetDataTemplateSelector(node, unbox >> value.Template)
-                    )
+                    itemsView.SetValue(ItemsView<Cell>.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.Template))
 
                     itemsView.SetValue(ItemsView<Cell>.ItemsSourceProperty, value.OriginalItems))

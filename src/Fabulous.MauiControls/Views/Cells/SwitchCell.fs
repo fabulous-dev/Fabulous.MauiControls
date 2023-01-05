@@ -10,21 +10,17 @@ type ISwitchCell =
 module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
-    let Text =
-        Attributes.defineBindableWithEquality<string> SwitchCell.TextProperty
+    let Text = Attributes.defineBindableWithEquality<string> SwitchCell.TextProperty
 
     let OnWithEvent =
-        Attributes.defineBindableWithEvent
-            "SwitchCell_OnChanged"
-            SwitchCell.OnProperty
-            (fun target -> (target :?> SwitchCell).OnChanged)
+        Attributes.defineBindableWithEvent "SwitchCell_OnChanged" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
 
-    let OnColor =
-        Attributes.defineBindableAppThemeColor SwitchCell.OnColorProperty
+    let OnColor = Attributes.defineBindableAppThemeColor SwitchCell.OnColorProperty
 
 [<AutoOpen>]
 module SwitchCellBuilders =
     type Fabulous.Maui.View with
+
         static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, ISwitchCell>(
                 SwitchCell.WidgetKey,

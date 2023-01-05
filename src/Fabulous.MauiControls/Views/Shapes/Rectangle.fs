@@ -12,16 +12,15 @@ module Rectangle =
 
     let WidgetKey = Widgets.register<Rectangle>()
 
-    let RadiusX =
-        Attributes.defineBindableFloat Rectangle.RadiusXProperty
+    let RadiusX = Attributes.defineBindableFloat Rectangle.RadiusXProperty
 
-    let RadiusY =
-        Attributes.defineBindableFloat Rectangle.RadiusYProperty
+    let RadiusY = Attributes.defineBindableFloat Rectangle.RadiusYProperty
 
 [<AutoOpen>]
 module RectangleBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline Rectangle<'msg>(strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IRectangle>(
                 Rectangle.WidgetKey,

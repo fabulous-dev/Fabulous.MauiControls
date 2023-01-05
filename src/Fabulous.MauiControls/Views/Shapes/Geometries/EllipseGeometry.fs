@@ -13,16 +13,15 @@ module EllipseGeometry =
     let Center =
         Attributes.defineBindableWithEquality<Point> EllipseGeometry.CenterProperty
 
-    let RadiusX =
-        Attributes.defineBindableFloat EllipseGeometry.RadiusXProperty
+    let RadiusX = Attributes.defineBindableFloat EllipseGeometry.RadiusXProperty
 
-    let RadiusY =
-        Attributes.defineBindableFloat EllipseGeometry.RadiusYProperty
+    let RadiusY = Attributes.defineBindableFloat EllipseGeometry.RadiusYProperty
 
 [<AutoOpen>]
 module EllipseGeometryBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline EllipseGeometry<'msg>(center: Point, radiusX: float, radiusY: float) =
             WidgetBuilder<'msg, IEllipseGeometry>(
                 EllipseGeometry.WidgetKey,

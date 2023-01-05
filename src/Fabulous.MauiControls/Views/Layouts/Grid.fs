@@ -9,7 +9,7 @@ type IGrid =
     inherit Fabulous.Maui.ILayoutOfView
 
 module GridUpdaters =
-    let updateGridColumnDefinitions _ (newValueOpt: Dimension [] voption) (node: IViewNode) =
+    let updateGridColumnDefinitions _ (newValueOpt: Dimension[] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -27,7 +27,7 @@ module GridUpdaters =
 
                 grid.ColumnDefinitions.Add(ColumnDefinition(Width = gridLength))
 
-    let updateGridRowDefinitions _ (newValueOpt: Dimension [] voption) (node: IViewNode) =
+    let updateGridRowDefinitions _ (newValueOpt: Dimension[] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -49,36 +49,27 @@ module Grid =
     let WidgetKey = Widgets.register<Grid>()
 
     let ColumnDefinitions =
-        Attributes.defineSimpleScalarWithEquality<Dimension array>
-            "Grid_ColumnDefinitions"
-            GridUpdaters.updateGridColumnDefinitions
+        Attributes.defineSimpleScalarWithEquality<Dimension array> "Grid_ColumnDefinitions" GridUpdaters.updateGridColumnDefinitions
 
     let RowDefinitions =
-        Attributes.defineSimpleScalarWithEquality<Dimension array>
-            "Grid_RowDefinitions"
-            GridUpdaters.updateGridRowDefinitions
+        Attributes.defineSimpleScalarWithEquality<Dimension array> "Grid_RowDefinitions" GridUpdaters.updateGridRowDefinitions
 
-    let Column =
-        Attributes.defineBindableInt Grid.ColumnProperty
+    let Column = Attributes.defineBindableInt Grid.ColumnProperty
 
-    let Row =
-        Attributes.defineBindableInt Grid.RowProperty
+    let Row = Attributes.defineBindableInt Grid.RowProperty
 
-    let ColumnSpacing =
-        Attributes.defineBindableFloat Grid.ColumnSpacingProperty
+    let ColumnSpacing = Attributes.defineBindableFloat Grid.ColumnSpacingProperty
 
-    let RowSpacing =
-        Attributes.defineBindableFloat Grid.RowSpacingProperty
+    let RowSpacing = Attributes.defineBindableFloat Grid.RowSpacingProperty
 
-    let ColumnSpan =
-        Attributes.defineBindableInt Grid.ColumnSpanProperty
+    let ColumnSpan = Attributes.defineBindableInt Grid.ColumnSpanProperty
 
-    let RowSpan =
-        Attributes.defineBindableInt Grid.RowSpanProperty
+    let RowSpan = Attributes.defineBindableInt Grid.RowSpanProperty
 
 [<AutoOpen>]
 module GridBuilders =
     type Fabulous.Maui.View with
+
         static member inline Grid<'msg>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
             CollectionBuilder<'msg, IGrid, Fabulous.Maui.IView>(
                 Grid.WidgetKey,

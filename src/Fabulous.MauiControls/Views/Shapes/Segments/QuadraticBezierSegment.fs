@@ -8,8 +8,7 @@ type IQuadraticBezierSegment =
     inherit Fabulous.Maui.IPathSegment
 
 module QuadraticBezierSegment =
-    let WidgetKey =
-        Widgets.register<QuadraticBezierSegment>()
+    let WidgetKey = Widgets.register<QuadraticBezierSegment>()
 
     let Point1 =
         Attributes.defineBindableWithEquality<Point> QuadraticBezierSegment.Point1Property
@@ -21,6 +20,7 @@ module QuadraticBezierSegment =
 module QuadraticBezierSegmentBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline QuadraticBezierSegment<'msg>(point1: Point, point2: Point) =
             WidgetBuilder<'msg, IQuadraticBezierSegment>(
                 QuadraticBezierSegment.WidgetKey,

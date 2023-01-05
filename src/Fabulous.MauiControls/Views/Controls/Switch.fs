@@ -10,27 +10,21 @@ type ISwitch =
 module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
-    let ColorOn =
-        Attributes.defineBindableAppThemeColor Switch.OnColorProperty
+    let ColorOn = Attributes.defineBindableAppThemeColor Switch.OnColorProperty
 
-    let ThumbColor =
-        Attributes.defineBindableAppThemeColor Switch.ThumbColorProperty
+    let ThumbColor = Attributes.defineBindableAppThemeColor Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
-        Attributes.defineBindableWithEvent
-            "Switch_Toggled"
-            Switch.IsToggledProperty
-            (fun target -> (target :?> Switch).Toggled)
+        Attributes.defineBindableWithEvent "Switch_Toggled" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
 
 [<AutoOpen>]
 module SwitchBuilders =
     type Fabulous.Maui.View with
+
         static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
             WidgetBuilder<'msg, ISwitch>(
                 Switch.WidgetKey,
-                Switch.IsToggledWithEvent.WithValue(
-                    ValueEventData.create isToggled (fun args -> onToggled args.Value |> box)
-                )
+                Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun args -> onToggled args.Value |> box))
             )
 
 [<Extension>]

@@ -17,11 +17,9 @@ module ScrollView =
     let Orientation =
         Attributes.defineBindableEnum<ScrollOrientation> ScrollView.OrientationProperty
 
-    let ScrollX =
-        Attributes.defineBindableFloat ScrollView.ScrollXProperty
+    let ScrollX = Attributes.defineBindableFloat ScrollView.ScrollXProperty
 
-    let ScrollY =
-        Attributes.defineBindableFloat ScrollView.ScrollYProperty
+    let ScrollY = Attributes.defineBindableFloat ScrollView.ScrollYProperty
 
     let HorizontalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ScrollView.HorizontalScrollBarVisibilityProperty
@@ -39,26 +37,19 @@ module ScrollView =
         Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
 
     let ScrollTo =
-        Attributes.defineSimpleScalarWithEquality<ScrollToData>
-            "ScrollView_ScrollTo"
-            (fun _ newValueOpt node ->
-                let view = node.Target :?> ScrollView
+        Attributes.defineSimpleScalarWithEquality<ScrollToData> "ScrollView_ScrollTo" (fun _ newValueOpt node ->
+            let view = node.Target :?> ScrollView
 
-                match newValueOpt with
-                | ValueNone -> view.ScrollToAsync(0., 0., true) |> ignore
-                | ValueSome data ->
-                    view.ScrollToAsync(data.X, data.Y, data.Animated)
-                    |> ignore)
+            match newValueOpt with
+            | ValueNone -> view.ScrollToAsync(0., 0., true) |> ignore
+            | ValueSome data -> view.ScrollToAsync(data.X, data.Y, data.Animated) |> ignore)
 
 [<AutoOpen>]
 module ScrollViewBuilders =
     type Fabulous.Maui.View with
-        static member inline ScrollView<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
-            (content: WidgetBuilder<'msg, 'marker>)
-            =
-            WidgetHelpers.buildWidgets<'msg, IScrollView>
-                ScrollView.WidgetKey
-                [| ScrollView.Content.WithValue(content.Compile()) |]
+
+        static member inline ScrollView<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(content: WidgetBuilder<'msg, 'marker>) =
+            WidgetHelpers.buildWidgets<'msg, IScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
 type ScrollViewModifiers =
@@ -72,21 +63,13 @@ type ScrollViewModifiers =
     /// <summary>Sets when the horizontal scroll bar is visible.</summary>
     /// <param name="value">of type ScrollBarVisibility.</param>
     [<Extension>]
-    static member inline horizontalScrollBarVisibility
-        (
-            this: WidgetBuilder<'msg, #IScrollView>,
-            value: ScrollBarVisibility
-        ) =
+    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IScrollView>, value: ScrollBarVisibility) =
         this.AddScalar(ScrollView.HorizontalScrollBarVisibility.WithValue(value))
 
     /// <summary>Sets when the vertical scroll bar is visible.</summary>
     /// <param name="value">of type ScrollBarVisibility.</param>
     [<Extension>]
-    static member inline verticalScrollBarVisibility
-        (
-            this: WidgetBuilder<'msg, #IScrollView>,
-            value: ScrollBarVisibility
-        ) =
+    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IScrollView>, value: ScrollBarVisibility) =
         this.AddScalar(ScrollView.VerticalScrollBarVisibility.WithValue(value))
 
     /// <summary>Sets the current X scroll position.</summary>

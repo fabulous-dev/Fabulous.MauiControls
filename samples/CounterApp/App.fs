@@ -7,9 +7,7 @@ open type Fabulous.Maui.View
 
 module App =
     type Model =
-        { Count: int
-          Step: int
-          TimerOn: bool }
+        { Count: int; Step: int; TimerOn: bool }
 
     type Msg =
         | Increment
@@ -32,22 +30,14 @@ module App =
 
     let update msg model =
         match msg with
-        | Increment ->
-            { model with
-                  Count = model.Count + model.Step },
-            Cmd.none
-        | Decrement ->
-            { model with
-                  Count = model.Count - model.Step },
-            Cmd.none
+        | Increment -> { model with Count = model.Count + model.Step }, Cmd.none
+        | Decrement -> { model with Count = model.Count - model.Step }, Cmd.none
         | Reset -> initModel, Cmd.none
         | SetStep n -> { model with Step = int(n + 0.5) }, Cmd.none
         | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
         | TimedTick ->
             if model.TimerOn then
-                { model with
-                      Count = model.Count + model.Step },
-                timerCmd()
+                { model with Count = model.Count + model.Step }, timerCmd()
             else
                 model, Cmd.none
 
@@ -66,17 +56,16 @@ module App =
                         Label("Timer")
 
                         Switch(model.TimerOn, TimerToggled)
-                     })
+                    })
                         .padding(20.)
                         .centerHorizontal()
 
                     Slider(0.0, 10.0, double model.Step, SetStep)
 
-                    Label($"Step size: %d{model.Step}")
-                        .centerTextHorizontal()
+                    Label($"Step size: %d{model.Step}").centerTextHorizontal()
 
                     Button("Reset", Reset)
-                 })
+                })
                     .center()
             )
         )

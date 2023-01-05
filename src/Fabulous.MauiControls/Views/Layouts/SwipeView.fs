@@ -12,54 +12,38 @@ module SwipeView =
 
     let WidgetKey = Widgets.register<SwipeView>()
 
-    let LeftSwipeItems =
-        Attributes.defineBindableWidget SwipeView.LeftItemsProperty
+    let LeftSwipeItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
 
-    let TopSwipeItems =
-        Attributes.defineBindableWidget SwipeView.TopItemsProperty
+    let TopSwipeItems = Attributes.defineBindableWidget SwipeView.TopItemsProperty
 
-    let RightSwipeItems =
-        Attributes.defineBindableWidget SwipeView.RightItemsProperty
+    let RightSwipeItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty
 
-    let BottomSwipeItems =
-        Attributes.defineBindableWidget SwipeView.BottomItemsProperty
+    let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
-    let SwipeThreshold =
-        Attributes.defineBindableInt SwipeView.ThresholdProperty
+    let SwipeThreshold = Attributes.defineBindableInt SwipeView.ThresholdProperty
 
     let SwipeStarted =
-        Attributes.defineEvent<SwipeStartedEventArgs>
-            "SwipeView_SwipeStarted"
-            (fun target -> (target :?> SwipeView).SwipeStarted)
+        Attributes.defineEvent<SwipeStartedEventArgs> "SwipeView_SwipeStarted" (fun target -> (target :?> SwipeView).SwipeStarted)
 
     let SwipeChanging =
-        Attributes.defineEvent<SwipeChangingEventArgs>
-            "SwipeView_SwipeChanging"
-            (fun target -> (target :?> SwipeView).SwipeChanging)
+        Attributes.defineEvent<SwipeChangingEventArgs> "SwipeView_SwipeChanging" (fun target -> (target :?> SwipeView).SwipeChanging)
 
     let SwipeEnded =
-        Attributes.defineEvent<SwipeEndedEventArgs>
-            "SwipeView_SwipeEnded"
-            (fun target -> (target :?> SwipeView).SwipeEnded)
+        Attributes.defineEvent<SwipeEndedEventArgs> "SwipeView_SwipeEnded" (fun target -> (target :?> SwipeView).SwipeEnded)
 
     let OpenRequested =
-        Attributes.defineEvent<OpenRequestedEventArgs>
-            "SwipeView_OpenRequested"
-            (fun target -> (target :?> SwipeView).OpenRequested)
+        Attributes.defineEvent<OpenRequestedEventArgs> "SwipeView_OpenRequested" (fun target -> (target :?> SwipeView).OpenRequested)
 
     let CloseRequested =
-        Attributes.defineEvent<CloseRequestedEventArgs>
-            "SwipeView_CloseRequested"
-            (fun target -> (target :?> SwipeView).CloseRequested)
+        Attributes.defineEvent<CloseRequestedEventArgs> "SwipeView_CloseRequested" (fun target -> (target :?> SwipeView).CloseRequested)
 
 [<AutoOpen>]
 module SwipeViewBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline SwipeView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, ISwipeView>
-                SwipeView.WidgetKey
-                [| ContentView.Content.WithValue(content.Compile()) |]
+            WidgetHelpers.buildWidgets<'msg, ISwipeView> SwipeView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
 type SwipeViewModifiers() =
@@ -101,43 +85,23 @@ type SwipeViewModifiers() =
         this.AddScalar(SwipeView.SwipeThreshold.WithValue(threshold))
 
     [<Extension>]
-    static member inline onSwipeStarted
-        (
-            this: WidgetBuilder<'msg, #ISwipeView>,
-            onSwipeStarted: SwipeStartedEventArgs -> 'msg
-        ) =
+    static member inline onSwipeStarted(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeStarted: SwipeStartedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeStarted.WithValue(fun args -> onSwipeStarted args |> box))
 
     [<Extension>]
-    static member inline onSwipeChanging
-        (
-            this: WidgetBuilder<'msg, #ISwipeView>,
-            onSwipeChanging: SwipeChangingEventArgs -> 'msg
-        ) =
+    static member inline onSwipeChanging(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeChanging: SwipeChangingEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeChanging.WithValue(fun args -> onSwipeChanging args |> box))
 
     [<Extension>]
-    static member inline onSwipeEnded
-        (
-            this: WidgetBuilder<'msg, #ISwipeView>,
-            onSwipeEnded: SwipeEndedEventArgs -> 'msg
-        ) =
+    static member inline onSwipeEnded(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeEnded: SwipeEndedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeEnded.WithValue(fun args -> onSwipeEnded args |> box))
 
     [<Extension>]
-    static member inline onOpenRequested
-        (
-            this: WidgetBuilder<'msg, #ISwipeView>,
-            onOpenRequested: OpenRequestedEventArgs -> 'msg
-        ) =
+    static member inline onOpenRequested(this: WidgetBuilder<'msg, #ISwipeView>, onOpenRequested: OpenRequestedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.OpenRequested.WithValue(fun args -> onOpenRequested args |> box))
 
     [<Extension>]
-    static member inline onCloseRequested
-        (
-            this: WidgetBuilder<'msg, #ISwipeView>,
-            onCloseRequested: CloseRequestedEventArgs -> 'msg
-        ) =
+    static member inline onCloseRequested(this: WidgetBuilder<'msg, #ISwipeView>, onCloseRequested: CloseRequestedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.CloseRequested.WithValue(fun args -> onCloseRequested args |> box))
 
     [<Extension>]

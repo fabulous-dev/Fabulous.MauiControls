@@ -13,13 +13,10 @@ module VerticalStackLayout =
 [<AutoOpen>]
 module VerticalStackLayoutBuilders =
     type Fabulous.Maui.View with
+
         static member inline VStack<'msg>(?spacing: float) =
             match spacing with
-            | None ->
-                CollectionBuilder<'msg, IVerticalStackLayout, Fabulous.Maui.IView>(
-                    VerticalStackLayout.WidgetKey,
-                    LayoutOfView.Children
-                )
+            | None -> CollectionBuilder<'msg, IVerticalStackLayout, Fabulous.Maui.IView>(VerticalStackLayout.WidgetKey, LayoutOfView.Children)
             | Some v ->
                 CollectionBuilder<'msg, IVerticalStackLayout, Fabulous.Maui.IView>(
                     VerticalStackLayout.WidgetKey,
@@ -31,9 +28,5 @@ module VerticalStackLayoutBuilders =
 type VerticalStackLayoutModifiers =
     /// <summary>Link a ViewRef to access the direct VerticalStackLayout control instance</summary>
     [<Extension>]
-    static member inline reference
-        (
-            this: WidgetBuilder<'msg, IVerticalStackLayout>,
-            value: ViewRef<VerticalStackLayout>
-        ) =
+    static member inline reference(this: WidgetBuilder<'msg, IVerticalStackLayout>, value: ViewRef<VerticalStackLayout>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

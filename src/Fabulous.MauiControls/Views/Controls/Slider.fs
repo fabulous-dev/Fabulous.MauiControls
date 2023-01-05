@@ -17,9 +17,8 @@ module SliderUpdaters =
         | ValueNone ->
             slider.ClearValue(Slider.MinimumProperty)
             slider.ClearValue(Slider.MaximumProperty)
-        | ValueSome (min, max) ->
-            let currMax =
-                slider.GetValue(Slider.MaximumProperty) :?> float
+        | ValueSome(min, max) ->
+            let currMax = slider.GetValue(Slider.MaximumProperty) :?> float
 
             if min > currMax then
                 slider.SetValue(Slider.MaximumProperty, max)
@@ -32,9 +31,7 @@ module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
     let MinimumMaximum =
-        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
-            "Slider_MinimumMaximum"
-            SliderUpdaters.updateSliderMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" SliderUpdaters.updateSliderMinMax
 
     let MaximumTrackColor =
         Attributes.defineBindableAppThemeColor Slider.MaximumTrackColorProperty
@@ -42,17 +39,13 @@ module Slider =
     let MinimumTrackColor =
         Attributes.defineBindableAppThemeColor Slider.MinimumTrackColorProperty
 
-    let ThumbColor =
-        Attributes.defineBindableAppThemeColor Slider.ThumbColorProperty
+    let ThumbColor = Attributes.defineBindableAppThemeColor Slider.ThumbColorProperty
 
     let ThumbImageSource =
         Attributes.defineBindableAppTheme<ImageSource> Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
-        Attributes.defineBindableWithEvent
-            "Slider_ValueWithEvent"
-            Slider.ValueProperty
-            (fun target -> (target :?> Slider).ValueChanged)
+        Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
 
     let DragCompleted =
         Attributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
@@ -63,13 +56,12 @@ module Slider =
 [<AutoOpen>]
 module SliderBuilders =
     type Fabulous.Maui.View with
+
         static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, ISlider>(
                 Slider.WidgetKey,
                 Slider.MinimumMaximum.WithValue(struct (min, max)),
-                Slider.ValueWithEvent.WithValue(
-                    ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box)
-                )
+                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box))
             )
 
 [<Extension>]

@@ -14,9 +14,9 @@ module AppTheme =
     let inline create<'T when 'T: equality> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
-              match dark with
-              | None -> light
-              | Some v -> v }
+            match dark with
+            | None -> light
+            | Some v -> v }
 
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
@@ -26,7 +26,7 @@ type ValueEventData<'data, 'eventArgs> =
 module ValueEventData =
     let create (value: 'data) (event: 'eventArgs -> obj) = { Value = value; Event = event }
 
-/// Xamarin Forms specific attributes that can be encoded as 8 bytes
+/// Maui.Controls specific attributes that can be encoded as 8 bytes
 module SmallScalars =
     module FabColor =
         let inline encode (v: FabColor) : uint64 = SmallScalars.UInt.encode v.RGBA
@@ -38,17 +38,12 @@ module SmallScalars =
         let inline encode (v: AppThemeValues<FabColor>) : uint64 =
             let { Light = light; Dark = dark } = v
 
-            ((FabColor.encode light) <<< 32)
-            ||| (FabColor.encode dark)
+            ((FabColor.encode light) <<< 32) ||| (FabColor.encode dark)
 
         let inline decode (encoded: uint64) : AppThemeValues<FabColor> =
-            let light =
-                ((encoded &&& 0xFFFFFFFF00000000UL) >>> 32)
-                |> FabColor.decode
+            let light = ((encoded &&& 0xFFFFFFFF00000000UL) >>> 32) |> FabColor.decode
 
-            let dark =
-                (encoded &&& 0x00000000FFFFFFFFUL)
-                |> FabColor.decode
+            let dark = (encoded &&& 0x00000000FFFFFFFFUL) |> FabColor.decode
 
             { Light = light; Dark = dark }
 
@@ -90,39 +85,30 @@ module Attributes =
         ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
         ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         =
-        Attributes.defineScalar<'modelType, 'valueType>
-            bindableProperty.PropertyName
-            convertValue
-            compare
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineScalar<'modelType, 'valueType> bindableProperty.PropertyName convertValue compare (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an attribute for a BindableProperty supporting equality comparison
     let inline defineBindableWithEquality<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineSimpleScalarWithEquality<'T>
-            bindableProperty.PropertyName
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<'T> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool) for a BindableProperty
     let inline defineSmallBindable<'T> (bindableProperty: BindableProperty) ([<InlineIfLambda>] decode: uint64 -> 'T) =
-        Attributes.defineSmallScalar<'T>
-            bindableProperty.PropertyName
-            decode
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSmallScalar<'T> bindableProperty.PropertyName decode (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define a float attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableFloat (bindableProperty: BindableProperty) =
@@ -142,67 +128,51 @@ module Attributes =
     /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
     /// However, XF.Color will be boxed and thus slower.
     let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
-        Attributes.defineSmallScalar<FabColor>
-            bindableProperty.PropertyName
-            SmallScalars.FabColor.decode
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v.ToXFColor()))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v.ToXFColor()))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
-    let inline defineBindableEnum< ^T when ^T: enum<int>>
-        (bindableProperty: BindableProperty)
-        : SmallScalarAttributeDefinition< ^T > =
-        Attributes.defineEnum< ^T>
-            bindableProperty.PropertyName
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+    let inline defineBindableEnum< ^T when ^T: enum<int>> (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition< ^T > =
+        Attributes.defineEnum< ^T> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an attribute that supports values for both Light and Dark themes
     let inline defineBindableAppTheme<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineSimpleScalarWithEquality<AppThemeValues<'T>>
-            bindableProperty.PropertyName
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<AppThemeValues<'T>> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome { Light = light; Dark = dark } when dark = light -> target.SetValue(bindableProperty, light)
-                | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light, dark))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome { Light = light; Dark = dark } when dark = light -> target.SetValue(bindableProperty, light)
+            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light, dark))
 
     /// Define a Color attribute that supports values for both Light and Dark themes
     /// Note that we use FabColor here because we can encode two into 8 bytes
     /// Thus we can avoid heap allocations
     let inline defineBindableAppThemeColor (bindableProperty: BindableProperty) =
-        Attributes.defineSmallScalar<AppThemeValues<FabColor>>
-            bindableProperty.PropertyName
-            SmallScalars.ThemedColor.decode
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSmallScalar<AppThemeValues<FabColor>> bindableProperty.PropertyName SmallScalars.ThemedColor.decode (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
 
-                | ValueSome { Light = light; Dark = dark } when light = dark ->
-                    target.SetValue(bindableProperty, light.ToXFColor())
+            | ValueSome { Light = light; Dark = dark } when light = dark -> target.SetValue(bindableProperty, light.ToXFColor())
 
-                | ValueSome { Light = light; Dark = dark } ->
-                    target.SetAppTheme(bindableProperty, light.ToXFColor(), dark.ToXFColor()))
+            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light.ToXFColor(), dark.ToXFColor()))
 
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =
         Attributes.definePropertyWidget
             bindableProperty.PropertyName
-            (fun target ->
-                (target :?> BindableObject)
-                    .GetValue(bindableProperty))
+            (fun target -> (target :?> BindableObject).GetValue(bindableProperty))
             (fun target value ->
                 let bindableObject = target :?> BindableObject
 
@@ -250,10 +220,9 @@ module Attributes =
 
                         // Set the new event handler
                         let handler =
-                            EventHandler<'args>
-                                (fun _ args ->
-                                    let r = curr.Event args
-                                    Dispatcher.dispatch node r)
+                            EventHandler<'args>(fun _ args ->
+                                let r = curr.Event args
+                                Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler(handler))

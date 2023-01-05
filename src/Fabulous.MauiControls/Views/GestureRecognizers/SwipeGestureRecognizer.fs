@@ -9,8 +9,7 @@ type ISwipeGestureRecognizer =
     inherit Fabulous.Maui.IGestureRecognizer
 
 module SwipeGestureRecognizer =
-    let WidgetKey =
-        Widgets.register<SwipeGestureRecognizer>()
+    let WidgetKey = Widgets.register<SwipeGestureRecognizer>()
 
     let Direction =
         Attributes.defineBindableEnum<SwipeDirection> SwipeGestureRecognizer.DirectionProperty
@@ -19,13 +18,12 @@ module SwipeGestureRecognizer =
         Attributes.defineBindableInt SwipeGestureRecognizer.ThresholdProperty
 
     let Swiped =
-        Attributes.defineEvent<SwipedEventArgs>
-            "SwipeGestureRecognizer_Swiped"
-            (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
+        Attributes.defineEvent<SwipedEventArgs> "SwipeGestureRecognizer_Swiped" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
 
 [<AutoOpen>]
 module SwipeGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         static member inline SwipeGestureRecognizer<'msg>(onSwiped: SwipeDirection -> 'msg) =
             WidgetBuilder<'msg, ISwipeGestureRecognizer>(
                 SwipeGestureRecognizer.WidgetKey,

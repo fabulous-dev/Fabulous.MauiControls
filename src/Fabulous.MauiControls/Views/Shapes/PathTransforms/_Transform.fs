@@ -7,5 +7,4 @@ type ITransform =
 
 module Transform =
 
-    let Value =
-        Attributes.defineBindableWithEquality<Matrix> Transform.ValueProperty
+    let Value = Attributes.defineBindableWithEquality<Matrix> Transform.ValueProperty

@@ -16,9 +16,8 @@ module StepperUpdaters =
         | ValueNone ->
             stepper.ClearValue(Stepper.MinimumProperty)
             stepper.ClearValue(Stepper.MaximumProperty)
-        | ValueSome (min, max) ->
-            let currMax =
-                stepper.GetValue(Stepper.MaximumProperty) :?> float
+        | ValueSome(min, max) ->
+            let currMax = stepper.GetValue(Stepper.MaximumProperty) :?> float
 
             if min > currMax then
                 stepper.SetValue(Stepper.MaximumProperty, max)
@@ -30,30 +29,23 @@ module StepperUpdaters =
 module Stepper =
     let WidgetKey = Widgets.register<Stepper>()
 
-    let Increment =
-        Attributes.defineBindableFloat Stepper.IncrementProperty
+    let Increment = Attributes.defineBindableFloat Stepper.IncrementProperty
 
     let MinimumMaximum =
-        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
-            "Stepper_MinimumMaximum"
-            StepperUpdaters.updateStepperMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Stepper_MinimumMaximum" StepperUpdaters.updateStepperMinMax
 
     let ValueWithEvent =
-        Attributes.defineBindableWithEvent
-            "Stepper_ValueChanged"
-            Stepper.ValueProperty
-            (fun target -> (target :?> Stepper).ValueChanged)
+        Attributes.defineBindableWithEvent "Stepper_ValueChanged" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
 
 [<AutoOpen>]
 module StepperBuilders =
     type Fabulous.Maui.View with
+
         static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IStepper>(
                 Stepper.WidgetKey,
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),
-                Stepper.ValueWithEvent.WithValue(
-                    ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box)
-                )
+                Stepper.ValueWithEvent.WithValue(ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box))
             )
 
 [<Extension>]

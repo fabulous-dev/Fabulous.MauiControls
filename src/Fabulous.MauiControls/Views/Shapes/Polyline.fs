@@ -14,47 +14,32 @@ module Polyline =
     let WidgetKey = Widgets.register<Polyline>()
 
     let PointsString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Polyline_PointsString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Polyline_PointsString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Polyline.PointsProperty)
-                | ValueSome string ->
-                    target.SetValue(
-                        Polyline.PointsProperty,
-                        PointCollectionConverter()
-                            .ConvertFromInvariantString(string)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Polyline.PointsProperty)
+            | ValueSome string -> target.SetValue(Polyline.PointsProperty, PointCollectionConverter().ConvertFromInvariantString(string)))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point array>
-            "Polyline_PointsList"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<Point array> "Polyline_PointsList" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Polyline.PointsProperty)
-                | ValueSome points ->
-                    let coll = PointCollection()
-                    points |> Array.iter coll.Add
-                    target.SetValue(Polyline.PointsProperty, coll))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Polyline.PointsProperty)
+            | ValueSome points ->
+                let coll = PointCollection()
+                points |> Array.iter coll.Add
+                target.SetValue(Polyline.PointsProperty, coll))
 
-    let FillRule =
-        Attributes.defineBindableEnum<FillRule> Polyline.FillRuleProperty
+    let FillRule = Attributes.defineBindableEnum<FillRule> Polyline.FillRuleProperty
 
 [<AutoOpen>]
 module PolylineBuilders =
 
     type Fabulous.Maui.View with
-        static member inline Polyline<'msg>
-            (
-                points: string,
-                strokeThickness: float,
-                strokeLight: Brush,
-                ?strokeDark: Brush
-            ) =
+
+        static member inline Polyline<'msg>(points: string, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IPolyline>(
                 Polyline.WidgetKey,
                 Polyline.PointsString.WithValue(points),
@@ -62,13 +47,7 @@ module PolylineBuilders =
                 Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )
 
-        static member inline Polyline<'msg>
-            (
-                points: Point list,
-                strokeThickness: float,
-                strokeLight: Brush,
-                ?strokeDark: Brush
-            ) =
+        static member inline Polyline<'msg>(points: Point list, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IPolyline>(
                 Polyline.WidgetKey,
                 Polyline.PointsList.WithValue(Array.ofList points),

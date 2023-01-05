@@ -12,19 +12,18 @@ module FormattedLabel =
     let WidgetKey = Widgets.register<Label>()
 
     let Spans =
-        Attributes.defineListWidgetCollection
-            "FormattedString_Spans"
-            (fun target ->
-                let label = target :?> Label
+        Attributes.defineListWidgetCollection "FormattedString_Spans" (fun target ->
+            let label = target :?> Label
 
-                if label.FormattedText = null then
-                    label.FormattedText <- FormattedString()
+            if label.FormattedText = null then
+                label.FormattedText <- FormattedString()
 
-                label.FormattedText.Spans)
+            label.FormattedText.Spans)
 
 [<AutoOpen>]
 module FormattedLabelBuilders =
     type Fabulous.Maui.View with
+
         static member inline FormattedLabel<'msg>() =
             CollectionBuilder<'msg, IFormattedLabel, ISpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
 

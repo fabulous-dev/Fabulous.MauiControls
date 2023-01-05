@@ -20,8 +20,7 @@ module IndicatorView =
                 })
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
-    let HideSingle =
-        Attributes.defineBindableBool IndicatorView.HideSingleProperty
+    let HideSingle = Attributes.defineBindableBool IndicatorView.HideSingleProperty
 
     let IndicatorColor =
         Attributes.defineBindableAppThemeColor IndicatorView.IndicatorColorProperty
@@ -41,11 +40,9 @@ module IndicatorView =
 [<AutoOpen>]
 module IndicatorViewBuilders =
     type Fabulous.Maui.View with
+
         static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
-            WidgetBuilder<'msg, IIndicatorView>(
-                IndicatorView.WidgetKey,
-                ViewRefAttributes.ViewRef.WithValue(reference.Unbox)
-            )
+            WidgetBuilder<'msg, IIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
 
 [<Extension>]
 type IndicatorViewModifiers =
@@ -53,12 +50,7 @@ type IndicatorViewModifiers =
     /// <param name="light">The color of the indicator in the light theme.</param>
     /// <param name="dark">The color of the indicator in the dark theme.</param>
     [<Extension>]
-    static member inline selectedIndicatorColor
-        (
-            this: WidgetBuilder<'msg, #IIndicatorView>,
-            light: FabColor,
-            ?dark: FabColor
-        ) =
+    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the indicator size.</summary>

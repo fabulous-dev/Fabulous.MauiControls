@@ -15,8 +15,7 @@ module Entry =
     let ClearButtonVisibility =
         Attributes.defineBindableWithEquality<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
-    let CursorPosition =
-        Attributes.defineBindableInt Entry.CursorPositionProperty
+    let CursorPosition = Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Entry.FontAttributesProperty
@@ -24,23 +23,19 @@ module Entry =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Entry.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat Entry.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat Entry.FontSizeProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Entry.HorizontalTextAlignmentProperty
 
-    let IsPassword =
-        Attributes.defineBindableBool Entry.IsPasswordProperty
+    let IsPassword = Attributes.defineBindableBool Entry.IsPasswordProperty
 
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool Entry.IsTextPredictionEnabledProperty
 
-    let ReturnType =
-        Attributes.defineBindableEnum<ReturnType> Entry.ReturnTypeProperty
+    let ReturnType = Attributes.defineBindableEnum<ReturnType> Entry.ReturnTypeProperty
 
-    let SelectionLength =
-        Attributes.defineBindableInt Entry.SelectionLengthProperty
+    let SelectionLength = Attributes.defineBindableInt Entry.SelectionLengthProperty
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
@@ -52,28 +47,24 @@ module Entry =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.defineSmallScalar<FabColor>
-            "Entry_CursorColor"
-            SmallScalars.FabColor.decode
-            (fun _ newValueOpt node ->
-                let entry = node.Target :?> Entry
+        Attributes.defineSmallScalar<FabColor> "Entry_CursorColor" SmallScalars.FabColor.decode (fun _ newValueOpt node ->
+            let entry = node.Target :?> Entry
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> null
-                    | ValueSome x -> x.ToXFColor()
+            let value =
+                match newValueOpt with
+                | ValueNone -> null
+                | ValueSome x -> x.ToXFColor()
 
-                iOSSpecific.Entry.SetCursorColor(entry, value))
+            iOSSpecific.Entry.SetCursorColor(entry, value))
 
 [<AutoOpen>]
 module EntryBuilders =
     type Fabulous.Maui.View with
+
         static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IEntry>(
                 Entry.WidgetKey,
-                InputView.TextWithEvent.WithValue(
-                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
-                )
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
             )
 
 [<Extension>]

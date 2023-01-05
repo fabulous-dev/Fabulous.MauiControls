@@ -22,26 +22,20 @@ module ProgressBar =
     let ProgressColor =
         Attributes.defineBindableAppThemeColor ProgressBar.ProgressColorProperty
 
-    let Progress =
-        Attributes.defineBindableFloat ProgressBar.ProgressProperty
+    let Progress = Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
     let ProgressTo =
-        Attributes.defineSimpleScalarWithEquality<ProgressToData>
-            "ProgressBar_ProgressTo"
-            (fun _ newValueOpt node ->
-                let view = node.Target :?> ProgressBar
+        Attributes.defineSimpleScalarWithEquality<ProgressToData> "ProgressBar_ProgressTo" (fun _ newValueOpt node ->
+            let view = node.Target :?> ProgressBar
 
-                match newValueOpt with
-                | ValueNone ->
-                    view.ProgressTo(0., uint32 0, Easing.Linear)
-                    |> ignore
-                | ValueSome data ->
-                    view.ProgressTo(data.Progress, data.AnimationDuration, data.Easing)
-                    |> ignore)
+            match newValueOpt with
+            | ValueNone -> view.ProgressTo(0., uint32 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.ProgressTo(data.Progress, data.AnimationDuration, data.Easing) |> ignore)
 
 [<AutoOpen>]
 module ProgressBarBuilders =
     type Fabulous.Maui.View with
+
         static member inline ProgressBar<'msg>(progress: float) =
             WidgetBuilder<'msg, IProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 

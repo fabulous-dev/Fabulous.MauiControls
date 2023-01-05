@@ -20,8 +20,7 @@ module SearchBar =
     let FontFamily =
         Attributes.defineBindableWithEquality<string> SearchBar.FontFamilyProperty
 
-    let FontSize =
-        Attributes.defineBindableFloat SearchBar.FontSizeProperty
+    let FontSize = Attributes.defineBindableFloat SearchBar.FontSizeProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> SearchBar.HorizontalTextAlignmentProperty
@@ -32,29 +31,24 @@ module SearchBar =
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool SearchBar.IsTextPredictionEnabledProperty
 
-    let CursorPosition =
-        Attributes.defineBindableInt SearchBar.CursorPositionProperty
+    let CursorPosition = Attributes.defineBindableInt SearchBar.CursorPositionProperty
 
-    let SelectionLength =
-        Attributes.defineBindableInt SearchBar.SelectionLengthProperty
+    let SelectionLength = Attributes.defineBindableInt SearchBar.SelectionLengthProperty
 
     let FontAutoScalingEnabled =
         Attributes.defineBindableBool SearchBar.FontAutoScalingEnabledProperty
 
     let SearchButtonPressed =
-        Attributes.defineEventNoArg
-            "SearchBar_SearchButtonPressed"
-            (fun target -> (target :?> SearchBar).SearchButtonPressed)
+        Attributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> SearchBar).SearchButtonPressed)
 
 [<AutoOpen>]
 module SearchBarBuilders =
     type Fabulous.Maui.View with
+
         static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
             WidgetBuilder<'msg, ISearchBar>(
                 SearchBar.WidgetKey,
-                InputView.TextWithEvent.WithValue(
-                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
-                ),
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)),
                 SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed)
             )
 

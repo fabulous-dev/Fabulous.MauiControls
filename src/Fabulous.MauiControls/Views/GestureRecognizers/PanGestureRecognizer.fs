@@ -14,13 +14,12 @@ module PanGestureRecognizer =
         Attributes.defineBindableInt PanGestureRecognizer.TouchPointsProperty
 
     let PanUpdated =
-        Attributes.defineEvent<PanUpdatedEventArgs>
-            "PanGestureRecognizer_PanUpdated"
-            (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
+        Attributes.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizer_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
 
 [<AutoOpen>]
 module PanGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         static member inline PanGestureRecognizer<'msg>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
             WidgetBuilder<'msg, IPanGestureRecognizer>(
                 PanGestureRecognizer.WidgetKey,

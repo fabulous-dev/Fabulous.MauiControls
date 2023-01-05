@@ -12,17 +12,13 @@ type IArcSegment =
 module ArcSegment =
     let WidgetKey = Widgets.register<ArcSegment>()
 
-    let IsLargeArc =
-        Attributes.defineBindableBool ArcSegment.IsLargeArcProperty
+    let IsLargeArc = Attributes.defineBindableBool ArcSegment.IsLargeArcProperty
 
-    let Point =
-        Attributes.defineBindableWithEquality<Point> ArcSegment.SizeProperty
+    let Point = Attributes.defineBindableWithEquality<Point> ArcSegment.SizeProperty
 
-    let RotationAngle =
-        Attributes.defineBindableFloat ArcSegment.RotationAngleProperty
+    let RotationAngle = Attributes.defineBindableFloat ArcSegment.RotationAngleProperty
 
-    let Size =
-        Attributes.defineBindableWithEquality<Size> ArcSegment.SizeProperty
+    let Size = Attributes.defineBindableWithEquality<Size> ArcSegment.SizeProperty
 
     let SweepDirection =
         Attributes.defineBindableEnum<SweepDirection> ArcSegment.SweepDirectionProperty
@@ -31,12 +27,9 @@ module ArcSegment =
 module ArcSegmentBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline ArcSegment<'msg>(point: Point, size: Size) =
-            WidgetBuilder<'msg, IArcSegment>(
-                ArcSegment.WidgetKey,
-                ArcSegment.Point.WithValue(point),
-                ArcSegment.Size.WithValue(size)
-            )
+            WidgetBuilder<'msg, IArcSegment>(ArcSegment.WidgetKey, ArcSegment.Point.WithValue(point), ArcSegment.Size.WithValue(size))
 
 [<Extension>]
 type ArcSegmentModifiers =

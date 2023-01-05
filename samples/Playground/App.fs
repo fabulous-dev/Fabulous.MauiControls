@@ -27,7 +27,7 @@ module App =
     let update msg model =
         match msg with
         | TextChanged _ -> model
-        | FocusChanged (field, isFocused) ->
+        | FocusChanged(field, isFocused) ->
             if isFocused then
                 { model with Focus = Some field }
             else
@@ -62,7 +62,7 @@ module App =
                     Button("Set focus on Entry2", SetFocus(Some Entry2))
                     Button("Set focus on Entry3", SetFocus(Some Entry3))
                     Button("Unfocus", SetFocus None)
-                 })
+                })
                     .margin(20.)
             )
         )

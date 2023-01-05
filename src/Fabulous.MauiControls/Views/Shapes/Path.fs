@@ -13,46 +13,32 @@ type IPath =
 module Path =
     let WidgetKey = Widgets.register<Path>()
 
-    let DataWidget =
-        Attributes.defineBindableWidget Path.DataProperty
+    let DataWidget = Attributes.defineBindableWidget Path.DataProperty
 
     let DataString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Path_DataString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Path_DataString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Path.DataProperty)
-                | ValueSome value ->
-                    target.SetValue(
-                        Path.DataProperty,
-                        PathGeometryConverter()
-                            .ConvertFromInvariantString(value)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Path.DataProperty)
+            | ValueSome value -> target.SetValue(Path.DataProperty, PathGeometryConverter().ConvertFromInvariantString(value)))
 
     let RenderTransformWidget =
         Attributes.defineBindableWidget Path.RenderTransformProperty
 
     let RenderTransformString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Path_RenderTransformString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Path_RenderTransformString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Path.RenderTransformProperty)
-                | ValueSome value ->
-                    target.SetValue(
-                        Path.RenderTransformProperty,
-                        TransformTypeConverter()
-                            .ConvertFromInvariantString(value)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Path.RenderTransformProperty)
+            | ValueSome value -> target.SetValue(Path.RenderTransformProperty, TransformTypeConverter().ConvertFromInvariantString(value)))
 
 [<AutoOpen>]
 module PathBuilders =
 
     type Fabulous.Maui.View with
+
         static member inline Path<'msg, 'marker when 'marker :> IGeometry>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
 

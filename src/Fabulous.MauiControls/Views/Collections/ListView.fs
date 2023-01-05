@@ -32,24 +32,15 @@ module ListView =
 
                     listView.SetValue(ListView.ItemsSourceProperty, value.OriginalItems)
 
-                    listView.SetValue(
-                        ListView.ItemTemplateProperty,
-                        WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate)
-                    )
+                    listView.SetValue(ListView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate))
 
-                    listView.SetValue(
-                        ListView.GroupHeaderTemplateProperty,
-                        WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)
-                    ))
+                    listView.SetValue(ListView.GroupHeaderTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)))
 
-    let Header =
-        Attributes.defineBindableWidget ListView.HeaderProperty
+    let Header = Attributes.defineBindableWidget ListView.HeaderProperty
 
-    let Footer =
-        Attributes.defineBindableWidget ListView.FooterProperty
+    let Footer = Attributes.defineBindableWidget ListView.FooterProperty
 
-    let RowHeight =
-        Attributes.defineBindableInt ListView.RowHeightProperty
+    let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
 
     let SelectionMode =
         Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
@@ -57,11 +48,9 @@ module ListView =
     let IsPullToRefreshEnabled =
         Attributes.defineBindableBool ListView.IsPullToRefreshEnabledProperty
 
-    let IsRefreshing =
-        Attributes.defineBindableBool ListView.IsRefreshingProperty
+    let IsRefreshing = Attributes.defineBindableBool ListView.IsRefreshingProperty
 
-    let HasUnevenRows =
-        Attributes.defineBindableBool ListView.HasUnevenRowsProperty
+    let HasUnevenRows = Attributes.defineBindableBool ListView.HasUnevenRowsProperty
 
     let SeparatorVisibility =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
@@ -79,24 +68,16 @@ module ListView =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
 
     let ItemAppearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs>
-            "ListView_ItemAppearing"
-            (fun target -> (target :?> ListView).ItemAppearing)
+        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
 
     let ItemDisappearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs>
-            "ListView_ItemDisappearing"
-            (fun target -> (target :?> ListView).ItemDisappearing)
+        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
 
     let ItemSelected =
-        Attributes.defineEvent<SelectedItemChangedEventArgs>
-            "ListView_ItemSelected"
-            (fun target -> (target :?> ListView).ItemSelected)
+        Attributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
 
     let ItemTapped =
-        Attributes.defineEvent<ItemTappedEventArgs>
-            "ListView_ItemTapped"
-            (fun target -> (target :?> ListView).ItemTapped)
+        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
 
     let Refreshing =
         Attributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
@@ -105,20 +86,17 @@ module ListView =
         Attributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestedEventArgs>
-            "ListView_ScrollToRequested"
-            (fun target -> (target :?> ListView).ScrollToRequested)
+        Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
 
 [<AutoOpen>]
 module ListViewBuilders =
     type Fabulous.Maui.View with
-        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
-            WidgetHelpers.buildItems<'msg, IListView, 'itemData, 'itemMarker>
-                ListView.WidgetKey
-                ItemsViewOfCell.ItemsSource
-                items
 
-        static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
+            WidgetHelpers.buildItems<'msg, IListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
+
+        static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
+            when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItemsNoFooter<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
@@ -150,19 +128,11 @@ type ListViewModifiers =
         this.AddScalar(ListView.HasUnevenRows.WithValue(value))
 
     [<Extension>]
-    static member inline horizontalScrollBarVisibility
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            value: ScrollBarVisibility
-        ) =
+    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IListView>, value: ScrollBarVisibility) =
         this.AddScalar(ListView.HorizontalScrollBarVisibility.WithValue(value))
 
     [<Extension>]
-    static member inline verticalScrollBarVisibility
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            value: ScrollBarVisibility
-        ) =
+    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IListView>, value: ScrollBarVisibility) =
         this.AddScalar(ListView.VerticalScrollBarVisibility.WithValue(value))
 
     [<Extension>]
@@ -194,19 +164,11 @@ type ListViewModifiers =
         this.AddScalar(ListView.SelectionMode.WithValue(value))
 
     [<Extension>]
-    static member inline onItemAppearing
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            onItemAppearing: ItemVisibilityEventArgs -> 'msg
-        ) =
+    static member inline onItemAppearing(this: WidgetBuilder<'msg, #IListView>, onItemAppearing: ItemVisibilityEventArgs -> 'msg) =
         this.AddScalar(ListView.ItemAppearing.WithValue(fun args -> onItemAppearing args |> box))
 
     [<Extension>]
-    static member inline onItemDisappearing
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            onItemDisappearing: ItemVisibilityEventArgs -> 'msg
-        ) =
+    static member inline onItemDisappearing(this: WidgetBuilder<'msg, #IListView>, onItemDisappearing: ItemVisibilityEventArgs -> 'msg) =
         this.AddScalar(ListView.ItemDisappearing.WithValue(fun args -> onItemDisappearing args |> box))
 
     [<Extension>]
@@ -214,11 +176,7 @@ type ListViewModifiers =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> onItemTapped args.ItemIndex |> box))
 
     [<Extension; Obsolete("Use onItemSelected(int -> 'msg) instead")>]
-    static member inline onItemSelected
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            onItemSelected: SelectedItemChangedEventArgs -> 'msg
-        ) =
+    static member inline onItemSelected(this: WidgetBuilder<'msg, #IListView>, onItemSelected: SelectedItemChangedEventArgs -> 'msg) =
         this.AddScalar(ListView.ItemSelected.WithValue(fun args -> onItemSelected args |> box))
 
     [<Extension>]
@@ -234,11 +192,7 @@ type ListViewModifiers =
         this.AddScalar(ListView.Scrolled.WithValue(fun args -> onScrolled args |> box))
 
     [<Extension>]
-    static member inline onScrollToRequested
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            onScrollToRequested: ScrollToRequestedEventArgs -> 'msg
-        ) =
+    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IListView>, onScrollToRequested: ScrollToRequestedEventArgs -> 'msg) =
         this.AddScalar(ListView.ScrollToRequested.WithValue(fun args -> onScrollToRequested args |> box))
 
     /// <summary>Link a ViewRef to access the direct ListView control instance</summary>

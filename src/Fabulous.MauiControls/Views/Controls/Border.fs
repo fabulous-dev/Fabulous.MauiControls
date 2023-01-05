@@ -13,73 +13,50 @@ type IBorder =
 module Border =
     let WidgetKey = Widgets.register<Border>()
 
-    let Stroke =
-        Attributes.defineBindableAppTheme<Brush> Border.StrokeProperty
+    let Stroke = Attributes.defineBindableAppTheme<Brush> Border.StrokeProperty
 
-    let StrokeWidget =
-        Attributes.defineBindableWidget Border.StrokeProperty
+    let StrokeWidget = Attributes.defineBindableWidget Border.StrokeProperty
 
-    let Content =
-        Attributes.defineBindableWidget Border.ContentProperty
+    let Content = Attributes.defineBindableWidget Border.ContentProperty
 
     let StrokeShape =
-        Attributes.defineSimpleScalarWithEquality<Shape>
-            "Border_StrokeShape"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<Shape> "Border_StrokeShape" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Border.StrokeShapeProperty)
-                | ValueSome value -> target.SetValue(Border.StrokeShapeProperty, value))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Border.StrokeShapeProperty)
+            | ValueSome value -> target.SetValue(Border.StrokeShapeProperty, value))
 
     let StrokeShapeString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Border_StrokeShapeString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Border_StrokeShapeString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Border.StrokeShapeProperty)
-                | ValueSome value ->
-                    target.SetValue(
-                        Border.StrokeShapeProperty,
-                        StrokeShapeTypeConverter()
-                            .ConvertFromInvariantString(value)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Border.StrokeShapeProperty)
+            | ValueSome value -> target.SetValue(Border.StrokeShapeProperty, StrokeShapeTypeConverter().ConvertFromInvariantString(value)))
 
-    let StrokeShapeWidget =
-        Attributes.defineBindableWidget Border.StrokeShapeProperty
+    let StrokeShapeWidget = Attributes.defineBindableWidget Border.StrokeShapeProperty
 
-    let StrokeThickness =
-        Attributes.defineBindableFloat Border.StrokeThicknessProperty
+    let StrokeThickness = Attributes.defineBindableFloat Border.StrokeThicknessProperty
 
     let StrokeDashArrayString =
-        Attributes.defineSimpleScalarWithEquality<string>
-            "Border_StrokeDashArrayString"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<string> "Border_StrokeDashArrayString" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Border.StrokeDashArrayProperty)
-                | ValueSome string ->
-                    target.SetValue(
-                        Shape.StrokeDashArrayProperty,
-                        DoubleCollectionConverter()
-                            .ConvertFromInvariantString(string)
-                    ))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Border.StrokeDashArrayProperty)
+            | ValueSome string -> target.SetValue(Shape.StrokeDashArrayProperty, DoubleCollectionConverter().ConvertFromInvariantString(string)))
 
     let StrokeDashArrayList =
-        Attributes.defineSimpleScalarWithEquality<float list>
-            "Border_StrokeDashArrayList"
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<float list> "Border_StrokeDashArrayList" (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(Border.StrokeDashArrayProperty)
-                | ValueSome points ->
-                    let coll = DoubleCollection()
-                    points |> List.iter coll.Add
-                    target.SetValue(Border.StrokeDashArrayProperty, coll))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Border.StrokeDashArrayProperty)
+            | ValueSome points ->
+                let coll = DoubleCollection()
+                points |> List.iter coll.Add
+                target.SetValue(Border.StrokeDashArrayProperty, coll))
 
     let StrokeDashOffset =
         Attributes.defineBindableFloat Border.StrokeDashOffsetProperty
@@ -99,15 +76,11 @@ module Border =
 [<AutoOpen>]
 module BorderBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Border is a container control that draws a border, background, or both, around another control. A Border can only contain one child object. If you want to put a border around multiple objects, wrap them in a container object such as a layout</summary>
         /// <param name="light">The color of the stroke in the light theme.</param>
         /// <param name="dark">The color of the stroke in the dark theme.</param>
-        static member inline Border<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
-            (
-                content: WidgetBuilder<'msg, 'marker>,
-                light: Brush,
-                ?dark: Brush
-            ) =
+        static member inline Border<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(content: WidgetBuilder<'msg, 'marker>, light: Brush, ?dark: Brush) =
             WidgetBuilder<'msg, IBorder>(
                 Border.WidgetKey,
                 AttributesBundle(
@@ -133,8 +106,9 @@ module BorderBuilders =
                 AttributesBundle(
                     // By spec we need to set StrokeShape to Rectangle
                     StackList.one(Border.StrokeShape.WithValue(Rectangle())),
-                    ValueSome [| Border.Content.WithValue(content.Compile())
-                                 Border.StrokeWidget.WithValue(stroke.Compile()) |],
+                    ValueSome
+                        [| Border.Content.WithValue(content.Compile())
+                           Border.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )
@@ -191,14 +165,7 @@ type BorderModifiers =
         BorderModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding
-        (
-            this: WidgetBuilder<'msg, #IBorder>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
+    static member inline padding(this: WidgetBuilder<'msg, #IBorder>, left: float, top: float, right: float, bottom: float) =
         BorderModifiers.padding(this, Thickness(left, top, right, bottom))
 
     /// <summary>Link a ViewRef to access the direct Border control instance</summary>

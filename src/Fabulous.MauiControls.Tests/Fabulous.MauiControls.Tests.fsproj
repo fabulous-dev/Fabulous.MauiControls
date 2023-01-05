@@ -1,16 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Library.fs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="FsCheck.NUnit" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="FSharp.Core" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
   </ItemGroup>
-
 </Project>
