@@ -8,8 +8,8 @@ type IItemsViewOfCell =
     inherit Fabulous.Maui.IView
 
 module ItemsViewOfCell =
-    let ItemsSource<'T> =
-        Attributes.defineSimpleScalar<WidgetItems<'T>>
+    let ItemsSource =
+        Attributes.defineSimpleScalar<WidgetItems>
             "ItemsViewOfCell_ItemsSource"
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
             (fun _ newValueOpt node ->
