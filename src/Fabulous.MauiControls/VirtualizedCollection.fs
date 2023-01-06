@@ -1,6 +1,7 @@
 namespace Fabulous.Maui
 
 open System
+open System.Collections
 open System.Collections.Generic
 open Fabulous
 open Microsoft.Maui.Controls
@@ -61,12 +62,12 @@ type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Wi
             cache.Add(targetType, dataTemplate)
             dataTemplate
 
-type WidgetItems<'T> =
-    { OriginalItems: IEnumerable<'T>
-      Template: 'T -> Widget }
+type WidgetItems =
+    { OriginalItems: IEnumerable
+      Template: obj -> Widget }
 
-type GroupedWidgetItems<'groupData, 'itemData> =
-    { OriginalItems: IEnumerable<'groupData>
-      HeaderTemplate: 'groupData -> Widget
-      FooterTemplate: ('groupData -> Widget) option
-      ItemTemplate: 'itemData -> Widget }
+type GroupedWidgetItems =
+    { OriginalItems: IEnumerable
+      HeaderTemplate: obj -> Widget
+      FooterTemplate: (obj -> Widget) option
+      ItemTemplate: obj -> Widget }

@@ -64,7 +64,7 @@ module WidgetHelpers =
 
     let buildItems<'msg, 'marker, 'itemData, 'itemMarker>
         key
-        (attrDef: SimpleScalarAttributeDefinition<WidgetItems<'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<WidgetItems>)
         (items: seq<'itemData>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         =
@@ -72,7 +72,7 @@ module WidgetHelpers =
             let item = unbox<'itemData> item
             (itemTemplate item).Compile()
 
-        let data: WidgetItems<'itemData> =
+        let data: WidgetItems =
             { OriginalItems = items
               Template = template }
 
@@ -80,31 +80,31 @@ module WidgetHelpers =
 
     let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems>)
         (items: seq<'groupData>)
         (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         =
-        let data: GroupedWidgetItems<'groupData, 'itemData> =
+        let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate d).Compile()
-              FooterTemplate = Some(fun d -> (groupFooterTemplate d).Compile())
-              ItemTemplate = fun d -> (itemTemplate d).Compile() }
+              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
+              FooterTemplate = Some(fun d -> (groupFooterTemplate(unbox d)).Compile())
+              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
     let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems>)
         (items: seq<'groupData>)
         (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         =
-        let data: GroupedWidgetItems<'groupData, 'itemData> =
+        let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate d).Compile()
+              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
               FooterTemplate = None
-              ItemTemplate = fun d -> (itemTemplate d).Compile() }
+              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
