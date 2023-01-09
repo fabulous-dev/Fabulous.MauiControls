@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.1.2] - 2023-01-09
+
+### Changed
+* Remove generic types from WidgetItems and GroupedWidgetItems by @TimLariviere in https://github.com/fabulous-dev/Fabulous.MauiControls/pull/2
+
 ## [2.1.1] - 2023-01-05
 
 ### Changed
