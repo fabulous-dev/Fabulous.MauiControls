@@ -42,7 +42,7 @@ let view model =
 
 To learn more about Fabulous, visit https://fabulous.dev.
 
-### Getting Started
+## Getting Started
 
 You can start your new Fabulous.MauiControls app in a matter of seconds using the dotnet CLI templates.  
 For a starter guide see our [documentation](https://docs.fabulous.dev/v2/maui.controls/getting-started).
@@ -52,18 +52,18 @@ dotnet new install Fabulous.MauiControls.Templates
 dotnet new fabulous-mauicontrols -n MyApp
 ```
 
-### Documentation
+## Documentation
 
 Documentation can be found at https://docs.fabulous.dev/v2/maui.controls
 
-### Sponsor Fabulous
+## Sponsor Fabulous
 
 Donating is a fantastic way to support all the efforts going into making Fabulous the best declarative UI framework for dotnet.  
 We accept donations through the GitHub Sponsors program.
 
 If you need support see Commercial Support section below.
 
-### Commercial support
+## Commercial support
 
 If you would like us to provide you with:
 
