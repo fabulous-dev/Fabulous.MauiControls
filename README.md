@@ -43,7 +43,7 @@ let view model =
 ## Getting Started
 
 You can start your new Fabulous.MauiControls app in a matter of seconds using the dotnet CLI templates.  
-For a starter guide see our [documentation](https://docs.fabulous.dev/v2/maui.controls/getting-started).
+For a starter guide see our [Get Started with Fabulous.MauiControls](https://fabulous.dev/maui.controls/get-started).
 
 ```sh
 dotnet new install Fabulous.MauiControls.Templates
@@ -56,7 +56,7 @@ The full documentation for Fabulous.MauiControls can be found at [docs.fabulous.
 
 Other useful links:
 - [The official Fabulous website](https://fabulous.dev)
-- [Get started](https://fabulous.dev/get-started)
+- [Get started](https://fabulous.dev/maui.controls/get-started)
 - [API Reference](https://api.fabulous.dev/v2/maui.controls)
 - [Contributor Guide](CONTRIBUTING.md)
 

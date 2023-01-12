@@ -94,7 +94,7 @@ Once everything is set up, you can either open the Fabulous.MauiControls.sln fil
 
 ### Open a pull request
 
-Go to the [pull request page of Fabulous.XamarinForms][PRs] and in the top
+Go to the [pull request page of Fabulous.MauiControls][PRs] and in the top
 of the page it will ask you if you want to open a pull request from your newly created branch.
 
 The title of the pull request should be descriptive of the work you did.
@@ -102,7 +102,7 @@ The title of the pull request should be descriptive of the work you did.
 
 ## Maintainers
 
-These instructions are for the maintainers of Fabulous.XamarinForms.
+These instructions are for the maintainers of Fabulous.MauiControls.
 
 
 ### Merging a pull request
