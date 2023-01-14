@@ -42,11 +42,11 @@
       "datatype": "string",
       "defaultValue": "com.companyname"
     },
-    "FabulousPkgsVersion": {
+    "FabulousXFPkgVersion": {
       "type": "parameter",
       "dataType": "string",
-      "replaces": "FabulousPkgsVersion",
-      "defaultValue": "FABULOUS_PKG_VERSION"
+      "replaces": "FabulousXFPkgVersion",
+      "defaultValue": "PKG_VERSION"
     },
     "FSharpCorePkgVersion": {
       "type": "parameter",
