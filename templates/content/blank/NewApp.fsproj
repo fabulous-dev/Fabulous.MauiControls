@@ -98,7 +98,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fabulous.MauiControls" Version="FabulousPkgsVersion" />
+    <PackageReference Include="Fabulous.MauiControls" Version="FabulousXFPkgVersion" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
   </ItemGroup>
 

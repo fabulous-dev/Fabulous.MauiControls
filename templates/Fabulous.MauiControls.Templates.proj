@@ -18,6 +18,7 @@ content/*/.ionide/**/*;
 content/*/.cache/**/*;
 content/*/**/obj/**/*;
 content/*/**/bin/**/*;
+content/**/.template.config/template.jsonbak;
     </ExcludeFromPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" $(IsNightlyBuild) != 'true' ">
