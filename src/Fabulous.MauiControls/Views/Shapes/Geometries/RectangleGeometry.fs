@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IRectangleGeometry =
-    inherit Fabulous.Maui.IGeometry
+type IFabRectangleGeometry =
+    inherit IFabGeometry
 
 module RectangleGeometry =
     let WidgetKey = Widgets.register<RectangleGeometry>()
@@ -18,4 +18,4 @@ module RectangleGeometryBuilders =
     type Fabulous.Maui.View with
 
         static member inline RectangleGeometry<'msg>(rect: Rect) =
-            WidgetBuilder<'msg, IRectangleGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))
+            WidgetBuilder<'msg, IFabRectangleGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))

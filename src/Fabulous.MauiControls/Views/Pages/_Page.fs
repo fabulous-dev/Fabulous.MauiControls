@@ -8,8 +8,8 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
-type IPage =
-    inherit Fabulous.Maui.IVisualElement
+type IFabPage =
+    inherit IFabVisualElement
 
 module Page =
     let BackgroundImageSource =
@@ -51,21 +51,21 @@ module Page =
 type PageModifiers =
     /// <summary>The Page's title.</summary>
     [<Extension>]
-    static member inline title(this: WidgetBuilder<'msg, #IPage>, value: string) =
+    static member inline title(this: WidgetBuilder<'msg, #IFabPage>, value: string) =
         this.AddScalar(Page.Title.WithValue(value))
 
     /// <summary>Set the source of the IconImageSource.</summary>
     /// <param name="light">The source of the icon in the light theme.</param>
     /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: ImageSource, ?dark: ImageSource) =
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Page.IconImageSource.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the IconImageSource.</summary>
     /// <param name="light">The source of the icon in the light theme.</param>
     /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, light: string, ?dark: string) =
         let light = ImageSource.FromFile(light)
 
         let dark =
@@ -79,7 +79,7 @@ type PageModifiers =
     /// <param name="light">The source of the icon in the light theme.</param>
     /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, light: Uri, ?dark: Uri) =
         let light = ImageSource.FromUri(light)
 
         let dark =
@@ -93,7 +93,7 @@ type PageModifiers =
     /// <param name="light">The source of the icon in the light theme.</param>
     /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, light: Stream, ?dark: Stream) =
         let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
@@ -107,14 +107,14 @@ type PageModifiers =
     /// <param name="light">The source of the background in the light theme.</param>
     /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: ImageSource, ?dark: ImageSource) =
+    static member inline background(this: WidgetBuilder<'msg, #IFabPage>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Page.BackgroundImageSource.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
     /// <param name="light">The source of the background in the light theme.</param>
     /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
+    static member inline background(this: WidgetBuilder<'msg, #IFabPage>, light: string, ?dark: string) =
         let light = ImageSource.FromFile(light)
 
         let dark =
@@ -128,7 +128,7 @@ type PageModifiers =
     /// <param name="light">The source of the background in the light theme.</param>
     /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
+    static member inline background(this: WidgetBuilder<'msg, #IFabPage>, light: Uri, ?dark: Uri) =
         let light = ImageSource.FromUri(light)
 
         let dark =
@@ -142,7 +142,7 @@ type PageModifiers =
     /// <param name="light">The source of the background in the light theme.</param>
     /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
+    static member inline background(this: WidgetBuilder<'msg, #IFabPage>, light: Stream, ?dark: Stream) =
         let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
@@ -155,41 +155,41 @@ type PageModifiers =
     /// <summary>Event that is fired when the page is appearing.</summary>
     /// <param name="onAppearing">Msg to dispatch when then page is appearing.</param>
     [<Extension>]
-    static member inline onAppearing(this: WidgetBuilder<'msg, #IPage>, onAppearing: 'msg) =
+    static member inline onAppearing(this: WidgetBuilder<'msg, #IFabPage>, onAppearing: 'msg) =
         this.AddScalar(Page.Appearing.WithValue(onAppearing))
 
     /// <summary>Event that is fired when the page is disappearing.</summary>
     /// <param name="onDisappearing">Msg to dispatch when then page is disappearing.</param>
     [<Extension>]
-    static member inline onDisappearing(this: WidgetBuilder<'msg, #IPage>, onDisappearing: 'msg) =
+    static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabPage>, onDisappearing: 'msg) =
         this.AddScalar(Page.Disappearing.WithValue(onDisappearing))
 
     /// <summary>Event that is fired when the page layout has Changed.</summary>
     /// <param name="onLayoutChanged">Msg to dispatch when then page layout has Changed.</param>
     [<Extension>]
-    static member inline onLayoutChanged(this: WidgetBuilder<'msg, #IPage>, onLayoutChanged: 'msg) =
+    static member inline onLayoutChanged(this: WidgetBuilder<'msg, #IFabPage>, onLayoutChanged: 'msg) =
         this.AddScalar(Page.LayoutChanged.WithValue(onLayoutChanged))
 
     [<Extension>]
-    static member inline toolbarItems<'msg, 'marker when 'marker :> IPage>(this: WidgetBuilder<'msg, 'marker>) =
-        WidgetHelpers.buildAttributeCollection<'msg, 'marker, IToolbarItem> Page.ToolbarItems this
+    static member inline toolbarItems<'msg, 'marker when 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabToolbarItem> Page.ToolbarItems this
 
     /// <summary>Marks the Page as busy. This will cause the platform specific global activity indicator to show a busy state.</summary>
     /// <param name="value">A bool indicating if the Page is busy or not.</param>
     [<Extension>]
-    static member inline isBusy(this: WidgetBuilder<'msg, #IPage>, value: bool) =
+    static member inline isBusy(this: WidgetBuilder<'msg, #IFabPage>, value: bool) =
         this.AddScalar(Page.IsBusy.WithValue(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IPage>, value: Thickness) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, value: Thickness) =
         this.AddScalar(Page.Padding.WithValue(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IPage>, value: float) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, value: float) =
         PageModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IPage>, left: float, top: float, right: float, bottom: float) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, left: float, top: float, right: float, bottom: float) =
         PageModifiers.padding(this, Thickness(left, top, right, bottom))
 
 [<Extension>]
@@ -197,5 +197,5 @@ type PagePlatformModifiers =
 
     /// <summary>iOS platform specific. Sets a value that controls whether padding values are overridden with the safe area insets.</summary>
     [<Extension>]
-    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabPage>) =
         this.AddScalar(Page.UseSafeArea.WithValue(false))

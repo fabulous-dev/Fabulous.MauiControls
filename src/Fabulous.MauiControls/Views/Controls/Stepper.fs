@@ -2,11 +2,10 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IStepper =
-    inherit Fabulous.Maui.IView
+type IFabStepper =
+    inherit IFabView
 
 module StepperUpdaters =
     let updateStepperMinMax _ (newValueOpt: struct (float * float) voption) (node: IViewNode) =
@@ -42,7 +41,7 @@ module StepperBuilders =
     type Fabulous.Maui.View with
 
         static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
-            WidgetBuilder<'msg, IStepper>(
+            WidgetBuilder<'msg, IFabStepper>(
                 Stepper.WidgetKey,
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),
                 Stepper.ValueWithEvent.WithValue(ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box))
@@ -53,10 +52,10 @@ type StepperModifiers =
     /// <summary>Increments the Stepper's value</summary>
     /// <param name="value">The amount to increment the Stepper by.</param>
     [<Extension>]
-    static member inline increment(this: WidgetBuilder<'msg, #IStepper>, value: float) =
+    static member inline increment(this: WidgetBuilder<'msg, #IFabStepper>, value: float) =
         this.AddScalar(Stepper.Increment.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Stepper control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IStepper>, value: ViewRef<Stepper>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabStepper>, value: ViewRef<Stepper>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

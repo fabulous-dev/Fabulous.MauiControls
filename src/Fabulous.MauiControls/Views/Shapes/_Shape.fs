@@ -2,12 +2,11 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
-type IShape =
-    inherit Fabulous.Maui.IView
+type IFabShape =
+    inherit IFabView
 
 module Shape =
 
@@ -55,11 +54,11 @@ module Shape =
 type ShapeModifiers =
 
     [<Extension>]
-    static member inline fill(this: WidgetBuilder<'msg, #IShape>, light: Brush, ?dark: Brush) =
+    static member inline fill(this: WidgetBuilder<'msg, #IFabShape>, light: Brush, ?dark: Brush) =
         this.AddScalar(Shape.Fill.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline fill<'msg, 'marker, 'contentMarker when 'marker :> IShape and 'contentMarker :> IBrush>
+    static member inline fill<'msg, 'marker, 'contentMarker when 'marker :> IFabShape and 'contentMarker :> IFabBrush>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -67,37 +66,37 @@ type ShapeModifiers =
         this.AddWidget(Shape.FillWidget.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline stroke(this: WidgetBuilder<'msg, #IShape>, light: Brush, ?dark: Brush) =
+    static member inline stroke(this: WidgetBuilder<'msg, #IFabShape>, light: Brush, ?dark: Brush) =
         this.AddScalar(Shape.Stroke.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline strokeThickness(this: WidgetBuilder<'msg, #IShape>, value: float) =
+    static member inline strokeThickness(this: WidgetBuilder<'msg, #IFabShape>, value: float) =
         this.AddScalar(Shape.StrokeThickness.WithValue(value))
 
     [<Extension>]
-    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: string) =
+    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IFabShape>, value: string) =
         this.AddScalar(Shape.StrokeDashArrayString.WithValue(value))
 
     [<Extension>]
-    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: float list) =
+    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IFabShape>, value: float list) =
         this.AddScalar(Shape.StrokeDashArrayList.WithValue(value))
 
     [<Extension>]
-    static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IShape>, value: float) =
+    static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IFabShape>, value: float) =
         this.AddScalar(Shape.StrokeDashOffset.WithValue(value))
 
     [<Extension>]
-    static member inline strokeLineCap(this: WidgetBuilder<'msg, #IShape>, value: PenLineCap) =
+    static member inline strokeLineCap(this: WidgetBuilder<'msg, #IFabShape>, value: PenLineCap) =
         this.AddScalar(Shape.StrokeLineCap.WithValue(value))
 
     [<Extension>]
-    static member inline strokeLineJoin(this: WidgetBuilder<'msg, #IShape>, value: PenLineJoin) =
+    static member inline strokeLineJoin(this: WidgetBuilder<'msg, #IFabShape>, value: PenLineJoin) =
         this.AddScalar(Shape.StrokeLineJoin.WithValue(value))
 
     [<Extension>]
-    static member inline strokeMiterLimit(this: WidgetBuilder<'msg, #IShape>, value: float) =
+    static member inline strokeMiterLimit(this: WidgetBuilder<'msg, #IFabShape>, value: float) =
         this.AddScalar(Shape.StrokeMiterLimit.WithValue(value))
 
     [<Extension>]
-    static member inline aspect(this: WidgetBuilder<'msg, #IShape>, value: Stretch) =
+    static member inline aspect(this: WidgetBuilder<'msg, #IFabShape>, value: Stretch) =
         this.AddScalar(Shape.Aspect.WithValue(value))

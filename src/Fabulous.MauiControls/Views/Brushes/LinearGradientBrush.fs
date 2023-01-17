@@ -1,12 +1,11 @@
 namespace Fabulous.Maui
 
-open System.Drawing
 open Fabulous
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 
-type ILinearGradientBrush =
-    inherit IGradientBrush
+type IFabLinearGradientBrush =
+    inherit IFabGradientBrush
 
 module LinearGradientBrush =
 
@@ -28,21 +27,21 @@ module LinearGradientBrushBuilders =
         static member inline LinearGradientBrush<'msg>(?startPoint: Point, ?endPoint: Point) =
             match startPoint, endPoint with
             | Some s, None ->
-                CollectionBuilder<'msg, ILinearGradientBrush, IGradientStop>(
+                CollectionBuilder<'msg, IFabLinearGradientBrush, IFabGradientStop>(
                     LinearGradientBrush.WidgetKey,
                     GradientBrush.Children,
                     LinearGradientBrush.StartPoint.WithValue(s),
                     LinearGradientBrush.EndPoint.WithValue(Point(1., 1.))
                 )
             | None, Some e ->
-                CollectionBuilder<'msg, ILinearGradientBrush, IGradientStop>(
+                CollectionBuilder<'msg, IFabLinearGradientBrush, IFabGradientStop>(
                     LinearGradientBrush.WidgetKey,
                     GradientBrush.Children,
                     LinearGradientBrush.StartPoint.WithValue(Point(0., 0.)),
                     LinearGradientBrush.EndPoint.WithValue(e)
                 )
             | Some s, Some e ->
-                CollectionBuilder<'msg, ILinearGradientBrush, IGradientStop>(
+                CollectionBuilder<'msg, IFabLinearGradientBrush, IFabGradientStop>(
                     LinearGradientBrush.WidgetKey,
                     GradientBrush.Children,
                     LinearGradientBrush.StartPoint.WithValue(s),
@@ -50,7 +49,7 @@ module LinearGradientBrushBuilders =
                 )
 
             | None, None ->
-                CollectionBuilder<'msg, ILinearGradientBrush, IGradientStop>(
+                CollectionBuilder<'msg, IFabLinearGradientBrush, IFabGradientStop>(
                     LinearGradientBrush.WidgetKey,
                     GradientBrush.Children,
                     LinearGradientBrush.StartPoint.WithValue(Point(0., 0.)),

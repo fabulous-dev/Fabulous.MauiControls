@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
-type IPathSegment =
-    inherit Fabulous.Maui.IElement
+type IFabPathSegment =
+    inherit IFabElement

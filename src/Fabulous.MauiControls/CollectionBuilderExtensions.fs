@@ -7,178 +7,178 @@ open Fabulous.StackAllocatedCollections
 [<Extension>]
 type CollectionBuilderExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPage>
         (
-            _: CollectionBuilder<'msg, 'marker, IPage>,
+            _: CollectionBuilder<'msg, 'marker, IFabPage>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabView>
         (
-            _: CollectionBuilder<'msg, 'marker, IView>,
+            _: CollectionBuilder<'msg, 'marker, IFabView>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabSpan>
         (
-            _: CollectionBuilder<'msg, 'marker, ISpan>,
+            _: CollectionBuilder<'msg, 'marker, IFabSpan>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGeometry>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabGeometry>
         (
-            _: CollectionBuilder<'msg, 'marker, IGeometry>,
+            _: CollectionBuilder<'msg, 'marker, IFabGeometry>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGradientStop>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabGradientStop>
         (
-            _: CollectionBuilder<'msg, 'marker, IGradientStop>,
+            _: CollectionBuilder<'msg, 'marker, IFabGradientStop>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathFigure>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPathFigure>
         (
-            _: CollectionBuilder<'msg, 'marker, IPathFigure>,
+            _: CollectionBuilder<'msg, 'marker, IFabPathFigure>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathSegment>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPathSegment>
         (
-            _: CollectionBuilder<'msg, 'marker, IPathSegment>,
+            _: CollectionBuilder<'msg, 'marker, IFabPathSegment>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ITransform>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabTransform>
         (
-            _: CollectionBuilder<'msg, 'marker, ITransform>,
+            _: CollectionBuilder<'msg, 'marker, IFabTransform>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISwipeItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabSwipeItem>
         (
-            _: CollectionBuilder<'msg, 'marker, ISwipeItem>,
+            _: CollectionBuilder<'msg, 'marker, IFabSwipeItem>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabGestureRecognizer>
         (
-            _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
+            _: AttributeCollectionBuilder<'msg, 'marker, IFabGestureRecognizer>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabToolbarItem>
         (
-            _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
+            _: AttributeCollectionBuilder<'msg, 'marker, IFabToolbarItem>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPage>
         (
-            _: CollectionBuilder<'msg, 'marker, IPage>,
+            _: CollectionBuilder<'msg, 'marker, IFabPage>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabView>
         (
-            _: CollectionBuilder<'msg, 'marker, IView>,
+            _: CollectionBuilder<'msg, 'marker, IFabView>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabSpan>
         (
-            _: CollectionBuilder<'msg, 'marker, ISpan>,
+            _: CollectionBuilder<'msg, 'marker, IFabSpan>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGeometry>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabGeometry>
         (
-            _: CollectionBuilder<'msg, 'marker, IGeometry>,
+            _: CollectionBuilder<'msg, 'marker, IFabGeometry>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IBrush>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabBrush>
         (
-            _: CollectionBuilder<'msg, 'marker, IGradientStop>,
+            _: CollectionBuilder<'msg, 'marker, IFabGradientStop>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathFigure>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPathFigure>
         (
-            _: CollectionBuilder<'msg, 'marker, IPathFigure>,
+            _: CollectionBuilder<'msg, 'marker, IFabPathFigure>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathSegment>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabPathSegment>
         (
-            _: CollectionBuilder<'msg, 'marker, IPathSegment>,
+            _: CollectionBuilder<'msg, 'marker, IFabPathSegment>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ITransform>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabTransform>
         (
-            _: CollectionBuilder<'msg, 'marker, ITransform>,
+            _: CollectionBuilder<'msg, 'marker, IFabTransform>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISwipeItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabSwipeItem>
         (
-            _: CollectionBuilder<'msg, 'marker, ISwipeItem>,
+            _: CollectionBuilder<'msg, 'marker, IFabSwipeItem>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabGestureRecognizer>
         (
-            _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
+            _: AttributeCollectionBuilder<'msg, 'marker, IFabGestureRecognizer>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabToolbarItem>
         (
-            _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
+            _: AttributeCollectionBuilder<'msg, 'marker, IFabToolbarItem>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

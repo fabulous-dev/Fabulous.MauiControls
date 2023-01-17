@@ -1,11 +1,10 @@
 namespace Fabulous.Maui
 
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IItemsViewOfCell =
-    inherit Fabulous.Maui.IView
+type IFabItemsViewOfCell =
+    inherit IFabView
 
 module ItemsViewOfCell =
     let ItemsSource =

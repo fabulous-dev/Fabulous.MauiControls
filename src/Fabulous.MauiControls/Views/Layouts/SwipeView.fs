@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ISwipeView =
-    inherit Fabulous.Maui.IContentView
+type IFabSwipeView =
+    inherit IFabContentView
 
 module SwipeView =
 
@@ -43,13 +43,13 @@ module SwipeViewBuilders =
     type Fabulous.Maui.View with
 
         static member inline SwipeView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, ISwipeView> SwipeView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
+            WidgetHelpers.buildWidgets<'msg, IFabSwipeView> SwipeView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
 type SwipeViewModifiers() =
 
     [<Extension>]
-    static member inline leftItems<'msg, 'marker, 'contentMarker when 'marker :> ISwipeView and 'contentMarker :> ISwipeItems>
+    static member inline leftItems<'msg, 'marker, 'contentMarker when 'marker :> IFabSwipeView and 'contentMarker :> ISwipeItems>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -57,7 +57,7 @@ type SwipeViewModifiers() =
         this.AddWidget(SwipeView.LeftSwipeItems.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline topItems<'msg, 'marker, 'contentMarker when 'marker :> ISwipeView and 'contentMarker :> ISwipeItems>
+    static member inline topItems<'msg, 'marker, 'contentMarker when 'marker :> IFabSwipeView and 'contentMarker :> ISwipeItems>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -65,7 +65,7 @@ type SwipeViewModifiers() =
         this.AddWidget(SwipeView.TopSwipeItems.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline rightItems<'msg, 'marker, 'contentMarker when 'marker :> ISwipeView and 'contentMarker :> ISwipeItems>
+    static member inline rightItems<'msg, 'marker, 'contentMarker when 'marker :> IFabSwipeView and 'contentMarker :> ISwipeItems>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -73,7 +73,7 @@ type SwipeViewModifiers() =
         this.AddWidget(SwipeView.RightSwipeItems.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline bottomItems<'msg, 'marker, 'contentMarker when 'marker :> ISwipeView and 'contentMarker :> ISwipeItems>
+    static member inline bottomItems<'msg, 'marker, 'contentMarker when 'marker :> IFabSwipeView and 'contentMarker :> ISwipeItems>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -81,29 +81,29 @@ type SwipeViewModifiers() =
         this.AddWidget(SwipeView.BottomSwipeItems.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline threshold(this: WidgetBuilder<'msg, #ISwipeView>, threshold: int) =
+    static member inline threshold(this: WidgetBuilder<'msg, #IFabSwipeView>, threshold: int) =
         this.AddScalar(SwipeView.SwipeThreshold.WithValue(threshold))
 
     [<Extension>]
-    static member inline onSwipeStarted(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeStarted: SwipeStartedEventArgs -> 'msg) =
+    static member inline onSwipeStarted(this: WidgetBuilder<'msg, #IFabSwipeView>, onSwipeStarted: SwipeStartedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeStarted.WithValue(fun args -> onSwipeStarted args |> box))
 
     [<Extension>]
-    static member inline onSwipeChanging(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeChanging: SwipeChangingEventArgs -> 'msg) =
+    static member inline onSwipeChanging(this: WidgetBuilder<'msg, #IFabSwipeView>, onSwipeChanging: SwipeChangingEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeChanging.WithValue(fun args -> onSwipeChanging args |> box))
 
     [<Extension>]
-    static member inline onSwipeEnded(this: WidgetBuilder<'msg, #ISwipeView>, onSwipeEnded: SwipeEndedEventArgs -> 'msg) =
+    static member inline onSwipeEnded(this: WidgetBuilder<'msg, #IFabSwipeView>, onSwipeEnded: SwipeEndedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeEnded.WithValue(fun args -> onSwipeEnded args |> box))
 
     [<Extension>]
-    static member inline onOpenRequested(this: WidgetBuilder<'msg, #ISwipeView>, onOpenRequested: OpenRequestedEventArgs -> 'msg) =
+    static member inline onOpenRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, onOpenRequested: OpenRequestedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.OpenRequested.WithValue(fun args -> onOpenRequested args |> box))
 
     [<Extension>]
-    static member inline onCloseRequested(this: WidgetBuilder<'msg, #ISwipeView>, onCloseRequested: CloseRequestedEventArgs -> 'msg) =
+    static member inline onCloseRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, onCloseRequested: CloseRequestedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.CloseRequested.WithValue(fun args -> onCloseRequested args |> box))
 
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ISwipeView>, value: ViewRef<SwipeView>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabSwipeView>, value: ViewRef<SwipeView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

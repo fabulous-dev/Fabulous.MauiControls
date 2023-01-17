@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
-type ICompositeTransform =
-    inherit Fabulous.Maui.ITransform
+type IFabCompositeTransform =
+    inherit IFabTransform
 
 module CompositeTransform =
     let WidgetKey = Widgets.register<CompositeTransform>()
@@ -66,7 +66,7 @@ module CompositeTransformBuilders =
     type Fabulous.Maui.View with
 
         static member inline CompositeTransform<'msg>(centerX: float, centerY: float, scaleX: float, scaleY: float, skewX: float, skewY: float) =
-            WidgetBuilder<'msg, ICompositeTransform>(
+            WidgetBuilder<'msg, IFabCompositeTransform>(
                 CompositeTransform.WidgetKey,
                 CompositeTransform.CenterXY.WithValue((centerX, centerY)),
                 CompositeTransform.ScaleXY.WithValue((scaleX, scaleY)),
@@ -77,9 +77,9 @@ module CompositeTransformBuilders =
 type CompositeTransformModifiers =
 
     [<Extension>]
-    static member inline translate(this: WidgetBuilder<'msg, #ICompositeTransform>, x: float, y: float) =
+    static member inline translate(this: WidgetBuilder<'msg, #IFabCompositeTransform>, x: float, y: float) =
         this.AddScalar(CompositeTransform.TranslateXY.WithValue((x, y)))
 
     [<Extension>]
-    static member inline rotation(this: WidgetBuilder<'msg, #ICompositeTransform>, angle: float) =
+    static member inline rotation(this: WidgetBuilder<'msg, #IFabCompositeTransform>, angle: float) =
         this.AddScalar(CompositeTransform.Rotation.WithValue(angle))

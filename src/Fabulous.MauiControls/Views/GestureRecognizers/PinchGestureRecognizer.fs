@@ -3,8 +3,8 @@ namespace Fabulous.Maui
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IPinchGestureRecognizer =
-    inherit Fabulous.Maui.IGestureRecognizer
+type IFabPinchGestureRecognizer =
+    inherit IFabGestureRecognizer
 
 module PinchGestureRecognizer =
     let WidgetKey = Widgets.register<PinchGestureRecognizer>()
@@ -18,7 +18,7 @@ module PinchGestureRecognizerBuilders =
     type Fabulous.Maui.View with
 
         static member inline PinchGestureRecognizer<'msg>(onPinchUpdated: PinchGestureUpdatedEventArgs -> 'msg) =
-            WidgetBuilder<'msg, IPinchGestureRecognizer>(
+            WidgetBuilder<'msg, IFabPinchGestureRecognizer>(
                 PinchGestureRecognizer.WidgetKey,
                 PinchGestureRecognizer.PinchUpdated.WithValue(fun args -> onPinchUpdated args |> box)
             )

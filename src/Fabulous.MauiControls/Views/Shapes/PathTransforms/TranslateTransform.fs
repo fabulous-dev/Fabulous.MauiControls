@@ -3,8 +3,8 @@ namespace Fabulous.Maui
 open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
-type ITranslateTransform =
-    inherit Fabulous.Maui.ITransform
+type IFabTranslateTransform =
+    inherit IFabTransform
 
 module TranslateTransform =
     let WidgetKey = Widgets.register<TranslateTransform>()
@@ -19,4 +19,4 @@ module TranslateTransformBuilders =
     type Fabulous.Maui.View with
 
         static member inline TranslateTransform<'msg>(x: float, y: float) =
-            WidgetBuilder<'msg, ITranslateTransform>(TranslateTransform.WidgetKey, TranslateTransform.X.WithValue(x), TranslateTransform.Y.WithValue(y))
+            WidgetBuilder<'msg, IFabTranslateTransform>(TranslateTransform.WidgetKey, TranslateTransform.X.WithValue(x), TranslateTransform.Y.WithValue(y))

@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IDropGestureRecognizer =
-    inherit Fabulous.Maui.IGestureRecognizer
+type IFabDropGestureRecognizer =
+    inherit IFabGestureRecognizer
 
 module DropGestureRecognizer =
     let WidgetKey = Widgets.register<DropGestureRecognizer>()
@@ -27,7 +27,10 @@ module DropGestureRecognizerBuilders =
     type Fabulous.Maui.View with
 
         static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
-            WidgetBuilder<'msg, IDropGestureRecognizer>(DropGestureRecognizer.WidgetKey, DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args |> box))
+            WidgetBuilder<'msg, IFabDropGestureRecognizer>(
+                DropGestureRecognizer.WidgetKey,
+                DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args |> box)
+            )
 
 [<Extension>]
 type DropGestureRecognizerModifiers =
@@ -35,13 +38,13 @@ type DropGestureRecognizerModifiers =
     /// <summary>Sets whether users are allowed to drop</summary>
     /// <param name="value">true to allow users to drop; otherwise, false</param>
     [<Extension>]
-    static member inline allowDrop(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, value: bool) =
+    static member inline allowDrop(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, value: bool) =
         this.AddScalar(DropGestureRecognizer.AllowDrop.WithValue(value))
 
     [<Extension>]
-    static member inline onDragOver(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragOver: DragEventArgs -> 'msg) =
+    static member inline onDragOver(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, onDragOver: DragEventArgs -> 'msg) =
         this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun args -> onDragOver args |> box))
 
     [<Extension>]
-    static member inline onDragLeave(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragLeave: DragEventArgs -> 'msg) =
+    static member inline onDragLeave(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, onDragLeave: DragEventArgs -> 'msg) =
         this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun args -> onDragLeave args |> box))

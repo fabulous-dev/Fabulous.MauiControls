@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IEditor =
-    inherit Fabulous.Maui.IInputView
+type IFabEditor =
+    inherit IFabInputView
 
 module Editor =
     let WidgetKey = Widgets.register<Editor>()
@@ -46,7 +46,7 @@ module EditorBuilders =
     type Fabulous.Maui.View with
 
         static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
-            WidgetBuilder<'msg, IEditor>(
+            WidgetBuilder<'msg, IFabEditor>(
                 Editor.WidgetKey,
                 InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
             )
@@ -56,7 +56,7 @@ type EditorModifiers =
     [<Extension>]
     static member inline font
         (
-            this: WidgetBuilder<'msg, #IEditor>,
+            this: WidgetBuilder<'msg, #IFabEditor>,
             ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
@@ -86,44 +86,44 @@ type EditorModifiers =
     /// <summary>Sets a value that controls whether the editor will change size to accommodate input as the user enters it.</summary>
     /// <param name="value">Value that controls whether the editor will change size to accommodate input</param>
     [<Extension>]
-    static member inline autoSize(this: WidgetBuilder<'msg, #IEditor>, value: EditorAutoSizeOption) =
+    static member inline autoSize(this: WidgetBuilder<'msg, #IFabEditor>, value: EditorAutoSizeOption) =
         this.AddScalar(Editor.AutoSize.WithValue(value))
 
     /// <summary>Sets a value that controls whether the editor will allow text prediction.</summary>
     /// <param name="true will allow text prediction. otherwise false.</param>
     [<Extension>]
-    static member inline isPredictionEnabled(this: WidgetBuilder<'msg, #IEditor>, value: bool) =
+    static member inline isPredictionEnabled(this: WidgetBuilder<'msg, #IFabEditor>, value: bool) =
         this.AddScalar(Editor.IsTextPredictionEnabled.WithValue(value))
 
     /// <summary>Event that is fired when editing has completed.</summary>
     /// <param name="onCompleted">Msg to dispatch when editing has completed.</param>
     [<Extension>]
-    static member inline onCompleted(this: WidgetBuilder<'msg, #IEditor>, onCompleted: 'msg) =
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEditor>, onCompleted: 'msg) =
         this.AddScalar(Editor.Completed.WithValue(onCompleted))
 
     /// <summary>Determines the position at which the next character will be inserted into the string stored in the Text property.</summary>
     [<Extension>]
-    static member inline cursorPosition(this: WidgetBuilder<'msg, #IEditor>, value: int) =
+    static member inline cursorPosition(this: WidgetBuilder<'msg, #IFabEditor>, value: int) =
         this.AddScalar(Editor.CursorPosition.WithValue(value))
 
     /// <summary>Set the length of text selection within the SearchBar.</summary>
     [<Extension>]
-    static member inline selectionLength(this: WidgetBuilder<'msg, #IEditor>, value: int) =
+    static member inline selectionLength(this: WidgetBuilder<'msg, #IFabEditor>, value: int) =
         this.AddScalar(Editor.SelectionLength.WithValue(value))
 
     /// <summary>Set the horizontal text alignment</summary>
     /// param name="value">The horizontal text alignment</summary>
     [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IEditor>, value: TextAlignment) =
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabEditor>, value: TextAlignment) =
         this.AddScalar(Editor.HorizontalTextAlignment.WithValue(value))
 
     /// <summary>Set the vertical text alignment</summary>
     /// param name="value">The vertical text alignment</summary>
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IEditor>, value: TextAlignment) =
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabEditor>, value: TextAlignment) =
         this.AddScalar(Editor.VerticalTextAlignment.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Editor control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IEditor>, value: ViewRef<Editor>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabEditor>, value: ViewRef<Editor>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

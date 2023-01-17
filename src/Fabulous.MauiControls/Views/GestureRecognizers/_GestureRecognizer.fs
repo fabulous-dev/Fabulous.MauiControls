@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
-type IGestureRecognizer =
-    inherit Fabulous.Maui.IElement
+type IFabGestureRecognizer =
+    inherit IFabElement

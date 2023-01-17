@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
-type IBrush =
-    inherit IElement
+type IFabBrush =
+    inherit IFabElement

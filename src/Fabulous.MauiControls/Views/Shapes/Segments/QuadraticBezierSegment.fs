@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IQuadraticBezierSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabQuadraticBezierSegment =
+    inherit IFabPathSegment
 
 module QuadraticBezierSegment =
     let WidgetKey = Widgets.register<QuadraticBezierSegment>()
@@ -22,7 +22,7 @@ module QuadraticBezierSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline QuadraticBezierSegment<'msg>(point1: Point, point2: Point) =
-            WidgetBuilder<'msg, IQuadraticBezierSegment>(
+            WidgetBuilder<'msg, IFabQuadraticBezierSegment>(
                 QuadraticBezierSegment.WidgetKey,
                 QuadraticBezierSegment.Point1.WithValue(point1),
                 QuadraticBezierSegment.Point2.WithValue(point2)

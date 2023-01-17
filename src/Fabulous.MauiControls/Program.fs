@@ -3,7 +3,6 @@
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
-open Microsoft.Maui
 open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Controls
 open System
@@ -117,7 +116,7 @@ module Program =
     let statefulWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
-        (view: 'model -> WidgetBuilder<'msg, #Fabulous.Maui.IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, #IFabApplication>)
         =
         define init update view
 
@@ -133,14 +132,14 @@ module Program =
         define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c) view
 
     /// Start the program
-    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #Fabulous.Maui.IApplication>) : Microsoft.Maui.Controls.Application =
+    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IFabApplication>) : Application =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
 
     /// Start the program
-    let startApplication (program: Program<unit, 'model, 'msg, #Fabulous.Maui.IApplication>) : Microsoft.Maui.Controls.Application =
+    let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application =
         startApplicationWithArgs () program
 
     /// Subscribe to external source of events.

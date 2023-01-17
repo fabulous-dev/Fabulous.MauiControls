@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type ISwipeItem =
-    inherit Fabulous.Maui.IMenuItem
+type IFabSwipeItem =
+    inherit IFabMenuItem
 
 module SwipeItem =
 
@@ -25,23 +25,23 @@ module SwipeItemBuilders =
     type Fabulous.Maui.View with
 
         static member inline SwipeItem<'msg>(onInvoked: 'msg) =
-            WidgetBuilder<'msg, ISwipeItem>(SwipeItem.WidgetKey, SwipeItem.Clicked.WithValue(fun _ -> onInvoked |> box))
+            WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, SwipeItem.Clicked.WithValue(fun _ -> onInvoked |> box))
 
 [<Extension>]
 type SwipeItemModifiers() =
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #ISwipeItem>, light: FabColor, ?dark: FabColor) =
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSwipeItem>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(SwipeItem.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline isVisible(this: WidgetBuilder<'msg, #ISwipeItem>, value: bool) =
+    static member inline isVisible(this: WidgetBuilder<'msg, #IFabSwipeItem>, value: bool) =
         this.AddScalar(SwipeItem.IsVisible.WithValue(value))
 
     [<Extension>]
-    static member inline text(this: WidgetBuilder<'msg, #ISwipeItem>, value: string) =
+    static member inline text(this: WidgetBuilder<'msg, #IFabSwipeItem>, value: string) =
         this.AddScalar(MenuItem.Text.WithValue(value))
 
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ISwipeItem>, value: ViewRef<SwipeItem>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabSwipeItem>, value: ViewRef<SwipeItem>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

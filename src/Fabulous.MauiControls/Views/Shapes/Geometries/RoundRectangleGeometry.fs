@@ -7,8 +7,8 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IRoundRectangleGeometry =
-    inherit Fabulous.Maui.IGeometryGroup
+type IFabRoundRectangleGeometry =
+    inherit IFabGeometryGroup
 
 module RoundRectangleGeometry =
 
@@ -29,14 +29,14 @@ module RoundRectangleGeometryBuilders =
 
         [<Obsolete("Use RoundRectangleGeometry(cornerRadius: CornerRadius, rect: Rect) instead")>]
         static member inline RoundRectangleGeometry<'msg>(cornerRadius: float, rect: Rect) =
-            WidgetBuilder<'msg, IRoundRectangleGeometry>(
+            WidgetBuilder<'msg, IFabRoundRectangleGeometry>(
                 RoundRectangleGeometry.WidgetKey,
                 RoundRectangleGeometry.CornerRadius.WithValue(CornerRadius(cornerRadius)),
                 RoundRectangleGeometry.Rect.WithValue(rect)
             )
 
         static member inline RoundRectangleGeometry<'msg>(cornerRadius: CornerRadius, rect: Rect) =
-            WidgetBuilder<'msg, IRoundRectangleGeometry>(
+            WidgetBuilder<'msg, IFabRoundRectangleGeometry>(
                 RoundRectangleGeometry.WidgetKey,
                 RoundRectangleGeometry.CornerRadius.WithValue(cornerRadius),
                 RoundRectangleGeometry.Rect.WithValue(rect)
@@ -46,5 +46,5 @@ module RoundRectangleGeometryBuilders =
 type RoundRectangleGeometryModifiers =
 
     [<Extension>]
-    static member inline fillRule(this: WidgetBuilder<'msg, #IRoundRectangleGeometry>, value: FillRule) =
+    static member inline fillRule(this: WidgetBuilder<'msg, #IFabRoundRectangleGeometry>, value: FillRule) =
         this.AddScalar(RoundRectangleGeometry.FillRule.WithValue(value))

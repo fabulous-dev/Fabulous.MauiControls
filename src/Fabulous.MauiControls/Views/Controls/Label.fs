@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ILabel =
-    inherit Fabulous.Maui.IView
+type IFabLabel =
+    inherit IFabView
 
 module Label =
     let WidgetKey = Widgets.register<Label>()
@@ -57,17 +57,24 @@ module LabelBuilders =
     type Fabulous.Maui.View with
 
         static member inline Label<'msg>(text: string) =
-            WidgetBuilder<'msg, ILabel>(Label.WidgetKey, Label.Text.WithValue(text))
+            WidgetBuilder<'msg, IFabLabel>(Label.WidgetKey, Label.Text.WithValue(text))
 
 [<Extension>]
 type LabelModifiers =
 
     [<Extension>]
-    static member inline characterSpacing(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabLabel>, value: float) =
         this.AddScalar(Label.CharacterSpacing.WithValue(value))
 
     [<Extension>]
-    static member inline font(this: WidgetBuilder<'msg, #ILabel>, ?size: float, ?attributes: FontAttributes, ?fontFamily: string, ?autoScalingEnabled: bool) =
+    static member inline font
+        (
+            this: WidgetBuilder<'msg, #IFabLabel>,
+            ?size: float,
+            ?attributes: FontAttributes,
+            ?fontFamily: string,
+            ?autoScalingEnabled: bool
+        ) =
 
         let mutable res = this
 
@@ -90,66 +97,66 @@ type LabelModifiers =
         res
 
     [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabLabel>, value: TextAlignment) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
 
     [<Extension>]
-    static member inline lineBreakMode(this: WidgetBuilder<'msg, #ILabel>, value: LineBreakMode) =
+    static member inline lineBreakMode(this: WidgetBuilder<'msg, #IFabLabel>, value: LineBreakMode) =
         this.AddScalar(Label.LineBreakMode.WithValue(value))
 
     [<Extension>]
-    static member inline lineHeight(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+    static member inline lineHeight(this: WidgetBuilder<'msg, #IFabLabel>, value: float) =
         this.AddScalar(Label.LineHeight.WithValue(value))
 
     [<Extension>]
-    static member inline maxLines(this: WidgetBuilder<'msg, #ILabel>, value: int) =
+    static member inline maxLines(this: WidgetBuilder<'msg, #IFabLabel>, value: int) =
         this.AddScalar(Label.MaxLines.WithValue(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: Thickness) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, value: Thickness) =
         this.AddScalar(Label.Padding.WithValue(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, value: float) =
         LabelModifiers.padding(this, Thickness(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, left: float, top: float, right: float, bottom: float) =
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, left: float, top: float, right: float, bottom: float) =
         LabelModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: FabColor, ?dark: FabColor) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabLabel>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Label.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline textDecoration(this: WidgetBuilder<'msg, #ILabel>, value: TextDecorations) =
+    static member inline textDecoration(this: WidgetBuilder<'msg, #IFabLabel>, value: TextDecorations) =
         this.AddScalar(Label.TextDecorations.WithValue(value))
 
     [<Extension>]
-    static member inline textTransform(this: WidgetBuilder<'msg, #ILabel>, value: TextTransform) =
+    static member inline textTransform(this: WidgetBuilder<'msg, #IFabLabel>, value: TextTransform) =
         this.AddScalar(Label.TextTransform.WithValue(value))
 
     [<Extension>]
-    static member inline textType(this: WidgetBuilder<'msg, #ILabel>, value: TextType) =
+    static member inline textType(this: WidgetBuilder<'msg, #IFabLabel>, value: TextType) =
         this.AddScalar(Label.TextType.WithValue(value))
 
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabLabel>, value: TextAlignment) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(value))
 
     [<Extension>]
-    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ILabel>) =
+    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
 
     [<Extension>]
-    static member inline centerTextVertical(this: WidgetBuilder<'msg, #ILabel>) =
+    static member inline centerTextVertical(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
 
     [<Extension>]
-    static member inline centerText(this: WidgetBuilder<'msg, #ILabel>) =
+    static member inline centerText(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.centerTextHorizontal().centerTextVertical()
 
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ILabel>, value: ViewRef<Label>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabLabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

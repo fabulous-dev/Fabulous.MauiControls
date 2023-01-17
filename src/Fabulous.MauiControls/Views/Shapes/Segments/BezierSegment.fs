@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IBezierSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabBezierSegment =
+    inherit IFabPathSegment
 
 module BezierSegment =
     let WidgetKey = Widgets.register<BezierSegment>()
@@ -25,7 +25,7 @@ module BezierSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline BezierSegment<'msg>(point1: Point, point2: Point, point3: Point) =
-            WidgetBuilder<'msg, IBezierSegment>(
+            WidgetBuilder<'msg, IFabBezierSegment>(
                 BezierSegment.WidgetKey,
                 BezierSegment.Point1.WithValue(point1),
                 BezierSegment.Point2.WithValue(point2),

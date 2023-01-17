@@ -5,8 +5,8 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IPolyQuadraticBezierSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabPolyQuadraticBezierSegment =
+    inherit IFabPathSegment
 
 module PolyQuadraticBezierSegment =
     let WidgetKey = Widgets.register<PolyQuadraticBezierSegment>()
@@ -36,10 +36,10 @@ module PolyQuadraticBezierSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline PolyQuadraticBezierSegment<'msg>(points: string) =
-            WidgetBuilder<'msg, IPolyQuadraticBezierSegment>(PolyQuadraticBezierSegment.WidgetKey, PolyQuadraticBezierSegment.PointsString.WithValue(points))
+            WidgetBuilder<'msg, IFabPolyQuadraticBezierSegment>(PolyQuadraticBezierSegment.WidgetKey, PolyQuadraticBezierSegment.PointsString.WithValue(points))
 
         static member inline PolyQuadraticBezierSegment<'msg>(points: Point list) =
-            WidgetBuilder<'msg, IPolyQuadraticBezierSegment>(
+            WidgetBuilder<'msg, IFabPolyQuadraticBezierSegment>(
                 PolyQuadraticBezierSegment.WidgetKey,
                 PolyQuadraticBezierSegment.PointsList.WithValue(Array.ofList points)
             )

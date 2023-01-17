@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IIndicatorView =
-    inherit Fabulous.Maui.ITemplatedView
+type IFabIndicatorView =
+    inherit IFabTemplatedView
 
 module IndicatorView =
     let WidgetKey = Widgets.register<IndicatorView>()
@@ -42,7 +42,7 @@ module IndicatorViewBuilders =
     type Fabulous.Maui.View with
 
         static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
-            WidgetBuilder<'msg, IIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
+            WidgetBuilder<'msg, IFabIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
 
 [<Extension>]
 type IndicatorViewModifiers =
@@ -50,34 +50,34 @@ type IndicatorViewModifiers =
     /// <param name="light">The color of the indicator in the light theme.</param>
     /// <param name="dark">The color of the indicator in the dark theme.</param>
     [<Extension>]
-    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: FabColor, ?dark: FabColor) =
+    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the indicator size.</summary>
     /// <param name="size">The size of the indicator.</param>
     [<Extension>]
-    static member inline indicatorSize(this: WidgetBuilder<'msg, #IIndicatorView>, size: float) =
+    static member inline indicatorSize(this: WidgetBuilder<'msg, #IFabIndicatorView>, size: float) =
         this.AddScalar(IndicatorView.IndicatorSize.WithValue(size))
 
     /// <summary>Sets the indicator shape.</summary>
     /// <param name="shape">The shape of the indicator.</param>
     [<Extension>]
-    static member inline indicatorsShape(this: WidgetBuilder<'msg, #IIndicatorView>, shape: IndicatorShape) =
+    static member inline indicatorsShape(this: WidgetBuilder<'msg, #IFabIndicatorView>, shape: IndicatorShape) =
         this.AddScalar(IndicatorView.IndicatorsShape.WithValue(shape))
 
     [<Extension>]
-    static member inline hideSingle(this: WidgetBuilder<'msg, #IIndicatorView>, hide: bool) =
+    static member inline hideSingle(this: WidgetBuilder<'msg, #IFabIndicatorView>, hide: bool) =
         this.AddScalar(IndicatorView.HideSingle.WithValue(hide))
 
     /// <summary>Sets the indicator color.</summary>
     /// <param name="light">The color of the indicator in the light theme.</param>
     /// <param name="dark">The color of the indicator in the dark theme.</param>
     [<Extension>]
-    static member inline indicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: FabColor, ?dark: FabColor) =
+    static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(IndicatorView.IndicatorColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the maximum number of visible indicators.</summary>
     /// <param name="maximum">The maximum number of visible indicators.</param>
     [<Extension>]
-    static member inline maximumVisible(this: WidgetBuilder<'msg, IIndicatorView>, count: int) =
+    static member inline maximumVisible(this: WidgetBuilder<'msg, IFabIndicatorView>, count: int) =
         this.AddScalar(IndicatorView.MaximumVisible.WithValue(count))

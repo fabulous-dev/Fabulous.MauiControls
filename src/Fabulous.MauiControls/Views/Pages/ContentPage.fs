@@ -3,11 +3,10 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IContentPage =
-    inherit Fabulous.Maui.IPage
+type IFabContentPage =
+    inherit IFabPage
 
 module ContentPage =
     let WidgetKey = Widgets.register<FabulousContentPage>()
@@ -21,8 +20,8 @@ module ContentPage =
 module ContentPageBuilders =
     type Fabulous.Maui.View with
 
-        static member inline ContentPage<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(title: string, content: WidgetBuilder<'msg, 'marker>) =
-            WidgetBuilder<'msg, IContentPage>(
+        static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(title: string, content: WidgetBuilder<'msg, 'marker>) =
+            WidgetBuilder<'msg, IFabContentPage>(
                 ContentPage.WidgetKey,
                 AttributesBundle(StackList.one(Page.Title.WithValue(title)), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
@@ -30,10 +29,10 @@ module ContentPageBuilders =
 [<Extension>]
 type ContentPageModifiers =
     [<Extension>]
-    static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
+    static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
         this.AddScalar(ContentPage.SizeAllocated.WithValue(fn >> box))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IContentPage>, value: ViewRef<ContentPage>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabContentPage>, value: ViewRef<ContentPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

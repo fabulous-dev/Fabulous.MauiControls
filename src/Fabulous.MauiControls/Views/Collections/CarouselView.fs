@@ -6,8 +6,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ICarouselView =
-    inherit Fabulous.Maui.IItemsView
+type IFabCarouselView =
+    inherit IFabItemsView
 
 module CarouselView =
     let WidgetKey = Widgets.register<CarouselView>()
@@ -80,58 +80,58 @@ module CarouselView =
 module CarouselViewBuilders =
     type Fabulous.Maui.View with
 
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> Fabulous.Maui.IView>(items: seq<'itemData>) =
-            WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
+            WidgetHelpers.buildItems<'msg, IFabCarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items
 
 [<Extension>]
 type CarouselViewModifiers =
     /// <summary>Sets the IsBounceEnabled property.</summary>
     /// <param name="value">true if Bounce is enabled; otherwise, false.</param>
     [<Extension>]
-    static member inline isBounceEnabled(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+    static member inline isBounceEnabled(this: WidgetBuilder<'msg, #IFabCarouselView>, value: bool) =
         this.AddScalar(CarouselView.IsBounceEnabled.WithValue(value))
 
     /// <summary>Sets the IsDragging property.</summary>
     /// <param name="value">true if Dragging is enabled; otherwise, false.</param>
     [<Extension>]
-    static member inline isDragging(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+    static member inline isDragging(this: WidgetBuilder<'msg, #IFabCarouselView>, value: bool) =
         this.AddScalar(CarouselView.IsDragging.WithValue(value))
 
     /// <summary>Sets the IsScrollAnimated property.</summary>
     /// <param name="value">true if scroll is animated; otherwise, false.</param>
     [<Extension>]
-    static member inline isScrollAnimated(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+    static member inline isScrollAnimated(this: WidgetBuilder<'msg, #IFabCarouselView>, value: bool) =
         this.AddScalar(CarouselView.IsScrollAnimated.WithValue(value))
 
     /// <summary>Sets the IsSwipeEnabled property.</summary>
     /// <param name="value">true if Swipe is enabled; otherwise, false.</param>
     [<Extension>]
-    static member inline isSwipeEnabled(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+    static member inline isSwipeEnabled(this: WidgetBuilder<'msg, #IFabCarouselView>, value: bool) =
         this.AddScalar(CarouselView.IsSwipeEnabled.WithValue(value))
 
     /// <summary>Sets the Loop property.</summary>
     /// <param name="value">true if Loop is enabled; otherwise, false.</param>
     [<Extension>]
-    static member inline loop(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+    static member inline loop(this: WidgetBuilder<'msg, #IFabCarouselView>, value: bool) =
         this.AddScalar(CarouselView.Loop.WithValue(value))
 
     [<Extension>]
-    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #ICarouselView>, value: Thickness) =
+    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #IFabCarouselView>, value: Thickness) =
         this.AddScalar(CarouselView.PeekAreaInsets.WithValue(value))
 
     [<Extension>]
-    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #ICarouselView>, value: float) =
+    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #IFabCarouselView>, value: float) =
         CarouselViewModifiers.peekAreaInsets(this, Thickness(value))
 
     [<Extension>]
-    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #ICarouselView>, left: float, top: float, right: float, bottom: float) =
+    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #IFabCarouselView>, left: float, top: float, right: float, bottom: float) =
         CarouselViewModifiers.peekAreaInsets(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline indicatorView(this: WidgetBuilder<'msg, #ICarouselView>, value: ViewRef<IndicatorView>) =
+    static member inline indicatorView(this: WidgetBuilder<'msg, #IFabCarouselView>, value: ViewRef<IndicatorView>) =
         this.AddScalar(CarouselView.IndicatorView.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct CarouselView control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ICarouselView>, value: ViewRef<CarouselView>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabCarouselView>, value: ViewRef<CarouselView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

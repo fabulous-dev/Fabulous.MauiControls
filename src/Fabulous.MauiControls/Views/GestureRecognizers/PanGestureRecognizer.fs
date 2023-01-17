@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IPanGestureRecognizer =
-    inherit Fabulous.Maui.IGestureRecognizer
+type IFabPanGestureRecognizer =
+    inherit IFabGestureRecognizer
 
 module PanGestureRecognizer =
     let WidgetKey = Widgets.register<PanGestureRecognizer>()
@@ -21,7 +21,7 @@ module PanGestureRecognizerBuilders =
     type Fabulous.Maui.View with
 
         static member inline PanGestureRecognizer<'msg>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
-            WidgetBuilder<'msg, IPanGestureRecognizer>(
+            WidgetBuilder<'msg, IFabPanGestureRecognizer>(
                 PanGestureRecognizer.WidgetKey,
                 PanGestureRecognizer.PanUpdated.WithValue(fun args -> onPanUpdated args |> box)
             )
@@ -32,5 +32,5 @@ type PanGestureRecognizerModifiers =
     /// <summary>Sets the number of touch points in the gesture.</summary>
     /// <param name="value">The number of touch points that must be present on the screen to trigger the gesture.</param>
     [<Extension>]
-    static member inline touchPoints(this: WidgetBuilder<'msg, #IPanGestureRecognizer>, value: int) =
+    static member inline touchPoints(this: WidgetBuilder<'msg, #IFabPanGestureRecognizer>, value: int) =
         this.AddScalar(PanGestureRecognizer.TouchPoints.WithValue(value))

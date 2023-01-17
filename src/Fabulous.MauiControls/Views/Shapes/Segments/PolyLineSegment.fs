@@ -5,8 +5,8 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IPolyLineSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabPolyLineSegment =
+    inherit IFabPathSegment
 
 module PolyLineSegment =
     let WidgetKey = Widgets.register<PolyLineSegment>()
@@ -36,7 +36,7 @@ module PolyLineSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline PolyLineSegment<'msg>(points: string) =
-            WidgetBuilder<'msg, IPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsString.WithValue(points))
+            WidgetBuilder<'msg, IFabPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsString.WithValue(points))
 
         static member inline PolyLineSegment<'msg>(points: Point list) =
-            WidgetBuilder<'msg, IPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsList.WithValue(Array.ofList points))
+            WidgetBuilder<'msg, IFabPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsList.WithValue(Array.ofList points))

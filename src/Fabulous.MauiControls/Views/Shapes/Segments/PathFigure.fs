@@ -3,12 +3,11 @@ namespace Fabulous.Maui
 open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IPathFigure =
-    inherit Fabulous.Maui.IElement
+type IFabPathFigure =
+    inherit IFabElement
 
 module PathFigure =
     let WidgetKey = Widgets.register<PathFigure>()
@@ -30,18 +29,18 @@ module PathFigureBuilders =
 
         static member inline PathFigure<'msg>(?start: Point) =
             match start with
-            | None -> CollectionBuilder<'msg, IPathFigure, IPathSegment>(PathFigure.WidgetKey, PathFigure.Segments)
+            | None -> CollectionBuilder<'msg, IFabPathFigure, IFabPathSegment>(PathFigure.WidgetKey, PathFigure.Segments)
             | Some start ->
-                CollectionBuilder<'msg, IPathFigure, IPathSegment>(PathFigure.WidgetKey, PathFigure.Segments, PathFigure.StartPoint.WithValue(start))
+                CollectionBuilder<'msg, IFabPathFigure, IFabPathSegment>(PathFigure.WidgetKey, PathFigure.Segments, PathFigure.StartPoint.WithValue(start))
 
 
 [<Extension>]
 type PathFigureModifiers =
 
     [<Extension>]
-    static member inline isClosed(this: WidgetBuilder<'msg, #IPathFigure>, value: bool) =
+    static member inline isClosed(this: WidgetBuilder<'msg, #IFabPathFigure>, value: bool) =
         this.AddScalar(PathFigure.IsClosed.WithValue(value))
 
     [<Extension>]
-    static member inline isFilled(this: WidgetBuilder<'msg, #IPathFigure>, value: bool) =
+    static member inline isFilled(this: WidgetBuilder<'msg, #IFabPathFigure>, value: bool) =
         this.AddScalar(PathFigure.IsFilled.WithValue(value))
