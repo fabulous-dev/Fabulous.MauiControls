@@ -18,11 +18,7 @@ module VerticalStackLayoutBuilders =
             match spacing with
             | None -> CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(VerticalStackLayout.WidgetKey, LayoutOfView.Children)
             | Some v ->
-                CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(
-                    VerticalStackLayout.WidgetKey,
-                    LayoutOfView.Children,
-                    StackBase.Spacing.WithValue(v)
-                )
+                CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(VerticalStackLayout.WidgetKey, LayoutOfView.Children, StackBase.Spacing.WithValue(v))
 
 [<Extension>]
 type VerticalStackLayoutModifiers =

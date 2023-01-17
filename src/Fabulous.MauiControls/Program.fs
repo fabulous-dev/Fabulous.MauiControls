@@ -139,8 +139,7 @@ module Program =
         adapter.CreateView() |> unbox
 
     /// Start the program
-    let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application =
-        startApplicationWithArgs () program
+    let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application = startApplicationWithArgs () program
 
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
