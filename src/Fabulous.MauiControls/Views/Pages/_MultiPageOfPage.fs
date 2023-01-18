@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls
 open System.Runtime.CompilerServices
 
-type IMultiPageOfPage =
-    inherit Fabulous.Maui.IPage
+type IFabMultiPageOfPage =
+    inherit IFabPage
 
 module MultiPageOfPage =
     let Children =
@@ -19,5 +19,5 @@ type MultiPageOfPageModifiers =
     /// <summary>Raised when the CurrentPage property changes.</summary>
     /// <param name="onCurrentPageChanged">The msg to invoke when the CurrentPage property changes.</param>
     [<Extension>]
-    static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #IMultiPageOfPage>, onCurrentPageChanged: 'msg) =
+    static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, onCurrentPageChanged: 'msg) =
         this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(onCurrentPageChanged))

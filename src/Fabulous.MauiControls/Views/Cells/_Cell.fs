@@ -2,11 +2,10 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ICell =
-    inherit Fabulous.Maui.IElement
+type IFabCell =
+    inherit IFabElement
 
 module Cell =
     let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
@@ -37,23 +36,23 @@ type CellModifiers =
     /// <summary>Sets a value that indicates whether the cell IsEnabled</summary>
     /// <param name="value">true if the cell IsEnabled; otherwise, false.</param>
     [<Extension>]
-    static member inline isEnabled(this: WidgetBuilder<'msg, #ICell>, value: bool) =
+    static member inline isEnabled(this: WidgetBuilder<'msg, #IFabCell>, value: bool) =
         this.AddScalar(Cell.IsEnabled.WithValue(value))
 
     /// <summary>Sets the height of the cell</summary>
     /// <param name="value">The height of the cell</param>
     [<Extension>]
-    static member inline height(this: WidgetBuilder<'msg, #ICell>, value: float) =
+    static member inline height(this: WidgetBuilder<'msg, #IFabCell>, value: float) =
         this.AddScalar(Cell.Height.WithValue(value))
 
     [<Extension>]
-    static member inline onAppearing(this: WidgetBuilder<'msg, #ICell>, onAppearing: 'msg) =
+    static member inline onAppearing(this: WidgetBuilder<'msg, #IFabCell>, onAppearing: 'msg) =
         this.AddScalar(Cell.Appearing.WithValue(onAppearing))
 
     [<Extension>]
-    static member inline onDisappearing(this: WidgetBuilder<'msg, #ICell>, onDisappearing: 'msg) =
+    static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabCell>, onDisappearing: 'msg) =
         this.AddScalar(Cell.Disappearing.WithValue(onDisappearing))
 
     [<Extension>]
-    static member inline onTapped(this: WidgetBuilder<'msg, #ICell>, onTapped: 'msg) =
+    static member inline onTapped(this: WidgetBuilder<'msg, #IFabCell>, onTapped: 'msg) =
         this.AddScalar(Cell.Tapped.WithValue(onTapped))

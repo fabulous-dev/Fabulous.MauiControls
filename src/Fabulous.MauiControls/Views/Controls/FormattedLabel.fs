@@ -2,11 +2,10 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IFormattedLabel =
-    inherit Fabulous.Maui.ILabel
+type IFabFormattedLabel =
+    inherit IFabLabel
 
 module FormattedLabel =
     let WidgetKey = Widgets.register<Label>()
@@ -25,11 +24,11 @@ module FormattedLabelBuilders =
     type Fabulous.Maui.View with
 
         static member inline FormattedLabel<'msg>() =
-            CollectionBuilder<'msg, IFormattedLabel, ISpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
+            CollectionBuilder<'msg, IFabFormattedLabel, IFabSpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
 
 [<Extension>]
 type FormattedLabelModifiers =
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFormattedLabel>, value: ViewRef<Label>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabFormattedLabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

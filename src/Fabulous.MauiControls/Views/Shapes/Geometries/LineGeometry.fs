@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type ILineGeometry =
-    inherit Fabulous.Maui.IGeometry
+type IFabLineGeometry =
+    inherit IFabGeometry
 
 module LineGeometry =
     let WidgetKey = Widgets.register<LineGeometry>()
@@ -21,4 +21,4 @@ module LineGeometryBuilders =
     type Fabulous.Maui.View with
 
         static member inline LineGeometry<'msg>(start: Point, end': Point) =
-            WidgetBuilder<'msg, ILineGeometry>(LineGeometry.WidgetKey, LineGeometry.StartPoint.WithValue(start), LineGeometry.EndPoint.WithValue(end'))
+            WidgetBuilder<'msg, IFabLineGeometry>(LineGeometry.WidgetKey, LineGeometry.StartPoint.WithValue(start), LineGeometry.EndPoint.WithValue(end'))

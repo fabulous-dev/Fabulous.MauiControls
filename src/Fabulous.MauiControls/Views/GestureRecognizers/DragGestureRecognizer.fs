@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IDragGestureRecognizer =
-    inherit Fabulous.Maui.IGestureRecognizer
+type IFabDragGestureRecognizer =
+    inherit IFabGestureRecognizer
 
 module DragGestureRecognizer =
     let WidgetKey = Widgets.register<DragGestureRecognizer>()
@@ -24,7 +24,7 @@ module DragGestureRecognizerBuilders =
     type Fabulous.Maui.View with
 
         static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
-            WidgetBuilder<'msg, IDragGestureRecognizer>(
+            WidgetBuilder<'msg, IFabDragGestureRecognizer>(
                 DragGestureRecognizer.WidgetKey,
                 DragGestureRecognizer.DragStarting.WithValue(fun args -> onDragStarting args |> box)
             )
@@ -35,9 +35,9 @@ type DragGestureRecognizerModifiers =
     /// <summary>Sets whether users are allowed to drag</summary>
     /// <param name="value">true to allow users to drag; otherwise, false</param>
     [<Extension>]
-    static member inline canDrag(this: WidgetBuilder<'msg, #IDragGestureRecognizer>, value: bool) =
+    static member inline canDrag(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, value: bool) =
         this.AddScalar(DragGestureRecognizer.CanDrag.WithValue(value))
 
     [<Extension>]
-    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IDragGestureRecognizer>, onDropCompleted: 'msg) =
+    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, onDropCompleted: 'msg) =
         this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> onDropCompleted |> box))

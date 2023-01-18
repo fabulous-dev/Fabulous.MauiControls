@@ -3,26 +3,12 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
-open Microsoft.Maui.Controls.Shapes
 
-type IFlyoutPage =
-    inherit Fabulous.Maui.IPage
+type IFabFlyoutPage =
+    inherit IFabPage
 
 module FlyoutPage =
     let WidgetKey = Widgets.register<CustomFlyoutPage>()
-
-    // let CanChangeIsPresented =
-    //     Attributes.defineBool
-    //         "FlyoutPage_CanChangeIsPresented"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.CanChangeIsPresented
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.CanChangeIsPresented <- value)
 
     let IsGestureEnabled =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
@@ -37,19 +23,6 @@ module FlyoutPage =
             (fun target -> (target :?> FlyoutPage).Flyout :> obj)
             (fun target value -> (target :?> FlyoutPage).Flyout <- value)
 
-    // let FlyoutBounds =
-    //     Attributes.defineSimpleScalarWithEquality<Rectangle>
-    //         "FlyoutPage_FlyoutBounds"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.FlyoutBounds
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.FlyoutBounds <- value)
-
     let FlyoutLayoutBehavior =
         Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
@@ -59,19 +32,6 @@ module FlyoutPage =
             (fun target -> (target :?> FlyoutPage).Detail :> obj)
             (fun target value -> (target :?> FlyoutPage).Detail <- value)
 
-    // let DetailBounds =
-    //     Attributes.defineSimpleScalarWithEquality<Rectangle>
-    //         "FlyoutPage_DetailBounds"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.DetailBounds
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.DetailBounds <- value)
-
     let BackButtonPressed =
         Attributes.defineEvent<BackButtonPressedEventArgs> "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
@@ -79,12 +39,12 @@ module FlyoutPage =
 module FlyoutPageBuilders =
     type Fabulous.Maui.View with
 
-        static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IPage and 'detail :> IPage>
+        static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IFabPage and 'detail :> IFabPage>
             (
                 flyout: WidgetBuilder<'msg, 'flyout>,
                 detail: WidgetBuilder<'msg, 'detail>
             ) =
-            WidgetHelpers.buildWidgets<'msg, IFlyoutPage>
+            WidgetHelpers.buildWidgets<'msg, IFabFlyoutPage>
                 FlyoutPage.WidgetKey
                 [| FlyoutPage.Flyout.WithValue(flyout.Compile())
                    FlyoutPage.Detail.WithValue(detail.Compile()) |]
@@ -92,35 +52,23 @@ module FlyoutPageBuilders =
 [<Extension>]
 type FlyoutPageModifiers =
 
-    // [<Extension>]
-    // static member inline canChangeIsPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
-    //     this.AddScalar(FlyoutPage.CanChangeIsPresented.WithValue(value))
-
     [<Extension>]
-    static member inline isPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
+    static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
         this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
 
     [<Extension>]
-    static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
+    static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool) =
         this.AddScalar(FlyoutPage.IsGestureEnabled.WithValue(value))
 
     [<Extension>]
-    static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFlyoutPage>, value: FlyoutLayoutBehavior) =
+    static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: FlyoutLayoutBehavior) =
         this.AddScalar(FlyoutPage.FlyoutLayoutBehavior.WithValue(value))
 
-    // [<Extension>]
-    // static member inline flyoutBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
-    //     this.AddScalar(FlyoutPage.FlyoutBounds.WithValue(value))
-
-    // [<Extension>]
-    // static member inline detailBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
-    //     this.AddScalar(FlyoutPage.DetailBounds.WithValue(value))
-
     [<Extension>]
-    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFlyoutPage>, onBackButtonPressed: bool -> 'msg) =
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabFlyoutPage>, onBackButtonPressed: bool -> 'msg) =
         this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> onBackButtonPressed args.Handled |> box))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFlyoutPage>, value: ViewRef<FlyoutPage>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabFlyoutPage>, value: ViewRef<FlyoutPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

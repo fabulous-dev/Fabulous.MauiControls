@@ -8,8 +8,8 @@ open Microsoft.Maui.Controls
 [<Struct>]
 type ScrollToData = { X: float; Y: float; Animated: bool }
 
-type IScrollView =
-    inherit Fabulous.Maui.ILayout
+type IFabScrollView =
+    inherit IFabLayout
 
 module ScrollView =
     let WidgetKey = Widgets.register<ScrollView>()
@@ -48,8 +48,8 @@ module ScrollView =
 module ScrollViewBuilders =
     type Fabulous.Maui.View with
 
-        static member inline ScrollView<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
+        static member inline ScrollView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+            WidgetHelpers.buildWidgets<'msg, IFabScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
 type ScrollViewModifiers =
@@ -57,37 +57,37 @@ type ScrollViewModifiers =
     /// <summary>Sets the scrolling direction of the ScrollView</summary>
     /// <param name="orientation">of type ScrollOrientation. The default value of this property is Vertical</param>
     [<Extension>]
-    static member inline orientation(this: WidgetBuilder<'msg, #IScrollView>, value: ScrollOrientation) =
+    static member inline orientation(this: WidgetBuilder<'msg, #IFabScrollView>, value: ScrollOrientation) =
         this.AddScalar(ScrollView.Orientation.WithValue(value))
 
     /// <summary>Sets when the horizontal scroll bar is visible.</summary>
     /// <param name="value">of type ScrollBarVisibility.</param>
     [<Extension>]
-    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IScrollView>, value: ScrollBarVisibility) =
+    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabScrollView>, value: ScrollBarVisibility) =
         this.AddScalar(ScrollView.HorizontalScrollBarVisibility.WithValue(value))
 
     /// <summary>Sets when the vertical scroll bar is visible.</summary>
     /// <param name="value">of type ScrollBarVisibility.</param>
     [<Extension>]
-    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IScrollView>, value: ScrollBarVisibility) =
+    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabScrollView>, value: ScrollBarVisibility) =
         this.AddScalar(ScrollView.VerticalScrollBarVisibility.WithValue(value))
 
     /// <summary>Sets the current X scroll position.</summary>
     /// <param name="value">of type float, The default value of this read-only property is 0.</param>
     [<Extension>]
-    static member inline scrollX(this: WidgetBuilder<'msg, #IScrollView>, value: float) =
+    static member inline scrollX(this: WidgetBuilder<'msg, #IFabScrollView>, value: float) =
         this.AddScalar(ScrollView.ScrollX.WithValue(value))
 
     /// <summary>Sets the current Y scroll position.</summary>
     /// <param name="value">of type float, The default value of this read-only property is 0.</param>
     [<Extension>]
-    static member inline scrollY(this: WidgetBuilder<'msg, #IScrollView>, value: float) =
+    static member inline scrollY(this: WidgetBuilder<'msg, #IFabScrollView>, value: float) =
         this.AddScalar(ScrollView.ScrollY.WithValue(value))
 
     /// <summary>Event that is fired when the scrollView is scrolled.</summary>
     /// <param name="onScrolled">Msg to dispatch when the scrollView is scrolled.</param>
     [<Extension>]
-    static member inline onScrolled(this: WidgetBuilder<'msg, #IScrollView>, onScrolled: ScrolledEventArgs -> 'msg) =
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabScrollView>, onScrolled: ScrolledEventArgs -> 'msg) =
         this.AddScalar(ScrollView.Scrolled.WithValue(fun args -> onScrolled args |> box))
 
     /// <summary>Returns a task that scrolls the scroll view to a position asynchronously.</summary>
@@ -95,10 +95,10 @@ type ScrollViewModifiers =
     /// <param name="y">The Y position of the finished scroll.</param>
     /// <param name="animated">Whether or not to animate the scroll.</param>
     [<Extension>]
-    static member inline scrollTo(this: WidgetBuilder<'msg, #IScrollView>, x: float, y: float, animated: bool) =
+    static member inline scrollTo(this: WidgetBuilder<'msg, #IFabScrollView>, x: float, y: float, animated: bool) =
         this.AddScalar(ScrollView.ScrollTo.WithValue({ X = x; Y = y; Animated = animated }))
 
     /// <summary>Link a ViewRef to access the direct ScrollView control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IScrollView>, value: ViewRef<ScrollView>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabScrollView>, value: ViewRef<ScrollView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -4,8 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IHorizontalStackLayout =
-    inherit IStackBase
+type IFabHorizontalStackLayout =
+    inherit IFabStackBase
 
 module HorizontalStackLayout =
     let WidgetKey = Widgets.register<HorizontalStackLayout>()
@@ -16,9 +16,9 @@ module HorizontalStackLayoutBuilders =
 
         static member inline HStack<'msg>(?spacing: float) =
             match spacing with
-            | None -> CollectionBuilder<'msg, IHorizontalStackLayout, Fabulous.Maui.IView>(HorizontalStackLayout.WidgetKey, LayoutOfView.Children)
+            | None -> CollectionBuilder<'msg, IFabHorizontalStackLayout, IFabView>(HorizontalStackLayout.WidgetKey, LayoutOfView.Children)
             | Some v ->
-                CollectionBuilder<'msg, IHorizontalStackLayout, Fabulous.Maui.IView>(
+                CollectionBuilder<'msg, IFabHorizontalStackLayout, IFabView>(
                     HorizontalStackLayout.WidgetKey,
                     LayoutOfView.Children,
                     StackBase.Spacing.WithValue(v)
@@ -28,5 +28,5 @@ module HorizontalStackLayoutBuilders =
 type HorizontalStackLayoutModifiers =
     /// <summary>Link a ViewRef to access the direct HorizontalStackLayout control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IHorizontalStackLayout>, value: ViewRef<HorizontalStackLayout>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabHorizontalStackLayout>, value: ViewRef<HorizontalStackLayout>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

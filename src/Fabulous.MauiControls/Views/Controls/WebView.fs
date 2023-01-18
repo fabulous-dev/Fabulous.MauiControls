@@ -4,12 +4,11 @@ open System
 open System.Net
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
-type IWebView =
-    inherit Fabulous.Maui.IView
+type IFabWebView =
+    inherit IFabView
 
 module WebView =
 
@@ -30,9 +29,6 @@ module WebView =
 
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
-
-    // let ReloadRequested =
-    //     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
     let EnableZoomControls =
         Attributes.defineBool "WebView_EnableZoomControls" (fun _ newValueOpt node ->
@@ -61,7 +57,7 @@ module WebViewBuilders =
     type Fabulous.Maui.View with
 
         static member inline WebView<'msg>(source: WebViewSource) =
-            WidgetBuilder<'msg, IWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
+            WidgetBuilder<'msg, IFabWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
         static member inline WebView<'msg>(html: string, ?baseUrl: string) =
             let source = HtmlWebViewSource()
@@ -84,44 +80,40 @@ type WebViewModifiers() =
     /// <summary>Sets a value that indicates whether the user can navigate to previous pages.</summary>
     /// <param name="value">true if the user can navigate to previous pages; otherwise, false.</param>
     [<Extension>]
-    static member inline canGoBack(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+    static member inline canGoBack(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.CanGoBack.WithValue(value))
 
     /// <summary>Sets a value that indicates whether the user can navigate to the next pages.</summary>
     /// <param name="value">true if the user can navigate to the next pages; otherwise, false.</param>
     [<Extension>]
-    static member inline canGoForward(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+    static member inline canGoForward(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.CanGoForward.WithValue(value))
 
     /// <summary>When set this will act as a sync for cookies.</summary>
     /// <param name="value">The cookie container.</param>
     [<Extension>]
-    static member inline cookies(this: WidgetBuilder<'msg, #IWebView>, value: CookieContainer) =
+    static member inline cookies(this: WidgetBuilder<'msg, #IFabWebView>, value: CookieContainer) =
         this.AddScalar(WebView.Cookies.WithValue(value))
 
     [<Extension>]
-    static member inline onNavigating(this: WidgetBuilder<'msg, #IWebView>, onNavigating: WebNavigatingEventArgs -> 'msg) =
+    static member inline onNavigating(this: WidgetBuilder<'msg, #IFabWebView>, onNavigating: WebNavigatingEventArgs -> 'msg) =
         this.AddScalar(WebView.Navigating.WithValue(fun args -> onNavigating args |> box))
 
     [<Extension>]
-    static member inline onNavigated(this: WidgetBuilder<'msg, #IWebView>, onNavigated: WebNavigatedEventArgs -> 'msg) =
+    static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, onNavigated: WebNavigatedEventArgs -> 'msg) =
         this.AddScalar(WebView.Navigated.WithValue(fun args -> onNavigated args |> box))
-
-    // [<Extension>]
-    // static member inline onReloadRequested(this: WidgetBuilder<'msg, #IWebView>, onReloadRequested: 'msg) =
-    //     this.AddScalar(WebView.ReloadRequested.WithValue(onReloadRequested))
 
     /// <summary>Link a ViewRef to access the direct WebView control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IWebView>, value: ViewRef<WebView>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabWebView>, value: ViewRef<WebView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type WebViewPlatformModifiers =
     [<Extension>]
-    static member inline enableZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+    static member inline enableZoomControls(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.EnableZoomControls.WithValue(value))
 
     [<Extension>]
-    static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+    static member displayZoomControls(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.DisplayZoomControls.WithValue(value))

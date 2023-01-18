@@ -6,8 +6,8 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type ILine =
-    inherit Fabulous.Maui.IShape
+type IFabLine =
+    inherit IFabShape
 
 module Line =
 
@@ -35,7 +35,7 @@ module LineBuilders =
     type Fabulous.Maui.View with
 
         static member inline Line<'msg>(startPoint: Point, endPoint: Point, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
-            WidgetBuilder<'msg, ILine>(
+            WidgetBuilder<'msg, IFabLine>(
                 Line.WidgetKey,
                 Line.Points.WithValue(struct (startPoint, endPoint)),
                 Shape.StrokeThickness.WithValue(strokeThickness),
@@ -47,5 +47,5 @@ module LineBuilders =
 type LineModifiers =
     /// <summary>Link a ViewRef to access the direct Line control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ILine>, value: ViewRef<Line>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabLine>, value: ViewRef<Line>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

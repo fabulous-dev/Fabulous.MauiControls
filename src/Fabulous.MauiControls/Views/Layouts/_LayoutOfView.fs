@@ -1,10 +1,9 @@
 namespace Fabulous.Maui
 
 open Fabulous
-open Microsoft.Maui.Controls
 
-type ILayoutOfView =
-    inherit Fabulous.Maui.ILayout
+type IFabLayoutOfView =
+    inherit IFabLayout
 
 module LayoutOfView =
     let Children =

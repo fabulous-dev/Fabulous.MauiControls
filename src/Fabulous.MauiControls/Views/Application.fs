@@ -2,12 +2,11 @@
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.ApplicationModel
 
-type IApplication =
-    inherit Fabulous.Maui.IElement
+type IFabApplication =
+    inherit IFabElement
 
 module Application =
     let WidgetKey = Widgets.register<CustomApplication>()
@@ -68,55 +67,55 @@ module Application =
 module ApplicationBuilders =
     type Fabulous.Maui.View with
 
-        static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
+        static member inline Application<'msg, 'marker when 'marker :> IFabPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
+            WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
 [<Extension>]
 type ApplicationModifiers =
     [<Extension>]
-    static member inline userAppTheme(this: WidgetBuilder<'msg, #IApplication>, value: AppTheme) =
+    static member inline userAppTheme(this: WidgetBuilder<'msg, #IFabApplication>, value: AppTheme) =
         this.AddScalar(Application.UserAppTheme.WithValue(value))
 
     [<Extension>]
-    static member inline resources(this: WidgetBuilder<'msg, #IApplication>, value: ResourceDictionary) =
+    static member inline resources(this: WidgetBuilder<'msg, #IFabApplication>, value: ResourceDictionary) =
         this.AddScalar(Application.Resources.WithValue(value))
 
     [<Extension>]
-    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, onRequestedThemeChanged: AppTheme -> 'msg) =
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, onRequestedThemeChanged: AppTheme -> 'msg) =
         this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box))
 
     [<Extension>]
-    static member inline onModalPopped(this: WidgetBuilder<'msg, #IApplication>, onModalPopped: ModalPoppedEventArgs -> 'msg) =
+    static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, onModalPopped: ModalPoppedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopped.WithValue(onModalPopped >> box))
 
     [<Extension>]
-    static member inline onModalPopping(this: WidgetBuilder<'msg, #IApplication>, onModalPopping: ModalPoppingEventArgs -> 'msg) =
+    static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, onModalPopping: ModalPoppingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopping.WithValue(onModalPopping >> box))
 
     [<Extension>]
-    static member inline onModalPushed(this: WidgetBuilder<'msg, #IApplication>, onModalPushed: ModalPushedEventArgs -> 'msg) =
+    static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, onModalPushed: ModalPushedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushed.WithValue(onModalPushed >> box))
 
     [<Extension>]
-    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, onModalPushing: ModalPushingEventArgs -> 'msg) =
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, onModalPushing: ModalPushingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
     /// Dispatch a message when the application starts
     [<Extension>]
-    static member inline onStart(this: WidgetBuilder<'msg, #IApplication>, onStart: 'msg) =
+    static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, onStart: 'msg) =
         this.AddScalar(Application.Start.WithValue(onStart))
 
     /// Dispatch a message when the application is paused by the OS
     [<Extension>]
-    static member inline onSleep(this: WidgetBuilder<'msg, #IApplication>, onSleep: 'msg) =
+    static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, onSleep: 'msg) =
         this.AddScalar(Application.Sleep.WithValue(onSleep))
 
     /// Dispatch a message when the application is resumed by the OS
     [<Extension>]
-    static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
+    static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, onResume: 'msg) =
         this.AddScalar(Application.Resume.WithValue(onResume))
 
     /// Link a ViewRef to access the direct Application instance
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabApplication>, value: ViewRef<Application>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -7,8 +7,8 @@ open Microsoft.Maui.Controls.Shapes
 
 open Fabulous.Maui
 
-type IPath =
-    inherit Fabulous.Maui.IShape
+type IFabPath =
+    inherit IFabShape
 
 module Path =
     let WidgetKey = Widgets.register<Path>()
@@ -39,16 +39,16 @@ module PathBuilders =
 
     type Fabulous.Maui.View with
 
-        static member inline Path<'msg, 'marker when 'marker :> IGeometry>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
+        static member inline Path<'msg, 'marker when 'marker :> IFabGeometry>(content: WidgetBuilder<'msg, 'marker>) =
+            WidgetHelpers.buildWidgets<'msg, IFabPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
 
         static member inline Path<'msg>(content: string) =
-            WidgetBuilder<'msg, IPath>(Path.WidgetKey, Path.DataString.WithValue(content))
+            WidgetBuilder<'msg, IFabPath>(Path.WidgetKey, Path.DataString.WithValue(content))
 
 [<Extension>]
 type PathModifiers =
     [<Extension>]
-    static member inline renderTransform<'msg, 'marker, 'contentMarker when 'marker :> IPath and 'contentMarker :> ITransform>
+    static member inline renderTransform<'msg, 'marker, 'contentMarker when 'marker :> IFabPath and 'contentMarker :> IFabTransform>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -56,10 +56,10 @@ type PathModifiers =
         this.AddWidget(Path.RenderTransformWidget.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline renderTransform(this: WidgetBuilder<'msg, #IPath>, value: string) =
+    static member inline renderTransform(this: WidgetBuilder<'msg, #IFabPath>, value: string) =
         this.AddScalar(Path.RenderTransformString.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Path control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IPath>, value: ViewRef<Path>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabPath>, value: ViewRef<Path>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

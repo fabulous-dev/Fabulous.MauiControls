@@ -6,8 +6,8 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IPolygon =
-    inherit Fabulous.Maui.IShape
+type IFabPolygon =
+    inherit IFabShape
 
 module Polygon =
 
@@ -40,7 +40,7 @@ module PolygonBuilders =
     type Fabulous.Maui.View with
 
         static member inline Polygon<'msg>(points: string, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
-            WidgetBuilder<'msg, IPolygon>(
+            WidgetBuilder<'msg, IFabPolygon>(
                 Polygon.WidgetKey,
                 Polygon.PointsString.WithValue(points),
                 Shape.StrokeThickness.WithValue(strokeThickness),
@@ -48,7 +48,7 @@ module PolygonBuilders =
             )
 
         static member inline Polygon<'msg>(points: Point list, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
-            WidgetBuilder<'msg, IPolygon>(
+            WidgetBuilder<'msg, IFabPolygon>(
                 Polygon.WidgetKey,
                 Polygon.PointsList.WithValue(Array.ofList points),
                 Shape.StrokeThickness.WithValue(strokeThickness),
@@ -59,10 +59,10 @@ module PolygonBuilders =
 type PolygonModifiers =
 
     [<Extension>]
-    static member inline fillRule(this: WidgetBuilder<'msg, #IPolygon>, value: FillRule) =
+    static member inline fillRule(this: WidgetBuilder<'msg, #IFabPolygon>, value: FillRule) =
         this.AddScalar(Polygon.FillRule.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Polygon control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IPolygon>, value: ViewRef<Polygon>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabPolygon>, value: ViewRef<Polygon>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

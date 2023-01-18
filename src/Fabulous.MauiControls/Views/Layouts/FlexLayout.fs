@@ -8,8 +8,8 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Layouts
 
-type IFlexLayout =
-    inherit Fabulous.Maui.ILayoutOfView
+type IFabFlexLayout =
+    inherit IFabLayoutOfView
 
 module FlexLayout =
 
@@ -50,51 +50,51 @@ module FlexLayoutBuilders =
 
         static member inline FlexLayout<'msg>(?wrap: FlexWrap) =
             match wrap with
-            | None -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
+            | None -> CollectionBuilder<'msg, IFabFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
 
-            | Some v -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children, FlexLayout.Wrap.WithValue(v))
+            | Some v -> CollectionBuilder<'msg, IFabFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children, FlexLayout.Wrap.WithValue(v))
 
 [<Extension>]
 type FlexLayoutModifiers =
     /// <summary>Sets a value that controls how multiple rows or columns of child elements are aligned.</summary>
     /// <param name="value">Enumerates values that control how multiple rows or columns of child elements are aligned.</param>
     [<Extension>]
-    static member inline alignContent(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexAlignContent) =
+    static member inline alignContent(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexAlignContent) =
         this.AddScalar(FlexLayout.AlignContent.WithValue(value))
 
     /// <summary>Sets a value that controls how child elements are laid out within their row or column.</summary>
     /// <param name="value">Enumerates values that control the alignment of child elements.</param>
     [<Extension>]
-    static member inline alignItems(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexAlignItems) =
+    static member inline alignItems(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexAlignItems) =
         this.AddScalar(FlexLayout.AlignItems.WithValue(value))
 
     /// <summary>Sets the flex direction for child elements within this layout.</summary>
     /// <param name="value">Enumerates values that specify row and colum in flex layout directions, relative to the directions for the device locale.</param>
     [<Extension>]
-    static member inline direction(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexDirection) =
+    static member inline direction(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexDirection) =
         this.AddScalar(FlexLayout.Direction.WithValue(value))
 
     /// <summary>Sets a value that controls whether and how child elements within this layout wrap.</summary>
     /// <param name="value">Enumerates values that control whether and how to wrap items in a FlexLayout.</param>
     [<Extension; Obsolete("Use FlexLayout(wrap: FlexWrap) instead")>]
-    static member inline wrap(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexWrap) =
+    static member inline wrap(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexWrap) =
         this.AddScalar(FlexLayout.Wrap.WithValue(value))
 
     /// <summary>Sets a value that controls whether the coordinates of child elements are specified in absolute or relative terms.</summary>
     /// <param name="value">Enumerates values that control how layout coordinates are interpreted when specifying the positions of child elements.</param>
     [<Extension>]
-    static member inline position(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexPosition) =
+    static member inline position(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexPosition) =
         this.AddScalar(FlexLayout.Position.WithValue(value))
 
     /// <summary>Sets a value that describes how child elements are justified when there is extra space around them.</summary>
     /// <param name="value">Enumerates values that control how child elements are justified when there is extra space around them.</param>
     [<Extension>]
-    static member inline justifyContent(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexJustify) =
+    static member inline justifyContent(this: WidgetBuilder<'msg, #IFabFlexLayout>, value: FlexJustify) =
         this.AddScalar(FlexLayout.JustifyContent.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct FlexLayout control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFlexLayout>, value: ViewRef<FlexLayout>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabFlexLayout>, value: ViewRef<FlexLayout>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]

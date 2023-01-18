@@ -4,8 +4,8 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type ILineSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabLineSegment =
+    inherit IFabPathSegment
 
 module LineSegment =
     let WidgetKey = Widgets.register<LineSegment>()
@@ -18,4 +18,4 @@ module LineSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline LineSegment<'msg>(point: Point) =
-            WidgetBuilder<'msg, ILineSegment>(LineSegment.WidgetKey, LineSegment.Point.WithValue(point))
+            WidgetBuilder<'msg, IFabLineSegment>(LineSegment.WidgetKey, LineSegment.Point.WithValue(point))

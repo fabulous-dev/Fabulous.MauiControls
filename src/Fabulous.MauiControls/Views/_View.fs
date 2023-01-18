@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IView =
-    inherit Fabulous.Maui.IVisualElement
+type IFabView =
+    inherit IFabVisualElement
 
 module XFView =
     let HorizontalOptions =
@@ -23,63 +23,63 @@ module XFView =
 [<Extension>]
 type ViewModifiers =
     [<Extension>]
-    static member inline horizontalOptions(this: WidgetBuilder<'msg, #IView>, value: LayoutOptions) =
+    static member inline horizontalOptions(this: WidgetBuilder<'msg, #IFabView>, value: LayoutOptions) =
         this.AddScalar(XFView.HorizontalOptions.WithValue(value))
 
     [<Extension>]
-    static member inline verticalOptions(this: WidgetBuilder<'msg, #IView>, value: LayoutOptions) =
+    static member inline verticalOptions(this: WidgetBuilder<'msg, #IFabView>, value: LayoutOptions) =
         this.AddScalar(XFView.VerticalOptions.WithValue(value))
 
     [<Extension>]
-    static member inline center(this: WidgetBuilder<'msg, #IView>) =
+    static member inline center(this: WidgetBuilder<'msg, #IFabView>) =
         this
             .AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Center))
             .AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>) =
+    static member inline centerHorizontal(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline centerVertical(this: WidgetBuilder<'msg, #IView>) =
+    static member inline centerVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline alignStartHorizontal(this: WidgetBuilder<'msg, #IView>) =
+    static member inline alignStartHorizontal(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Start))
 
     [<Extension>]
-    static member inline alignStartVertical(this: WidgetBuilder<'msg, #IView>) =
+    static member inline alignStartVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Start))
 
     [<Extension>]
-    static member inline alignEndHorizontal(this: WidgetBuilder<'msg, #IView>) =
+    static member inline alignEndHorizontal(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.End))
 
     [<Extension>]
-    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IView>) =
+    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.End))
 
     [<Extension>]
-    static member inline fillHorizontal(this: WidgetBuilder<'msg, #IView>) =
+    static member inline fillHorizontal(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Fill))
 
     [<Extension>]
-    static member inline fillVertical(this: WidgetBuilder<'msg, #IView>) =
+    static member inline fillVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Fill))
 
     [<Extension>]
-    static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Thickness) =
+    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, value: Thickness) =
         this.AddScalar(XFView.Margin.WithValue(value))
 
     [<Extension>]
-    static member inline margin(this: WidgetBuilder<'msg, #IView>, value: float) =
+    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, value: float) =
         ViewModifiers.margin(this, Thickness(value))
 
     [<Extension>]
-    static member inline margin(this: WidgetBuilder<'msg, #IView>, left: float, top: float, right: float, bottom: float) =
+    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, left: float, top: float, right: float, bottom: float) =
         ViewModifiers.margin(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =
-        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.Maui.IGestureRecognizer> XFView.GestureRecognizers this
+    static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> XFView.GestureRecognizers this

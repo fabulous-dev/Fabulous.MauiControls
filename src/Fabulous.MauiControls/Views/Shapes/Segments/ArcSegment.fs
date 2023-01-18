@@ -6,8 +6,8 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
-type IArcSegment =
-    inherit Fabulous.Maui.IPathSegment
+type IFabArcSegment =
+    inherit IFabPathSegment
 
 module ArcSegment =
     let WidgetKey = Widgets.register<ArcSegment>()
@@ -29,19 +29,19 @@ module ArcSegmentBuilders =
     type Fabulous.Maui.View with
 
         static member inline ArcSegment<'msg>(point: Point, size: Size) =
-            WidgetBuilder<'msg, IArcSegment>(ArcSegment.WidgetKey, ArcSegment.Point.WithValue(point), ArcSegment.Size.WithValue(size))
+            WidgetBuilder<'msg, IFabArcSegment>(ArcSegment.WidgetKey, ArcSegment.Point.WithValue(point), ArcSegment.Size.WithValue(size))
 
 [<Extension>]
 type ArcSegmentModifiers =
 
     [<Extension>]
-    static member inline rotationAngle(this: WidgetBuilder<'msg, #IArcSegment>, value: float) =
+    static member inline rotationAngle(this: WidgetBuilder<'msg, #IFabArcSegment>, value: float) =
         this.AddScalar(ArcSegment.RotationAngle.WithValue(value))
 
     [<Extension>]
-    static member inline sweepDirection(this: WidgetBuilder<'msg, #IArcSegment>, value: SweepDirection) =
+    static member inline sweepDirection(this: WidgetBuilder<'msg, #IFabArcSegment>, value: SweepDirection) =
         this.AddScalar(ArcSegment.SweepDirection.WithValue(value))
 
     [<Extension>]
-    static member inline isLargeArc(this: WidgetBuilder<'msg, #IArcSegment>, value: bool) =
+    static member inline isLargeArc(this: WidgetBuilder<'msg, #IFabArcSegment>, value: bool) =
         this.AddScalar(ArcSegment.IsLargeArc.WithValue(value))

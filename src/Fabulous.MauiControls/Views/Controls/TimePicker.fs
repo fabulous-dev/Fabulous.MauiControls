@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
-type ITimePicker =
-    inherit Fabulous.Maui.IView
+type IFabTimePicker =
+    inherit IFabView
 
 module TimePicker =
     let WidgetKey = Widgets.register<FabulousTimePicker>()
@@ -48,7 +48,7 @@ module TimePickerBuilders =
     type Fabulous.Maui.View with
 
         static member inline TimePicker<'msg>(time: System.TimeSpan, onTimeSelected: System.TimeSpan -> 'msg) =
-            WidgetBuilder<'msg, ITimePicker>(
+            WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
                 TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun args -> onTimeSelected args.NewTime |> box))
             )
@@ -56,21 +56,21 @@ module TimePickerBuilders =
 [<Extension>]
 type TimePickerModifiers =
     [<Extension>]
-    static member inline characterSpacing(this: WidgetBuilder<'msg, #ITimePicker>, value: float) =
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabTimePicker>, value: float) =
         this.AddScalar(TimePicker.CharacterSpacing.WithValue(value))
 
     [<Extension>]
-    static member inline format(this: WidgetBuilder<'msg, #ITimePicker>, value: string) =
+    static member inline format(this: WidgetBuilder<'msg, #IFabTimePicker>, value: string) =
         this.AddScalar(TimePicker.Format.WithValue(value))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: FabColor, ?dark: FabColor) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabTimePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(TimePicker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline font
         (
-            this: WidgetBuilder<'msg, #ITimePicker>,
+            this: WidgetBuilder<'msg, #IFabTimePicker>,
             ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
@@ -99,7 +99,7 @@ type TimePickerModifiers =
 
     /// <summary>Link a ViewRef to access the direct TimePicker control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ITimePicker>, value: ViewRef<TimePicker>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabTimePicker>, value: ViewRef<TimePicker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
@@ -107,5 +107,5 @@ type TimePickerPlatformModifiers =
     /// <summary>iOS platform specific. Sets a value that controls whether elements in the time picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
     /// <param name="mode">The new property value to assign.</param>
     [<Extension>]
-    static member inline updateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: iOSSpecific.UpdateMode) =
+    static member inline updateMode(this: WidgetBuilder<'msg, #IFabTimePicker>, mode: iOSSpecific.UpdateMode) =
         this.AddScalar(TimePicker.UpdateMode.WithValue(mode))

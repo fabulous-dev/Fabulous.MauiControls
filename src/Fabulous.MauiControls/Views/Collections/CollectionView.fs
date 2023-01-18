@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ICollectionView =
-    inherit Fabulous.Maui.IItemsView
+type IFabCollectionView =
+    inherit IFabItemsView
 
 module CollectionView =
     let WidgetKey = Widgets.register<CollectionView>()
@@ -59,13 +59,13 @@ module CollectionViewBuilders =
     type Fabulous.Maui.View with
 
         static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
-            WidgetHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items
+            WidgetHelpers.buildItems<'msg, IFabCollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items
 
         static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
             when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
-            WidgetHelpers.buildGroupItems<'msg, ICollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
+            WidgetHelpers.buildGroupItems<'msg, IFabCollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
                 CollectionView.WidgetKey
                 CollectionView.GroupedItemsSource
                 items
@@ -74,15 +74,15 @@ module CollectionViewBuilders =
 type CollectionViewModifiers =
 
     [<Extension>]
-    static member inline selectionMode(this: WidgetBuilder<'msg, #ICollectionView>, value: SelectionMode) =
+    static member inline selectionMode(this: WidgetBuilder<'msg, #IFabCollectionView>, value: SelectionMode) =
         this.AddScalar(CollectionView.SelectionMode.WithValue(value))
 
     [<Extension>]
-    static member inline onSelectionChanged(this: WidgetBuilder<'msg, #ICollectionView>, onSelectionChanged: SelectionChangedEventArgs -> 'msg) =
+    static member inline onSelectionChanged(this: WidgetBuilder<'msg, #IFabCollectionView>, onSelectionChanged: SelectionChangedEventArgs -> 'msg) =
         this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged args |> box))
 
     [<Extension>]
-    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> ICollectionView and 'contentMarker :> IView>
+    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -90,7 +90,7 @@ type CollectionViewModifiers =
         this.AddWidget(CollectionView.Header.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> ICollectionView and 'contentMarker :> IView>
+    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -98,10 +98,10 @@ type CollectionViewModifiers =
         this.AddWidget(CollectionView.Footer.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline itemSizingStrategy(this: WidgetBuilder<'msg, #ICollectionView>, value: ItemSizingStrategy) =
+    static member inline itemSizingStrategy(this: WidgetBuilder<'msg, #IFabCollectionView>, value: ItemSizingStrategy) =
         this.AddScalar(CollectionView.ItemSizingStrategy.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct CollectionView control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ICollectionView>, value: ViewRef<CollectionView>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabCollectionView>, value: ViewRef<CollectionView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

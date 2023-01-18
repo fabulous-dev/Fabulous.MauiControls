@@ -5,8 +5,8 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type ISearchBar =
-    inherit Fabulous.Maui.IInputView
+type IFabSearchBar =
+    inherit IFabInputView
 
 module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()
@@ -46,7 +46,7 @@ module SearchBarBuilders =
     type Fabulous.Maui.View with
 
         static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
-            WidgetBuilder<'msg, ISearchBar>(
+            WidgetBuilder<'msg, IFabSearchBar>(
                 SearchBar.WidgetKey,
                 InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)),
                 SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed)
@@ -58,13 +58,13 @@ type SearchBarModifiers =
     /// <param name="light">The color of the cancel button text in the light theme.</param>
     /// <param name="dark">The color of the cancel button text in the dark theme.</param>
     [<Extension>]
-    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, light: FabColor, ?dark: FabColor) =
+    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #IFabSearchBar>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline font
         (
-            this: WidgetBuilder<'msg, #ISearchBar>,
+            this: WidgetBuilder<'msg, #IFabSearchBar>,
             ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
@@ -94,31 +94,31 @@ type SearchBarModifiers =
     /// <summary>Set the horizontal text alignment</summary>
     /// param name="value">The horizontal text alignment</summary>
     [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ISearchBar>, value: TextAlignment) =
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabSearchBar>, value: TextAlignment) =
         this.AddScalar(SearchBar.HorizontalTextAlignment.WithValue(value))
 
     /// <summary>Set the vertical text alignment</summary>
     /// param name="value">The vertical text alignment</summary>
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ISearchBar>, value: TextAlignment) =
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabSearchBar>, value: TextAlignment) =
         this.AddScalar(SearchBar.VerticalTextAlignment.WithValue(value))
 
     /// <summary>Determines whether text prediction and automatic text correction is enabled.</summary>
     [<Extension>]
-    static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #ISearchBar>, value: bool) =
+    static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #IFabSearchBar>, value: bool) =
         this.AddScalar(SearchBar.IsTextPredictionEnabled.WithValue(value))
 
     /// <summary>Determines the position at which the next character will be inserted into the string stored in the Text property.</summary>
     [<Extension>]
-    static member inline cursorPosition(this: WidgetBuilder<'msg, #ISearchBar>, value: int) =
+    static member inline cursorPosition(this: WidgetBuilder<'msg, #IFabSearchBar>, value: int) =
         this.AddScalar(SearchBar.CursorPosition.WithValue(value))
 
     /// <summary>Set the length of text selection within the SearchBar.</summary>
     [<Extension>]
-    static member inline selectionLength(this: WidgetBuilder<'msg, #ISearchBar>, value: int) =
+    static member inline selectionLength(this: WidgetBuilder<'msg, #IFabSearchBar>, value: int) =
         this.AddScalar(SearchBar.SelectionLength.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct SearchBar control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, ISearchBar>, value: ViewRef<SearchBar>) =
+    static member inline reference(this: WidgetBuilder<'msg, IFabSearchBar>, value: ViewRef<SearchBar>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

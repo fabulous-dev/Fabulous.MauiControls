@@ -18,7 +18,7 @@ module Semantics =
 [<Extension>]
 type SemanticsModifiers =
     [<Extension>]
-    static member inline semantics(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, ?headingLevel: SemanticHeadingLevel, ?description: string, ?hint: string) =
+    static member inline semantics(this: WidgetBuilder<'msg, #IFabView>, ?headingLevel: SemanticHeadingLevel, ?description: string, ?hint: string) =
         let this =
             match headingLevel with
             | None -> this

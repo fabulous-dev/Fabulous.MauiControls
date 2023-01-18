@@ -2,10 +2,9 @@ namespace Fabulous.Maui
 
 open Fabulous
 open Microsoft.Maui.Controls
-open Microsoft.Maui.Graphics
 
-type ISolidColorBrush =
-    inherit IBrush
+type IFabSolidColorBrush =
+    inherit IFabBrush
 
 module SolidColorBrush =
 
@@ -21,4 +20,4 @@ module SolidColorBrushBuilders =
         /// <param name="light">The color in light theme.</param>
         /// <param name="dark">The color in dark theme.</param>
         static member inline SolidColorBrush(light: FabColor, ?dark: FabColor) =
-            WidgetBuilder<'msg, ISolidColorBrush>(SolidColorBrush.WidgetKey, SolidColorBrush.Color.WithValue(AppTheme.create light dark))
+            WidgetBuilder<'msg, IFabSolidColorBrush>(SolidColorBrush.WidgetKey, SolidColorBrush.Color.WithValue(AppTheme.create light dark))

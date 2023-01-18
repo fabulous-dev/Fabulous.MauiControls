@@ -3,8 +3,8 @@ namespace Fabulous.Maui
 open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
-type IMatrixTransform =
-    inherit Fabulous.Maui.ITransform
+type IFabMatrixTransform =
+    inherit IFabTransform
 
 // FIXME Should we expose some of the Matrix methods? ie Invert or RotateAt ...? as extension methods
 // https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Maui.shapes.matrix
@@ -30,4 +30,4 @@ module MatrixTransformBuilders =
     type Fabulous.Maui.View with
 
         static member inline MatrixTransform<'msg>(m11: float, m12: float, m21: float, m22: float, offsetX: float, offsetY: float) =
-            WidgetBuilder<'msg, IMatrixTransform>(MatrixTransform.WidgetKey, MatrixTransform.Matrix.WithValue((m11, m12, m21, m22, offsetX, offsetY)))
+            WidgetBuilder<'msg, IFabMatrixTransform>(MatrixTransform.WidgetKey, MatrixTransform.Matrix.WithValue((m11, m12, m21, m22, offsetX, offsetY)))
