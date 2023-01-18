@@ -10,19 +10,6 @@ type IFabFlyoutPage =
 module FlyoutPage =
     let WidgetKey = Widgets.register<CustomFlyoutPage>()
 
-    // let CanChangeIsPresented =
-    //     Attributes.defineBool
-    //         "FlyoutPage_CanChangeIsPresented"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.CanChangeIsPresented
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.CanChangeIsPresented <- value)
-
     let IsGestureEnabled =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
@@ -36,19 +23,6 @@ module FlyoutPage =
             (fun target -> (target :?> FlyoutPage).Flyout :> obj)
             (fun target value -> (target :?> FlyoutPage).Flyout <- value)
 
-    // let FlyoutBounds =
-    //     Attributes.defineSimpleScalarWithEquality<Rectangle>
-    //         "FlyoutPage_FlyoutBounds"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.FlyoutBounds
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.FlyoutBounds <- value)
-
     let FlyoutLayoutBehavior =
         Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
@@ -57,19 +31,6 @@ module FlyoutPage =
             "FlyoutPage_Detail"
             (fun target -> (target :?> FlyoutPage).Detail :> obj)
             (fun target value -> (target :?> FlyoutPage).Detail <- value)
-
-    // let DetailBounds =
-    //     Attributes.defineSimpleScalarWithEquality<Rectangle>
-    //         "FlyoutPage_DetailBounds"
-    //         (fun _ newValueOpt node ->
-    //             let flyoutPage = node.Target :?> FlyoutPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> flyoutPage.DetailBounds
-    //                 | ValueSome v -> v
-    //
-    //             flyoutPage.DetailBounds <- value)
 
     let BackButtonPressed =
         Attributes.defineEvent<BackButtonPressedEventArgs> "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
@@ -91,10 +52,6 @@ module FlyoutPageBuilders =
 [<Extension>]
 type FlyoutPageModifiers =
 
-    // [<Extension>]
-    // static member inline canChangeIsPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
-    //     this.AddScalar(FlyoutPage.CanChangeIsPresented.WithValue(value))
-
     [<Extension>]
     static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
         this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
@@ -106,14 +63,6 @@ type FlyoutPageModifiers =
     [<Extension>]
     static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: FlyoutLayoutBehavior) =
         this.AddScalar(FlyoutPage.FlyoutLayoutBehavior.WithValue(value))
-
-    // [<Extension>]
-    // static member inline flyoutBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
-    //     this.AddScalar(FlyoutPage.FlyoutBounds.WithValue(value))
-
-    // [<Extension>]
-    // static member inline detailBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
-    //     this.AddScalar(FlyoutPage.DetailBounds.WithValue(value))
 
     [<Extension>]
     static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabFlyoutPage>, onBackButtonPressed: bool -> 'msg) =

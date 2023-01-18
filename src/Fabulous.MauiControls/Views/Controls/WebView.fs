@@ -30,9 +30,6 @@ module WebView =
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
-    // let ReloadRequested =
-    //     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
-
     let EnableZoomControls =
         Attributes.defineBool "WebView_EnableZoomControls" (fun _ newValueOpt node ->
             let webview = node.Target :?> WebView
@@ -105,10 +102,6 @@ type WebViewModifiers() =
     [<Extension>]
     static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, onNavigated: WebNavigatedEventArgs -> 'msg) =
         this.AddScalar(WebView.Navigated.WithValue(fun args -> onNavigated args |> box))
-
-    // [<Extension>]
-    // static member inline onReloadRequested(this: WidgetBuilder<'msg, #IWebView>, onReloadRequested: 'msg) =
-    //     this.AddScalar(WebView.ReloadRequested.WithValue(onReloadRequested))
 
     /// <summary>Link a ViewRef to access the direct WebView control instance</summary>
     [<Extension>]
