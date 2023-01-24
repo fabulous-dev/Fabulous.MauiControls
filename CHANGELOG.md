@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Changed
+- Rename all marker interfaces to IFab* to avoid naming conflicts with Maui interfaces (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/5)
+- Fix an issue where FlexLayout was not usable (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/6)
+- Upgrade to Fabulous 2.2.0 (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/8)
 
 ## [2.1.3] - 2023-01-14
 
@@ -25,6 +28,6 @@ _No unreleased changes_
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
 [unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.1.3...HEAD
-[2.1.3]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.1.2...2.1.3
-[2.1.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.1.1...2.1.2
+[2.1.3]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.1.3
+[2.1.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.1.2
 [2.1.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.1.1
