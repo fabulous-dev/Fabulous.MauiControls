@@ -162,7 +162,9 @@ module App =
                 let x, y = newModel.GameScore
 
                 match result with
-                | Win p -> { newModel with GameScore = (if p = X then (x + 1, y) else (x, y + 1)) }
+                | Win p ->
+                    { newModel with
+                        GameScore = (if p = X then (x + 1, y) else (x, y + 1)) }
                 | _ -> newModel
 
             // Return the new model.
@@ -172,7 +174,9 @@ module App =
                 NextUp = X
                 Board = initialBoard
                 GameScore = (0, 0) }
-        | VisualBoardSizeChanged size -> { model with VisualBoardSize = size - 40. }
+        | VisualBoardSizeChanged size ->
+            { model with
+                VisualBoardSize = size - 40. }
         | ThemeChanged theme -> { model with Theme = theme }
 
     /// A helper to get the suffix used in the Xaml for a position on the board.

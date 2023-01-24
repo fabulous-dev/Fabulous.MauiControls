@@ -61,9 +61,7 @@ module CarouselView =
                                 // CarouselView has been disposed, clean up the handler
                                 let handler =
                                     node
-                                        .TryGetHandler<EventHandler<IndicatorView>>(
-                                            ViewRefAttributes.ViewRef.Name
-                                        )
+                                        .TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
                                         .Value
 
                                 (viewRef :?> ViewRef<IndicatorView>).Attached.RemoveHandler(handler))

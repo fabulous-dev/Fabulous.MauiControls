@@ -28,10 +28,8 @@ module ScrollView =
         Attributes.defineBindableEnum<ScrollBarVisibility> ScrollView.VerticalScrollBarVisibilityProperty
 
     let Content =
-        Attributes.definePropertyWidget
-            "ScrollView_Content"
-            (fun target -> (target :?> ScrollView).Content :> obj)
-            (fun target value -> (target :?> ScrollView).Content <- value)
+        Attributes.definePropertyWidget "ScrollView_Content" (fun target -> (target :?> ScrollView).Content :> obj) (fun target value ->
+            (target :?> ScrollView).Content <- value)
 
     let Scrolled =
         Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
