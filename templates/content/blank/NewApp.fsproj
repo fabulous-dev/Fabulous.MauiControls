@@ -60,7 +60,7 @@
     <AndroidResource Include="$(MonoAndroidResourcePrefix)/*/*" />
     <AndroidResource Remove="$(MonoAndroidResourcePrefix)/raw/.*" />
     <AndroidResource Update="$(MonoAndroidResourcePrefix)/raw/*" />
-    <AndroidAsset Include="$(MonoAndroidAssetsPrefix)/**/*" Exclude="$(MonoAndroidAssetsPrefix)/**/.*/**" />
+    <AndroidAsset Condition="$(MonoAndroidAssetsPrefix) != ''" Include="$(MonoAndroidAssetsPrefix)/**/*" Exclude="$(MonoAndroidAssetsPrefix)/**/.*/**" />
     <AndroidManifest Include="$(AndroidProjectFolder)AndroidManifest.xml" />
     <Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
     <Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
