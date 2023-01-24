@@ -12,10 +12,8 @@ module Application =
     let WidgetKey = Widgets.register<CustomApplication>()
 
     let MainPage =
-        Attributes.definePropertyWidget
-            "Application_MainPage"
-            (fun target -> (target :?> Application).MainPage :> obj)
-            (fun target value -> (target :?> Application).MainPage <- value)
+        Attributes.definePropertyWidget "Application_MainPage" (fun target -> (target :?> Application).MainPage :> obj) (fun target value ->
+            (target :?> Application).MainPage <- value)
 
     let Resources =
         Attributes.defineSimpleScalarWithEquality<ResourceDictionary> "Application_Resources" (fun _ newValueOpt node ->

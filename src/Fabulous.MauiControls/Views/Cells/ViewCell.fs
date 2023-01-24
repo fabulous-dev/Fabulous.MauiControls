@@ -11,10 +11,8 @@ module ViewCell =
     let WidgetKey = Widgets.register<ViewCell>()
 
     let View =
-        Attributes.definePropertyWidget
-            "ViewCell_View"
-            (fun target -> (target :?> ViewCell).View :> obj)
-            (fun target value -> (target :?> ViewCell).View <- value)
+        Attributes.definePropertyWidget "ViewCell_View" (fun target -> (target :?> ViewCell).View :> obj) (fun target value ->
+            (target :?> ViewCell).View <- value)
 
 [<AutoOpen>]
 module ViewCellBuilders =

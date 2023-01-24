@@ -18,19 +18,15 @@ module FlyoutPage =
             (target :?> CustomFlyoutPage).CustomIsPresentedChanged)
 
     let Flyout =
-        Attributes.definePropertyWidget
-            "FlyoutPage_Flyout"
-            (fun target -> (target :?> FlyoutPage).Flyout :> obj)
-            (fun target value -> (target :?> FlyoutPage).Flyout <- value)
+        Attributes.definePropertyWidget "FlyoutPage_Flyout" (fun target -> (target :?> FlyoutPage).Flyout :> obj) (fun target value ->
+            (target :?> FlyoutPage).Flyout <- value)
 
     let FlyoutLayoutBehavior =
         Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
     let Detail =
-        Attributes.definePropertyWidget
-            "FlyoutPage_Detail"
-            (fun target -> (target :?> FlyoutPage).Detail :> obj)
-            (fun target value -> (target :?> FlyoutPage).Detail <- value)
+        Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->
+            (target :?> FlyoutPage).Detail <- value)
 
     let BackButtonPressed =
         Attributes.defineEvent<BackButtonPressedEventArgs> "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
