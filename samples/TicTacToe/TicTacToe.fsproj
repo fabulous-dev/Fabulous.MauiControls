@@ -82,13 +82,10 @@
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'windows'">
     <Manifest Include="$(WindowsProjectFolder)app.manifest" />
     <AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
-    <ApplicationDefinition Include="$(WindowsProjectFolder)App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </ApplicationDefinition>
-    <Compile Include="$(WindowsProjectFolder)App.xaml.fs">
-      <DependentUpon>$(WindowsProjectFolder)App.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(WindowsProjectFolder)App.fs" />
+    <Compile Include="$(WindowsProjectFolder)Main.fs" />
+
+    <PackageReference Include="FSharp.Maui.WinUICompat" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'tizen'">
