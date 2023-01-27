@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix the crash at startup when targeting Windows by using FSharp.Maui.WinUICompat (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/10)
-- Fix an issue where template could enumerate the whole disk to add under the Android target folder (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/9)
+- Fix the crash at startup when targeting Windows by using FSharp.Maui.WinUICompat by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/10)
+- Fix an issue where template could enumerate the whole disk to add under the Android target folder by @Smaug123 (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/9)
 
 ## [2.2.0] - 2023-01-24
 
