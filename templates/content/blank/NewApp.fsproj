@@ -57,10 +57,10 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'android'">
-    <AndroidResource Include="$(MonoAndroidResourcePrefix)/*/*" />
-    <AndroidResource Remove="$(MonoAndroidResourcePrefix)/raw/.*" />
-    <AndroidResource Update="$(MonoAndroidResourcePrefix)/raw/*" />
-    <AndroidAsset Condition="$(MonoAndroidAssetsPrefix) != ''" Include="$(MonoAndroidAssetsPrefix)/**/*" Exclude="$(MonoAndroidAssetsPrefix)/**/.*/**" />
+    <AndroidResource Include="$(AndroidProjectFolder)Resources/*/*" />
+    <AndroidResource Remove="$(AndroidProjectFolder)Resources/raw/.*" />
+    <AndroidResource Update="$(AndroidProjectFolder)Resources/raw/*" />
+    <AndroidAsset Include="$(AndroidProjectFolder)Assets/**/*" Exclude="$(AndroidProjectFolder)Assets/**/.*/**" />
     <AndroidManifest Include="$(AndroidProjectFolder)AndroidManifest.xml" />
     <Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
     <Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
