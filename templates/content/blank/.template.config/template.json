@@ -54,11 +54,17 @@
       "replaces": "FSharpCorePkgVersion",
       "defaultValue": "7.0.0"
     },
-    "FSharpAndroidResourceSdk": {
+    "FSharpAndroidResourcePkgVersion": {
       "type": "parameter",
       "dataType": "string",
-      "replaces": "FSharpAndroidResourceSdk",
+      "replaces": "FSharpAndroidResourcePkgVersion",
       "defaultValue": "1.0.4"
+    },
+    "FSharpMauiWinUICompatPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FSharpMauiWinUICompatPkgVersion",
+      "defaultValue": "1.1.0"
     }
   }
 }

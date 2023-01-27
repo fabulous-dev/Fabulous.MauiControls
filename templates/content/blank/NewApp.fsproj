@@ -65,7 +65,7 @@
     <Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
     <Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
 
-    <PackageReference Include="FSharp.Android.Resource" Version="FSharpAndroidResourceSdk" />
+    <PackageReference Include="FSharp.Android.Resource" Version="FSharpAndroidResourcePkgVersion" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'ios'">
@@ -83,13 +83,10 @@
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'windows'">
     <Manifest Include="$(WindowsProjectFolder)app.manifest" />
     <AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
-    <ApplicationDefinition Include="$(WindowsProjectFolder)App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </ApplicationDefinition>
-    <Compile Include="$(WindowsProjectFolder)App.xaml.fs">
-      <DependentUpon>$(WindowsProjectFolder)App.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(WindowsProjectFolder)App.fs" />
+    <Compile Include="$(WindowsProjectFolder)Main.fs" />
+
+    <PackageReference Include="FSharp.Maui.WinUICompat" Version="FSharpMauiWinUICompatPkgVersion" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'tizen'">

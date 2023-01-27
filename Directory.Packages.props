@@ -13,6 +13,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="NUnit" Version="3.13.3" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageVersion Include="FSharp.Maui.WinUICompat" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
