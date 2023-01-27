@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Fixed
+
+- Fix the crash at startup when targeting Windows by using FSharp.Maui.WinUICompat (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/10)
 
 ## [2.2.0] - 2023-01-24
 
