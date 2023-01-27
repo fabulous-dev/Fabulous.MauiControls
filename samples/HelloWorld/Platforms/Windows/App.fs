@@ -5,5 +5,5 @@
 /// </summary>
 type App() =
     inherit FSharp.Maui.WinUICompat.App()
-    
+
     override this.CreateMauiApp() = HelloWorld.MauiProgram.CreateMauiApp()

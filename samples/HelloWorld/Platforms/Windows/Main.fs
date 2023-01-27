@@ -7,4 +7,3 @@ module Program =
     let main args =
         do FSharp.Maui.WinUICompat.Program.Main(args, typeof<HelloWorld.WinUI.App>)
         0
-        
