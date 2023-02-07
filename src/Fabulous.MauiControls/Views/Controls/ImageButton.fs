@@ -32,8 +32,7 @@ module ImageButton =
     let Padding =
         Attributes.defineBindableWithEquality<Thickness> ImageButton.PaddingProperty
 
-    let Source =
-        Attributes.defineBindableAppTheme<ImageSource> ImageButton.SourceProperty
+    let Source = Attributes.defineBindableWithEquality ImageButton.SourceProperty
 
     let Clicked =
         Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> ImageButton).Clicked)
@@ -48,43 +47,34 @@ module ImageButton =
 module ImageButtonBuilders =
     type Fabulous.Maui.View with
 
-        static member inline ImageButton<'msg>(aspect: Aspect, light: ImageSource, onClicked: 'msg, ?dark: ImageSource) =
+        static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg) =
+            WidgetBuilder<'msg, IFabImageButton>(ImageButton.WidgetKey, ImageButton.Clicked.WithValue(onClicked), ImageButton.Source.WithValue(source))
+
+        static member inline ImageButton<'msg>(source: string, onClicked: 'msg) =
+            View.ImageButton(ImageSource.FromFile(source), onClicked)
+
+        static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg) =
+            View.ImageButton(ImageSource.FromUri(source), onClicked)
+
+        static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg) =
+            View.ImageButton(ImageSource.FromStream(fun () -> source), onClicked)
+
+        static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Aspect.WithValue(aspect),
                 ImageButton.Clicked.WithValue(onClicked),
-                ImageButton.Source.WithValue(AppTheme.create light dark)
+                ImageButton.Source.WithValue(source),
+                ImageButton.Aspect.WithValue(aspect)
             )
 
-        static member inline ImageButton<'msg>(aspect: Aspect, light: string, onClicked: 'msg, ?dark: string) =
-            let light = ImageSource.FromFile(light)
+        static member inline ImageButton<'msg>(source: string, onClicked: 'msg, aspect: Aspect) =
+            View.ImageButton(ImageSource.FromFile(source), onClicked, aspect)
 
-            let dark =
-                match dark with
-                | None -> None
-                | Some v -> Some(ImageSource.FromFile(v))
+        static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg, aspect: Aspect) =
+            View.ImageButton(ImageSource.FromUri(source), onClicked, aspect)
 
-            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
-
-        static member inline ImageButton<'msg>(aspect: Aspect, light: Uri, onClicked: 'msg, ?dark: Uri) =
-            let light = ImageSource.FromUri(light)
-
-            let dark =
-                match dark with
-                | None -> None
-                | Some v -> Some(ImageSource.FromUri(v))
-
-            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
-
-        static member inline ImageButton<'msg>(aspect: Aspect, light: Stream, onClicked: 'msg, ?dark: Stream) =
-            let light = ImageSource.FromStream(fun () -> light)
-
-            let dark =
-                match dark with
-                | None -> None
-                | Some v -> Some(ImageSource.FromStream(fun () -> v))
-
-            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
+        static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg, aspect: Aspect) =
+            View.ImageButton(ImageSource.FromStream(fun () -> source), onClicked, aspect)
 
 [<Extension>]
 type ImageButtonModifiers =

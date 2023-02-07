@@ -3,6 +3,7 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabTextCell =
     inherit IFabCell
@@ -12,7 +13,7 @@ module TextCell =
 
     let Text = Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
-    let TextColor = Attributes.defineBindableAppThemeColor TextCell.TextColorProperty
+    let TextColor = Attributes.defineBindableColor TextCell.TextColorProperty
 
     let Detail = Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
@@ -28,12 +29,9 @@ module TextCellBuilders =
 
 [<Extension>]
 type TextCellModifiers =
-    /// <summary>Set the color of the text.</summary>
-    /// <param name="light">The color of the text in the light theme.</param>
-    /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(TextCell.TextColor.WithValue(AppTheme.create light dark))
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: FabColor) =
+        this.AddScalar(TextCell.TextColor.WithValue(value))
 
     /// <summary>Set the color of the detail text.</summary>
     /// <param name="light">The color of the text in the light theme.</param>
@@ -52,3 +50,8 @@ type TextCellModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabTextCell>, value: ViewRef<TextCell>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type TextCellExtraModifiers =
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) = this.textColor(value.ToFabColor())

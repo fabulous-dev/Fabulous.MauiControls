@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
@@ -14,6 +15,6 @@ module NavigableElement =
 [<Extension>]
 type NavigableElementModifiers =
 
-    [<Extension>]
+    [<Extension; Obsolete>]
     static member inline style(this: WidgetBuilder<'msg, #IFabNavigableElement>, style: Style) =
         this.AddScalar(NavigableElement.Style.WithValue(style))
