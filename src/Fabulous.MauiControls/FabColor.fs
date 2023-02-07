@@ -25,7 +25,7 @@ type FabColor =
 type ColorConversion() =
 
     [<Extension>]
-    static member inline ToXFColor(this: FabColor) : Color =
+    static member inline ToMauiColor(this: FabColor) : Color =
         Color.FromRgba(int this.R, int this.G, int this.B, int this.A)
 
     [<Extension>]

@@ -53,7 +53,7 @@ module Entry =
             let value =
                 match newValueOpt with
                 | ValueNone -> null
-                | ValueSome x -> x.ToXFColor()
+                | ValueSome x -> x.ToMauiColor()
 
             iOSSpecific.Entry.SetCursorColor(entry, value))
 

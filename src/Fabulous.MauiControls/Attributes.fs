@@ -133,7 +133,7 @@ module Attributes =
 
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, v.ToXFColor()))
+            | ValueSome v -> target.SetValue(bindableProperty, v.ToMauiColor()))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableEnum< ^T when ^T: enum<int>> (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition< ^T > =
@@ -164,9 +164,9 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
 
-            | ValueSome { Light = light; Dark = dark } when light = dark -> target.SetValue(bindableProperty, light.ToXFColor())
+            | ValueSome { Light = light; Dark = dark } when light = dark -> target.SetValue(bindableProperty, light.ToMauiColor())
 
-            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light.ToXFColor(), dark.ToXFColor()))
+            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light.ToMauiColor(), dark.ToMauiColor()))
 
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =
