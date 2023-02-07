@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls
 open System
 open System.Diagnostics
 
-module ViewHelpers =
+module MauiViewHelpers =
     let private tryGetScalarValue (widget: Widget) (def: SimpleScalarAttributeDefinition<'data>) =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
@@ -33,7 +33,7 @@ module ViewHelpers =
             // TargetType can be null for MemoWidget
             // but it has already been checked by Fabulous.ViewHelpers.canReuseView
             if def.TargetType <> null then
-                if def.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
+                if def.TargetType.IsAssignableTo(typeof<NavigationPage>) then
                     canReuseNavigationPage prev curr
                 else
                     true
@@ -68,7 +68,7 @@ module ViewHelpers =
             let struct (currLength, currPages) = currPages
 
             if prevLength = currLength then
-                Array.forall2 canReuseView prevPages currPages
+                Array.forall2 (fun (a: Widget) (b: Widget) -> a.Key = b.Key) prevPages currPages
             else
                 true
 
@@ -99,10 +99,10 @@ module Program =
           Update = (fun (msg, model) -> update msg model)
           Subscribe = fun _ -> Cmd.none
           View = view
-          CanReuseView = ViewHelpers.canReuseView
+          CanReuseView = MauiViewHelpers.canReuseView
           SyncAction = MainThread.BeginInvokeOnMainThread
-          Logger = ViewHelpers.defaultLogger()
-          ExceptionHandler = ViewHelpers.defaultExceptionHandler }
+          Logger = MauiViewHelpers.defaultLogger()
+          ExceptionHandler = MauiViewHelpers.defaultExceptionHandler }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =

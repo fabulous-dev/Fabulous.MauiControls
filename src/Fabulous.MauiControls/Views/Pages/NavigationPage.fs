@@ -12,82 +12,170 @@ open Microsoft.Maui.Controls.PlatformConfiguration
 type IFabNavigationPage =
     inherit IFabPage
 
+/// Maui handles pages asynchronously, meaning a page will be added to the stack only after the animation is finished.
+/// This is a problem for Fabulous, because the nav stack needs to be synchronized with the widget trees.
+/// Otherwise rapid consecutive updates might end up with a wrong nav stack.
+///
+/// To work around that, we keep our own nav stack, and we update it synchronously.
+type CustomNavigationPage() as this =
+    inherit NavigationPage()
+
+    let _pagesSync =
+        System.Collections.Generic.List((this :> INavigationPageController).Pages)
+
+    let mutable popCount = 0
+
+    let backNavigated = Event<EventHandler, EventArgs>()
+    let backButtonPressed = RequiresSubscriptionEvent()
+
+    do this.Popped.Add(this.OnPopped)
+
+    [<CLIEvent>]
+    member _.BackNavigated = backNavigated.Publish
+
+    [<CLIEvent>]
+    member _.BackButtonPressed = backButtonPressed.Publish
+
+    member this.PagesSync = _pagesSync :> System.Collections.Generic.IReadOnlyList<Page>
+
+    member this.PushSync(page: Page, ?animated: bool) =
+        _pagesSync.Add(page)
+
+        this.PushAsync(page, (animated <> Some false)) |> ignore
+
+    member this.InsertPageBeforeSync(page: Page, index: int) =
+        let next = _pagesSync.[index]
+        _pagesSync.Insert(index, page)
+        this.Navigation.InsertPageBefore(page, next)
+
+    member this.RemovePageSync(index: int) =
+        if index < _pagesSync.Count then
+            popCount <- popCount + 1
+            let page = _pagesSync.[index]
+            _pagesSync.RemoveAt(index)
+            this.Navigation.RemovePage(page)
+
+    member this.PopSync(?animated: bool) =
+        if _pagesSync.Count > 0 then
+            popCount <- popCount + 1
+            _pagesSync.RemoveAt(_pagesSync.Count - 1)
+            this.PopAsync((animated <> Some false)) |> ignore
+
+    member this.OnPopped(_: NavigationEventArgs) =
+        // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
+        if popCount > 0 then
+            popCount <- popCount - 1
+        else
+            _pagesSync.RemoveAt(_pagesSync.Count - 1)
+            backNavigated.Trigger(this, EventArgs())
+
+    /// If we are listening to the BackButtonPressed event, cancel the automatic back navigation and trigger the event;
+    /// otherwise just let the automatic back navigation happen
+    override this.OnBackButtonPressed() =
+        if backButtonPressed.HasListeners then
+            backButtonPressed.Trigger(this, EventArgs())
+            true
+        else
+            false
+
 module NavigationPageUpdaters =
-    /// NOTE: Would be better to have a custom diff logic for Navigation
-    /// because it's a Stack and not a random access collection
-    let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+    let applyDiffNavigationPagePages _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let navigationPage = node.Target :?> CustomNavigationPage
-
-        let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
-
-        let mutable pagesLength =
-            let struct (size, _) = prev
-            int size
+        let pages = Array.ofSeq navigationPage.PagesSync
 
         let mutable popLastWithAnimation = false
 
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert(index, widget) ->
-                let struct (_, page) = Helpers.createViewForWidget node widget
+                let struct (itemNode, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
 
-                if index >= pagesLength then
-                    navigationPage.Push(page)
-                else
-                    navigationPage.Navigation.InsertPageBefore(page, pages.[index])
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Inserting page with index '{0}' and automationId = '{1}'",
+                    index,
+                    page.AutomationId
+                )
 
-                pagesLength <- pagesLength + 1
+                if index >= pages.Length then
+                    navigationPage.PushSync(page)
+                else
+                    navigationPage.InsertPageBeforeSync(page, index)
+
+
+                // Trigger the mounted event
+                Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
             | WidgetCollectionItemChange.Update(index, diff) ->
-                let childNode = node.TreeContext.GetViewNode(box pages.[index])
+                let page = pages[index]
+                let childNode = node.TreeContext.GetViewNode(page)
+
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Updating page with index '{0}' and automationId = '{1}'",
+                    index,
+                    page.AutomationId
+                )
 
                 childNode.ApplyDiff(&diff)
 
-            | WidgetCollectionItemChange.Replace(index, _, newWidget) ->
-                let struct (_, page) = Helpers.createViewForWidget node newWidget
+            | WidgetCollectionItemChange.Replace(index, prevWidget, currWidget) ->
+                let prevPage = pages[index]
+                let prevItemNode = node.TreeContext.GetViewNode(prevPage)
 
-                let page = page :?> Page
+                let struct (currItemNode, currPage) = Helpers.createViewForWidget node currWidget
+                let currPage = currPage :?> Page
 
-                if index = 0 && pagesLength = 1 then
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Replacing page at index '{0}'. Old automationId = '{1}', new automationId = '{2}'",
+                    index,
+                    prevPage.AutomationId,
+                    currPage.AutomationId
+                )
+
+                // Trigger the unmounted event for the old child
+                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
+                prevItemNode.Disconnect()
+
+                if index = 0 && pages.Length = 1 then
                     // We are trying to replace the root page
                     // First we push the new page, then we remove the old one
-                    navigationPage.Push(page, false)
-                    navigationPage.Navigation.RemovePage(pages.[index])
+                    navigationPage.PushSync(currPage, false)
+                    navigationPage.RemovePageSync(index)
 
-                elif index = pagesLength - 1 then
+                elif index = pages.Length - 1 then
                     // Last page, we pop it and push the new one
-                    navigationPage.Pop()
-                    navigationPage.Push(page)
+                    navigationPage.PushSync(currPage, animated = true)
+                    navigationPage.RemovePageSync(index)
 
                 else
                     // Page is not visible, we just replace it
-                    let nextPage = pages.[index + 1]
-                    navigationPage.Navigation.RemovePage(pages.[index])
-                    navigationPage.Navigation.InsertPageBefore(page, nextPage)
+                    navigationPage.RemovePageSync(index)
+                    navigationPage.InsertPageBeforeSync(currPage, index + 1)
 
-            | WidgetCollectionItemChange.Remove(index, _) ->
-                if pagesLength > pages.Length then
-                    // NavigationPage already popped the page before notifying Fabulous, we do nothing
-                    pagesLength <- pagesLength - 1
-                elif index > pagesLength - 1 then
-                    () // Do nothing, page has already been popped
-                elif index = pagesLength - 1 then
+                // Trigger the mounted event for the new child
+                Dispatcher.dispatchEventForAllChildren currItemNode currWidget Lifecycle.Mounted
 
-                    // Pop with an animation if it's the last page of the NavigationPage
-                    if index = pages.Length - 1 then
-                        popLastWithAnimation <- true
-                    else
-                        navigationPage.Navigation.RemovePage(pages.[index])
+            | WidgetCollectionItemChange.Remove(index, prevWidget) ->
+                let prevPage = pages[index]
+                let prevItemNode = node.TreeContext.GetViewNode(prevPage)
 
-                    pagesLength <- pagesLength - 1
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Removing page at index '{0}' and automationId = '{1}'",
+                    index,
+                    prevPage.AutomationId
+                )
+
+                // Trigger the unmounted event for the old child
+                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
+                prevItemNode.Disconnect()
+
+                if index = pages.Length - 1 then
+                    popLastWithAnimation <- true
                 else
-                    // Page is not visible, we just remove it
-                    navigationPage.Navigation.RemovePage(pages.[index])
-                    pagesLength <- pagesLength - 1
+                    navigationPage.RemovePageSync(index)
 
         if popLastWithAnimation then
-            navigationPage.Pop()
+            navigationPage.PopSync()
 
     let updateNavigationPagePages (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
         let navigationPage = node.Target :?> CustomNavigationPage
@@ -101,22 +189,45 @@ module NavigationPageUpdaters =
             let span = ArraySlice.toSpan widgets
 
             for widget in span do
-                let animateIfLastPage = i = span.Length - 1
-                let struct (_, page) = Helpers.createViewForWidget node widget
+                let struct (itemNode, page) = Helpers.createViewForWidget node widget
+                let page = page :?> Page
 
-                navigationPage.Push(page :?> Page, animateIfLastPage)
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] updateNavigationPagePages: Inserting page with index '{0}' and automationId = '{1}'",
+                    i,
+                    page.AutomationId
+                )
+
+                let animateIfLastPage = i = span.Length - 1
+                navigationPage.PushSync(page, animateIfLastPage)
+
+                // Trigger the mounted event
+                Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
+
                 i <- i + 1
 
             // Silently remove all old pages
             match oldValueOpt with
             | ValueNone -> ()
             | ValueSome oldWidgets ->
-                let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
-
+                let pages = Array.ofSeq navigationPage.PagesSync
                 let span = ArraySlice.toSpan oldWidgets
 
                 for i = 0 to span.Length - 1 do
-                    navigationPage.Navigation.RemovePage(pages.[i])
+                    let prevPage = pages[i]
+                    let prevItemNode = node.TreeContext.GetViewNode(prevPage)
+
+                    node.TreeContext.Logger.Debug(
+                        "[NavigationPage] updateNavigationPagePages: Removing page at index '{0}' and automationId = '{1}'",
+                        i,
+                        prevPage.AutomationId
+                    )
+
+                    navigationPage.Navigation.RemovePage(prevPage)
+
+                    // Trigger the unmounted event for the old child
+                    Dispatcher.dispatchEventForAllChildren prevItemNode span.[i] Lifecycle.Unmounted
+                    prevItemNode.Disconnect()
 
 module NavigationPage =
     let WidgetKey = Widgets.register<CustomNavigationPage>()

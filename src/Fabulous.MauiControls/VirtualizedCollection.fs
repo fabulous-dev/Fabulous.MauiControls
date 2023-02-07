@@ -17,6 +17,8 @@ module BindableHelpers =
             | value ->
                 let currWidget = templateFn value
 
+                // TODO: See how to call Mounted / Unmounted for the root widget of the cell
+
                 let node = getViewNode target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
                 prevWidgetOpt <- ValueSome currWidget
