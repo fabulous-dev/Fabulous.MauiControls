@@ -3,6 +3,7 @@ namespace Fabulous.Maui
 open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
@@ -44,3 +45,17 @@ type PathFigureModifiers =
     [<Extension>]
     static member inline isFilled(this: WidgetBuilder<'msg, #IFabPathFigure>, value: bool) =
         this.AddScalar(PathFigure.IsFilled.WithValue(value))
+
+[<Extension>]
+type PathFigureYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabPathFigure, IFabPathSegment>, x: WidgetBuilder<'msg, #IFabPathSegment>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: CollectionBuilder<'msg, #IFabPathFigure, IFabPathSegment>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabPathSegment>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

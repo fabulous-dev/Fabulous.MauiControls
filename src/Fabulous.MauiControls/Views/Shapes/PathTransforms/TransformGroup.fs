@@ -1,7 +1,9 @@
 namespace Fabulous.Maui
 
 open System.Collections.Generic
+open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls.Shapes
 
 type IFabTransformGroup =
@@ -20,3 +22,17 @@ module TransformGroupBuilders =
 
         static member inline TransformGroup<'msg>() =
             CollectionBuilder<'msg, IFabTransformGroup, IFabTransform>(TransformGroup.WidgetKey, TransformGroup.Children)
+
+[<Extension>]
+type TransformGroupYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabTransformGroup, IFabTransform>, x: WidgetBuilder<'msg, #IFabTransform>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: CollectionBuilder<'msg, #IFabTransformGroup, IFabTransform>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabTransform>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

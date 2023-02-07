@@ -6,6 +6,7 @@ open System
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
@@ -70,14 +71,14 @@ type FabNavigationPage() as this =
         this.PushAsync(page, (animated <> Some false)) |> ignore
 
     member this.InsertPageBeforeSync(page: Page, index: int) =
-        let next = _pagesSync.[index]
+        let next = _pagesSync[index]
         _pagesSync.Insert(index, page)
         this.Navigation.InsertPageBefore(page, next)
 
     member this.RemovePageSync(index: int) =
         if index < _pagesSync.Count then
             popCount <- popCount + 1
-            let page = _pagesSync.[index]
+            let page = _pagesSync[index]
             _pagesSync.RemoveAt(index)
             this.Navigation.RemovePage(page)
 
@@ -85,7 +86,7 @@ type FabNavigationPage() as this =
         if _pagesSync.Count > 0 then
             popCount <- popCount + 1
             _pagesSync.RemoveAt(_pagesSync.Count - 1)
-            this.PopAsync((animated <> Some false)) |> ignore
+            this.PopAsync(animated <> Some false) |> ignore
 
     member this.OnPopped(_: NavigationEventArgs) =
         // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
@@ -252,7 +253,7 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(prevPage)
 
                     // Trigger the unmounted event for the old child
-                    Dispatcher.dispatchEventForAllChildren prevItemNode span.[i] Lifecycle.Unmounted
+                    Dispatcher.dispatchEventForAllChildren prevItemNode span[i] Lifecycle.Unmounted
                     prevItemNode.Disconnect()
 
 module NavigationPage =
@@ -508,3 +509,13 @@ type NavigationPagePlatformModifiers =
     [<Extension>]
     static member inline prefersLargeTitles(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: bool) =
         this.AddScalar(NavigationPage.PrefersLargeTitles.WithValue(value))
+
+[<Extension>]
+type NavigationPageYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabNavigationPage, IFabPage>, x: WidgetBuilder<'msg, #IFabPage>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabNavigationPage, IFabPage>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabPage>>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

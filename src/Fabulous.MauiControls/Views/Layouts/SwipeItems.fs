@@ -3,6 +3,7 @@ namespace Fabulous.Maui
 open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
@@ -24,14 +25,13 @@ module SwipeItems =
 
 [<AutoOpen>]
 module SwipeItemsBuilders =
-
     type Fabulous.Maui.View with
 
         static member inline SwipeItems<'msg>() =
             CollectionBuilder<'msg, IFabSwipeItems, IFabSwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
 
 [<Extension>]
-type SwipeItemsModifiers() =
+type SwipeItemsModifiers =
     [<Extension>]
     static member inline swipeMode(this: WidgetBuilder<'msg, #IFabSwipeItems>, value: SwipeMode) =
         this.AddScalar(SwipeItems.SwipeMode.WithValue(value))
@@ -43,3 +43,17 @@ type SwipeItemsModifiers() =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabSwipeItems>, value: ViewRef<SwipeItems>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type SwipeItemsYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabSwipeItems, IFabSwipeItem>, x: WidgetBuilder<'msg, #IFabSwipeItem>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: CollectionBuilder<'msg, #IFabSwipeItems, IFabSwipeItem>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabSwipeItem>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

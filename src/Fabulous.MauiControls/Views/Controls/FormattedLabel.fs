@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 
 type IFabFormattedLabel =
@@ -32,3 +33,13 @@ type FormattedLabelModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabFormattedLabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type FormattedLabelYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabFormattedLabel, IFabSpan>, x: WidgetBuilder<'msg, #IFabSpan>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabFormattedLabel, IFabSpan>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabSpan>>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
