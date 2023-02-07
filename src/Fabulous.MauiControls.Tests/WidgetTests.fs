@@ -11,7 +11,7 @@ open type Fabulous.Maui.View
 [<TestFixture>]
 type Tests() =
     [<Test>]
-    member _.Test() =
+    member _.``Changing pages in a NavigationPage will trigger Mounted and Unmounted messages``() =
         let dispatchedMsgs = ResizeArray<string>()
         let dispatch msg = dispatchedMsgs.Add(unbox<string> msg)
 

@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="WidgetTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsCheck.NUnit" />
