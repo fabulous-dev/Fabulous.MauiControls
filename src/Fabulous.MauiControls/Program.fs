@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls
 open System
 open System.Diagnostics
 
-module XViewHelpers =
+module MauiViewHelpers =
     let private tryGetScalarValue (widget: Widget) (def: SimpleScalarAttributeDefinition<'data>) =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
@@ -99,10 +99,10 @@ module Program =
           Update = (fun (msg, model) -> update msg model)
           Subscribe = fun _ -> Cmd.none
           View = view
-          CanReuseView = XViewHelpers.canReuseView
+          CanReuseView = MauiViewHelpers.canReuseView
           SyncAction = MainThread.BeginInvokeOnMainThread
-          Logger = XViewHelpers.defaultLogger()
-          ExceptionHandler = XViewHelpers.defaultExceptionHandler }
+          Logger = MauiViewHelpers.defaultLogger()
+          ExceptionHandler = MauiViewHelpers.defaultExceptionHandler }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
