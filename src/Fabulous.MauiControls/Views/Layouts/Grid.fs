@@ -62,25 +62,35 @@ module Grid =
     let ColumnDefinitions =
         Attributes.defineSimpleScalarWithEquality<Dimension array> "Grid_ColumnDefinitions" GridUpdaters.updateGridColumnDefinitions
 
+    let ColumnSpacing = Attributes.defineBindableFloat Grid.ColumnSpacingProperty
+
     let RowDefinitions =
         Attributes.defineSimpleScalarWithEquality<Dimension array> "Grid_RowDefinitions" GridUpdaters.updateGridRowDefinitions
 
-    let Column = Attributes.defineBindableInt Grid.ColumnProperty
-
-    let Row = Attributes.defineBindableInt Grid.RowProperty
-
-    let ColumnSpacing = Attributes.defineBindableFloat Grid.ColumnSpacingProperty
-
     let RowSpacing = Attributes.defineBindableFloat Grid.RowSpacingProperty
 
+module GridAttached =
+    let Column = Attributes.defineBindableInt Grid.ColumnProperty
+
     let ColumnSpan = Attributes.defineBindableInt Grid.ColumnSpanProperty
+
+    let Row = Attributes.defineBindableInt Grid.RowProperty
 
     let RowSpan = Attributes.defineBindableInt Grid.RowSpanProperty
 
 [<AutoOpen>]
 module GridBuilders =
     type Fabulous.Maui.View with
-
+        /// <summary>Create a Grid widget with only one cell</summary>
+        static member inline Grid<'msg>() =
+            CollectionBuilder<'msg, IFabGrid, IFabView>(
+                Grid.WidgetKey,
+                LayoutOfView.Children
+            )
+        
+        /// <summary>Create a Grid widget with the given column and row definitions</summary>
+        /// <param name="coldefs">The column definitions</param>
+        /// <param name="rowdefs">The row definitions</param>
         static member inline Grid<'msg>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
             CollectionBuilder<'msg, IFabGrid, IFabView>(
                 Grid.WidgetKey,
@@ -89,37 +99,55 @@ module GridBuilders =
                 Grid.RowDefinitions.WithValue(Array.ofSeq rowdefs)
             )
 
-        static member inline Grid<'msg>() = View.Grid<'msg>([ Star ], [ Star ])
-
 [<Extension>]
 type GridModifiers =
+    /// <summary>Set the spacing between each column</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The spacing value</param>
     [<Extension>]
     static member inline columnSpacing(this: WidgetBuilder<'msg, #IFabGrid>, value: float) =
         this.AddScalar(Grid.ColumnSpacing.WithValue(value))
 
+    /// <summary>Set the spacing between each row</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The spacing value</param>
     [<Extension>]
     static member inline rowSpacing(this: WidgetBuilder<'msg, #IFabGrid>, value: float) =
         this.AddScalar(Grid.RowSpacing.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Grid control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabGrid>, value: ViewRef<Grid>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type GridAttachedModifiers =
+    /// <summary>Set the column this widget will be in</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The grid column index. Starts at 0</param>
     [<Extension>]
     static member inline gridColumn(this: WidgetBuilder<'msg, #IFabView>, value: int) =
-        this.AddScalar(Grid.Column.WithValue(value))
-
-    [<Extension>]
-    static member inline gridRow(this: WidgetBuilder<'msg, #IFabView>, value: int) =
-        this.AddScalar(Grid.Row.WithValue(value))
-
+        this.AddScalar(GridAttached.Column.WithValue(value))
+    
+    /// <summary>Set how many columns this widget will span</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The number of columns to span</param>
     [<Extension>]
     static member inline gridColumnSpan(this: WidgetBuilder<'msg, #IFabView>, value: int) =
-        this.AddScalar(Grid.ColumnSpan.WithValue(value))
+        this.AddScalar(GridAttached.ColumnSpan.WithValue(value))
 
+    /// <summary>Set the row this widget will be in</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The grid row index. Starts at 0</param>
+    [<Extension>]
+    static member inline gridRow(this: WidgetBuilder<'msg, #IFabView>, value: int) =
+        this.AddScalar(GridAttached.Row.WithValue(value))
+
+    /// <summary>Set how many rows this widget will span</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The number of rows to span</param>
     [<Extension>]
     static member inline gridRowSpan(this: WidgetBuilder<'msg, #IFabView>, value: int) =
-        this.AddScalar(Grid.RowSpan.WithValue(value))
+        this.AddScalar(GridAttached.RowSpan.WithValue(value))
