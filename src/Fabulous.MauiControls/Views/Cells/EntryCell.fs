@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
@@ -8,8 +9,31 @@ open Microsoft.Maui.Controls
 type IFabEntryCell =
     inherit IFabCell
 
+/// Microsoft.Maui doesn't provide an event for textChanged the EntryCell, so we implement it
+type FabEntryCell() =
+    inherit EntryCell()
+
+    let mutable oldText = ""
+
+    let textChanged = Event<EventHandler<TextChangedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.TextChanged = textChanged.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
+
+        if propertyName = EntryCell.TextProperty.PropertyName then
+            textChanged.Trigger(this, TextChangedEventArgs(oldText, this.Text))
+
+    override this.OnPropertyChanging(propertyName) =
+        base.OnPropertyChanging(propertyName)
+
+        if propertyName = EntryCell.TextProperty.PropertyName then
+            oldText <- this.Text
+
 module EntryCell =
-    let WidgetKey = Widgets.register<CustomEntryCell>()
+    let WidgetKey = Widgets.register<FabEntryCell>()
 
     let Label = Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
@@ -28,7 +52,7 @@ module EntryCell =
         Attributes.defineBindableWithEquality<Keyboard> EntryCell.KeyboardProperty
 
     let TextWithEvent =
-        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> CustomEntryCell).TextChanged)
+        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
 
     let OnCompleted =
         Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)

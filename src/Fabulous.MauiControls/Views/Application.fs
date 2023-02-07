@@ -1,5 +1,6 @@
 ﻿namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
@@ -8,8 +9,30 @@ open Microsoft.Maui.ApplicationModel
 type IFabApplication =
     inherit IFabElement
 
+type FabApplication() =
+    inherit Application()
+
+    let start = Event<EventHandler, EventArgs>()
+    let sleep = Event<EventHandler, EventArgs>()
+    let resume = Event<EventHandler, EventArgs>()
+
+    [<CLIEvent>]
+    member _.Start = start.Publish
+
+    override this.OnStart() = start.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Sleep = sleep.Publish
+
+    override this.OnSleep() = sleep.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Resume = resume.Publish
+
+    override this.OnResume() = resume.Trigger(this, EventArgs())
+
 module Application =
-    let WidgetKey = Widgets.register<CustomApplication>()
+    let WidgetKey = Widgets.register<FabApplication>()
 
     let MainPage =
         Attributes.definePropertyWidget "Application_MainPage" (fun target -> (target :?> Application).MainPage :> obj) (fun target value ->
@@ -53,13 +76,13 @@ module Application =
         Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
     let Start =
-        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> CustomApplication).Start)
+        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
 
     let Sleep =
-        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> CustomApplication).Sleep)
+        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
 
     let Resume =
-        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> CustomApplication).Resume)
+        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
 
 [<AutoOpen>]
 module ApplicationBuilders =

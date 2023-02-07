@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
@@ -7,15 +8,29 @@ open Microsoft.Maui.Controls
 type IFabFlyoutPage =
     inherit IFabPage
 
+/// FlyoutPage doesn't say if the Flyout is visible or not on IsPresentedChanged, so we implement it
+type FabFlyoutPage() as this =
+    inherit FlyoutPage()
+
+    let isPresentedChanged = Event<EventHandler<bool>, bool>()
+
+    do this.IsPresentedChanged.Add(this.OnIsPresentedChanged)
+
+    [<CLIEvent>]
+    member _.CustomIsPresentedChanged = isPresentedChanged.Publish
+
+    member _.OnIsPresentedChanged(_) =
+        isPresentedChanged.Trigger(this, this.IsPresented)
+
 module FlyoutPage =
-    let WidgetKey = Widgets.register<CustomFlyoutPage>()
+    let WidgetKey = Widgets.register<FabFlyoutPage>()
 
     let IsGestureEnabled =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
     let IsPresented =
         Attributes.defineBindableWithEvent<bool, bool> "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
-            (target :?> CustomFlyoutPage).CustomIsPresentedChanged)
+            (target :?> FabFlyoutPage).CustomIsPresentedChanged)
 
     let Flyout =
         Attributes.definePropertyWidget "FlyoutPage_Flyout" (fun target -> (target :?> FlyoutPage).Flyout :> obj) (fun target value ->

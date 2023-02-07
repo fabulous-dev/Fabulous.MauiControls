@@ -12,12 +12,38 @@ open Microsoft.Maui.Controls.PlatformConfiguration
 type IFabNavigationPage =
     inherit IFabPage
 
+// https://stackoverflow.com/a/2113902
+type RequiresSubscriptionEvent() =
+    let evt = Event<EventHandler, EventArgs>()
+    let mutable counter = 0
+
+    let published =
+        { new IEvent<EventHandler, EventArgs> with
+            member x.AddHandler(h) =
+                evt.Publish.AddHandler(h)
+                counter <- counter + 1
+
+            member x.RemoveHandler(h) =
+                evt.Publish.RemoveHandler(h)
+                counter <- counter - 1
+
+            member x.Subscribe(s) =
+                let h = EventHandler(fun _ -> s.OnNext)
+                x.AddHandler(h)
+
+                { new IDisposable with
+                    member y.Dispose() = x.RemoveHandler(h) } }
+
+    member x.Trigger(v) = evt.Trigger(v)
+    member x.Publish = published
+    member x.HasListeners = counter > 0
+
 /// Maui handles pages asynchronously, meaning a page will be added to the stack only after the animation is finished.
 /// This is a problem for Fabulous, because the nav stack needs to be synchronized with the widget trees.
 /// Otherwise rapid consecutive updates might end up with a wrong nav stack.
 ///
 /// To work around that, we keep our own nav stack, and we update it synchronously.
-type CustomNavigationPage() as this =
+type FabNavigationPage() as this =
     inherit NavigationPage()
 
     let _pagesSync =
@@ -80,7 +106,7 @@ type CustomNavigationPage() as this =
 
 module NavigationPageUpdaters =
     let applyDiffNavigationPagePages _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
-        let navigationPage = node.Target :?> CustomNavigationPage
+        let navigationPage = node.Target :?> FabNavigationPage
         let pages = Array.ofSeq navigationPage.PagesSync
 
         let mutable popLastWithAnimation = false
@@ -178,7 +204,7 @@ module NavigationPageUpdaters =
             navigationPage.PopSync()
 
     let updateNavigationPagePages (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
-        let navigationPage = node.Target :?> CustomNavigationPage
+        let navigationPage = node.Target :?> FabNavigationPage
 
         match newValueOpt with
         | ValueNone -> failwith "NavigationPage requires its Pages modifier to be set"
@@ -230,7 +256,7 @@ module NavigationPageUpdaters =
                     prevItemNode.Disconnect()
 
 module NavigationPage =
-    let WidgetKey = Widgets.register<CustomNavigationPage>()
+    let WidgetKey = Widgets.register<FabNavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
@@ -263,10 +289,10 @@ module NavigationPage =
         Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> CustomNavigationPage).BackNavigated)
+        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> CustomNavigationPage).BackButtonPressed)
+        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =

@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
@@ -8,14 +9,33 @@ open Microsoft.Maui.Controls.PlatformConfiguration
 type IFabTimePicker =
     inherit IFabView
 
+type TimeSelectedEventArgs(newTime: TimeSpan) =
+    inherit EventArgs()
+    member _.NewTime = newTime
+
+/// Microsoft.Maui doesn't provide an event for selecting the time on a TimePicker, so we implement it
+type FabTimePicker() =
+    inherit TimePicker()
+
+    let timeSelected = Event<EventHandler<TimeSelectedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.TimeSelected = timeSelected.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
+
+        if propertyName = TimePicker.TimeProperty.PropertyName then
+            timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
+
 module TimePicker =
-    let WidgetKey = Widgets.register<FabulousTimePicker>()
+    let WidgetKey = Widgets.register<FabTimePicker>()
 
     let CharacterSpacing =
         Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty
 
     let TimeWithEvent =
-        Attributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabulousTimePicker).TimeSelected)
+        Attributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> TimePicker.FontAttributesProperty
@@ -47,7 +67,7 @@ module TimePicker =
 module TimePickerBuilders =
     type Fabulous.Maui.View with
 
-        static member inline TimePicker<'msg>(time: System.TimeSpan, onTimeSelected: System.TimeSpan -> 'msg) =
+        static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
             WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
                 TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun args -> onTimeSelected args.NewTime |> box))

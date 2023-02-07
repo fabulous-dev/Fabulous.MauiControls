@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
@@ -9,8 +10,36 @@ open Microsoft.Maui.Controls.PlatformConfiguration
 type IFabPicker =
     inherit IFabView
 
+type PositionChangedEventArgs(previousPosition: int, currentPosition: int) =
+    inherit EventArgs()
+    member _.PreviousPosition = previousPosition
+    member _.CurrentPosition = currentPosition
+
+/// Microsoft.Maui doesn't have an event args on the SelectedIndexChanged event, so we implement it
+type FabPicker() =
+    inherit Picker()
+
+    let mutable oldSelectedIndex = -1
+
+    let selectedIndexChanged = Event<EventHandler<PositionChangedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.CustomSelectedIndexChanged = selectedIndexChanged.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
+
+        if propertyName = Picker.SelectedIndexProperty.PropertyName then
+            selectedIndexChanged.Trigger(this, PositionChangedEventArgs(oldSelectedIndex, this.SelectedIndex))
+
+    override this.OnPropertyChanging(propertyName) =
+        base.OnPropertyChanging(propertyName)
+
+        if propertyName = Picker.SelectedIndexProperty.PropertyName then
+            oldSelectedIndex <- this.SelectedIndex
+
 module Picker =
-    let WidgetKey = Widgets.register<CustomPicker>()
+    let WidgetKey = Widgets.register<FabPicker>()
 
     let CharacterSpacing =
         Attributes.defineBindableFloat Picker.CharacterSpacingProperty
@@ -48,7 +77,7 @@ module Picker =
 
     let SelectedIndexWithEvent =
         Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
-            (target :?> CustomPicker).CustomSelectedIndexChanged)
+            (target :?> FabPicker).CustomSelectedIndexChanged)
 
     let UpdateMode =
         Attributes.defineEnum<iOSSpecific.UpdateMode> "Picker_UpdateMode" (fun _ newValueOpt node ->
