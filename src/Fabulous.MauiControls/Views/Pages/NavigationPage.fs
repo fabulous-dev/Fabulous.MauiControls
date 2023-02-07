@@ -91,7 +91,11 @@ module NavigationPageUpdaters =
                 let struct (itemNode, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
 
-                printfn $"Inserting page: {page.AutomationId}"
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Inserting page with index '{0}' and automationId = '{1}'",
+                    index,
+                    page.AutomationId
+                )
 
                 if index >= pages.Length then
                     navigationPage.PushSync(page)
@@ -103,49 +107,66 @@ module NavigationPageUpdaters =
                 Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
             | WidgetCollectionItemChange.Update(index, diff) ->
-                let childNode = node.TreeContext.GetViewNode(box pages.[index])
+                let page = pages[index]
+                let childNode = node.TreeContext.GetViewNode(page)
 
-                printfn $"Updating existing page: {pages.[index].AutomationId}"
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Updating page with index '{0}' and automationId = '{1}'",
+                    index,
+                    page.AutomationId
+                )
+
                 childNode.ApplyDiff(&diff)
 
-            | WidgetCollectionItemChange.Replace(index, oldWidget, newWidget) ->
-                let prevItemNode = node.TreeContext.GetViewNode(box pages.[index])
-                let oldPage = pages.[index]
-                let struct (nextItemNode, page) = Helpers.createViewForWidget node newWidget
+            | WidgetCollectionItemChange.Replace(index, prevWidget, currWidget) ->
+                let prevPage = pages[index]
+                let prevItemNode = node.TreeContext.GetViewNode(prevPage)
 
-                let page = page :?> Page
+                let struct (currItemNode, currPage) = Helpers.createViewForWidget node currWidget
+                let currPage = currPage :?> Page
 
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Replacing page at index '{0}'. Old automationId = '{1}', new automationId = '{2}'",
+                    index,
+                    prevPage.AutomationId,
+                    currPage.AutomationId
+                )
 
-                printfn $"Replacing page: {oldPage.AutomationId} with {page.AutomationId}"
                 // Trigger the unmounted event for the old child
-                Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
+                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
                 prevItemNode.Disconnect()
 
                 if index = 0 && pages.Length = 1 then
                     // We are trying to replace the root page
                     // First we push the new page, then we remove the old one
-                    navigationPage.PushSync(page, false)
+                    navigationPage.PushSync(currPage, false)
                     navigationPage.RemovePageSync(index)
 
                 elif index = pages.Length - 1 then
                     // Last page, we pop it and push the new one
-                    navigationPage.PushSync(page, animated = true)
+                    navigationPage.PushSync(currPage, animated = true)
                     navigationPage.RemovePageSync(index)
 
                 else
                     // Page is not visible, we just replace it
                     navigationPage.RemovePageSync(index)
-                    navigationPage.InsertPageBeforeSync(page, index + 1)
+                    navigationPage.InsertPageBeforeSync(currPage, index + 1)
 
                 // Trigger the mounted event for the new child
-                Dispatcher.dispatchEventForAllChildren nextItemNode newWidget Lifecycle.Mounted
+                Dispatcher.dispatchEventForAllChildren currItemNode currWidget Lifecycle.Mounted
 
-            | WidgetCollectionItemChange.Remove(index, oldWidget) ->
-                let prevItemNode = node.TreeContext.GetViewNode(box pages.[index])
+            | WidgetCollectionItemChange.Remove(index, prevWidget) ->
+                let prevPage = pages[index]
+                let prevItemNode = node.TreeContext.GetViewNode(prevPage)
 
-                printfn "Removing page"
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] applyDiffNavigationPagePages: Removing page at index '{0}' and automationId = '{1}'",
+                    index,
+                    prevPage.AutomationId
+                )
+
                 // Trigger the unmounted event for the old child
-                Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
+                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
                 prevItemNode.Disconnect()
 
                 if index = pages.Length - 1 then
@@ -168,11 +189,16 @@ module NavigationPageUpdaters =
             let span = ArraySlice.toSpan widgets
 
             for widget in span do
-                let animateIfLastPage = i = span.Length - 1
                 let struct (itemNode, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
 
-                printfn $"Inserting page: {page.AutomationId}"
+                node.TreeContext.Logger.Debug(
+                    "[NavigationPage] updateNavigationPagePages: Inserting page with index '{0}' and automationId = '{1}'",
+                    i,
+                    page.AutomationId
+                )
+
+                let animateIfLastPage = i = span.Length - 1
                 navigationPage.PushSync(page, animateIfLastPage)
 
                 // Trigger the mounted event
@@ -188,10 +214,16 @@ module NavigationPageUpdaters =
                 let span = ArraySlice.toSpan oldWidgets
 
                 for i = 0 to span.Length - 1 do
-                    let prevItemNode = node.TreeContext.GetViewNode(box pages.[i])
+                    let prevPage = pages[i]
+                    let prevItemNode = node.TreeContext.GetViewNode(prevPage)
 
-                    printfn $"Removing page: {pages.[i].AutomationId}"
-                    navigationPage.Navigation.RemovePage(pages.[i])
+                    node.TreeContext.Logger.Debug(
+                        "[NavigationPage] updateNavigationPagePages: Removing page at index '{0}' and automationId = '{1}'",
+                        i,
+                        prevPage.AutomationId
+                    )
+
+                    navigationPage.Navigation.RemovePage(prevPage)
 
                     // Trigger the unmounted event for the old child
                     Dispatcher.dispatchEventForAllChildren prevItemNode span.[i] Lifecycle.Unmounted

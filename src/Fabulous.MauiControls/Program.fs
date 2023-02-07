@@ -68,10 +68,7 @@ module XViewHelpers =
             let struct (currLength, currPages) = currPages
 
             if prevLength = currLength then
-                let x =
-                    Array.forall2 (fun (a: Widget) (b: Widget) -> a.Key = b.Key) prevPages currPages
-
-                if x = true then true else false
+                Array.forall2 (fun (a: Widget) (b: Widget) -> a.Key = b.Key) prevPages currPages
             else
                 true
 
