@@ -67,4 +67,4 @@ type Tests() =
         Reconciler.update treeContext.CanReuseView (ValueSome(newWidget.Compile())) (newWidget2.Compile()) node
 
         Assert.AreEqual("yourAddress", navPage.PagesSync[3].AutomationId)
-        Assert.AreEqual(7, dispatchedMsgs.Count)
+        Assert.AreEqual(2, dispatchedMsgs.Count)
