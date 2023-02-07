@@ -8,17 +8,6 @@ open Microsoft.Maui.Controls
 open System
 
 [<Struct>]
-type AppThemeValues<'T when 'T: equality> = { Light: 'T; Dark: 'T }
-
-module AppTheme =
-    let inline create<'T when 'T: equality> (light: 'T) (dark: 'T option) =
-        { Light = light
-          Dark =
-            match dark with
-            | None -> light
-            | Some v -> v }
-
-[<Struct>]
 type ValueEventData<'data, 'eventArgs> =
     { Value: 'data
       Event: 'eventArgs -> obj }
@@ -33,20 +22,6 @@ module SmallScalars =
 
         let inline decode (encoded: uint64) : FabColor =
             { RGBA = SmallScalars.UInt.decode encoded }
-
-    module ThemedColor =
-        let inline encode (v: AppThemeValues<FabColor>) : uint64 =
-            let { Light = light; Dark = dark } = v
-
-            ((FabColor.encode light) <<< 32) ||| (FabColor.encode dark)
-
-        let inline decode (encoded: uint64) : AppThemeValues<FabColor> =
-            let light = ((encoded &&& 0xFFFFFFFF00000000UL) >>> 32) |> FabColor.decode
-
-            let dark = (encoded &&& 0x00000000FFFFFFFFUL) |> FabColor.decode
-
-            { Light = light; Dark = dark }
-
 
     module LayoutOptions =
         let inline encode (v: LayoutOptions) : uint64 =
@@ -73,10 +48,6 @@ type SmallScalarExtensions() =
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<FabColor>, value) =
         this.WithValue(value, SmallScalars.FabColor.encode)
-
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<AppThemeValues<FabColor>>, value) =
-        this.WithValue(value, SmallScalars.ThemedColor.encode)
 
 module Attributes =
     /// Define an attribute for a BindableProperty
@@ -126,7 +97,7 @@ module Attributes =
     /// Note that the input type is FabColor because it is just 4 bytes
     /// But it converts back to Microsoft.Maui.Color when a value is applied
     /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
-    /// However, XF.Color will be boxed and thus slower.
+    /// However, MAui.Color will be boxed and thus slower.
     let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
         Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
@@ -134,6 +105,19 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v.ToMauiColor()))
+        
+    /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
+    /// Note that the input type is FabColor because it is just 4 bytes
+    /// But it converts back to Microsoft.Maui.Brush when a value is applied
+    /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
+    /// However, Maui.Color will be boxed and thus slower.
+    let inline defineBindableSolidBrushColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
+        Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
+
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, SolidColorBrush(v.ToMauiColor())))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableEnum< ^T when ^T: enum<int>> (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition< ^T > =
@@ -143,30 +127,6 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v))
-
-    /// Define an attribute that supports values for both Light and Dark themes
-    let inline defineBindableAppTheme<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineSimpleScalarWithEquality<AppThemeValues<'T>> bindableProperty.PropertyName (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
-
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome { Light = light; Dark = dark } when dark = light -> target.SetValue(bindableProperty, light)
-            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light, dark))
-
-    /// Define a Color attribute that supports values for both Light and Dark themes
-    /// Note that we use FabColor here because we can encode two into 8 bytes
-    /// Thus we can avoid heap allocations
-    let inline defineBindableAppThemeColor (bindableProperty: BindableProperty) =
-        Attributes.defineSmallScalar<AppThemeValues<FabColor>> bindableProperty.PropertyName SmallScalars.ThemedColor.decode (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
-
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-
-            | ValueSome { Light = light; Dark = dark } when light = dark -> target.SetValue(bindableProperty, light.ToMauiColor())
-
-            | ValueSome { Light = light; Dark = dark } -> target.SetAppTheme(bindableProperty, light.ToMauiColor(), dark.ToMauiColor()))
 
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =

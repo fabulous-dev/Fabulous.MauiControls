@@ -3,8 +3,8 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
-open Microsoft.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabRefreshView =
     inherit IFabContentView
@@ -15,16 +15,22 @@ module RefreshView =
     let IsRefreshing = Attributes.defineBindableBool RefreshView.IsRefreshingProperty
 
     let RefreshColor =
-        Attributes.defineBindableAppThemeColor RefreshView.RefreshColorProperty
-
+        Attributes.defineBindableWithEquality RefreshView.RefreshColorProperty
+        
+    let RefreshFabColor =
+        Attributes.defineBindableColor RefreshView.RefreshColorProperty
+    
     let Refreshing =
         Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =
     type Fabulous.Maui.View with
-
-        static member inline RefreshView<'msg, 'marker when 'marker :> IView>(isRefreshing: bool, onRefreshing: 'msg, content: WidgetBuilder<'msg, 'marker>) =
+        /// <summary>Create a RefreshView widget with content</summary>
+        /// <param name="isRefreshing">The refresh state</param>
+        /// <param name="onRefreshing">Message to dispatch when refresh state changes</param>
+        /// <param name="content">The content widget</param>
+        static member inline RefreshView(isRefreshing: bool, onRefreshing: 'msg, content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabRefreshView>(
                 RefreshView.WidgetKey,
                 AttributesBundle(
@@ -37,13 +43,22 @@ module RefreshViewBuilders =
 [<Extension>]
 type RefreshViewModifiers =
     /// <summary>Set the color of the refresh indicator</summary>
-    /// <param name="light">The color of the refresh indicator in the light theme.</param>
-    /// <param name="dark">The color of the refresh indicator in the dark theme.</param>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the refresh indicator</param>
     [<Extension>]
-    static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(RefreshView.RefreshColor.WithValue(AppTheme.create light dark))
+    static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: Color) =
+        this.AddScalar(RefreshView.RefreshColor.WithValue(value))
+        
+    /// <summary>Set the color of the refresh indicator</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the refresh indicator</param>
+    [<Extension>]
+    static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: FabColor) =
+        this.AddScalar(RefreshView.RefreshFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RefreshView control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabRefreshView>, value: ViewRef<RefreshView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -16,8 +16,9 @@ module MultiPageOfPage =
 
 [<Extension>]
 type MultiPageOfPageModifiers =
-    /// <summary>Raised when the CurrentPage property changes.</summary>
-    /// <param name="onCurrentPageChanged">The msg to invoke when the CurrentPage property changes.</param>
+    /// <summary>Listen for the CurrentPageChanged event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, onCurrentPageChanged: 'msg) =
-        this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(onCurrentPageChanged))
+    static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, msg: 'msg) =
+        this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(msg))
