@@ -57,7 +57,7 @@ type Tests() =
               Logger = MauiViewHelpers.defaultLogger()
               Dispatch = dispatch }
 
-        let navPage = CustomNavigationPage()
+        let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)
 
         let node = ViewNode(None, treeContext, weakRef)
