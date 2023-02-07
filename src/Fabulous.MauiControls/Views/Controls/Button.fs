@@ -6,6 +6,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabButton =
     inherit IFabView
@@ -39,7 +40,7 @@ module Button =
     let Padding =
         Attributes.defineBindableWithEquality<Thickness> Button.PaddingProperty
 
-    let TextColor = Attributes.defineBindableAppThemeColor Button.TextColorProperty
+    let TextColor = Attributes.defineBindableColor Button.TextColorProperty
 
     let Text = Attributes.defineBindableWithEquality<string> Button.TextProperty
 
@@ -71,8 +72,8 @@ module ButtonBuilders =
 [<Extension>]
 type ButtonModifiers =
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: FabColor) =
+        this.AddScalar(Button.TextColor.WithValue(value))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IFabButton>, value: TextTransform) =
@@ -200,3 +201,9 @@ type ButtonModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabButton>, value: ViewRef<Button>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type ButtonExtraModifiers =
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
+        this.textColor(value.ToFabColor())

@@ -5,6 +5,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabVisualElement =
     inherit IFabNavigableElement
@@ -102,7 +103,7 @@ module VisualElement =
         Attributes.defineBindableAppThemeColor VisualElement.BackgroundColorProperty
 
     let Background =
-        Attributes.defineBindableAppTheme<Brush> VisualElement.BackgroundProperty
+        Attributes.defineBindableWithEquality VisualElement.BackgroundProperty
 
     let BackgroundWidget =
         Attributes.defineBindableWidget VisualElement.BackgroundProperty
@@ -236,14 +237,14 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, light: Brush, ?dark: Brush) =
-        this.AddScalar(VisualElement.Background.WithValue(AppTheme.create light dark))
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Brush) =
+        this.AddScalar(VisualElement.Background.WithValue(value))
 
     [<Extension>]
-    static member inline background<'msg, 'marker, 'contentMarker when 'marker :> IFabVisualElement and 'contentMarker :> IFabBrush>
+    static member inline background
         (
-            this: WidgetBuilder<'msg, 'marker>,
-            content: WidgetBuilder<'msg, 'contentMarker>
+            this: WidgetBuilder<'msg, #IFabVisualElement>,
+            content: WidgetBuilder<'msg, #IFabBrush>
         ) =
         this.AddWidget(VisualElement.BackgroundWidget.WithValue(content.Compile()))
 
@@ -470,3 +471,13 @@ type VisualElementModifiers =
                   Easing = easing }
             )
         )
+
+[<Extension>]
+type VisualElementExtraModifiers =
+    [<Extension>]
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Color) =
+        this.background(SolidColorBrush(value))
+        
+    [<Extension>]
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) =
+        this.background(value.ToMauiColor())

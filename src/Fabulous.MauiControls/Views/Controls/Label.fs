@@ -129,7 +129,7 @@ type LabelModifiers =
         this.AddScalar(Label.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline textDecoration(this: WidgetBuilder<'msg, #IFabLabel>, value: TextDecorations) =
+    static member inline textDecorations(this: WidgetBuilder<'msg, #IFabLabel>, value: TextDecorations) =
         this.AddScalar(Label.TextDecorations.WithValue(value))
 
     [<Extension>]
@@ -144,19 +144,45 @@ type LabelModifiers =
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabLabel>, value: TextAlignment) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(value))
 
-    [<Extension>]
-    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
-        this.AddScalar(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
-
-    [<Extension>]
-    static member inline centerTextVertical(this: WidgetBuilder<'msg, #IFabLabel>) =
-        this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
-
-    [<Extension>]
-    static member inline centerText(this: WidgetBuilder<'msg, #IFabLabel>) =
-        this.centerTextHorizontal().centerTextVertical()
-
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabLabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type LabelExtraModifiers =
+    [<Extension>]
+    static member inline alignStartTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.horizontalTextAlignment(TextAlignment.Start)
+
+    [<Extension>]
+    static member inline alignStartTextVertical(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.verticalTextAlignment(TextAlignment.Start)
+
+    [<Extension>]
+    static member inline alignStartText(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.alignStartTextHorizontal().alignStartTextVertical()
+        
+    [<Extension>]
+    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.horizontalTextAlignment(TextAlignment.Center)
+
+    [<Extension>]
+    static member inline centerTextVertical(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.verticalTextAlignment(TextAlignment.Center)
+
+    [<Extension>]
+    static member inline centerText(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.centerTextHorizontal().centerTextVertical()
+        
+    [<Extension>]
+    static member inline alignEndTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.horizontalTextAlignment(TextAlignment.End)
+
+    [<Extension>]
+    static member inline alignEndTextVertical(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.verticalTextAlignment(TextAlignment.End)
+
+    [<Extension>]
+    static member inline alignEndText(this: WidgetBuilder<'msg, #IFabLabel>) =
+        this.alignEndTextHorizontal().alignEndTextVertical()
