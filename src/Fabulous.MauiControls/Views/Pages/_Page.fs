@@ -4,6 +4,7 @@ open System
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
@@ -199,3 +200,17 @@ type PagePlatformModifiers =
     [<Extension>]
     static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabPage>) =
         this.AddScalar(Page.UseSafeArea.WithValue(false))
+
+[<Extension>]
+type PageYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: AttributeCollectionBuilder<'msg, #IFabPage, IFabToolbarItem>, x: WidgetBuilder<'msg, #IFabToolbarItem>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: AttributeCollectionBuilder<'msg, #IFabPage, IFabToolbarItem>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabToolbarItem>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

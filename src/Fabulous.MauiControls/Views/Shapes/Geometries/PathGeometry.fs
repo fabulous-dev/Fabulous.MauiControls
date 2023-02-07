@@ -1,7 +1,9 @@
 namespace Fabulous.Maui
 
 open System.Collections.Generic
+open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
@@ -48,3 +50,17 @@ module PathGeometryBuilders =
                     PathGeometry.FiguresString.WithValue(content),
                     PathGeometry.FillRule.WithValue(fillRule)
                 )
+
+[<Extension>]
+type CollectionBuilderExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabPathGeometry, IFabPathFigure>, x: WidgetBuilder<'msg, #IFabPathFigure>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: CollectionBuilder<'msg, #IFabPathGeometry, IFabPathFigure>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabPathFigure>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

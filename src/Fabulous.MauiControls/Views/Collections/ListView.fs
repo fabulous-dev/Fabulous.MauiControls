@@ -9,9 +9,13 @@ open Microsoft.Maui.Controls
 type IFabListView =
     inherit IFabItemsViewOfCell
 
+/// Force ListView to recycle rows because DataTemplateSelector disables it by default
+type FabListView() =
+    inherit ListView(ListViewCachingStrategy.RecycleElement)
+
 module ListView =
 
-    let WidgetKey = Widgets.register<FabulousListView>()
+    let WidgetKey = Widgets.register<FabListView>()
 
     let GroupedItemsSource =
         Attributes.defineSimpleScalar<GroupedWidgetItems>

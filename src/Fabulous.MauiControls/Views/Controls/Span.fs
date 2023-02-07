@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
@@ -113,3 +114,21 @@ type SpanModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabSpan>, value: ViewRef<Span>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type SpanYieldExtensions =
+    [<Extension>]
+    static member inline Yield
+        (
+            _: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>,
+            x: WidgetBuilder<'msg, #IFabGestureRecognizer>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

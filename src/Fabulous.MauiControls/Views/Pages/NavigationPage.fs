@@ -6,18 +6,45 @@ open System
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
 type IFabNavigationPage =
     inherit IFabPage
 
+// https://stackoverflow.com/a/2113902
+type RequiresSubscriptionEvent() =
+    let evt = Event<EventHandler, EventArgs>()
+    let mutable counter = 0
+
+    let published =
+        { new IEvent<EventHandler, EventArgs> with
+            member x.AddHandler(h) =
+                evt.Publish.AddHandler(h)
+                counter <- counter + 1
+
+            member x.RemoveHandler(h) =
+                evt.Publish.RemoveHandler(h)
+                counter <- counter - 1
+
+            member x.Subscribe(s) =
+                let h = EventHandler(fun _ -> s.OnNext)
+                x.AddHandler(h)
+
+                { new IDisposable with
+                    member y.Dispose() = x.RemoveHandler(h) } }
+
+    member x.Trigger(v) = evt.Trigger(v)
+    member x.Publish = published
+    member x.HasListeners = counter > 0
+
 /// Maui handles pages asynchronously, meaning a page will be added to the stack only after the animation is finished.
 /// This is a problem for Fabulous, because the nav stack needs to be synchronized with the widget trees.
 /// Otherwise rapid consecutive updates might end up with a wrong nav stack.
 ///
 /// To work around that, we keep our own nav stack, and we update it synchronously.
-type CustomNavigationPage() as this =
+type FabNavigationPage() as this =
     inherit NavigationPage()
 
     let _pagesSync =
@@ -44,14 +71,14 @@ type CustomNavigationPage() as this =
         this.PushAsync(page, (animated <> Some false)) |> ignore
 
     member this.InsertPageBeforeSync(page: Page, index: int) =
-        let next = _pagesSync.[index]
+        let next = _pagesSync[index]
         _pagesSync.Insert(index, page)
         this.Navigation.InsertPageBefore(page, next)
 
     member this.RemovePageSync(index: int) =
         if index < _pagesSync.Count then
             popCount <- popCount + 1
-            let page = _pagesSync.[index]
+            let page = _pagesSync[index]
             _pagesSync.RemoveAt(index)
             this.Navigation.RemovePage(page)
 
@@ -59,7 +86,7 @@ type CustomNavigationPage() as this =
         if _pagesSync.Count > 0 then
             popCount <- popCount + 1
             _pagesSync.RemoveAt(_pagesSync.Count - 1)
-            this.PopAsync((animated <> Some false)) |> ignore
+            this.PopAsync(animated <> Some false) |> ignore
 
     member this.OnPopped(_: NavigationEventArgs) =
         // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
@@ -80,7 +107,7 @@ type CustomNavigationPage() as this =
 
 module NavigationPageUpdaters =
     let applyDiffNavigationPagePages _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
-        let navigationPage = node.Target :?> CustomNavigationPage
+        let navigationPage = node.Target :?> FabNavigationPage
         let pages = Array.ofSeq navigationPage.PagesSync
 
         let mutable popLastWithAnimation = false
@@ -178,7 +205,7 @@ module NavigationPageUpdaters =
             navigationPage.PopSync()
 
     let updateNavigationPagePages (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
-        let navigationPage = node.Target :?> CustomNavigationPage
+        let navigationPage = node.Target :?> FabNavigationPage
 
         match newValueOpt with
         | ValueNone -> failwith "NavigationPage requires its Pages modifier to be set"
@@ -226,11 +253,11 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(prevPage)
 
                     // Trigger the unmounted event for the old child
-                    Dispatcher.dispatchEventForAllChildren prevItemNode span.[i] Lifecycle.Unmounted
+                    Dispatcher.dispatchEventForAllChildren prevItemNode span[i] Lifecycle.Unmounted
                     prevItemNode.Disconnect()
 
 module NavigationPage =
-    let WidgetKey = Widgets.register<CustomNavigationPage>()
+    let WidgetKey = Widgets.register<FabNavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
@@ -263,10 +290,10 @@ module NavigationPage =
         Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> CustomNavigationPage).BackNavigated)
+        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> CustomNavigationPage).BackButtonPressed)
+        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =
@@ -482,3 +509,13 @@ type NavigationPagePlatformModifiers =
     [<Extension>]
     static member inline prefersLargeTitles(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: bool) =
         this.AddScalar(NavigationPage.PrefersLargeTitles.WithValue(value))
+
+[<Extension>]
+type NavigationPageYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabNavigationPage, IFabPage>, x: WidgetBuilder<'msg, #IFabPage>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabNavigationPage, IFabPage>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabPage>>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }

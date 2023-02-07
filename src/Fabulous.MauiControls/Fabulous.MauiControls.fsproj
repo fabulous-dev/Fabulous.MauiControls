@@ -25,7 +25,6 @@
     <Compile Include="ViewNode.fs" />
     <Compile Include="FabColor.fs" />
     <Compile Include="Attributes.fs" />
-    <Compile Include="Controls.fs" />
     <Compile Include="VirtualizedCollection.fs" />
     <Compile Include="Widgets.fs" />
     <Compile Include="Views\_Element.fs" />
@@ -33,8 +32,8 @@
     <Compile Include="Views\_NavigableElement.fs" />
     <Compile Include="Views\Shadow.fs" />
     <Compile Include="Views\Brushes\_Brush.fs" />
-    <Compile Include="Views\Brushes\_GradientBrush.fs" />
     <Compile Include="Views\Brushes\_GradientStop.fs" />
+    <Compile Include="Views\Brushes\_GradientBrush.fs" />
     <Compile Include="Views\Brushes\SolidColorBrush.fs" />
     <Compile Include="Views\Brushes\LinearGradientBrush.fs" />
     <Compile Include="Views\Brushes\RadialGradientBrush.fs" />
@@ -139,7 +138,6 @@
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Any.fs" />
     <Compile Include="Views\_Semantics.fs" />
-    <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Async.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />

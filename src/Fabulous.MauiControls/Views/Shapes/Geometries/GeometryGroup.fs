@@ -1,6 +1,8 @@
 namespace Fabulous.Maui
 
 open System.Collections.Generic
+open System.Runtime.CompilerServices
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls.Shapes
 open Fabulous
 
@@ -30,3 +32,17 @@ module GeometryGroupBuilders =
                     GeometryGroup.Children,
                     GeometryGroup.FillRule.WithValue(fillRule)
                 )
+
+[<Extension>]
+type GeometryGroupYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabGeometryGroup, IFabGeometry>, x: WidgetBuilder<'msg, #IFabGeometry>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: CollectionBuilder<'msg, #IFabGeometryGroup, IFabGeometry>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGeometry>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
