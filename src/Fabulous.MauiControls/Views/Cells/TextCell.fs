@@ -54,5 +54,4 @@ type TextCellModifiers =
 [<Extension>]
 type TextCellExtraModifiers =
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) =
-        this.textColor(value.ToFabColor())
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) = this.textColor(value.ToFabColor())

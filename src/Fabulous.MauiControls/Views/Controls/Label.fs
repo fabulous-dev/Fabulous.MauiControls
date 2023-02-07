@@ -162,7 +162,7 @@ type LabelExtraModifiers =
     [<Extension>]
     static member inline alignStartText(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.alignStartTextHorizontal().alignStartTextVertical()
-        
+
     [<Extension>]
     static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.horizontalTextAlignment(TextAlignment.Center)
@@ -174,7 +174,7 @@ type LabelExtraModifiers =
     [<Extension>]
     static member inline centerText(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.centerTextHorizontal().centerTextVertical()
-        
+
     [<Extension>]
     static member inline alignEndTextHorizontal(this: WidgetBuilder<'msg, #IFabLabel>) =
         this.horizontalTextAlignment(TextAlignment.End)

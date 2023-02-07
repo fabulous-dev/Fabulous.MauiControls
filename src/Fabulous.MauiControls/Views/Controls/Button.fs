@@ -205,5 +205,4 @@ type ButtonModifiers =
 [<Extension>]
 type ButtonExtraModifiers =
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
-        this.textColor(value.ToFabColor())
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) = this.textColor(value.ToFabColor())

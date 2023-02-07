@@ -20,11 +20,13 @@ module Label =
 
             ContentView(
                 VStack(8.) {
-                    Label("Custom font regular").font(fontFamily = Fonts.SourceSansProRegular, size = 20.)
+                    Label("Custom font regular")
+                        .font(fontFamily = Fonts.SourceSansProRegular, size = 20.)
 
                     Label("Custom font bold").font(fontFamily = Fonts.SourceSansProBold, size = 20.)
 
-                    Label("Custom font italic").font(fontFamily = Fonts.SourceSansProItalic, size = 20.)
+                    Label("Custom font italic")
+                        .font(fontFamily = Fonts.SourceSansProItalic, size = 20.)
 
                     Label("Custom font italic bold")
                         .font(fontFamily = Fonts.SourceSansProBoldItalic, size = 20.)

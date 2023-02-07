@@ -241,11 +241,7 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Background.WithValue(value))
 
     [<Extension>]
-    static member inline background
-        (
-            this: WidgetBuilder<'msg, #IFabVisualElement>,
-            content: WidgetBuilder<'msg, #IFabBrush>
-        ) =
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, content: WidgetBuilder<'msg, #IFabBrush>) =
         this.AddWidget(VisualElement.BackgroundWidget.WithValue(content.Compile()))
 
     [<Extension>]
@@ -475,9 +471,7 @@ type VisualElementModifiers =
 [<Extension>]
 type VisualElementExtraModifiers =
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Color) =
-        this.background(SolidColorBrush(value))
-        
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Color) = this.background(SolidColorBrush(value))
+
     [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) =
-        this.background(value.ToMauiColor())
+    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) = this.background(value.ToMauiColor())
