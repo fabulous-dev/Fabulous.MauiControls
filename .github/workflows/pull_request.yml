@@ -20,7 +20,7 @@ jobs:
         dotnet tool restore
         dotnet fantomas --check -r src samples templates
     - name: Install dotnet workload
-      run: dotnet workload install maui --from-rollback-file .github/workflows/WorkloadManifest.json
+      run: dotnet workload install maui
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build

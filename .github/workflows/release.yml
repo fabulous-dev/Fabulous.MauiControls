@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    tags: ['[0-9]+.[0-9]+.[0-9]+']
+    tags: ['[0-9]+.[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+-pre[0-9]+']
     paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
@@ -41,7 +41,7 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Install dotnet workload
-      run: dotnet workload install maui --from-rollback-file .github/workflows/WorkloadManifest.json
+      run: dotnet workload install maui
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
