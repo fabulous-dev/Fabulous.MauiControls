@@ -11,7 +11,6 @@ type IFabGradientBrush =
     inherit IFabBrush
 
 module GradientBrush =
-
     let Children =
         Attributes.defineListWidgetCollection "GradientBrush_GradientStops" (fun target -> (target :?> GradientBrush).GradientStops :> IList<_>)
 

@@ -32,7 +32,7 @@
     <Compile Include="Views\_NavigableElement.fs" />
     <Compile Include="Views\Shadow.fs" />
     <Compile Include="Views\Brushes\_Brush.fs" />
-    <Compile Include="Views\Brushes\_GradientStop.fs" />
+    <Compile Include="Views\Brushes\GradientStop.fs" />
     <Compile Include="Views\Brushes\_GradientBrush.fs" />
     <Compile Include="Views\Brushes\SolidColorBrush.fs" />
     <Compile Include="Views\Brushes\LinearGradientBrush.fs" />
