@@ -52,9 +52,9 @@ type Tests() =
             }
 
         let treeContext: ViewTreeContext =
-            { CanReuseView = XViewHelpers.canReuseView
+            { CanReuseView = MauiViewHelpers.canReuseView
               GetViewNode = ViewNode.get
-              Logger = XViewHelpers.defaultLogger()
+              Logger = MauiViewHelpers.defaultLogger()
               Dispatch = dispatch }
 
         let navPage = CustomNavigationPage()
