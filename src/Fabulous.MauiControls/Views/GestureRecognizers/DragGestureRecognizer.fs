@@ -18,11 +18,11 @@ module DragGestureRecognizer =
     let DropCompleted =
         Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
 
-
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =
     type Fabulous.Maui.View with
-
+        /// <summary>Create a DragGestureRecognizer that listens for DragStarting event</summary>
+        /// <param name="onDragStarting">Message to dispatch</param>
         static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDragGestureRecognizer>(
                 DragGestureRecognizer.WidgetKey,
@@ -31,13 +31,23 @@ module DragGestureRecognizerBuilders =
 
 [<Extension>]
 type DragGestureRecognizerModifiers =
-
-    /// <summary>Sets whether users are allowed to drag</summary>
+    /// <summary>Set whether users are allowed to drag</summary>
+    /// <param name="this">Current widget</param>
     /// <param name="value">true to allow users to drag; otherwise, false</param>
     [<Extension>]
     static member inline canDrag(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, value: bool) =
         this.AddScalar(DragGestureRecognizer.CanDrag.WithValue(value))
 
+    /// <summary>Listen for DropCompleted event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, onDropCompleted: 'msg) =
-        this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> onDropCompleted |> box))
+    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, msg: 'msg) =
+        this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> box msg))
+        
+    /// <summary>Link a ViewRef to access the direct DragGestureRecognizer control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabDragGestureRecognizer>, value: ViewRef<DragGestureRecognizer>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
