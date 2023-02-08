@@ -24,7 +24,7 @@ module TranslateTransformBuilders =
             WidgetBuilder<'msg, IFabTranslateTransform>(TranslateTransform.WidgetKey, TranslateTransform.X.WithValue(x), TranslateTransform.Y.WithValue(y))
 
 [<Extension>]
-type SkewTransformModifiers =
+type TranslateTransformModifiers =
     /// <summary>Link a ViewRef to access the direct TranslateTransform control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
