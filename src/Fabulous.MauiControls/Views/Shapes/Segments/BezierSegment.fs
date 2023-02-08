@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
@@ -21,9 +22,11 @@ module BezierSegment =
 
 [<AutoOpen>]
 module BezierSegmentBuilders =
-
     type Fabulous.Maui.View with
-
+        /// <summary>Create a BezierSegment with 3 points</summary>
+        /// <param name="point1">The first point</param>
+        /// <param name="point2">The second point</param>
+        /// <param name="point3">The third point</param>
         static member inline BezierSegment<'msg>(point1: Point, point2: Point, point3: Point) =
             WidgetBuilder<'msg, IFabBezierSegment>(
                 BezierSegment.WidgetKey,
@@ -31,3 +34,12 @@ module BezierSegmentBuilders =
                 BezierSegment.Point2.WithValue(point2),
                 BezierSegment.Point3.WithValue(point3)
             )
+
+[<Extension>]
+type BezierSegmentModifiers =
+    /// <summary>Link a ViewRef to access the direct ArcSegment control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabBezierSegment>, value: ViewRef<BezierSegment>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

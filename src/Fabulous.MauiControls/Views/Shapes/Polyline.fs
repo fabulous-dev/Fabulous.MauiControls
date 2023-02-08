@@ -53,12 +53,12 @@ module PolylineBuilders =
         /// <param name="points">The points list</param>
         /// <param name="strokeThickness">The stroke thickness</param>
         /// <param name="stroke">The stroke brush</param>
-        static member inline Polyline(points: Point list, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
+        static member inline Polyline(points: seq<Point>, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
             WidgetBuilder<'msg, IFabPolyline>(
                 Polygon.WidgetKey,
                 AttributesBundle(
                     StackList.two(
-                        Polyline.PointsList.WithValue(Array.ofList points),
+                        Polyline.PointsList.WithValue(Array.ofSeq points),
                         Shape.StrokeThickness.WithValue(strokeThickness)
                     ),
                     ValueSome [|
