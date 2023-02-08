@@ -78,17 +78,17 @@ module EntryCellBuilders =
 type EntryCellModifiers =
     /// <summary>Set the horizontal text alignment</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="alignment">The horizontal text alignment</param>
+    /// <param name="value">The horizontal text alignment</param>
     [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabEntryCell>, alignment: TextAlignment) =
-        this.AddScalar(EntryCell.HorizontalTextAlignment.WithValue(alignment))
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabEntryCell>, value: TextAlignment) =
+        this.AddScalar(EntryCell.HorizontalTextAlignment.WithValue(value))
 
     /// <summary>Set the keyboard type</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="keyboard">The keyboard type</param>
+    /// <param name="value">The keyboard type</param>
     [<Extension>]
-    static member inline keyboard(this: WidgetBuilder<'msg, #IFabEntryCell>, keyboard: Keyboard) =
-        this.AddScalar(EntryCell.Keyboard.WithValue(keyboard))
+    static member inline keyboard(this: WidgetBuilder<'msg, #IFabEntryCell>, value: Keyboard) =
+        this.AddScalar(EntryCell.Keyboard.WithValue(value))
         
     /// <summary>Set the color of the label</summary>
     /// <param name="this">Current widget</param>
@@ -106,24 +106,24 @@ type EntryCellModifiers =
 
     /// <summary>Listen to the Completed event</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="onCompleted">Message to dispatch</param>
+    /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntryCell>, onCompleted: 'msg) =
-        this.AddScalar(EntryCell.OnCompleted.WithValue(onCompleted))
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntryCell>, msg: 'msg) =
+        this.AddScalar(EntryCell.OnCompleted.WithValue(msg))
 
     /// <summary>Set the placeholder text</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="placeholder">The placeholder</param>
+    /// <param name="value">The placeholder</param>
     [<Extension>]
-    static member inline placeholder(this: WidgetBuilder<'msg, #IFabEntryCell>, placeholder: string) =
-        this.AddScalar(EntryCell.Placeholder.WithValue(placeholder))
+    static member inline placeholder(this: WidgetBuilder<'msg, #IFabEntryCell>, value: string) =
+        this.AddScalar(EntryCell.Placeholder.WithValue(value))
 
     /// <summary>Set the vertical text alignment</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="alignment">The vertical text alignment</param>
+    /// <param name="value">The vertical text alignment</param>
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabEntryCell>, alignment: TextAlignment) =
-        this.AddScalar(EntryCell.VerticalTextAlignment.WithValue(alignment))
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabEntryCell>, value: TextAlignment) =
+        this.AddScalar(EntryCell.VerticalTextAlignment.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct EntryCell control instance</summary>
     /// <param name="this">Current widget</param>

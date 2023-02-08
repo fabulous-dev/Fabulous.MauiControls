@@ -5,6 +5,7 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
+open Microsoft.Maui.Graphics
 
 type IFabEntry =
     inherit IFabInputView
@@ -13,9 +14,15 @@ module Entry =
     let WidgetKey = Widgets.register<Entry>()
 
     let ClearButtonVisibility =
-        Attributes.defineBindableWithEquality<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
+        Attributes.defineBindableEnum<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
+
+    let Completed =
+        Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorPosition = Attributes.defineBindableInt Entry.CursorPositionProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Entry.FontAutoScalingEnabledProperty
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Entry.FontAttributesProperty
@@ -39,14 +46,20 @@ module Entry =
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
-
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool Entry.FontAutoScalingEnabledProperty
-
-    let Completed =
-        Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
-
+        
+module EntryPlatform =
     let CursorColor =
+        Attributes.defineSimpleScalarWithEquality<Color> "Entry_CursorColor" (fun _ newValueOpt node ->
+            let entry = node.Target :?> Entry
+
+            let value =
+                match newValueOpt with
+                | ValueNone -> null
+                | ValueSome x -> x
+
+            iOSSpecific.Entry.SetCursorColor(entry, value))
+        
+    let CursorFabColor =
         Attributes.defineSmallScalar<FabColor> "Entry_CursorColor" SmallScalars.FabColor.decode (fun _ newValueOpt node ->
             let entry = node.Target :?> Entry
 
@@ -60,7 +73,9 @@ module Entry =
 [<AutoOpen>]
 module EntryBuilders =
     type Fabulous.Maui.View with
-
+        /// <summary>Create an Entry widget with a text and listen for text changes</summary>
+        /// <param name="text">The text value</param>
+        /// <param name="onTextChanged">Message to dispatch</param>
         static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntry>(
                 Entry.WidgetKey,
@@ -69,14 +84,26 @@ module EntryBuilders =
 
 [<Extension>]
 type EntryModifiers =
+    /// <summary>Set the visibility of the clear button</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The visibility of the clear button</param>
     [<Extension>]
     static member inline clearButtonVisibility(this: WidgetBuilder<'msg, #IFabEntry>, value: ClearButtonVisibility) =
         this.AddScalar(Entry.ClearButtonVisibility.WithValue(value))
 
+    /// <summary>Set the position of the cursor</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The position of the cursor</param>
     [<Extension>]
     static member inline cursorPosition(this: WidgetBuilder<'msg, #IFabEntry>, value: int) =
         this.AddScalar(Entry.CursorPosition.WithValue(value))
-
+        
+    /// <summary>Set the font</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="size">The font size</param>
+    /// <param name="attributes">The font attributes</param>
+    /// <param name="fontFamily">The font family</param>
+    /// <param name="autoScalingEnabled">The value indicating whether auto-scaling is enabled</param>
     [<Extension>]
     static member inline font
         (
@@ -84,7 +111,7 @@ type EntryModifiers =
             ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
-            ?fontAutoScalingEnabled: bool
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -101,49 +128,80 @@ type EntryModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Entry.FontFamily.WithValue(v))
 
-        match fontAutoScalingEnabled with
+        match autoScalingEnabled with
         | None -> ()
         | Some v -> res <- res.AddScalar(Entry.FontAutoScalingEnabled.WithValue(v))
 
         res
 
+    /// <summary>Set the horizontal text alignment</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The horizontal text alignment</param>
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabEntry>, value: TextAlignment) =
         this.AddScalar(Entry.HorizontalTextAlignment.WithValue(value))
 
+    /// <summary>Set the value indicating whether the field expects a password</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the field expects a password</param>
     [<Extension>]
     static member inline isPassword(this: WidgetBuilder<'msg, #IFabEntry>, value: bool) =
         this.AddScalar(Entry.IsPassword.WithValue(value))
 
+    /// <summary>Set the value indicating whether the field is enabled for text prediction and suggestion</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the field is enabled for text prediction and suggestion</param>
     [<Extension>]
     static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #IFabEntry>, value: bool) =
         this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value))
 
+    /// <summary>Listen for the Completed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
+    [<Extension>]
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, msg: 'msg) =
+        this.AddScalar(Entry.Completed.WithValue(msg))
+
+    /// <summary>Set the return type of the keyboard</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The return type of the keyboard</param>
     [<Extension>]
     static member inline returnType(this: WidgetBuilder<'msg, #IFabEntry>, value: ReturnType) =
         this.AddScalar(Entry.ReturnType.WithValue(value))
 
+    /// <summary>Set the selection length</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The selection length</param>
     [<Extension>]
     static member inline selectionLength(this: WidgetBuilder<'msg, #IFabEntry>, value: int) =
         this.AddScalar(Entry.SelectionLength.WithValue(value))
 
+    /// <summary>Set the vertical text alignment</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The vertical text alignment</param>
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabEntry>, value: TextAlignment) =
         this.AddScalar(Entry.VerticalTextAlignment.WithValue(value))
 
-    [<Extension>]
-    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, onCompleted: 'msg) =
-        this.AddScalar(Entry.Completed.WithValue(onCompleted))
-
     /// <summary>Link a ViewRef to access the direct Entry control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabEntry>, value: ViewRef<Entry>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type EntryPlatformModifiers =
-    /// <summary>iOS platform specific. Sets the cursor color.</summary>
-    /// <param name="value">The new cursor color.</param>
+    /// <summary>iOS platform specific. Set the cursor color.</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The cursor color</param>
+    [<Extension>]
+    static member inline cursorColor(this: WidgetBuilder<'msg, #IFabEntry>, value: Color) =
+        this.AddScalar(EntryPlatform.CursorColor.WithValue(value))
+        
+    /// <summary>iOS platform specific. Set the cursor color.</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The cursor color</param>
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IFabEntry>, value: FabColor) =
-        this.AddScalar(Entry.CursorColor.WithValue(value))
+        this.AddScalar(EntryPlatform.CursorFabColor.WithValue(value))
