@@ -5,6 +5,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabListView =
     inherit IFabItemsViewOfCell
@@ -14,8 +15,9 @@ type FabListView() =
     inherit ListView(ListViewCachingStrategy.RecycleElement)
 
 module ListView =
-
     let WidgetKey = Widgets.register<FabListView>()
+
+    let Footer = Attributes.defineBindableWidget ListView.FooterProperty
 
     let GroupedItemsSource =
         Attributes.defineSimpleScalar<GroupedWidgetItems>
@@ -40,36 +42,17 @@ module ListView =
 
                     listView.SetValue(ListView.GroupHeaderTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)))
 
+    let HasUnevenRows = Attributes.defineBindableBool ListView.HasUnevenRowsProperty
+
     let Header = Attributes.defineBindableWidget ListView.HeaderProperty
 
-    let Footer = Attributes.defineBindableWidget ListView.FooterProperty
-
-    let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
-
-    let SelectionMode =
-        Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
+    let HorizontalScrollBarVisibility =
+        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty
 
     let IsPullToRefreshEnabled =
         Attributes.defineBindableBool ListView.IsPullToRefreshEnabledProperty
 
     let IsRefreshing = Attributes.defineBindableBool ListView.IsRefreshingProperty
-
-    let HasUnevenRows = Attributes.defineBindableBool ListView.HasUnevenRowsProperty
-
-    let SeparatorVisibility =
-        Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
-
-    let SeparatorColor =
-        Attributes.defineBindableAppThemeColor ListView.SeparatorColorProperty
-
-    let RefreshControlColor =
-        Attributes.defineBindableAppThemeColor ListView.RefreshControlColorProperty
-
-    let HorizontalScrollBarVisibility =
-        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty
-
-    let VerticalScrollBarVisibility =
-        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
 
     let ItemAppearing =
         Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
@@ -83,8 +66,28 @@ module ListView =
     let ItemTapped =
         Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
 
+    let RefreshControlColor =
+        Attributes.defineBindableWithEquality ListView.RefreshControlColorProperty
+        
+    let RefreshControlFabColor =
+        Attributes.defineBindableColor ListView.RefreshControlColorProperty
+
     let Refreshing =
         Attributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
+
+    let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
+
+    let SelectionMode =
+        Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
+
+    let SeparatorColor =
+        Attributes.defineBindableWithEquality ListView.SeparatorColorProperty
+        
+    let SeparatorFabColor =
+        Attributes.defineBindableColor ListView.SeparatorColorProperty
+
+    let SeparatorVisibility =
+        Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let Scrolled =
         Attributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
@@ -92,13 +95,19 @@ module ListView =
     let ScrollToRequested =
         Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
 
+    let VerticalScrollBarVisibility =
+        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
+
 [<AutoOpen>]
 module ListViewBuilders =
     type Fabulous.Maui.View with
-
+        /// <summary>Create a ListView with a list of items</summary>
+        /// <param name="items">The items list</param>
         static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
 
+        /// <summary>Create a ListView with a list of grouped items</summary>
+        /// <param name="items">The grouped items list</param>
         static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
             when 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
@@ -110,96 +119,164 @@ module ListViewBuilders =
 
 [<Extension>]
 type ListViewModifiers =
-
+    /// <summary>Set the footer widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="content">The footer widget</param>
     [<Extension>]
-    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IFabView>
+    static member inline footer
         (
-            this: WidgetBuilder<'msg, 'marker>,
-            content: WidgetBuilder<'msg, 'contentMarker>
-        ) =
-        this.AddWidget(ListView.Header.WithValue(content.Compile()))
-
-    [<Extension>]
-    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IFabView>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            content: WidgetBuilder<'msg, 'contentMarker>
+            this: WidgetBuilder<'msg, #IFabListView>,
+            content: WidgetBuilder<'msg, #IFabView>
         ) =
         this.AddWidget(ListView.Footer.WithValue(content.Compile()))
 
+    /// <summary>Set whether the list has uneven rows</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the list has uneven rows</param>
     [<Extension>]
     static member inline hasUnevenRows(this: WidgetBuilder<'msg, #IFabListView>, value: bool) =
         this.AddScalar(ListView.HasUnevenRows.WithValue(value))
+        
+    /// <summary>Set the header widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="content">The header widget</param>
+    [<Extension>]
+    static member inline header
+        (
+            this: WidgetBuilder<'msg, #IFabListView>,
+            content: WidgetBuilder<'msg, #IFabView>
+        ) =
+        this.AddWidget(ListView.Header.WithValue(content.Compile()))
 
+    /// <summary>Set the horizontal scroll bar visibility</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The horizontal scroll bar visibility</param>
     [<Extension>]
     static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: ScrollBarVisibility) =
         this.AddScalar(ListView.HorizontalScrollBarVisibility.WithValue(value))
 
-    [<Extension>]
-    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: ScrollBarVisibility) =
-        this.AddScalar(ListView.VerticalScrollBarVisibility.WithValue(value))
-
+    /// <summary>Set whether pull to refresh is enabled</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether pull to refresh is enabled</param>
     [<Extension>]
     static member inline isPullToRefreshEnabled(this: WidgetBuilder<'msg, #IFabListView>, value: bool) =
         this.AddScalar(ListView.IsPullToRefreshEnabled.WithValue(value))
 
+    /// <summary>Set whether the list is refreshing</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the list is refreshing</param>
     [<Extension>]
     static member inline isRefreshing(this: WidgetBuilder<'msg, #IFabListView>, value: bool) =
         this.AddScalar(ListView.IsRefreshing.WithValue(value))
 
+    /// <summary>Listen for the ItemAppearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IFabListView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ListView.RefreshControlColor.WithValue(AppTheme.create light dark))
+    static member inline onItemAppearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> 'msg) =
+        this.AddScalar(ListView.ItemAppearing.WithValue(fun args -> fn args |> box))
 
+    /// <summary>Listen for the ItemDisappearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ListView.SeparatorColor.WithValue(AppTheme.create light dark))
+    static member inline onItemDisappearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> 'msg) =
+        this.AddScalar(ListView.ItemDisappearing.WithValue(fun args -> fn args |> box))
 
+    /// <summary>Listen for the ItemTapped event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline separatorVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: SeparatorVisibility) =
-        this.AddScalar(ListView.SeparatorVisibility.WithValue(value))
+    static member inline onItemTapped(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> 'msg) =
+        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
 
+    /// <summary>Listen for the ItemSelected event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> 'msg) =
+        this.AddScalar(ListView.ItemSelected.WithValue(fun args -> fn args.SelectedItemIndex |> box))
+        
+    /// <summary>Listen for the Refreshing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
+    [<Extension>]
+    static member inline onRefreshing(this: WidgetBuilder<'msg, #IFabListView>, msg: 'msg) =
+        this.AddScalar(ListView.Refreshing.WithValue(msg))
+
+    /// <summary>Listen for the Scrolled event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrolledEventArgs -> 'msg) =
+        this.AddScalar(ListView.Scrolled.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ScrollToRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrollToRequestedEventArgs -> 'msg) =
+        this.AddScalar(ListView.ScrollToRequested.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Set the refresh control color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The refresh control color</param>
+    [<Extension>]
+    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IFabListView>, value: Color) =
+        this.AddScalar(ListView.RefreshControlColor.WithValue(value))
+
+    /// <summary>Set the refresh control color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The refresh control color</param>
+    [<Extension>]
+    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IFabListView>, value: FabColor) =
+        this.AddScalar(ListView.RefreshControlFabColor.WithValue(value))
+
+    /// <summary>Set the row height</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The row height</param>
     [<Extension>]
     static member inline rowHeight(this: WidgetBuilder<'msg, #IFabListView>, value: int) =
         this.AddScalar(ListView.RowHeight.WithValue(value))
 
+    /// <summary>Set the separator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The separator color</param>
+    [<Extension>]
+    static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, value: Color) =
+        this.AddScalar(ListView.SeparatorColor.WithValue(value))
+
+    /// <summary>Set the separator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The separator color</param>
+    [<Extension>]
+    static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, value: FabColor) =
+        this.AddScalar(ListView.SeparatorFabColor.WithValue(value))
+        
+    /// <summary>Set the separator visibility</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The separator visibility</param>
+    [<Extension>]
+    static member inline separatorVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: SeparatorVisibility) =
+        this.AddScalar(ListView.SeparatorVisibility.WithValue(value))
+        
+    /// <summary>Set the selection mode</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The selection mode</param>
     [<Extension>]
     static member inline selectionMode(this: WidgetBuilder<'msg, #IFabListView>, value: ListViewSelectionMode) =
         this.AddScalar(ListView.SelectionMode.WithValue(value))
 
+    /// <summary>Set the vertical scroll bar visibility</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The vertical scroll bar visibility</param>
     [<Extension>]
-    static member inline onItemAppearing(this: WidgetBuilder<'msg, #IFabListView>, onItemAppearing: ItemVisibilityEventArgs -> 'msg) =
-        this.AddScalar(ListView.ItemAppearing.WithValue(fun args -> onItemAppearing args |> box))
-
-    [<Extension>]
-    static member inline onItemDisappearing(this: WidgetBuilder<'msg, #IFabListView>, onItemDisappearing: ItemVisibilityEventArgs -> 'msg) =
-        this.AddScalar(ListView.ItemDisappearing.WithValue(fun args -> onItemDisappearing args |> box))
-
-    [<Extension>]
-    static member inline onItemTapped(this: WidgetBuilder<'msg, #IFabListView>, onItemTapped: int -> 'msg) =
-        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> onItemTapped args.ItemIndex |> box))
-
-    [<Extension; Obsolete("Use onItemSelected(int -> 'msg) instead")>]
-    static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, onItemSelected: SelectedItemChangedEventArgs -> 'msg) =
-        this.AddScalar(ListView.ItemSelected.WithValue(fun args -> onItemSelected args |> box))
-
-    [<Extension>]
-    static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, onItemSelected: int -> 'msg) =
-        this.AddScalar(ListView.ItemSelected.WithValue(fun args -> onItemSelected args.SelectedItemIndex |> box))
-
-    [<Extension>]
-    static member inline onRefreshing(this: WidgetBuilder<'msg, #IFabListView>, onRefreshing: 'msg) =
-        this.AddScalar(ListView.Refreshing.WithValue(onRefreshing))
-
-    [<Extension>]
-    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabListView>, onScrolled: ScrolledEventArgs -> 'msg) =
-        this.AddScalar(ListView.Scrolled.WithValue(fun args -> onScrolled args |> box))
-
-    [<Extension>]
-    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabListView>, onScrollToRequested: ScrollToRequestedEventArgs -> 'msg) =
-        this.AddScalar(ListView.ScrollToRequested.WithValue(fun args -> onScrollToRequested args |> box))
+    static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: ScrollBarVisibility) =
+        this.AddScalar(ListView.VerticalScrollBarVisibility.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct ListView control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabListView>, value: ViewRef<ListView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
