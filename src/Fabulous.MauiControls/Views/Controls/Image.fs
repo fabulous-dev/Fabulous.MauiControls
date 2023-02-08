@@ -30,7 +30,7 @@ module ImageBuilders =
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: ImageSource) =
-            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(source), Image.Aspect.WithValue(aspect))
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(source))
             
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
