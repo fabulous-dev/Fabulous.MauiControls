@@ -19,11 +19,11 @@ module Editor =
 
     let CursorPosition = Attributes.defineBindableInt Editor.CursorPositionProperty
 
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool Editor.FontAutoScalingEnabledProperty
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Editor.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Editor.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Editor.FontFamilyProperty

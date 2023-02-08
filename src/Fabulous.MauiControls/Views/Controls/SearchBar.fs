@@ -18,11 +18,11 @@ module SearchBar =
 
     let CursorPosition = Attributes.defineBindableInt SearchBar.CursorPositionProperty
 
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool SearchBar.FontAutoScalingEnabledProperty
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> SearchBar.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool SearchBar.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> SearchBar.FontFamilyProperty

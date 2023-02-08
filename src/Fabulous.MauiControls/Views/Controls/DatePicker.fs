@@ -19,11 +19,11 @@ module DatePicker =
     let DateWithEvent =
         Attributes.defineBindableWithEvent "DatePicker_DateSelected" DatePicker.DateProperty (fun target -> (target :?> DatePicker).DateSelected)
 
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool DatePicker.FontAutoScalingEnabledProperty
-
     let FontAttributes =
         Attributes.defineBindableWithEquality<FontAttributes> DatePicker.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool DatePicker.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> DatePicker.FontFamilyProperty
@@ -42,6 +42,7 @@ module DatePicker =
 
     let TextFabColor = Attributes.defineBindableColor DatePicker.TextColorProperty
 
+module DatePickerPlatform =
     let UpdateMode =
         Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode> "DatePicker_UpdateMode" (fun _ newValueOpt node ->
             let datePicker = node.Target :?> DatePicker
@@ -117,19 +118,19 @@ type DatePickerModifiers =
     static member inline format(this: WidgetBuilder<'msg, #IFabDatePicker>, value: string) =
         this.AddScalar(DatePicker.Format.WithValue(value))
 
-    /// <summary>Set the minimum date selectable</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The minimum date</param>
-    [<Extension>]
-    static member inline minimumDate(this: WidgetBuilder<'msg, #IFabDatePicker>, value: DateTime) =
-        this.AddScalar(DatePicker.MinimumDate.WithValue(value))
-
     /// <summary>Set the maximum date selectable</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The maximum date</param>
     [<Extension>]
     static member inline maximumDate(this: WidgetBuilder<'msg, #IFabDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
+
+    /// <summary>Set the minimum date selectable</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The minimum date</param>
+    [<Extension>]
+    static member inline minimumDate(this: WidgetBuilder<'msg, #IFabDatePicker>, value: DateTime) =
+        this.AddScalar(DatePicker.MinimumDate.WithValue(value))
 
     /// <summary>Set the color of the text</summary>
     /// <param name="this">Current widget</param>
@@ -159,4 +160,4 @@ type DatePickerPlatformModifiers =
     /// <param name="value">The value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</param>
     [<Extension>]
     static member inline updateMode(this: WidgetBuilder<'msg, #IFabDatePicker>, value: iOSSpecific.UpdateMode) =
-        this.AddScalar(DatePicker.UpdateMode.WithValue(value))
+        this.AddScalar(DatePickerPlatform.UpdateMode.WithValue(value))

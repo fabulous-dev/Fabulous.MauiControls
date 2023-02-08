@@ -21,11 +21,11 @@ module Span =
 
     let CharacterSpacing = Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool Span.FontAutoScalingEnabledProperty
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Span.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Span.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Span.FontFamilyProperty

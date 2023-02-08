@@ -31,11 +31,11 @@ module Button =
 
     let CornerRadius = Attributes.defineBindableInt Button.CornerRadiusProperty
 
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool Button.FontAutoScalingEnabledProperty
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Button.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Button.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Button.FontFamilyProperty
