@@ -58,11 +58,11 @@ module CollectionView =
 module CollectionViewBuilders =
     type Fabulous.Maui.View with
 
-        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
+        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabCollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items
 
         static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
-            when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+            when 'itemMarker :> IFabView and 'groupMarker :> IFabView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItems<'msg, IFabCollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
@@ -82,7 +82,7 @@ type CollectionViewModifiers =
         this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged args |> box))
 
     [<Extension>]
-    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IView>
+    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IFabView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -90,7 +90,7 @@ type CollectionViewModifiers =
         this.AddWidget(CollectionView.Header.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IView>
+    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabCollectionView and 'contentMarker :> IFabView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>

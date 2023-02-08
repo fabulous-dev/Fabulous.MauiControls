@@ -64,7 +64,7 @@ module RadioButtonBuilders =
                 RadioButton.ContentString.WithValue(content)
             )
 
-        static member inline RadioButton<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>, isChecked: bool, onChecked: bool -> 'msg) =
+        static member inline RadioButton<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IFabRadioButton>(
                 RadioButton.WidgetKey,
                 AttributesBundle(

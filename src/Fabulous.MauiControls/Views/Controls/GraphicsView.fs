@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 
 type IGraphicsView =
-    inherit Fabulous.Maui.IView
+    inherit IFabView
 
 module GraphicsView =
     let WidgetKey = Widgets.register<GraphicsView>()

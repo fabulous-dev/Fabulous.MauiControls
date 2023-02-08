@@ -85,7 +85,7 @@ type ItemsViewModifiers =
         this.AddScalar(ItemsView.Scrolled.WithValue(fun args -> onScrolled args |> box))
 
     [<Extension>]
-    static member inline emptyView<'msg, 'marker, 'contentMarker when 'marker :> IFabItemsView and 'contentMarker :> IView>
+    static member inline emptyView<'msg, 'marker, 'contentMarker when 'marker :> IFabItemsView and 'contentMarker :> IFabView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>

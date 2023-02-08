@@ -13,6 +13,8 @@ type IFabPathGeometry =
 module PathGeometry =
     let WidgetKey = Widgets.register<PathGeometry>()
 
+    let FillRule = Attributes.defineBindableEnum<FillRule> PathGeometry.FillRuleProperty
+
     let FiguresWidgets =
         Attributes.defineListWidgetCollection "PathGeometry_FiguresWidgets" (fun target -> (target :?> PathGeometry).Figures :> IList<_>)
 
@@ -24,35 +26,54 @@ module PathGeometry =
             | ValueNone -> target.ClearValue(PathGeometry.FiguresProperty)
             | ValueSome value -> target.SetValue(PathGeometry.FiguresProperty, PathFigureCollectionConverter().ConvertFromInvariantString(value)))
 
-    let FillRule = Attributes.defineBindableEnum<FillRule> PathGeometry.FillRuleProperty
-
 [<AutoOpen>]
 module PathGeometryBuilders =
-
     type Fabulous.Maui.View with
+        /// <summary>Create a PathGeometry widget</summary>
+        static member inline PathGeometry<'msg>() =
+            CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(
+                PathGeometry.WidgetKey,
+                PathGeometry.FiguresWidgets
+            )
+            
+        /// <summary>Create a PathGeometry widget with the fill rule</summary>
+        /// <param name="fillRule">The fill rule</param>
+        static member inline PathGeometry<'msg>(fillRule: FillRule) =
+            CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(
+                PathGeometry.WidgetKey,
+                PathGeometry.FiguresWidgets,
+                PathGeometry.FillRule.WithValue(fillRule)
+            )
 
-        static member inline PathGeometry<'msg>(?fillRule: FillRule) =
-            match fillRule with
-            | None -> CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(PathGeometry.WidgetKey, PathGeometry.FiguresWidgets)
-            | Some fillRule ->
-                CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(
-                    PathGeometry.WidgetKey,
-                    PathGeometry.FiguresWidgets,
-                    PathGeometry.FillRule.WithValue(fillRule)
-                )
+        /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
+        /// <param name="figures">The figure data string</param>
+        static member inline PathGeometry<'msg>(figures: string) =
+            WidgetBuilder<'msg, IFabPathGeometry>(
+                PathGeometry.WidgetKey,
+                PathGeometry.FiguresString.WithValue(figures)
+            )
 
-        static member inline PathGeometry<'msg>(content: string, ?fillRule: FillRule) =
-            match fillRule with
-            | None -> WidgetBuilder<'msg, IFabPathGeometry>(PathGeometry.WidgetKey, PathGeometry.FiguresString.WithValue(content))
-            | Some fillRule ->
-                WidgetBuilder<'msg, IFabPathGeometry>(
-                    PathGeometry.WidgetKey,
-                    PathGeometry.FiguresString.WithValue(content),
-                    PathGeometry.FillRule.WithValue(fillRule)
-                )
+        /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
+        /// <param name="figures">The figure data string</param>
+        /// <param name="fillRule">The fill rule</param>
+        static member inline PathGeometry<'msg>(figures: string, fillRule: FillRule) =
+            WidgetBuilder<'msg, IFabPathGeometry>(
+                PathGeometry.WidgetKey,
+                PathGeometry.FiguresString.WithValue(figures),
+                PathGeometry.FillRule.WithValue(fillRule)
+            )
+            
+[<Extension>]
+type PathGeometryModifiers =
+    /// <summary>Link a ViewRef to access the direct PathGeometry control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabPathGeometry>, value: ViewRef<PathGeometry>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
-type CollectionBuilderExtensions =
+type PathGeometryYieldExtensions =
     [<Extension>]
     static member inline Yield(_: CollectionBuilder<'msg, #IFabPathGeometry, IFabPathFigure>, x: WidgetBuilder<'msg, #IFabPathFigure>) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

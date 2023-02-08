@@ -112,7 +112,7 @@ module ListViewBuilders =
 type ListViewModifiers =
 
     [<Extension>]
-    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IView>
+    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IFabView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -120,7 +120,7 @@ type ListViewModifiers =
         this.AddWidget(ListView.Header.WithValue(content.Compile()))
 
     [<Extension>]
-    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IView>
+    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> IFabListView and 'contentMarker :> IFabView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>

@@ -106,35 +106,35 @@ type FlexLayoutAttachedModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that the element will use the alignment supplied by the FlexAlignItems</param>
     [<Extension>]
-    static member inline flexAlignSelf(this: WidgetBuilder<'msg, #IView>, value: FlexAlignSelf) =
+    static member inline flexAlignSelf(this: WidgetBuilder<'msg, #IFabView>, value: FlexAlignSelf) =
         this.AddScalar(FlexLayoutAttached.AlignSelf.WithValue(value))
 
     /// <summary>Set a value that controls the element's relative or absolute basis</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that controls the element's relative or absolute basis</param>
     [<Extension>]
-    static member inline flexBasis(this: WidgetBuilder<'msg, #IView>, value: FlexBasis) =
+    static member inline flexBasis(this: WidgetBuilder<'msg, #IFabView>, value: FlexBasis) =
         this.AddScalar(FlexLayoutAttached.Basis.WithValue(value))
 
     /// <summary>Set a value that that determines the proportional growth that this element will accept to accommodate the layout in the row or column</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that that determines the proportional growth that this element will accept to accommodate the layout in the row or column</param>
     [<Extension>]
-    static member inline flexGrow(this: WidgetBuilder<'msg, #IView>, value: float) =
+    static member inline flexGrow(this: WidgetBuilder<'msg, #IFabView>, value: float) =
         this.AddScalar(FlexLayoutAttached.Grow.WithValue(value))
 
     /// <summary>Set a value that that determines this element's visual order among its siblings</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that that determines this element's visual order among its siblings</param>
     [<Extension>]
-    static member inline flexOrder(this: WidgetBuilder<'msg, #IView>, value: int) =
+    static member inline flexOrder(this: WidgetBuilder<'msg, #IFabView>, value: int) =
         this.AddScalar(FlexLayoutAttached.Order.WithValue(value))
 
     /// <summary>Set a value that determines the proportional reduction in size that this element will accept to accommodate the layout in the row or column</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that determines the proportional reduction in size that this element will accept to accommodate the layout in the row or column</param>
     [<Extension>]
-    static member inline flexShrink(this: WidgetBuilder<'msg, #IView>, value: float) =
+    static member inline flexShrink(this: WidgetBuilder<'msg, #IFabView>, value: float) =
         this.AddScalar(FlexLayoutAttached.Shrink.WithValue(value))
 
 [<Extension>]
@@ -143,5 +143,5 @@ type FlexLayoutExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The value that controls the element's relative or absolute basis</param>
     [<Extension>]
-    static member inline flexBasis(this: WidgetBuilder<'msg, #IView>, value: float) =
+    static member inline flexBasis(this: WidgetBuilder<'msg, #IFabView>, value: float) =
         this.flexBasis(FlexBasis.op_Implicit(float32 value))
