@@ -48,13 +48,13 @@ module FlexLayoutAttached =
 module FlexLayoutBuilders =
     type Fabulous.Maui.View with
         /// <summary>Create a FlexLayout</summary>
-        static member inline FlexLayout<'msg>(wrap: FlexWrap) =
-            CollectionBuilder<'msg, IFabFlexLayout, IFabView>(FlexLayout.WidgetKey, LayoutOfView.Children, FlexLayout.Wrap.WithValue(wrap))
+        static member inline FlexLayout<'msg>() =
+            CollectionBuilder<'msg, IFabFlexLayout, IFabView>(FlexLayout.WidgetKey, LayoutOfView.Children)
             
         /// <summary>Create a FlexLayout widget with a wrap value</summary>
         /// <param name="wrap">The wrap value</param>
         static member inline FlexLayout<'msg>(wrap: FlexWrap) =
-            CollectionBuilder<'msg, IFabFlexLayout, IFabView>(FlexLayout.WidgetKey, LayoutOfView.Children)
+            CollectionBuilder<'msg, IFabFlexLayout, IFabView>(FlexLayout.WidgetKey, LayoutOfView.Children, FlexLayout.Wrap.WithValue(wrap))
 
 [<Extension>]
 type FlexLayoutModifiers =
