@@ -5,6 +5,7 @@ open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabSlider =
     inherit IFabView
@@ -30,33 +31,41 @@ module SliderUpdaters =
 module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
-    let MinimumMaximum =
-        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" SliderUpdaters.updateSliderMinMax
-
-    let MaximumTrackColor =
-        Attributes.defineBindableAppThemeColor Slider.MaximumTrackColorProperty
-
-    let MinimumTrackColor =
-        Attributes.defineBindableAppThemeColor Slider.MinimumTrackColorProperty
-
-    let ThumbColor = Attributes.defineBindableAppThemeColor Slider.ThumbColorProperty
-
-    let ThumbImageSource =
-        Attributes.defineBindableAppTheme<ImageSource> Slider.ThumbImageSourceProperty
-
-    let ValueWithEvent =
-        Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
-
     let DragCompleted =
         Attributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
 
     let DragStarted =
         Attributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
+    
+    let MaximumTrackColor = Attributes.defineBindableWithEquality Slider.MaximumTrackColorProperty
+    
+    let MaximumTrackFabColor = Attributes.defineBindableColor Slider.MaximumTrackColorProperty
+
+    let MinimumMaximum =
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" SliderUpdaters.updateSliderMinMax
+
+    let MinimumTrackColor = Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
+    
+    let MinimumTrackFabColor = Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
+
+    let ThumbColor = Attributes.defineBindableWithEquality Slider.ThumbColorProperty
+    
+    let ThumbFabColor = Attributes.defineBindableColor Slider.ThumbColorProperty
+
+    let ThumbImageSource =
+        Attributes.defineBindableWithEquality Slider.ThumbImageSourceProperty
+
+    let ValueWithEvent =
+        Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
 
 [<AutoOpen>]
 module SliderBuilders =
     type Fabulous.Maui.View with
-
+        /// <summary>Create a Slider widget with a min/max bounds and a value, listen for the value changes</summary>
+        /// <param name="min">The minimum bound</param>
+        /// <param name="max">The maximum bound</param>
+        /// <param name="value">The current value</param>
+        /// <param name="onValueChanged">Message to dispatch</param>
         static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IFabSlider>(
                 Slider.WidgetKey,
@@ -66,86 +75,95 @@ module SliderBuilders =
 
 [<Extension>]
 type SliderModifiers =
-
-    /// <summary>Set the color of the maximumTrackColor.</summary>
-    /// <param name="light">The color of the text in the light theme.</param>
-    /// <param name="dark">The color of the text in the dark theme.</param>
+    /// <summary>Listen for the DragCompleted event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.MaximumTrackColor.WithValue(AppTheme.create light dark))
+    static member inline onDragCompleted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
+        this.AddScalar(Slider.DragCompleted.WithValue(msg))
 
-    /// <summary>Set the color of the minimumTrackColor.</summary>
-    /// <param name="light">The color of the minimumTrackColor in the light theme.</param>
-    /// <param name="dark">The color of the minimumTrackColor in the dark theme.</param>
+    /// <summary>Listen for the DragStarted event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.MinimumTrackColor.WithValue(AppTheme.create light dark))
-
-    /// <summary>Set the color of the thumbColor.</summary>
-    /// <param name="light">The color of the thumbColor in the light theme.</param>
-    /// <param name="dark">The color of the thumbColor in the dark theme.</param>
+    static member inline onDragStarted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
+        this.AddScalar(Slider.DragStarted.WithValue(msg))
+        
+    /// <summary>Set the color of the maximum track</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the maximum track</param>
     [<Extension>]
-    static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.ThumbColor.WithValue(AppTheme.create light dark))
-
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The source of the thumbImage in the light theme.</param>
-    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
+        this.AddScalar(Slider.MaximumTrackColor.WithValue(value))
+        
+    /// <summary>Set the color of the maximum track</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the maximum track</param>
     [<Extension>]
-    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, light: ImageSource, ?dark: ImageSource) =
-        this.AddScalar(Slider.ThumbImageSource.WithValue(AppTheme.create light dark))
-
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The source of the thumbImage in the light theme.</param>
-    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
+        this.AddScalar(Slider.MaximumTrackFabColor.WithValue(value))
+        
+    /// <summary>Set the color of the minimum track</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the minimum track</param>
     [<Extension>]
-    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, light: string, ?dark: string) =
-        let light = ImageSource.FromFile(light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromFile(v))
-
-        SliderModifiers.thumbImage(this, light, ?dark = dark)
-
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The source of the thumbImage in the light theme.</param>
-    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
+        this.AddScalar(Slider.MinimumTrackColor.WithValue(value))
+        
+    /// <summary>Set the color of the minimum track</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the minimum track</param>
     [<Extension>]
-    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, light: Uri, ?dark: Uri) =
-        let light = ImageSource.FromUri(light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromUri(v))
-
-        SliderModifiers.thumbImage(this, light, ?dark = dark)
-
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The source of the thumbImage in the light theme.</param>
-    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
+        this.AddScalar(Slider.MinimumTrackFabColor.WithValue(value))
+        
+    /// <summary>Set the color of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the thumb</param>
     [<Extension>]
-    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, light: Stream, ?dark: Stream) =
-        let light = ImageSource.FromStream(fun () -> light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromStream(fun () -> v))
-
-        SliderModifiers.thumbImage(this, light, ?dark = dark)
-
+    static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
+        this.AddScalar(Slider.ThumbColor.WithValue(value))
+        
+    /// <summary>Set the color of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the thumb</param>
     [<Extension>]
-    static member inline onDragCompleted(this: WidgetBuilder<'msg, #IFabSlider>, onDragCompleted: 'msg) =
-        this.AddScalar(Slider.DragCompleted.WithValue(onDragCompleted))
+    static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
+        this.AddScalar(Slider.ThumbFabColor.WithValue(value))
 
+    /// <summary>Set the image source of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The image source of the thumb</param>
     [<Extension>]
-    static member inline onDragStarted(this: WidgetBuilder<'msg, #IFabSlider>, onDragStarted: 'msg) =
-        this.AddScalar(Slider.DragStarted.WithValue(onDragStarted))
+    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: ImageSource) =
+        this.AddScalar(Slider.ThumbImageSource.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Slider control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabSlider>, value: ViewRef<Slider>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+        
+[<Extension>]
+type SliderExtraModifiers =
+    /// <summary>Set the image source of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The image source of the thumb</param>
+    [<Extension>]
+    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: string) =
+        this.thumbImage(ImageSource.FromFile(value))
+
+    /// <summary>Set the image source of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The image source of the thumb</param>
+    [<Extension>]
+    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: Uri) =
+        this.thumbImage(ImageSource.FromUri(value))
+
+    /// <summary>Set the image source of the thumb</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The image source of the thumb</param>
+    [<Extension>]
+    static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: Stream) =
+        this.thumbImage(ImageSource.FromStream(fun () -> value))
