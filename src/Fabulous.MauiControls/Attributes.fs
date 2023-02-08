@@ -97,7 +97,7 @@ module Attributes =
     /// Note that the input type is FabColor because it is just 4 bytes
     /// But it converts back to Microsoft.Maui.Color when a value is applied
     /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
-    /// However, MAui.Color will be boxed and thus slower.
+    /// However, Maui.Color will be boxed and thus slower.
     let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
         Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
