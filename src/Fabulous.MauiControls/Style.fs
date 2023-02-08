@@ -5,5 +5,8 @@ open Fabulous
 
 [<Extension>]
 type FabElementExtensions =
+    /// <summary>Apply a style modifier to a widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">The style modifier function</param>
     [<Extension>]
-    static member inline style(this: WidgetBuilder<'msg, #IFabElement>, fn: WidgetBuilder<'msg, #IFabElement> -> WidgetBuilder<'msg, #IFabElement>) = fn this
+    static member inline style<'msg, 'marker when 'marker :> IFabElement>(this: WidgetBuilder<'msg, 'marker>, fn: WidgetBuilder<'msg, 'marker> -> WidgetBuilder<'msg, 'marker>) = fn this
