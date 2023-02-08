@@ -17,6 +17,11 @@ module Semantics =
 
 [<Extension>]
 type SemanticsModifiers =
+    /// <summary>Set the semantic values of the view</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="headingLevel">The heading level</param>
+    /// <param name="description">The semantic description</param>
+    /// <param name="hint">The semantic hint</param>
     [<Extension>]
     static member inline semantics(this: WidgetBuilder<'msg, #IFabView>, ?headingLevel: SemanticHeadingLevel, ?description: string, ?hint: string) =
         let this =

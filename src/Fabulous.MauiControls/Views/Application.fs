@@ -38,31 +38,6 @@ module Application =
         Attributes.definePropertyWidget "Application_MainPage" (fun target -> (target :?> Application).MainPage :> obj) (fun target value ->
             (target :?> Application).MainPage <- value)
 
-    let Resources =
-        Attributes.defineSimpleScalarWithEquality<ResourceDictionary> "Application_Resources" (fun _ newValueOpt node ->
-            let application = node.Target :?> Application
-
-            let value =
-                match newValueOpt with
-                | ValueNone -> application.Resources
-                | ValueSome v -> v
-
-            application.Resources <- value)
-
-    let UserAppTheme =
-        Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
-            let application = node.Target :?> Application
-
-            let value =
-                match newValueOpt with
-                | ValueNone -> AppTheme.Unspecified
-                | ValueSome v -> v
-
-            application.UserAppTheme <- value)
-
-    let RequestedThemeChanged =
-        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
-
     let ModalPopped =
         Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
 
@@ -75,68 +50,105 @@ module Application =
     let ModalPushing =
         Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
-    let Start =
-        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
-
-    let Sleep =
-        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
+    let RequestedThemeChanged =
+        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
 
     let Resume =
         Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
 
+    let Sleep =
+        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
+
+    let Start =
+        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
+
+    let UserAppTheme =
+        Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
+            let application = node.Target :?> Application
+
+            let value =
+                match newValueOpt with
+                | ValueNone -> AppTheme.Unspecified
+                | ValueSome v -> v
+
+            application.UserAppTheme <- value)
+
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.Maui.View with
-
-        static member inline Application<'msg, 'marker when 'marker :> IFabPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
+        /// <summary>Create an Application widget with a main page</summary>
+        /// <param name="mainPage">The main page widget</param>
+        static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
 [<Extension>]
 type ApplicationModifiers =
+    /// <summary>Listen for the ModalPopped event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppedEventArgs -> 'msg) =
+        this.AddScalar(Application.ModalPopped.WithValue(fn >> box))
+
+    /// <summary>Listen for the ModalPopping event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppingEventArgs -> 'msg) =
+        this.AddScalar(Application.ModalPopping.WithValue(fn >> box))
+
+    /// <summary>Listen for the ModalPushed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushedEventArgs -> 'msg) =
+        this.AddScalar(Application.ModalPushed.WithValue(fn >> box))
+
+    /// <summary>Listen for the ModalPushing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushingEventArgs -> 'msg) =
+        this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
+
+    /// <summary>Listen for the Resume event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
+    [<Extension>]
+    static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
+        this.AddScalar(Application.Resume.WithValue(msg))
+
+    /// <summary>Listen for the Start event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
+    [<Extension>]
+    static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
+        this.AddScalar(Application.Start.WithValue(msg))
+
+    /// <summary>Listen for the Sleep event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="msg">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
+        this.AddScalar(Application.Sleep.WithValue(msg))
+
+    /// <summary>Listen for the RequestedThemeChanged event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, fn: AppTheme -> 'msg) =
+        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
+        
+    /// <summary>Set the user app theme</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The user app theme</param>
     [<Extension>]
     static member inline userAppTheme(this: WidgetBuilder<'msg, #IFabApplication>, value: AppTheme) =
         this.AddScalar(Application.UserAppTheme.WithValue(value))
 
-    [<Extension>]
-    static member inline resources(this: WidgetBuilder<'msg, #IFabApplication>, value: ResourceDictionary) =
-        this.AddScalar(Application.Resources.WithValue(value))
-
-    [<Extension>]
-    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, onRequestedThemeChanged: AppTheme -> 'msg) =
-        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box))
-
-    [<Extension>]
-    static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, onModalPopped: ModalPoppedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopped.WithValue(onModalPopped >> box))
-
-    [<Extension>]
-    static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, onModalPopping: ModalPoppingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopping.WithValue(onModalPopping >> box))
-
-    [<Extension>]
-    static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, onModalPushed: ModalPushedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushed.WithValue(onModalPushed >> box))
-
-    [<Extension>]
-    static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, onModalPushing: ModalPushingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
-
-    /// Dispatch a message when the application starts
-    [<Extension>]
-    static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, onStart: 'msg) =
-        this.AddScalar(Application.Start.WithValue(onStart))
-
-    /// Dispatch a message when the application is paused by the OS
-    [<Extension>]
-    static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, onSleep: 'msg) =
-        this.AddScalar(Application.Sleep.WithValue(onSleep))
-
-    /// Dispatch a message when the application is resumed by the OS
-    [<Extension>]
-    static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, onResume: 'msg) =
-        this.AddScalar(Application.Resume.WithValue(onResume))
-
-    /// Link a ViewRef to access the direct Application instance
+    /// <summary>Link a ViewRef to access the direct Application control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabApplication>, value: ViewRef<Application>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
