@@ -36,7 +36,6 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "HelloWorld",
                 ScrollView(
                     (VStack(spacing = 25.) {
                         Image(Aspect.AspectFit, "dotnet_bot.png")
