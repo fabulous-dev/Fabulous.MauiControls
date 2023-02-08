@@ -252,7 +252,7 @@ type LabelExtraModifiers =
     /// <param name="uniformSize">The padding inside the text</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, uniformSize: float) =
-        LabelModifiers.padding(this, Thickness(uniformSize))
+        this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the text</summary>
     /// <param name="this">Current widget</param>
@@ -262,4 +262,4 @@ type LabelExtraModifiers =
     /// <param name="bottom">The left component of the padding inside the text</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, left: float, top: float, right: float, bottom: float) =
-        LabelModifiers.padding(this, Thickness(left, top, right, bottom))
+        this.padding(Thickness(left, top, right, bottom))
