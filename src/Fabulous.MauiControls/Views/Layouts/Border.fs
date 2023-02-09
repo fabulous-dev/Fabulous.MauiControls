@@ -83,11 +83,7 @@ module BorderBuilders =
         static member inline Border(stroke: Brush, content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
-                AttributesBundle(
-                    StackList.one(Border.Stroke.WithValue(stroke)),
-                    ValueSome [| Border.Content.WithValue(content.Compile()) |],
-                    ValueNone
-                )
+                AttributesBundle(StackList.one(Border.Stroke.WithValue(stroke)), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
         /// <summary>Create a Border widget with a Rectangle shape, a stroke color and a content widget</summary>

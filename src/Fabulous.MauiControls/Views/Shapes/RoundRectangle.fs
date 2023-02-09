@@ -23,10 +23,7 @@ module RoundRectangleBuilders =
         /// <summary>Create a RoundRectangle widget with a corner radius</summary>
         /// <param name="cornerRadius">The corner radius</param>
         static member inline RoundRectangle<'msg>(cornerRadius: CornerRadius) =
-            WidgetBuilder<'msg, IFabRoundRectangle>(
-                RoundRectangle.WidgetKey,
-                RoundRectangle.CornerRadius.WithValue(cornerRadius)
-            )
+            WidgetBuilder<'msg, IFabRoundRectangle>(RoundRectangle.WidgetKey, RoundRectangle.CornerRadius.WithValue(cornerRadius))
 
 [<Extension>]
 type RoundRectangleModifiers =

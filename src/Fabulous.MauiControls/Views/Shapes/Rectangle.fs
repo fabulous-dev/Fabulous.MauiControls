@@ -70,9 +70,10 @@ type RectangleExtraModifiers =
     /// <param name="y">The Y component of the radius</param>
     [<Extension>]
     static member inline radius(this: WidgetBuilder<'msg, #IFabRectangle>, x: float, y: float) = this.radiusX(x).radiusY(y)
-    
+
     /// <summary>Set the radius</summary>
     /// <param name="this">Current widget</param>
     /// <param name="uniformRadius">The radius value to apply to all corners</param>
     [<Extension>]
-    static member inline radius(this: WidgetBuilder<'msg, #IFabRectangle>, uniformRadius: float) = this.radius(uniformRadius, uniformRadius)
+    static member inline radius(this: WidgetBuilder<'msg, #IFabRectangle>, uniformRadius: float) =
+        this.radius(uniformRadius, uniformRadius)
