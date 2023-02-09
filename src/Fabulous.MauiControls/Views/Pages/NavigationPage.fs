@@ -178,7 +178,7 @@ module NavigationPageUpdaters =
                 else
                     // Page is not visible, we just replace it
                     navigationPage.RemovePageSync(index)
-                    navigationPage.InsertPageBeforeSync(currPage, index + 1)
+                    navigationPage.InsertPageBeforeSync(currPage, index)
 
                 // Trigger the mounted event for the new child
                 Dispatcher.dispatchEventForAllChildren currItemNode currWidget Lifecycle.Mounted

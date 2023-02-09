@@ -13,7 +13,7 @@ module ActivityIndicator =
 
     let Color = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
 
-    let FabColor = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
+    let FabColor = Attributes.defineBindableColor ActivityIndicator.ColorProperty
 
     let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 

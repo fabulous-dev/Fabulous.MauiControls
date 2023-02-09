@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
+    <TargetFramework>net7.0</TargetFramework>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
@@ -86,6 +86,7 @@
     <Compile Include="Views\Shapes\_Shape.fs" />
     <Compile Include="Views\Shapes\Ellipse.fs" />
     <Compile Include="Views\Shapes\Rectangle.fs" />
+    <Compile Include="Views\Shapes\RoundRectangle.fs" />
     <Compile Include="Views\Shapes\Path.fs" />
     <Compile Include="Views\Shapes\Line.fs" />
     <Compile Include="Views\Shapes\Polygon.fs" />
