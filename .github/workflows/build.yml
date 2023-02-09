@@ -58,6 +58,7 @@ jobs:
         dotnet nuget add source $LOCAL_NUGET_PATH --name local
         dotnet new install Fabulous.MauiControls.Templates::${NIGHTLY_VERSION}
         dotnet new fabulous-mauicontrols -n TestTemplates
+        dotnet build TestTemplates -p:ManagePackageVersionsCentrally=false -t:CompileResourceDesignerForFSharp
         dotnet build TestTemplates -p:ManagePackageVersionsCentrally=false
     - name: Push
       run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
