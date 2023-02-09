@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.3.0] - 2023-02-09
+
 ### Added
 - Add attributes for both `Microsoft.Maui.Graphics.Color` and `Fabulous.Maui.FabColor` for all Color and Brush modifiers
 - Add alternative Brush modifiers to accept either `Microsoft.Maui.Graphics.Brush` or a Brush widget
