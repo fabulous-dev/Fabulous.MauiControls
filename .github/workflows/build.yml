@@ -10,6 +10,8 @@ env:
   CONFIG: Release
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
+  TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates.nupkg
+  TEST_TEMPLATE_FOLDER: TestTemplates
 
 jobs:
   build:
@@ -50,5 +52,11 @@ jobs:
       with:
         name: Packages
         path: nupkgs/
+    - name: Test templates
+      run: |
+        dotnet new install ${TEMPLATE_PKG}
+        rm -rf ${TEST_TEMPLATE_FOLDER}
+        dotnet new fabulous-mauicontrols -n ${TEST_TEMPLATE_FOLDER}
+        dotnet build ${TEST_TEMPLATE_FOLDER}
     - name: Push
       run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
