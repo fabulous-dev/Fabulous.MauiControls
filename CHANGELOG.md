@@ -7,11 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
+### Added
+- Add attributes for both `Microsoft.Maui.Graphics.Color` and `Fabulous.Maui.FabColor` for all Color and Brush modifiers
+- Add alternative Brush modifiers to accept either `Microsoft.Maui.Graphics.Brush` or a Brush widget
+- Add XML documentation for all widgets and modifiers
+- Add new `GraphicsView` widget
 
+### Fixed
 - Fix the crash at startup when targeting Windows by using FSharp.Maui.WinUICompat by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/10)
 - Fix an issue where template could enumerate the whole disk to add under the Android target folder by @Smaug123 (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/9)
 - Write a custom NavigationPage to use synchronous push/pop and call Mounted/Unmounted events on pages by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/13)
+- Fix widgets and modifiers where `Microsoft.Maui.IView` was requested instead of `Fabulous.Maui.IFabView`
+
+### Removed
+- Remove obsolete widgets and modifiers
+- Remove AppTheme modifiers in favor of ThemeAware
+- Remove Color modifiers when Brush modifiers are available (eg. BackgroundColor -> Background)
+- Remove Frame widget in favor of Border widget
 
 ## [2.2.0] - 2023-01-24
 
