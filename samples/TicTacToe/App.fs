@@ -191,7 +191,6 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "TicTacToe",
                 Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
                     (Grid(coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ], rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]) {
 
@@ -211,7 +210,7 @@ module App =
                         for row, col as pos in positions do
                             if canPlay model model.Board.[pos] then
                                 Button("", Play pos)
-                                    .backgroundColor(Colors.LightBlue.ToFabColor())
+                                    .background(Colors.LightBlue)
                                     .gridRow(row * 2)
                                     .gridColumn(col * 2)
                             else
@@ -242,8 +241,8 @@ module App =
                     Label(getMessage model).font(size = 32.).center().margin(10.).gridRow(1)
 
                     Button("Restart game", Restart)
-                        .textColor(Colors.Black.ToFabColor())
-                        .backgroundColor(Colors.LightBlue.ToFabColor())
+                        .textColor(Colors.Black)
+                        .background(Colors.LightBlue)
                         .font(size = 32.)
                         .gridRow(2)
                 }

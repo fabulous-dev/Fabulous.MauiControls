@@ -18,12 +18,16 @@ module ViewCell =
 module ViewCellBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a ViewCell with a content widget</summary>
+        /// <param name="view">The content widget</param>
         static member inline ViewCell<'msg, 'marker when 'marker :> IFabView>(view: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IFabViewCell> ViewCell.WidgetKey [| ViewCell.View.WithValue(view.Compile()) |]
 
 [<Extension>]
 type ViewCellModifiers =
-    /// <summary>Link a ViewRef to access the direct ViewCell control instance</summary>
+    /// <summary>Link a ViewRef to access the direct MenuItem control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabViewCell>, value: ViewRef<ViewCell>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

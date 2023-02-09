@@ -46,7 +46,6 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "Gallery",
                 match List.head model.Paths with
                 | Overview -> AnyView(Overview.view GoToSample)
                 | Sample(index, sampleModel) -> AnyView(SamplePage.view GoBack SampleMsg index sampleModel)

@@ -22,6 +22,8 @@ module CompositeTransform =
                 line.CenterX <- x
                 line.CenterY <- y)
 
+    let Rotation = Attributes.defineBindableFloat CompositeTransform.RotationProperty
+
     let ScaleXY =
         Attributes.defineSimpleScalarWithEquality<struct (float * float)> "CompositeTransform_ScaleXY" (fun _ newValueOpt node ->
             let line = node.Target :?> CompositeTransform
@@ -58,13 +60,17 @@ module CompositeTransform =
                 line.TranslateX <- x
                 line.TranslateY <- y)
 
-    let Rotation = Attributes.defineBindableFloat CompositeTransform.RotationProperty
-
 [<AutoOpen>]
 module CompositeTransformBuilders =
-
     type Fabulous.Maui.View with
 
+        /// <summary>Create a CompositeTransform widget with a center, a scale, and a skew</summary>
+        /// <param name="centerX">The X component of the center</param>
+        /// <param name="centerY">The Y component of the center</param>
+        /// <param name="scaleX">The X component of the scale</param>
+        /// <param name="scaleY">The Y component of the scale</param>
+        /// <param name="skewX">The X component of the skew</param>
+        /// <param name="skewY">The Y component of the skew</param>
         static member inline CompositeTransform<'msg>(centerX: float, centerY: float, scaleX: float, scaleY: float, skewX: float, skewY: float) =
             WidgetBuilder<'msg, IFabCompositeTransform>(
                 CompositeTransform.WidgetKey,
@@ -75,11 +81,24 @@ module CompositeTransformBuilders =
 
 [<Extension>]
 type CompositeTransformModifiers =
-
+    /// <summary>Set the translation value</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="x">The X component of the translation</param>
+    /// <param name="y">The Y component of the translation</param>
     [<Extension>]
     static member inline translate(this: WidgetBuilder<'msg, #IFabCompositeTransform>, x: float, y: float) =
         this.AddScalar(CompositeTransform.TranslateXY.WithValue((x, y)))
 
+    /// <summary>Set the rotation value</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="angle">The rotation angle value</param>
     [<Extension>]
     static member inline rotation(this: WidgetBuilder<'msg, #IFabCompositeTransform>, angle: float) =
         this.AddScalar(CompositeTransform.Rotation.WithValue(angle))
+
+    /// <summary>Link a ViewRef to access the direct CompositeTransform control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabCompositeTransform>, value: ViewRef<CompositeTransform>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

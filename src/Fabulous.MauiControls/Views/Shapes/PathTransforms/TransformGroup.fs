@@ -10,7 +10,6 @@ type IFabTransformGroup =
     inherit IFabTransform
 
 module TransformGroup =
-
     let WidgetKey = Widgets.register<TransformGroup>()
 
     let Children =
@@ -20,8 +19,18 @@ module TransformGroup =
 module TransformGroupBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a TransformGroup widget</summary>
         static member inline TransformGroup<'msg>() =
             CollectionBuilder<'msg, IFabTransformGroup, IFabTransform>(TransformGroup.WidgetKey, TransformGroup.Children)
+
+[<Extension>]
+type TransformGroupModifiers =
+    /// <summary>Link a ViewRef to access the direct TransformGroup control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabTransformGroup>, value: ViewRef<TransformGroup>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type TransformGroupYieldExtensions =

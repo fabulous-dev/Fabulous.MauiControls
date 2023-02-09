@@ -40,7 +40,6 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "Title",
                 (VStack(spacing = 20.) {
                     let text =
                         match model.Focus with

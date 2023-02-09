@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
@@ -27,9 +28,13 @@ module SkewTransform =
 
 [<AutoOpen>]
 module SkewTransformBuilders =
-
     type Fabulous.Maui.View with
 
+        /// <summary>Create a SkewTransform widget with a scale and a center point</summary>
+        /// <param name="angleX">The X component of the angle</param>
+        /// <param name="angleY">The Y component of the angle</param>
+        /// <param name="centerX">The X position of the center</param>
+        /// <param name="centerY">The Y position of the center</param>
         static member inline SkewTransform<'msg>(angleX: float, angleY: float, centerX: float, centerY: float) =
             WidgetBuilder<'msg, IFabSkewTransform>(
                 SkewTransform.WidgetKey,
@@ -37,3 +42,12 @@ module SkewTransformBuilders =
                 SkewTransform.CenterX.WithValue(centerX),
                 SkewTransform.CenterY.WithValue(centerY)
             )
+
+[<Extension>]
+type SkewTransformModifiers =
+    /// <summary>Link a ViewRef to access the direct SkewTransform control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabSkewTransform>, value: ViewRef<SkewTransform>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

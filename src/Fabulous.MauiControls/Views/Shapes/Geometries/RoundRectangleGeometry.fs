@@ -11,30 +11,24 @@ type IFabRoundRectangleGeometry =
     inherit IFabGeometryGroup
 
 module RoundRectangleGeometry =
-
     let WidgetKey = Widgets.register<RoundRectangleGeometry>()
 
     let CornerRadius =
         Attributes.defineBindableWithEquality<CornerRadius> RoundRectangleGeometry.CornerRadiusProperty
 
-    let Rect =
-        Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
-
     let FillRule =
         Attributes.defineBindableEnum<FillRule> RoundRectangleGeometry.FillRuleProperty
+
+    let Rect =
+        Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
 
 [<AutoOpen>]
 module RoundRectangleGeometryBuilders =
     type Fabulous.Maui.View with
 
-        [<Obsolete("Use RoundRectangleGeometry(cornerRadius: CornerRadius, rect: Rect) instead")>]
-        static member inline RoundRectangleGeometry<'msg>(cornerRadius: float, rect: Rect) =
-            WidgetBuilder<'msg, IFabRoundRectangleGeometry>(
-                RoundRectangleGeometry.WidgetKey,
-                RoundRectangleGeometry.CornerRadius.WithValue(CornerRadius(cornerRadius)),
-                RoundRectangleGeometry.Rect.WithValue(rect)
-            )
-
+        /// <summary>Create a RoundRectangleGeometry widget with a corner radius and a dimension</summary>
+        /// <param name="cornerRadius">The corner radius</param>
+        /// <param name="rect">The dimension</param>
         static member inline RoundRectangleGeometry<'msg>(cornerRadius: CornerRadius, rect: Rect) =
             WidgetBuilder<'msg, IFabRoundRectangleGeometry>(
                 RoundRectangleGeometry.WidgetKey,
@@ -44,7 +38,16 @@ module RoundRectangleGeometryBuilders =
 
 [<Extension>]
 type RoundRectangleGeometryModifiers =
-
+    /// <summary>Set the fill rule</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The fill rule</param>
     [<Extension>]
     static member inline fillRule(this: WidgetBuilder<'msg, #IFabRoundRectangleGeometry>, value: FillRule) =
         this.AddScalar(RoundRectangleGeometry.FillRule.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct RoundRectangleGeometry control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabRoundRectangleGeometry>, value: ViewRef<RoundRectangleGeometry>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

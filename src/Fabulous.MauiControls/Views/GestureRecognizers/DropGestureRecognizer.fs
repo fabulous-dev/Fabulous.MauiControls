@@ -26,6 +26,8 @@ module DropGestureRecognizer =
 module DropGestureRecognizerBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a DropGestureRecognizer that listens for Drop event</summary>
+        /// <param name="onDrop">Message to dispatch</param>
         static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDropGestureRecognizer>(
                 DropGestureRecognizer.WidgetKey,
@@ -34,17 +36,30 @@ module DropGestureRecognizerBuilders =
 
 [<Extension>]
 type DropGestureRecognizerModifiers =
-
-    /// <summary>Sets whether users are allowed to drop</summary>
+    /// <summary>Set whether users are allowed to drop</summary>
+    /// <param name="this">Current widget</param>
     /// <param name="value">true to allow users to drop; otherwise, false</param>
     [<Extension>]
     static member inline allowDrop(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, value: bool) =
         this.AddScalar(DropGestureRecognizer.AllowDrop.WithValue(value))
 
+    /// <summary>Listen for the DragOver event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onDragOver(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, onDragOver: DragEventArgs -> 'msg) =
-        this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun args -> onDragOver args |> box))
+    static member inline onDragOver(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, fn: DragEventArgs -> 'msg) =
+        this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun args -> fn args |> box))
 
+    /// <summary>Listen for the DragLeave event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onDragLeave(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, onDragLeave: DragEventArgs -> 'msg) =
-        this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun args -> onDragLeave args |> box))
+    static member inline onDragLeave(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, fn: DragEventArgs -> 'msg) =
+        this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Link a ViewRef to access the direct DropGestureRecognizer control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabDropGestureRecognizer>, value: ViewRef<DropGestureRecognizer>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

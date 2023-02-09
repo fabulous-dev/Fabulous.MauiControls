@@ -13,8 +13,6 @@ type IFabPath =
 module Path =
     let WidgetKey = Widgets.register<Path>()
 
-    let DataWidget = Attributes.defineBindableWidget Path.DataProperty
-
     let DataString =
         Attributes.defineSimpleScalarWithEquality<string> "Path_DataString" (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
@@ -23,8 +21,7 @@ module Path =
             | ValueNone -> target.ClearValue(Path.DataProperty)
             | ValueSome value -> target.SetValue(Path.DataProperty, PathGeometryConverter().ConvertFromInvariantString(value)))
 
-    let RenderTransformWidget =
-        Attributes.defineBindableWidget Path.RenderTransformProperty
+    let DataWidget = Attributes.defineBindableWidget Path.DataProperty
 
     let RenderTransformString =
         Attributes.defineSimpleScalarWithEquality<string> "Path_RenderTransformString" (fun _ newValueOpt node ->
@@ -34,32 +31,42 @@ module Path =
             | ValueNone -> target.ClearValue(Path.RenderTransformProperty)
             | ValueSome value -> target.SetValue(Path.RenderTransformProperty, TransformTypeConverter().ConvertFromInvariantString(value)))
 
+    let RenderTransformWidget =
+        Attributes.defineBindableWidget Path.RenderTransformProperty
+
 [<AutoOpen>]
 module PathBuilders =
-
     type Fabulous.Maui.View with
 
-        static member inline Path<'msg, 'marker when 'marker :> IFabGeometry>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IFabPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
+        /// <summary>Create a Path widget with a data path string</summary>
+        /// <param name="data">The data path</param>
+        static member inline Path<'msg>(data: string) =
+            WidgetBuilder<'msg, IFabPath>(Path.WidgetKey, Path.DataString.WithValue(data))
 
-        static member inline Path<'msg>(content: string) =
-            WidgetBuilder<'msg, IFabPath>(Path.WidgetKey, Path.DataString.WithValue(content))
+        /// <summary>Create a Path widget with a Geometry widget</summary>
+        /// <param name="content">The Geometry widget</param>
+        static member inline Path(content: WidgetBuilder<'msg, #IFabGeometry>) =
+            WidgetHelpers.buildWidgets<'msg, IFabPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
 
 [<Extension>]
 type PathModifiers =
-    [<Extension>]
-    static member inline renderTransform<'msg, 'marker, 'contentMarker when 'marker :> IFabPath and 'contentMarker :> IFabTransform>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            content: WidgetBuilder<'msg, 'contentMarker>
-        ) =
-        this.AddWidget(Path.RenderTransformWidget.WithValue(content.Compile()))
-
+    /// <summary>Set the render transform</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The render transform path</param>
     [<Extension>]
     static member inline renderTransform(this: WidgetBuilder<'msg, #IFabPath>, value: string) =
         this.AddScalar(Path.RenderTransformString.WithValue(value))
 
+    /// <summary>Set the render transform</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="content">The render transform widget</param>
+    [<Extension>]
+    static member inline renderTransform(this: WidgetBuilder<'msg, #IFabPath>, content: WidgetBuilder<'msg, #IFabTransform>) =
+        this.AddWidget(Path.RenderTransformWidget.WithValue(content.Compile()))
+
     /// <summary>Link a ViewRef to access the direct Path control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabPath>, value: ViewRef<Path>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

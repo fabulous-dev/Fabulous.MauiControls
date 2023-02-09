@@ -52,7 +52,6 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "CounterApp",
                 (VStack() {
                     Label($"%d{model.Count}").centerTextHorizontal()
 

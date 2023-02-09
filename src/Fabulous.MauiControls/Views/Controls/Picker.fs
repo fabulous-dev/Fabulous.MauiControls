@@ -6,6 +6,7 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
+open Microsoft.Maui.Graphics
 
 type IFabPicker =
     inherit IFabView
@@ -44,28 +45,19 @@ module Picker =
     let CharacterSpacing =
         Attributes.defineBindableFloat Picker.CharacterSpacingProperty
 
-    let HorizontalTextAlignment =
-        Attributes.defineBindableEnum<TextAlignment> Picker.HorizontalTextAlignmentProperty
-
-    let VerticalTextAlignment =
-        Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> Picker.FontAttributesProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Picker.FontAutoScalingEnabledProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Picker.FontFamilyProperty
 
     let FontSize = Attributes.defineBindableFloat Picker.FontSizeProperty
 
-    let TextColor = Attributes.defineBindableAppThemeColor Picker.TextColorProperty
-
-    let FontAutoScalingEnabled =
-        Attributes.defineBindableBool Picker.FontAutoScalingEnabledProperty
-
-    let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
-
-    let TitleColor = Attributes.defineBindableAppThemeColor Picker.TitleColorProperty
+    let HorizontalTextAlignment =
+        Attributes.defineBindableEnum<TextAlignment> Picker.HorizontalTextAlignmentProperty
 
     let ItemsSource =
         Attributes.defineSimpleScalarWithEquality<string array> "Picker_ItemSource" (fun _ newValueOpt node ->
@@ -79,6 +71,20 @@ module Picker =
         Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
             (target :?> FabPicker).CustomSelectedIndexChanged)
 
+    let TextColor = Attributes.defineBindableWithEquality Picker.TextColorProperty
+
+    let TextFabColor = Attributes.defineBindableColor Picker.TextColorProperty
+
+    let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
+
+    let TitleColor = Attributes.defineBindableWithEquality Picker.TitleColorProperty
+
+    let TitleFabColor = Attributes.defineBindableColor Picker.TitleColorProperty
+
+    let VerticalTextAlignment =
+        Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
+
+module PickerPlatform =
     let UpdateMode =
         Attributes.defineEnum<iOSSpecific.UpdateMode> "Picker_UpdateMode" (fun _ newValueOpt node ->
             let picker = node.Target :?> Picker
@@ -94,6 +100,10 @@ module Picker =
 module PickerBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a Picker widget with a list of items, the selected index and listen to the selected index changes</summary>
+        /// <param name="items">The items list</param>
+        /// <param name="selectedIndex">The selected index</param>
+        /// <param name="onSelectedIndexChanged">Message to dispatch</param>
         static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IFabPicker>(
                 Picker.WidgetKey,
@@ -103,18 +113,19 @@ module PickerBuilders =
 
 [<Extension>]
 type PickerModifiers =
+    /// <summary>Set the character spacing of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The character spacing</param>
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabPicker>, value: float) =
         this.AddScalar(Picker.CharacterSpacing.WithValue(value))
 
-    [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value))
-
-    [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
-
+    /// <summary>Set the font</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="size">The font size</param>
+    /// <param name="attributes">The font attributes</param>
+    /// <param name="fontFamily">The font family</param>
+    /// <param name="autoScalingEnabled">The value indicating whether auto-scaling is enabled</param>
     [<Extension>]
     static member inline font
         (
@@ -122,7 +133,7 @@ type PickerModifiers =
             ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
-            ?fontAutoScalingEnabled: bool
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -139,39 +150,73 @@ type PickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Picker.FontFamily.WithValue(v))
 
-        match fontAutoScalingEnabled with
+        match autoScalingEnabled with
         | None -> ()
         | Some v -> res <- res.AddScalar(Picker.FontAutoScalingEnabled.WithValue(v))
 
         res
 
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The color of the text in the light theme.</param>
-    /// <param name="dark">The color of the text in the dark theme.</param>
+    /// <summary>Set the horizontal text alignment</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The horizontal text alignment</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabPicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IFabPicker>, value: TextAlignment) =
+        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value))
 
+    /// <summary>Set the color of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the text</param>
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabPicker>, value: Color) =
+        this.AddScalar(Picker.TextColor.WithValue(value))
+
+    /// <summary>Set the color of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the text</param>
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabPicker>, value: FabColor) =
+        this.AddScalar(Picker.TextFabColor.WithValue(value))
+
+    /// <summary>Set the title of the picker</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The title value</param>
     [<Extension>]
     static member inline title(this: WidgetBuilder<'msg, #IFabPicker>, value: string) =
         this.AddScalar(Picker.Title.WithValue(value))
 
-    /// <summary>Set the source of the thumbImage.</summary>
-    /// <param name="light">The color of the title in the light theme.</param>
-    /// <param name="dark">The color of the title in the dark theme.</param>
+    /// <summary>Set the color of the title</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the title</param>
     [<Extension>]
-    static member inline titleColor(this: WidgetBuilder<'msg, #IFabPicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
+    static member inline titleColor(this: WidgetBuilder<'msg, #IFabPicker>, value: Color) =
+        this.AddScalar(Picker.TitleColor.WithValue(value))
 
-    /// <summary>Link a ViewRef to access the direct Picker control instance</summary>
+    /// <summary>Set the color of the title</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the title</param>
+    [<Extension>]
+    static member inline titleColor(this: WidgetBuilder<'msg, #IFabPicker>, value: FabColor) =
+        this.AddScalar(Picker.TitleFabColor.WithValue(value))
+
+    /// <summary>Set the vertical text alignment</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The vertical text alignment</param>
+    [<Extension>]
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabPicker>, value: TextAlignment) =
+        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabPicker>, value: ViewRef<Picker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type PickerPlatformModifiers =
-    /// <summary>iOS platform specific. Sets a value that controls whether elements in the picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
-    /// <param name="mode">The new property value to assign.</param>
+    /// <summary>iOS platform specific. Set a value that controls whether elements in the picker are continuously updated while scrolling or updated once after scrolling has completed</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value that controls whether elements in the picker are continuously updated while scrolling or updated once after scrolling has completed.</param>
     [<Extension>]
-    static member inline updateMode(this: WidgetBuilder<'msg, #IFabPicker>, mode: iOSSpecific.UpdateMode) =
-        this.AddScalar(Picker.UpdateMode.WithValue(mode))
+    static member inline updateMode(this: WidgetBuilder<'msg, #IFabPicker>, value: iOSSpecific.UpdateMode) =
+        this.AddScalar(PickerPlatform.UpdateMode.WithValue(value))

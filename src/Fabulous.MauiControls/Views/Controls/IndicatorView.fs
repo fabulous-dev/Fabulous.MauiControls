@@ -3,12 +3,27 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabIndicatorView =
     inherit IFabTemplatedView
 
 module IndicatorView =
     let WidgetKey = Widgets.register<IndicatorView>()
+
+    let HideSingle = Attributes.defineBindableBool IndicatorView.HideSingleProperty
+
+    let IndicatorColor =
+        Attributes.defineBindableWithEquality IndicatorView.IndicatorColorProperty
+
+    let IndicatorFabColor =
+        Attributes.defineBindableColor IndicatorView.IndicatorColorProperty
+
+    let IndicatorsShape =
+        Attributes.defineBindableEnum<IndicatorShape> IndicatorView.IndicatorsShapeProperty
+
+    let IndicatorSize =
+        Attributes.defineBindableFloat IndicatorView.IndicatorSizeProperty
 
     let ItemsSource =
         Attributes.defineBindable<WidgetItems, System.Collections.Generic.IEnumerable<Widget>>
@@ -20,64 +35,77 @@ module IndicatorView =
                 })
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
-    let HideSingle = Attributes.defineBindableBool IndicatorView.HideSingleProperty
-
-    let IndicatorColor =
-        Attributes.defineBindableAppThemeColor IndicatorView.IndicatorColorProperty
-
-    let IndicatorSize =
-        Attributes.defineBindableFloat IndicatorView.IndicatorSizeProperty
-
-    let IndicatorsShape =
-        Attributes.defineBindableEnum<IndicatorShape> IndicatorView.IndicatorsShapeProperty
-
     let MaximumVisible =
         Attributes.defineBindableInt IndicatorView.MaximumVisibleProperty
 
     let SelectedIndicatorColor =
-        Attributes.defineBindableAppThemeColor IndicatorView.SelectedIndicatorColorProperty
+        Attributes.defineBindableWithEquality IndicatorView.SelectedIndicatorColorProperty
+
+    let SelectedIndicatorFabColor =
+        Attributes.defineBindableColor IndicatorView.SelectedIndicatorColorProperty
 
 [<AutoOpen>]
 module IndicatorViewBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create an IndicatorView widget with a reference</summary>
         static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
             WidgetBuilder<'msg, IFabIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
 
 [<Extension>]
 type IndicatorViewModifiers =
-    /// <summary>Sets the selected indicator color.</summary>
-    /// <param name="light">The color of the indicator in the light theme.</param>
-    /// <param name="dark">The color of the indicator in the dark theme.</param>
+    /// <summary>Set whether to hide the indicator if there is only one item</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether to hide the indicator if there is only one item</param>
     [<Extension>]
-    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(AppTheme.create light dark))
+    static member inline hideSingle(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: bool) =
+        this.AddScalar(IndicatorView.HideSingle.WithValue(value))
 
-    /// <summary>Sets the indicator size.</summary>
-    /// <param name="size">The size of the indicator.</param>
+    /// <summary>Set the indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the indicator</param>
     [<Extension>]
-    static member inline indicatorSize(this: WidgetBuilder<'msg, #IFabIndicatorView>, size: float) =
-        this.AddScalar(IndicatorView.IndicatorSize.WithValue(size))
+    static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: Color) =
+        this.AddScalar(IndicatorView.IndicatorColor.WithValue(value))
 
-    /// <summary>Sets the indicator shape.</summary>
-    /// <param name="shape">The shape of the indicator.</param>
+    /// <summary>Set the indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the indicator</param>
+    [<Extension>]
+    static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: FabColor) =
+        this.AddScalar(IndicatorView.IndicatorFabColor.WithValue(value))
+
+    /// <summary>Set the indicator shape</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="shape">The shape of the indicator</param>
     [<Extension>]
     static member inline indicatorsShape(this: WidgetBuilder<'msg, #IFabIndicatorView>, shape: IndicatorShape) =
         this.AddScalar(IndicatorView.IndicatorsShape.WithValue(shape))
 
+    /// <summary>Set the indicator size</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="size">The size of the indicator</param>
     [<Extension>]
-    static member inline hideSingle(this: WidgetBuilder<'msg, #IFabIndicatorView>, hide: bool) =
-        this.AddScalar(IndicatorView.HideSingle.WithValue(hide))
+    static member inline indicatorSize(this: WidgetBuilder<'msg, #IFabIndicatorView>, size: float) =
+        this.AddScalar(IndicatorView.IndicatorSize.WithValue(size))
 
-    /// <summary>Sets the indicator color.</summary>
-    /// <param name="light">The color of the indicator in the light theme.</param>
-    /// <param name="dark">The color of the indicator in the dark theme.</param>
+    /// <summary>Set the maximum number of visible indicators</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The maximum number of visible indicators</param>
     [<Extension>]
-    static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(IndicatorView.IndicatorColor.WithValue(AppTheme.create light dark))
+    static member inline maximumVisible(this: WidgetBuilder<'msg, IFabIndicatorView>, value: int) =
+        this.AddScalar(IndicatorView.MaximumVisible.WithValue(value))
 
-    /// <summary>Sets the maximum number of visible indicators.</summary>
-    /// <param name="maximum">The maximum number of visible indicators.</param>
+    /// <summary>Set the selected indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the indicator</param>
     [<Extension>]
-    static member inline maximumVisible(this: WidgetBuilder<'msg, IFabIndicatorView>, count: int) =
-        this.AddScalar(IndicatorView.MaximumVisible.WithValue(count))
+    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: Color) =
+        this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(value))
+
+    /// <summary>Set the selected indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the indicator</param>
+    [<Extension>]
+    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: FabColor) =
+        this.AddScalar(IndicatorView.SelectedIndicatorFabColor.WithValue(value))

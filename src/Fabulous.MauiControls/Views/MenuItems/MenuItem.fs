@@ -12,92 +12,75 @@ type IFabMenuItem =
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
 
-    let Accelerator =
-        Attributes.defineBindableWithEquality<Accelerator> MenuItem.AcceleratorProperty
-
-    let IconImageSource =
-        Attributes.defineBindableAppTheme<ImageSource> MenuItem.IconImageSourceProperty
-
-    let IsDestructive = Attributes.defineBindableBool MenuItem.IsDestructiveProperty
-
-    let IsEnabled = Attributes.defineBindableBool MenuItem.IsEnabledProperty
-
-    let Text = Attributes.defineBindableWithEquality<string> MenuItem.TextProperty
+    let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
 
     let Clicked =
         Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
+
+    let IconImageSource =
+        Attributes.defineBindableWithEquality MenuItem.IconImageSourceProperty
+
+    let IsDestructive = Attributes.defineBindableBool MenuItem.IsDestructiveProperty
+
+    let Text = Attributes.defineBindableWithEquality MenuItem.TextProperty
 
 [<AutoOpen>]
 module MenuItemBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
+        /// <param name="text">The text</param>
+        /// <param name="onClicked">The click callback</param>
         static member inline MenuItem<'msg>(text: string, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(onClicked))
 
 [<Extension>]
 type MenuItemModifiers =
+    /// <summary>Set the accelerator of this widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The accelerator value</param>
     [<Extension>]
     static member inline accelerator(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Accelerator) =
         this.AddScalar(MenuItem.Accelerator.WithValue(value))
 
-    /// <summary>Set the source of the icon image.</summary>
-    /// <param name="light">The source of the icon image in the light theme.</param>
-    /// <param name="dark">The source of the icon image in the dark theme.</param>
+    /// <summary>Set the source of the icon image</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The source of the icon image</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, light: ImageSource, ?dark: ImageSource) =
-        this.AddScalar(MenuItem.IconImageSource.WithValue(AppTheme.create light dark))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: ImageSource) =
+        this.AddScalar(MenuItem.IconImageSource.WithValue(value))
 
-    /// <summary>Set the source of the icon image.</summary>
-    /// <param name="light">The source of the icon image in the light theme.</param>
-    /// <param name="dark">The source of the icon image in the dark theme.</param>
-    [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, light: string, ?dark: string) =
-        let light = ImageSource.FromFile(light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromFile(v))
-
-        MenuItemModifiers.icon(this, light, ?dark = dark)
-
-    /// <summary>Set the source of the icon image.</summary>
-    /// <param name="light">The source of the icon image in the light theme.</param>
-    /// <param name="dark">The source of the icon image in the dark theme.</param>
-    [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, light: Uri, ?dark: Uri) =
-        let light = ImageSource.FromUri(light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromUri(v))
-
-        MenuItemModifiers.icon(this, light, ?dark = dark)
-
-    /// <summary>Set the source of the icon image.</summary>
-    /// <param name="light">The source of the icon image in the light theme.</param>
-    /// <param name="dark">The source of the icon image in the dark theme.</param>
-    [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, light: Stream, ?dark: Stream) =
-        let light = ImageSource.FromStream(fun () -> light)
-
-        let dark =
-            match dark with
-            | None -> None
-            | Some v -> Some(ImageSource.FromStream(fun () -> v))
-
-        MenuItemModifiers.icon(this, light, ?dark = dark)
-
+    /// <summary>Set a value that indicates whether or not the menu item removes its associated widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The state value</param>
     [<Extension>]
     static member inline isDestructive(this: WidgetBuilder<'msg, #IFabMenuItem>, value: bool) =
         this.AddScalar(MenuItem.IsDestructive.WithValue(value))
 
-    [<Extension>]
-    static member inline isEnabled(this: WidgetBuilder<'msg, #IFabMenuItem>, value: bool) =
-        this.AddScalar(MenuItem.IsEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct MenuItem control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabMenuItem>, value: ViewRef<MenuItem>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type MenuItemExtraModifiers =
+    /// <summary>Set the source of the icon image</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The source of the icon image</param>
+    [<Extension>]
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: string) = this.icon(ImageSource.FromFile(value))
+
+    /// <summary>Set the source of the icon image</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The source of the icon image</param>
+    [<Extension>]
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Uri) = this.icon(ImageSource.FromUri(value))
+
+    /// <summary>Set the source of the icon image</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The source of the icon image</param>
+    [<Extension>]
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Stream) =
+        this.icon(ImageSource.FromStream(fun () -> value))

@@ -11,24 +11,35 @@ type IFabWebView =
     inherit IFabView
 
 module WebView =
-
     let WidgetKey = Widgets.register<WebView>()
 
     let CanGoBack = Attributes.defineBindableBool WebView.CanGoBackProperty
 
     let CanGoForward = Attributes.defineBindableBool WebView.CanGoForwardProperty
 
-    let Source =
-        Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
-
     let Cookies =
         Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
+
+    let Navigated =
+        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
     let Navigating =
         Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
 
-    let Navigated =
-        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
+    let Source =
+        Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
+
+module WebViewPlatform =
+    let DisplayZoomControls =
+        Attributes.defineBool "WebView_DisplayZoomControls" (fun _ newValueOpt node ->
+            let webview = node.Target :?> WebView
+
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
+
+            AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
     let EnableZoomControls =
         Attributes.defineBool "WebView_EnableZoomControls" (fun _ newValueOpt node ->
@@ -41,79 +52,92 @@ module WebView =
 
             AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
 
-    let DisplayZoomControls =
-        Attributes.defineBool "WebView_DisplayZoomControls" (fun _ newValueOpt node ->
-            let webview = node.Target :?> WebView
-
-            let value =
-                match newValueOpt with
-                | ValueNone -> false
-                | ValueSome v -> v
-
-            AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
-
 [<AutoOpen>]
 module WebViewBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a WebView with a source</summary>
+        /// <param name="source">The web source</param>
         static member inline WebView<'msg>(source: WebViewSource) =
             WidgetBuilder<'msg, IFabWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
+        /// <summary>Create a WebView with an HTML content</summary>
+        /// <param name="html">The HTML content</param>
+        /// <param name="baseUrl">The base URL</param>
         static member inline WebView<'msg>(html: string, ?baseUrl: string) =
-            let source = HtmlWebViewSource()
-            source.Html <- html
-
-            match baseUrl with
-            | Some url -> source.BaseUrl <- url
-            | None -> ()
+            let source =
+                match baseUrl with
+                | Some url -> HtmlWebViewSource(Html = html, BaseUrl = url)
+                | None -> HtmlWebViewSource(Html = html)
 
             View.WebView<'msg>(source)
 
+        /// <summary>Create a WebView with a Uri source</summary>
+        /// <param name="uri">The Uri source</param>
         static member inline WebView<'msg>(uri: Uri) =
             View.WebView<'msg>(WebViewSource.op_Implicit uri)
 
+        /// <summary>Create a WebView with a Url source</summary>
+        /// <param name="url">The Url source</param>
         static member inline WebView<'msg>(url: string) =
             View.WebView<'msg>(WebViewSource.op_Implicit url)
 
 [<Extension>]
 type WebViewModifiers() =
-    /// <summary>Sets a value that indicates whether the user can navigate to previous pages.</summary>
-    /// <param name="value">true if the user can navigate to previous pages; otherwise, false.</param>
+    /// <summary>Set a value that indicates whether the user can navigate to previous pages</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true if the user can navigate to previous pages; otherwise, false</param>
     [<Extension>]
     static member inline canGoBack(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.CanGoBack.WithValue(value))
 
-    /// <summary>Sets a value that indicates whether the user can navigate to the next pages.</summary>
-    /// <param name="value">true if the user can navigate to the next pages; otherwise, false.</param>
+    /// <summary>Set a value that indicates whether the user can navigate to the next pages</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true if the user can navigate to the next pages; otherwise, false</param>
     [<Extension>]
     static member inline canGoForward(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
         this.AddScalar(WebView.CanGoForward.WithValue(value))
 
-    /// <summary>When set this will act as a sync for cookies.</summary>
-    /// <param name="value">The cookie container.</param>
+    /// <summary>Set the cookie container</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The cookie container</param>
     [<Extension>]
     static member inline cookies(this: WidgetBuilder<'msg, #IFabWebView>, value: CookieContainer) =
         this.AddScalar(WebView.Cookies.WithValue(value))
 
+    /// <summary>Listen for the Navigated event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onNavigating(this: WidgetBuilder<'msg, #IFabWebView>, onNavigating: WebNavigatingEventArgs -> 'msg) =
-        this.AddScalar(WebView.Navigating.WithValue(fun args -> onNavigating args |> box))
+    static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatedEventArgs -> 'msg) =
+        this.AddScalar(WebView.Navigated.WithValue(fun args -> fn args |> box))
 
+    /// <summary>Listen for the Navigating event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, onNavigated: WebNavigatedEventArgs -> 'msg) =
-        this.AddScalar(WebView.Navigated.WithValue(fun args -> onNavigated args |> box))
+    static member inline onNavigating(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatingEventArgs -> 'msg) =
+        this.AddScalar(WebView.Navigating.WithValue(fun args -> fn args |> box))
 
     /// <summary>Link a ViewRef to access the direct WebView control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabWebView>, value: ViewRef<WebView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type WebViewPlatformModifiers =
+    /// <summary>Android platform-specific. Set a value indicating whether the zoom controls are enabled</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the zoom controls are enabled</param>
     [<Extension>]
     static member inline enableZoomControls(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
-        this.AddScalar(WebView.EnableZoomControls.WithValue(value))
+        this.AddScalar(WebViewPlatform.EnableZoomControls.WithValue(value))
 
+    /// <summary>Android platform-specific. Set a value indicating whether the zoom controls are displayed</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the zoom controls are displayed</param>
     [<Extension>]
     static member displayZoomControls(this: WidgetBuilder<'msg, #IFabWebView>, value: bool) =
-        this.AddScalar(WebView.DisplayZoomControls.WithValue(value))
+        this.AddScalar(WebViewPlatform.DisplayZoomControls.WithValue(value))

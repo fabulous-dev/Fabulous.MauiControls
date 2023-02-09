@@ -9,6 +9,11 @@ type IFabItemsView =
     inherit IFabView
 
 module ItemsView =
+    let EmptyView = Attributes.defineBindableWidget ItemsView.EmptyViewProperty
+
+    let HorizontalScrollBarVisibility =
+        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.HorizontalScrollBarVisibilityProperty
+
     let ItemsSource =
         Attributes.defineSimpleScalar<WidgetItems>
             "ItemsView_ItemsSource"
@@ -25,7 +30,8 @@ module ItemsView =
 
                     itemsView.SetValue(ItemsView.ItemsSourceProperty, value.OriginalItems))
 
-    let EmptyView = Attributes.defineBindableWidget ItemsView.EmptyViewProperty
+    let ItemsUpdatingScrollMode =
+        Attributes.defineBindableEnum<ItemsUpdatingScrollMode> ItemsView.ItemsUpdatingScrollModeProperty
 
     let RemainingItemsThreshold =
         Attributes.defineBindableInt ItemsView.RemainingItemsThresholdProperty
@@ -33,61 +39,65 @@ module ItemsView =
     let RemainingItemsThresholdReached =
         Attributes.defineEventNoArg "ItemsView_RemainingItemsThresholdReached" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
 
-    let HorizontalScrollBarVisibility =
-        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.HorizontalScrollBarVisibilityProperty
-
-    let VerticalScrollBarVisibility =
-        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty
-
-    let ItemsUpdatingScrollMode =
-        Attributes.defineBindableEnum<ItemsUpdatingScrollMode> ItemsView.ItemsUpdatingScrollModeProperty
+    let Scrolled =
+        Attributes.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
 
     let ScrollToRequested =
         Attributes.defineEvent<ScrollToRequestEventArgs> "ItemsView_ScrolledRequested" (fun target -> (target :?> ItemsView).ScrollToRequested)
 
-    let Scrolled =
-        Attributes.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
+    let VerticalScrollBarVisibility =
+        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty
 
 [<Extension>]
 type ItemsViewModifiers =
+    /// <summary>Set the empty view widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="content">The empty view widget</param>
+    [<Extension>]
+    static member inline emptyView(this: WidgetBuilder<'msg, #IFabItemsView>, content: WidgetBuilder<'msg, #IFabView>) =
+        this.AddWidget(ItemsView.EmptyView.WithValue(content.Compile()))
 
-    /// <summary>The threshold of items not yet visible in the list at which the RemainingItemsThresholdReached event will be fired.</summary>
+    /// <summary>Set the visibility of the horizontal scroll bar</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true if the horizontal scroll is enabled; otherwise, false</param>
+    [<Extension>]
+    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabItemsView>, value: ScrollBarVisibility) =
+        this.AddScalar(ItemsView.HorizontalScrollBarVisibility.WithValue(value))
+
+    /// <summary>Set the items updating scroll mode</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The items updating scroll mode</param>
+    [<Extension>]
+    static member inline itemsUpdatingScrollMode(this: WidgetBuilder<'msg, #IFabItemsView>, value: ItemsUpdatingScrollMode) =
+        this.AddScalar(ItemsView.ItemsUpdatingScrollMode.WithValue(value))
+
+    /// <summary>Listen for the Scrolled event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ItemsViewScrolledEventArgs -> 'msg) =
+        this.AddScalar(ItemsView.Scrolled.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ScrollToRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ScrollToRequestEventArgs -> 'msg) =
+        this.AddScalar(ItemsView.ScrollToRequested.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Set the threshold of items not yet visible in the list at which the RemainingItemsThresholdReached event will be fired</summary>
+    /// <param name="this">Current widget</param>
     /// <param name="value">The threshold of items not yet visible in the list</param>
-    /// <param="onThresholdReached">Event executed when the RemainingItemsThreshold is reached</param>
+    /// <param name="onThresholdReached">Message to dispatch</param>
     [<Extension>]
     static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #IFabItemsView>, value: int, onThresholdReached: 'msg) =
         this
             .AddScalar(ItemsView.RemainingItemsThreshold.WithValue(value))
             .AddScalar(ItemsView.RemainingItemsThresholdReached.WithValue(onThresholdReached))
 
-    /// <summary>Sets the visibility of the horizontal scroll bar.</summary>
-    /// <param name="value">true if the horizontal scroll is enabled; otherwise, false.</param>
-    [<Extension>]
-    static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabItemsView>, value: ScrollBarVisibility) =
-        this.AddScalar(ItemsView.HorizontalScrollBarVisibility.WithValue(value))
-
-    /// <summary>Sets the visibility of the vertical scroll bar.</summary>
-    /// <param name="value">true if the vertical scroll is enabled; otherwise, false.</param>
+    /// <summary>Set the visibility of the vertical scroll bar</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true if the vertical scroll is enabled; otherwise, false</param>
     [<Extension>]
     static member inline verticalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabItemsView>, value: ScrollBarVisibility) =
         this.AddScalar(ItemsView.VerticalScrollBarVisibility.WithValue(value))
-
-    [<Extension>]
-    static member inline itemsUpdatingScrollMode(this: WidgetBuilder<'msg, #IFabItemsView>, value: ItemsUpdatingScrollMode) =
-        this.AddScalar(ItemsView.ItemsUpdatingScrollMode.WithValue(value))
-
-    [<Extension>]
-    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabItemsView>, onScrollToRequested: ScrollToRequestEventArgs -> 'msg) =
-        this.AddScalar(ItemsView.ScrollToRequested.WithValue(fun args -> onScrollToRequested args |> box))
-
-    [<Extension>]
-    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabItemsView>, onScrolled: ItemsViewScrolledEventArgs -> 'msg) =
-        this.AddScalar(ItemsView.Scrolled.WithValue(fun args -> onScrolled args |> box))
-
-    [<Extension>]
-    static member inline emptyView<'msg, 'marker, 'contentMarker when 'marker :> IFabItemsView and 'contentMarker :> IView>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            content: WidgetBuilder<'msg, 'contentMarker>
-        ) =
-        this.AddWidget(ItemsView.EmptyView.WithValue(content.Compile()))

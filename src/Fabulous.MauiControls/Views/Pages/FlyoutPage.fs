@@ -25,12 +25,12 @@ type FabFlyoutPage() as this =
 module FlyoutPage =
     let WidgetKey = Widgets.register<FabFlyoutPage>()
 
-    let IsGestureEnabled =
-        Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
+    let BackButtonPressed =
+        Attributes.defineEvent "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
-    let IsPresented =
-        Attributes.defineBindableWithEvent<bool, bool> "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
-            (target :?> FabFlyoutPage).CustomIsPresentedChanged)
+    let Detail =
+        Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->
+            (target :?> FlyoutPage).Detail <- value)
 
     let Flyout =
         Attributes.definePropertyWidget "FlyoutPage_Flyout" (fun target -> (target :?> FlyoutPage).Flyout :> obj) (fun target value ->
@@ -39,22 +39,21 @@ module FlyoutPage =
     let FlyoutLayoutBehavior =
         Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
-    let Detail =
-        Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->
-            (target :?> FlyoutPage).Detail <- value)
+    let IsGestureEnabled =
+        Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
-    let BackButtonPressed =
-        Attributes.defineEvent<BackButtonPressedEventArgs> "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
+    let IsPresented =
+        Attributes.defineBindableWithEvent "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
+            (target :?> FabFlyoutPage).CustomIsPresentedChanged)
 
 [<AutoOpen>]
 module FlyoutPageBuilders =
     type Fabulous.Maui.View with
 
-        static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IFabPage and 'detail :> IFabPage>
-            (
-                flyout: WidgetBuilder<'msg, 'flyout>,
-                detail: WidgetBuilder<'msg, 'detail>
-            ) =
+        /// <summary>Create a flyout page with a flyout and a detail widgets</summary>
+        /// <param name="flyout">The flyout widget</param>
+        /// <param name="detail">The detail widget</param>
+        static member inline FlyoutPage(flyout: WidgetBuilder<'msg, #IFabPage>, detail: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabFlyoutPage>
                 FlyoutPage.WidgetKey
                 [| FlyoutPage.Flyout.WithValue(flyout.Compile())
@@ -62,24 +61,38 @@ module FlyoutPageBuilders =
 
 [<Extension>]
 type FlyoutPageModifiers =
-
-    [<Extension>]
-    static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
-        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
-
-    [<Extension>]
-    static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool) =
-        this.AddScalar(FlyoutPage.IsGestureEnabled.WithValue(value))
-
+    /// <summary>Set the flyout layout behavior</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The flyout layout behavior</param>
     [<Extension>]
     static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: FlyoutLayoutBehavior) =
         this.AddScalar(FlyoutPage.FlyoutLayoutBehavior.WithValue(value))
 
+    /// <summary>Set whether the flyout is presented, and listen for presentation state changes</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the flyout is presented</param>
+    /// <param name="onChanged">Message to dispatch</param>
     [<Extension>]
-    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabFlyoutPage>, onBackButtonPressed: bool -> 'msg) =
-        this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> onBackButtonPressed args.Handled |> box))
+    static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
+        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
 
-    /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
+    /// <summary>Set whether gesture is enabled to open the flyout</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether gesture is enabled</param>
+    [<Extension>]
+    static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool) =
+        this.AddScalar(FlyoutPage.IsGestureEnabled.WithValue(value))
+
+    /// <summary>Listen for back button pressed</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabFlyoutPage>, fn: bool -> 'msg) =
+        this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> fn args.Handled |> box))
+
+    /// <summary>Link a ViewRef to access the direct FlyoutPage control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabFlyoutPage>, value: ViewRef<FlyoutPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

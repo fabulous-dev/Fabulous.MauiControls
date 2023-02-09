@@ -9,33 +9,52 @@ type IFabLayout =
     inherit IFabView
 
 module Layout =
-    let Padding =
-        Attributes.defineBindableWithEquality<Thickness> Layout.PaddingProperty
-
     let CascadeInputTransparent =
         Attributes.defineBindableBool Layout.CascadeInputTransparentProperty
 
     let IsClippedToBounds =
         Attributes.defineBindableBool Layout.IsClippedToBoundsProperty
 
+    let Padding =
+        Attributes.defineBindableWithEquality<Thickness> Layout.PaddingProperty
+
 [<Extension>]
 type LayoutModifiers =
-    [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, value: Thickness) =
-        this.AddScalar(Layout.Padding.WithValue(value))
-
-    [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, value: float) =
-        LayoutModifiers.padding(this, Thickness(value))
-
-    [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, left: float, top: float, right: float, bottom: float) =
-        LayoutModifiers.padding(this, Thickness(left, top, right, bottom))
-
+    /// <summary>Set whether the input transparency is cascaded to children</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the input transparency is cascaded</param>
     [<Extension>]
     static member inline cascadeInputTransparent(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
         this.AddScalar(Layout.CascadeInputTransparent.WithValue(value))
 
+    /// <summary>Set whether the content is clipped to the layout's bounds</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The value indicating whether the content will be clipped</param>
     [<Extension>]
     static member inline isClippedToBounds(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
         this.AddScalar(Layout.IsClippedToBounds.WithValue(value))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The padding value</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, value: Thickness) =
+        this.AddScalar(Layout.Padding.WithValue(value))
+
+[<Extension>]
+type LayoutExtraModifiers =
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="left">The left padding value</param>
+    /// <param name="top">The top padding value</param>
+    /// <param name="right">The right padding value</param>
+    /// <param name="bottom">The bottom padding value</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, left: float, top: float, right: float, bottom: float) =
+        this.padding(Thickness(left, top, right, bottom))

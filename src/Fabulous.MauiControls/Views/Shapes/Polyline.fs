@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
@@ -10,8 +11,9 @@ type IFabPolyline =
     inherit IFabShape
 
 module Polyline =
-
     let WidgetKey = Widgets.register<Polyline>()
+
+    let FillRule = Attributes.defineBindableEnum<FillRule> Polyline.FillRuleProperty
 
     let PointsString =
         Attributes.defineSimpleScalarWithEquality<string> "Polyline_PointsString" (fun _ newValueOpt node ->
@@ -32,32 +34,41 @@ module Polyline =
                 points |> Array.iter coll.Add
                 target.SetValue(Polyline.PointsProperty, coll))
 
-    let FillRule = Attributes.defineBindableEnum<FillRule> Polyline.FillRuleProperty
-
 [<AutoOpen>]
 module PolylineBuilders =
-
     type Fabulous.Maui.View with
 
-        static member inline Polyline<'msg>(points: string, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
+        /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
+        /// <param name="points">The points list</param>
+        /// <param name="strokeThickness">The stroke thickness</param>
+        /// <param name="stroke">The stroke brush</param>
+        static member inline Polyline<'msg>(points: string, strokeThickness: float, stroke: Brush) =
             WidgetBuilder<'msg, IFabPolyline>(
                 Polyline.WidgetKey,
                 Polyline.PointsString.WithValue(points),
                 Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+                Shape.Stroke.WithValue(stroke)
             )
 
-        static member inline Polyline<'msg>(points: Point list, strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
+        /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
+        /// <param name="points">The points list</param>
+        /// <param name="strokeThickness">The stroke thickness</param>
+        /// <param name="stroke">The stroke brush</param>
+        static member inline Polyline(points: seq<Point>, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
             WidgetBuilder<'msg, IFabPolyline>(
-                Polyline.WidgetKey,
-                Polyline.PointsList.WithValue(Array.ofList points),
-                Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+                Polygon.WidgetKey,
+                AttributesBundle(
+                    StackList.two(Polyline.PointsList.WithValue(Array.ofSeq points), Shape.StrokeThickness.WithValue(strokeThickness)),
+                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
+                    ValueNone
+                )
             )
 
 [<Extension>]
 type PolylineModifiers =
-
+    /// <summary>Set the fill rule of the polyline</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The fill rule</param>
     [<Extension>]
     static member inline fillRule(this: WidgetBuilder<'msg, #IFabPolyline>, value: FillRule) =
         this.AddScalar(Polyline.FillRule.WithValue(value))

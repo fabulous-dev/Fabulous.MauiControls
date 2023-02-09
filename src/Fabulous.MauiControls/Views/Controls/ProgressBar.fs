@@ -5,6 +5,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 open System.Runtime.CompilerServices
 open Fabulous
+open Microsoft.Maui.Graphics
 
 type IFabProgressBar =
     inherit IFabView
@@ -16,14 +17,17 @@ type ProgressToData =
       Easing: Easing }
 
 module ProgressBar =
-
     let WidgetKey = Widgets.register<ProgressBar>()
-
-    let ProgressColor =
-        Attributes.defineBindableAppThemeColor ProgressBar.ProgressColorProperty
 
     let Progress = Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
+    let ProgressColor =
+        Attributes.defineBindableWithEquality ProgressBar.ProgressColorProperty
+
+    let ProgressFabColor =
+        Attributes.defineBindableColor ProgressBar.ProgressColorProperty
+
+module ProgressBarAnimations =
     let ProgressTo =
         Attributes.defineSimpleScalarWithEquality<ProgressToData> "ProgressBar_ProgressTo" (fun _ newValueOpt node ->
             let view = node.Target :?> ProgressBar
@@ -36,13 +40,19 @@ module ProgressBar =
 module ProgressBarBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a ProgressBar widget with a current progress value</summary>
+        /// <param name="progress">The progress value</param>
         static member inline ProgressBar<'msg>(progress: float) =
             WidgetBuilder<'msg, IFabProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 
+        /// <summary>Create a ProgressBar widget with a progress value that will animate when changed</summary>
+        /// <param name="progress">The progress value</param>
+        /// <param name="duration">The duration of the animation</param>
+        /// <param name="easing">The easing of the animation</param>
         static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
             WidgetBuilder<'msg, IFabProgressBar>(
                 ProgressBar.WidgetKey,
-                ProgressBar.ProgressTo.WithValue(
+                ProgressBarAnimations.ProgressTo.WithValue(
                     { Progress = progress
                       AnimationDuration = uint32 duration
                       Easing = easing }
@@ -52,13 +62,22 @@ module ProgressBarBuilders =
 [<Extension>]
 type ProgressBarModifiers =
     /// <summary>Set the color of the progress bar</summary>
-    /// <param name="light">The color of the progress bar in the light theme.</param>
-    /// <param name="dark">The color of the progress bar in the dark theme.</param>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the progress bar</param>
     [<Extension>]
-    static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
+    static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: Color) =
+        this.AddScalar(ProgressBar.ProgressColor.WithValue(value))
+
+    /// <summary>Set the color of the progress bar</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the progress bar</param>
+    [<Extension>]
+    static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: FabColor) =
+        this.AddScalar(ProgressBar.ProgressFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabProgressBar>, value: ViewRef<ProgressBar>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

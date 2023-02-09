@@ -6,5 +6,4 @@ type IFabTransform =
     inherit IFabElement
 
 module Transform =
-
     let Value = Attributes.defineBindableWithEquality<Matrix> Transform.ValueProperty

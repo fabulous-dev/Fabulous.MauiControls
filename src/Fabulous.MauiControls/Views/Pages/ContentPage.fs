@@ -37,19 +37,26 @@ module ContentPage =
 module ContentPageBuilders =
     type Fabulous.Maui.View with
 
-        static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(title: string, content: WidgetBuilder<'msg, 'marker>) =
+        /// <summary>Create a ContentPage with a content widget</summary>
+        /// <param name="content">The content widget</param>
+        static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IFabContentPage>(
                 ContentPage.WidgetKey,
-                AttributesBundle(StackList.one(Page.Title.WithValue(title)), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
+                AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
 [<Extension>]
 type ContentPageModifiers =
+    /// <summary>Listen for SizeAllocated event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
         this.AddScalar(ContentPage.SizeAllocated.WithValue(fn >> box))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabContentPage>, value: ViewRef<ContentPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -3,6 +3,7 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IFabActivityIndicator =
     inherit IFabView
@@ -10,28 +11,40 @@ type IFabActivityIndicator =
 module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()
 
-    let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
+    let Color = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
 
-    let Color = Attributes.defineBindableAppThemeColor ActivityIndicator.ColorProperty
+    let FabColor = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
+
+    let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 
 [<AutoOpen>]
 module ActivityIndicatorBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create an ActivityIndicator widget with a running state</summary>
+        /// <param name="isRunning">The running state</param>
         static member inline ActivityIndicator<'msg>(isRunning: bool) =
             WidgetBuilder<'msg, IFabActivityIndicator>(ActivityIndicator.WidgetKey, ActivityIndicator.IsRunning.WithValue(isRunning))
 
 [<Extension>]
 type ActivityIndicatorModifiers =
-
-    /// <summary>Sets the activity indicator color.</summary>
-    /// <param name="light">The color of the activity indicator in the light theme.</param>
-    /// <param name="dark">The color of the activity indicator in the dark theme.</param>
+    /// <summary>Set the activity indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the activity indicator</param>
     [<Extension>]
-    static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ActivityIndicator.Color.WithValue(AppTheme.create light dark))
+    static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, value: Color) =
+        this.AddScalar(ActivityIndicator.Color.WithValue(value))
+
+    /// <summary>Set the activity indicator color</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the activity indicator</param>
+    [<Extension>]
+    static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, value: FabColor) =
+        this.AddScalar(ActivityIndicator.FabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct ActivityIndicator control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabActivityIndicator>, value: ViewRef<ActivityIndicator>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

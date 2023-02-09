@@ -24,12 +24,15 @@ module FormattedLabel =
 module FormattedLabelBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a FormattedLabel widget</summary>
         static member inline FormattedLabel<'msg>() =
             CollectionBuilder<'msg, IFabFormattedLabel, IFabSpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
 
 [<Extension>]
 type FormattedLabelModifiers =
-    /// <summary>Link a ViewRef to access the direct Label control instance</summary>
+    /// <summary>Link a ViewRef to access the direct FormattedLabel control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabFormattedLabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

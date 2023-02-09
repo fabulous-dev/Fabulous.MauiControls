@@ -40,6 +40,11 @@ module Stepper =
 module StepperBuilders =
     type Fabulous.Maui.View with
 
+        /// <summary>Create a Stepper widget with min and max values, a current value, and listen for value changes</summary>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <param name="value">The current value</param>
+        /// <param name="onValueChanged">Message to dispatch</param>
         static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IFabStepper>(
                 Stepper.WidgetKey,
@@ -49,13 +54,16 @@ module StepperBuilders =
 
 [<Extension>]
 type StepperModifiers =
-    /// <summary>Increments the Stepper's value</summary>
-    /// <param name="value">The amount to increment the Stepper by.</param>
+    /// <summary>Set the increment step</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The increment step</param>
     [<Extension>]
     static member inline increment(this: WidgetBuilder<'msg, #IFabStepper>, value: float) =
         this.AddScalar(Stepper.Increment.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Stepper control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabStepper>, value: ViewRef<Stepper>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
