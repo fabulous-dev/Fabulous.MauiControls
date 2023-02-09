@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
+    <TargetFramework>net7.0</TargetFramework>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
