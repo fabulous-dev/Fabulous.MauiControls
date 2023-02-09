@@ -15,6 +15,7 @@ module ContentView =
 [<AutoOpen>]
 module ContentViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ContentView widget with a content</summary>
         /// <param name="content">The content widget</param>
         static member inline ContentView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =

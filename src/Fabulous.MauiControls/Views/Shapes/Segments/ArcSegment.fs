@@ -26,6 +26,7 @@ module ArcSegment =
 [<AutoOpen>]
 module ArcSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ArcSegment widget</summary>
         /// <param name="point">The point</param>
         /// <param name="size">The size</param>
@@ -47,14 +48,14 @@ type ArcSegmentModifiers =
     [<Extension>]
     static member inline rotationAngle(this: WidgetBuilder<'msg, #IFabArcSegment>, value: float) =
         this.AddScalar(ArcSegment.RotationAngle.WithValue(value))
-        
+
     /// <summary>Set the sweep direction</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The sweep direction</param>
     [<Extension>]
     static member inline sweepDirection(this: WidgetBuilder<'msg, #IFabArcSegment>, value: SweepDirection) =
         this.AddScalar(ArcSegment.SweepDirection.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct ArcSegment control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

@@ -25,6 +25,7 @@ module DropGestureRecognizer =
 [<AutoOpen>]
 module DropGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a DropGestureRecognizer that listens for Drop event</summary>
         /// <param name="onDrop">Message to dispatch</param>
         static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
@@ -55,7 +56,7 @@ type DropGestureRecognizerModifiers =
     [<Extension>]
     static member inline onDragLeave(this: WidgetBuilder<'msg, #IFabDropGestureRecognizer>, fn: DragEventArgs -> 'msg) =
         this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun args -> fn args |> box))
-        
+
     /// <summary>Link a ViewRef to access the direct DropGestureRecognizer control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

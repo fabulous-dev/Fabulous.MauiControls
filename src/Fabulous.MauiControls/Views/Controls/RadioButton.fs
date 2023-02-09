@@ -13,8 +13,9 @@ type IFabRadioButton =
 module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
-    let BorderColor = Attributes.defineBindableWithEquality RadioButton.BorderColorProperty
-    
+    let BorderColor =
+        Attributes.defineBindableWithEquality RadioButton.BorderColorProperty
+
     let BorderFabColor = Attributes.defineBindableColor RadioButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat RadioButton.BorderWidthProperty
@@ -47,12 +48,12 @@ module RadioButton =
         Attributes.defineBindableWithEvent "RadioButton_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
 
     let TextColor = Attributes.defineBindableWithEquality RadioButton.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor RadioButton.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
-        
+
 module RadioButtonAttached =
     let RadioButtonGroupName =
         Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
@@ -60,6 +61,7 @@ module RadioButtonAttached =
 [<AutoOpen>]
 module RadioButtonBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a RadioButton widget with a content, a checked state and listen for the checked state changes</summary>
         /// <param name="content">The content</param>
         /// <param name="isChecked">The checked state</param>
@@ -93,7 +95,7 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabRadioButton>, value: Color) =
         this.AddScalar(RadioButton.BorderColor.WithValue(value))
-        
+
     /// <summary>Set the border color of the radio button</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The border color of the radio button</param>

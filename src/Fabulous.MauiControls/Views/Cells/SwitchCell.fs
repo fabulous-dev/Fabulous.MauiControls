@@ -12,7 +12,7 @@ module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
     let OnColor = Attributes.defineBindableWithEquality SwitchCell.OnColorProperty
-    
+
     let OnFabColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
 
     let OnWithEvent =
@@ -23,6 +23,7 @@ module SwitchCell =
 [<AutoOpen>]
 module SwitchCellBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SwitchCell with a text, a toggle state, and listen to toggle state changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="value">The toggle state value</param>
@@ -42,7 +43,7 @@ type SwitchCellModifiers =
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitchCell>, value: Color) =
         this.AddScalar(SwitchCell.OnColor.WithValue(value))
-        
+
     /// <summary>Set the color of the on state</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the on state in the light theme.</param>

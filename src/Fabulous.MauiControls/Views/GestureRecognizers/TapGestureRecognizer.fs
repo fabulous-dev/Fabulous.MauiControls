@@ -9,7 +9,7 @@ type IFabTapGestureRecognizer =
 
 module TapGestureRecognizer =
     let WidgetKey = Widgets.register<TapGestureRecognizer>()
-    
+
     let NumberOfTapsRequired =
         Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
 
@@ -19,6 +19,7 @@ module TapGestureRecognizer =
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
         /// <param name="onTapped">Message to dispatch</param>
         static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =

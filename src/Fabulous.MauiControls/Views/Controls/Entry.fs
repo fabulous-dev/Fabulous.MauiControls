@@ -46,7 +46,7 @@ module Entry =
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
-        
+
 module EntryPlatform =
     let CursorColor =
         Attributes.defineSimpleScalarWithEquality<Color> "Entry_CursorColor" (fun _ newValueOpt node ->
@@ -58,7 +58,7 @@ module EntryPlatform =
                 | ValueSome x -> x
 
             iOSSpecific.Entry.SetCursorColor(entry, value))
-        
+
     let CursorFabColor =
         Attributes.defineSmallScalar<FabColor> "Entry_CursorColor" SmallScalars.FabColor.decode (fun _ newValueOpt node ->
             let entry = node.Target :?> Entry
@@ -73,6 +73,7 @@ module EntryPlatform =
 [<AutoOpen>]
 module EntryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an Entry widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
@@ -97,7 +98,7 @@ type EntryModifiers =
     [<Extension>]
     static member inline cursorPosition(this: WidgetBuilder<'msg, #IFabEntry>, value: int) =
         this.AddScalar(Entry.CursorPosition.WithValue(value))
-        
+
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>
     /// <param name="size">The font size</param>
@@ -198,7 +199,7 @@ type EntryPlatformModifiers =
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IFabEntry>, value: Color) =
         this.AddScalar(EntryPlatform.CursorColor.WithValue(value))
-        
+
     /// <summary>iOS platform specific. Set the cursor color.</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The cursor color</param>

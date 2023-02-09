@@ -21,9 +21,11 @@ module ProgressBar =
 
     let Progress = Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
-    let ProgressColor = Attributes.defineBindableWithEquality ProgressBar.ProgressColorProperty
-    
-    let ProgressFabColor = Attributes.defineBindableColor ProgressBar.ProgressColorProperty
+    let ProgressColor =
+        Attributes.defineBindableWithEquality ProgressBar.ProgressColorProperty
+
+    let ProgressFabColor =
+        Attributes.defineBindableColor ProgressBar.ProgressColorProperty
 
 module ProgressBarAnimations =
     let ProgressTo =
@@ -37,6 +39,7 @@ module ProgressBarAnimations =
 [<AutoOpen>]
 module ProgressBarBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ProgressBar widget with a current progress value</summary>
         /// <param name="progress">The progress value</param>
         static member inline ProgressBar<'msg>(progress: float) =
@@ -64,7 +67,7 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(value))
-        
+
     /// <summary>Set the color of the progress bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the progress bar</param>

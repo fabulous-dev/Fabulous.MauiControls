@@ -38,7 +38,7 @@ module Label =
     let Padding = Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
 
     let TextColor = Attributes.defineBindableWithEquality Label.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor Label.TextColorProperty
 
     let TextDecorations =
@@ -57,6 +57,7 @@ module Label =
 [<AutoOpen>]
 module LabelBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Label widget with a text</summary>
         /// <param name="text">The text value</param>
         static member inline Label<'msg>(text: string) =
@@ -251,8 +252,7 @@ type LabelExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The padding inside the text</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLabel>, uniformSize: float) = this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the text</summary>
     /// <param name="this">Current widget</param>

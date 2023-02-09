@@ -57,6 +57,7 @@ module DatePickerPlatform =
 [<AutoOpen>]
 module DatePickerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a DatePicker widget with a date and listen for the date changes</summary>
         /// <param name="date">The selected date</param>
         /// <param name="onDateSelected">Message to dispatch</param>

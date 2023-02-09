@@ -76,6 +76,7 @@ module Application =
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an Application widget with a main page</summary>
         /// <param name="mainPage">The main page widget</param>
         static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
@@ -138,7 +139,7 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, fn: AppTheme -> 'msg) =
         this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
-        
+
     /// <summary>Set the user app theme</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The user app theme</param>

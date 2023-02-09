@@ -52,7 +52,7 @@ module TimePicker =
     let Format = Attributes.defineBindableWithEquality<string> TimePicker.FormatProperty
 
     let TextColor = Attributes.defineBindableWithEquality TimePicker.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor TimePicker.TextColorProperty
 
 module TimePickerPlatform =
@@ -70,6 +70,7 @@ module TimePickerPlatform =
 [<AutoOpen>]
 module TimePickerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TimePicker widget with a selected time and listen for the selected time changes</summary>
         /// <param name="time">The selected time</param>
         /// <param name="onTimeSelected">Message to dispatch</param>

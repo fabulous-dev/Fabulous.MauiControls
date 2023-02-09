@@ -6,6 +6,7 @@ open Fabulous.Maui
 [<AutoOpen>]
 module AnyBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Downcast to View widget to allow to return different types of views in a single expression (e.g. if/else, match with pattern, etc.)</summary>
         /// <param name="this">Current widget</param>
         static member AnyView(this: WidgetBuilder<'msg, #IFabView>) =

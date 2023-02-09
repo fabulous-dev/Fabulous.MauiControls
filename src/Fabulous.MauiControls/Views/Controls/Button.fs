@@ -15,7 +15,7 @@ module Button =
     let WidgetKey = Widgets.register<Button>()
 
     let BorderColor = Attributes.defineBindableWithEquality Button.BorderColorProperty
-    
+
     let BorderFabColor = Attributes.defineBindableColor Button.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat Button.BorderWidthProperty
@@ -69,6 +69,7 @@ module Button =
 [<AutoOpen>]
 module ButtonBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Message to dispatch</param>
@@ -83,7 +84,7 @@ type ButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
         this.AddScalar(Button.BorderColor.WithValue(value))
-        
+
     /// <summary>Set the border color</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The border color</param>
@@ -97,14 +98,14 @@ type ButtonModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabButton>, value: float) =
         this.AddScalar(Button.CharacterSpacing.WithValue(value))
-        
+
     /// <summary>Set the border width</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The border width</param>
     [<Extension>]
     static member inline borderWidth(this: WidgetBuilder<'msg, #IFabButton>, value: float) =
         this.AddScalar(Button.BorderWidth.WithValue(value))
-        
+
     /// <summary>Set the corner radius</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The corner radius</param>
@@ -195,14 +196,14 @@ type ButtonModifiers =
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, value: Thickness) =
         this.AddScalar(Button.Padding.WithValue(value))
-        
+
     /// <summary>Set the color of the text</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the text</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
         this.AddScalar(Button.TextColor.WithValue(value))
-        
+
     /// <summary>Set the color of the text</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the text</param>
@@ -237,8 +238,7 @@ type ButtonExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="source">The image source</param>
     [<Extension>]
-    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: Uri) =
-        this.image(ImageSource.FromUri(source))
+    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: Uri) = this.image(ImageSource.FromUri(source))
 
     /// <summary>Set the image source</summary>
     /// <param name="this">Current widget</param>
@@ -246,13 +246,12 @@ type ButtonExtraModifiers =
     [<Extension>]
     static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: Stream) =
         this.image(ImageSource.FromStream(fun () -> source))
-        
+
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding inside the button</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
+    static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, uniformSize: float) = this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

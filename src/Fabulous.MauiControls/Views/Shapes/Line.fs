@@ -32,6 +32,7 @@ module Line =
 [<AutoOpen>]
 module LineBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
@@ -44,7 +45,7 @@ module LineBuilders =
                 Shape.StrokeThickness.WithValue(strokeThickness),
                 Shape.Stroke.WithValue(stroke)
             )
-            
+
         /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
@@ -54,13 +55,8 @@ module LineBuilders =
             WidgetBuilder<'msg, IFabLine>(
                 Line.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        Line.Points.WithValue(struct (startPoint, endPoint)),
-                        Shape.StrokeThickness.WithValue(strokeThickness)
-                    ),
-                    ValueSome [|
-                        Shape.StrokeWidget.WithValue(stroke.Compile())
-                    |],
+                    StackList.two(Line.Points.WithValue(struct (startPoint, endPoint)), Shape.StrokeThickness.WithValue(strokeThickness)),
+                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )

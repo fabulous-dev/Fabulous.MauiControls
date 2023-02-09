@@ -39,6 +39,7 @@ module Stepper =
 [<AutoOpen>]
 module StepperBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Stepper widget with min and max values, a current value, and listen for value changes</summary>
         /// <param name="min">The minimum value</param>
         /// <param name="max">The maximum value</param>

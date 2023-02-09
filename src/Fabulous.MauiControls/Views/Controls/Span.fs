@@ -16,8 +16,7 @@ module Span =
     let BackgroundColor =
         Attributes.defineBindableWithEquality Span.BackgroundColorProperty
 
-    let BackgroundFabColor =
-        Attributes.defineBindableColor Span.BackgroundColorProperty
+    let BackgroundFabColor = Attributes.defineBindableColor Span.BackgroundColorProperty
 
     let CharacterSpacing = Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
@@ -38,7 +37,7 @@ module Span =
     let LineHeight = Attributes.defineBindableFloat Span.LineHeightProperty
 
     let TextColor = Attributes.defineBindableWithEquality Span.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor Span.TextColorProperty
 
     let Text = Attributes.defineBindableWithEquality<string> Span.TextProperty
@@ -52,6 +51,7 @@ module Span =
 [<AutoOpen>]
 module SpanBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Span widget with a text</summary>
         /// <param name="text">The text value</param>
         static member inline Span<'msg>(text: string) =
@@ -65,7 +65,7 @@ type SpanModifiers =
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSpan>, value: Color) =
         this.AddScalar(Span.BackgroundColor.WithValue(value))
-        
+
     /// <summary>Set the background color</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The background color</param>
@@ -79,7 +79,7 @@ type SpanModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabSpan>, value: float) =
         this.AddScalar(Span.CharacterSpacing.WithValue(value))
-        
+
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>
     /// <param name="size">The font size</param>

@@ -68,7 +68,7 @@ module ListView =
 
     let RefreshControlColor =
         Attributes.defineBindableWithEquality ListView.RefreshControlColorProperty
-        
+
     let RefreshControlFabColor =
         Attributes.defineBindableColor ListView.RefreshControlColorProperty
 
@@ -82,7 +82,7 @@ module ListView =
 
     let SeparatorColor =
         Attributes.defineBindableWithEquality ListView.SeparatorColorProperty
-        
+
     let SeparatorFabColor =
         Attributes.defineBindableColor ListView.SeparatorColorProperty
 
@@ -101,6 +101,7 @@ module ListView =
 [<AutoOpen>]
 module ListViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ListView with a list of items</summary>
         /// <param name="items">The items list</param>
         static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>(items: seq<'itemData>) =
@@ -123,11 +124,7 @@ type ListViewModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The footer widget</param>
     [<Extension>]
-    static member inline footer
-        (
-            this: WidgetBuilder<'msg, #IFabListView>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline footer(this: WidgetBuilder<'msg, #IFabListView>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(ListView.Footer.WithValue(content.Compile()))
 
     /// <summary>Set whether the list has uneven rows</summary>
@@ -136,16 +133,12 @@ type ListViewModifiers =
     [<Extension>]
     static member inline hasUnevenRows(this: WidgetBuilder<'msg, #IFabListView>, value: bool) =
         this.AddScalar(ListView.HasUnevenRows.WithValue(value))
-        
+
     /// <summary>Set the header widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The header widget</param>
     [<Extension>]
-    static member inline header
-        (
-            this: WidgetBuilder<'msg, #IFabListView>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline header(this: WidgetBuilder<'msg, #IFabListView>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(ListView.Header.WithValue(content.Compile()))
 
     /// <summary>Set the horizontal scroll bar visibility</summary>
@@ -196,7 +189,7 @@ type ListViewModifiers =
     [<Extension>]
     static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> 'msg) =
         this.AddScalar(ListView.ItemSelected.WithValue(fun args -> fn args.SelectedItemIndex |> box))
-        
+
     /// <summary>Listen for the Refreshing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
@@ -252,14 +245,14 @@ type ListViewModifiers =
     [<Extension>]
     static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, value: FabColor) =
         this.AddScalar(ListView.SeparatorFabColor.WithValue(value))
-        
+
     /// <summary>Set the separator visibility</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The separator visibility</param>
     [<Extension>]
     static member inline separatorVisibility(this: WidgetBuilder<'msg, #IFabListView>, value: SeparatorVisibility) =
         this.AddScalar(ListView.SeparatorVisibility.WithValue(value))
-        
+
     /// <summary>Set the selection mode</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The selection mode</param>

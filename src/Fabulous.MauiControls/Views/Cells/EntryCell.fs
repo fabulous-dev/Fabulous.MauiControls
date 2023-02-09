@@ -45,8 +45,9 @@ module EntryCell =
     let Label = Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
     let LabelColor = Attributes.defineBindableWithEquality EntryCell.LabelColorProperty
-    
-    let LabelFabColor = Attributes.defineBindableWithEquality EntryCell.LabelColorProperty
+
+    let LabelFabColor =
+        Attributes.defineBindableWithEquality EntryCell.LabelColorProperty
 
     let OnCompleted =
         Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
@@ -63,6 +64,7 @@ module EntryCell =
 [<AutoOpen>]
 module EntryCellBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an EntryCell with a label, a text, and listen to text changes</summary>
         /// <param name="label">The label value</param>
         /// <param name="text">The text value</param>
@@ -89,14 +91,14 @@ type EntryCellModifiers =
     [<Extension>]
     static member inline keyboard(this: WidgetBuilder<'msg, #IFabEntryCell>, value: Keyboard) =
         this.AddScalar(EntryCell.Keyboard.WithValue(value))
-        
+
     /// <summary>Set the color of the label</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the label</param>
     [<Extension>]
     static member inline labelColor(this: WidgetBuilder<'msg, #IFabEntryCell>, value: Color) =
         this.AddScalar(EntryCell.LabelColor.WithValue(value))
-        
+
     /// <summary>Set the color of the label</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the label</param>

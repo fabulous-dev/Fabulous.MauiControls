@@ -23,6 +23,7 @@ module SwipeGestureRecognizer =
 [<AutoOpen>]
 module SwipeGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SwipeGestureRecognizer that listens for Swipe event</summary>
         /// <param name="onSwiped">Message to dispatch</param>
         static member inline SwipeGestureRecognizer<'msg>(onSwiped: SwipeDirection -> 'msg) =
@@ -46,7 +47,7 @@ type SwipeGestureRecognizerModifiers =
     [<Extension>]
     static member inline threshold(this: WidgetBuilder<'msg, #IFabSwipeGestureRecognizer>, value: int) =
         this.AddScalar(SwipeGestureRecognizer.Threshold.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct SwipeGestureRecognizer control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

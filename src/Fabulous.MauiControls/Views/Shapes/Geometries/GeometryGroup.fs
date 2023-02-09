@@ -21,13 +21,11 @@ module GeometryGroup =
 [<AutoOpen>]
 module GeometryGroupBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a GeometryGroup</summary>
         static member inline GeometryGroup<'msg>() =
-            CollectionBuilder<'msg, IFabGeometryGroup, IFabGeometry>(
-                GeometryGroup.WidgetKey,
-                GeometryGroup.Children
-            )
-            
+            CollectionBuilder<'msg, IFabGeometryGroup, IFabGeometry>(GeometryGroup.WidgetKey, GeometryGroup.Children)
+
         /// <summary>Create a GeometryGroup with a fill rule</summary>
         /// <param name="fillRule">The fill rule</param>
         static member inline GeometryGroup<'msg>(fillRule: FillRule) =

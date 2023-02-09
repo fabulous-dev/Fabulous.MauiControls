@@ -17,6 +17,7 @@ module ViewCell =
 [<AutoOpen>]
 module ViewCellBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ViewCell with a content widget</summary>
         /// <param name="view">The content widget</param>
         static member inline ViewCell<'msg, 'marker when 'marker :> IFabView>(view: WidgetBuilder<'msg, 'marker>) =

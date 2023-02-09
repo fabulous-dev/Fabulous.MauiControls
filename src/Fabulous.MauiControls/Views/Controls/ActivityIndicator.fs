@@ -12,7 +12,7 @@ module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()
 
     let Color = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
-    
+
     let FabColor = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
 
     let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
@@ -20,6 +20,7 @@ module ActivityIndicator =
 [<AutoOpen>]
 module ActivityIndicatorBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an ActivityIndicator widget with a running state</summary>
         /// <param name="isRunning">The running state</param>
         static member inline ActivityIndicator<'msg>(isRunning: bool) =
@@ -33,7 +34,7 @@ type ActivityIndicatorModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, value: Color) =
         this.AddScalar(ActivityIndicator.Color.WithValue(value))
-        
+
     /// <summary>Set the activity indicator color</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the activity indicator</param>

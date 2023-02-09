@@ -15,7 +15,7 @@ module IndicatorView =
 
     let IndicatorColor =
         Attributes.defineBindableWithEquality IndicatorView.IndicatorColorProperty
-        
+
     let IndicatorFabColor =
         Attributes.defineBindableColor IndicatorView.IndicatorColorProperty
 
@@ -47,6 +47,7 @@ module IndicatorView =
 [<AutoOpen>]
 module IndicatorViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an IndicatorView widget with a reference</summary>
         static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
             WidgetBuilder<'msg, IFabIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
@@ -94,14 +95,14 @@ type IndicatorViewModifiers =
     [<Extension>]
     static member inline maximumVisible(this: WidgetBuilder<'msg, IFabIndicatorView>, value: int) =
         this.AddScalar(IndicatorView.MaximumVisible.WithValue(value))
-        
+
     /// <summary>Set the selected indicator color</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the indicator</param>
     [<Extension>]
     static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: Color) =
         this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(value))
-        
+
     /// <summary>Set the selected indicator color</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the indicator</param>

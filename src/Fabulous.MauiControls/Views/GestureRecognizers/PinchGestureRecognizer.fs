@@ -17,6 +17,7 @@ module PinchGestureRecognizer =
 [<AutoOpen>]
 module PinchGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PinchGestureRecognizer that listens for Pinch event</summary>
         /// <param name="onPinchUpdated">Message to dispatch</param>
         static member inline PinchGestureRecognizer<'msg>(onPinchUpdated: PinchGestureUpdatedEventArgs -> 'msg) =
@@ -24,7 +25,7 @@ module PinchGestureRecognizerBuilders =
                 PinchGestureRecognizer.WidgetKey,
                 PinchGestureRecognizer.PinchUpdated.WithValue(fun args -> onPinchUpdated args |> box)
             )
-            
+
 [<Extension>]
 type PinchGestureRecognizerModifiers =
     /// <summary>Link a ViewRef to access the direct PinchGestureRecognizer control instance</summary>

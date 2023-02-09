@@ -21,6 +21,7 @@ module DragGestureRecognizer =
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a DragGestureRecognizer that listens for DragStarting event</summary>
         /// <param name="onDragStarting">Message to dispatch</param>
         static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
@@ -44,7 +45,7 @@ type DragGestureRecognizerModifiers =
     [<Extension>]
     static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, msg: 'msg) =
         this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> box msg))
-        
+
     /// <summary>Link a ViewRef to access the direct DragGestureRecognizer control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

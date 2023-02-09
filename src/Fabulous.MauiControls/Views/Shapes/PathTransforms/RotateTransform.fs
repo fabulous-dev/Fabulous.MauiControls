@@ -19,6 +19,7 @@ module RotateTransform =
 [<AutoOpen>]
 module RotateTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a RotateTransform widget with an angle, and a center point</summary>
         /// <param name="angle">The angle value</param>
         /// <param name="centerX">The X position</param>
@@ -30,7 +31,7 @@ module RotateTransformBuilders =
                 RotateTransform.CenterX.WithValue(centerX),
                 RotateTransform.CenterY.WithValue(centerY)
             )
-            
+
 [<Extension>]
 type RotateTransformModifiers =
     /// <summary>Link a ViewRef to access the direct RotateTransform control instance</summary>

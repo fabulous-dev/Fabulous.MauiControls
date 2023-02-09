@@ -18,10 +18,11 @@ module TransformGroup =
 [<AutoOpen>]
 module TransformGroupBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TransformGroup widget</summary>
         static member inline TransformGroup<'msg>() =
             CollectionBuilder<'msg, IFabTransformGroup, IFabTransform>(TransformGroup.WidgetKey, TransformGroup.Children)
-            
+
 [<Extension>]
 type TransformGroupModifiers =
     /// <summary>Link a ViewRef to access the direct TransformGroup control instance</summary>

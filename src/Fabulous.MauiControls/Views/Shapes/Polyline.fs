@@ -37,6 +37,7 @@ module Polyline =
 [<AutoOpen>]
 module PolylineBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
         /// <param name="strokeThickness">The stroke thickness</param>
@@ -57,13 +58,8 @@ module PolylineBuilders =
             WidgetBuilder<'msg, IFabPolyline>(
                 Polygon.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        Polyline.PointsList.WithValue(Array.ofSeq points),
-                        Shape.StrokeThickness.WithValue(strokeThickness)
-                    ),
-                    ValueSome [|
-                        Shape.StrokeWidget.WithValue(stroke.Compile())
-                    |],
+                    StackList.two(Polyline.PointsList.WithValue(Array.ofSeq points), Shape.StrokeThickness.WithValue(strokeThickness)),
+                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )

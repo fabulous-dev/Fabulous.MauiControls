@@ -20,12 +20,17 @@ module LineGeometry =
 [<AutoOpen>]
 module LineGeometryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a LineGeometry widget with a start point and an end point</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
         static member inline LineGeometry<'msg>(startPoint: Point, endPoint: Point) =
-            WidgetBuilder<'msg, IFabLineGeometry>(LineGeometry.WidgetKey, LineGeometry.StartPoint.WithValue(startPoint), LineGeometry.EndPoint.WithValue(endPoint))
-            
+            WidgetBuilder<'msg, IFabLineGeometry>(
+                LineGeometry.WidgetKey,
+                LineGeometry.StartPoint.WithValue(startPoint),
+                LineGeometry.EndPoint.WithValue(endPoint)
+            )
+
 [<Extension>]
 type LineGeometryModifiers =
     /// <summary>Link a ViewRef to access the direct LineGeometry control instance</summary>

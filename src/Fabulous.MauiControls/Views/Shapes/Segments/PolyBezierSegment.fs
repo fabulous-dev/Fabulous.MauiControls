@@ -34,6 +34,7 @@ module PolyBezierSegment =
 [<AutoOpen>]
 module PolyBezierSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PolyBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
         static member inline PolyBezierSegment<'msg>(points: string) =
@@ -43,7 +44,7 @@ module PolyBezierSegmentBuilders =
         /// <param name="points">The points list</param>
         static member inline PolyBezierSegment<'msg>(points: seq<Point>) =
             WidgetBuilder<'msg, IFabPolyBezierSegment>(PolyBezierSegment.WidgetKey, PolyBezierSegment.PointsList.WithValue(Array.ofSeq points))
-            
+
 [<Extension>]
 type PolyBezierSegmentModifiers =
     /// <summary>Link a ViewRef to access the direct PolyBezierSegment control instance</summary>

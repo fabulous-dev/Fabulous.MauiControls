@@ -34,6 +34,7 @@ module PolyQuadraticBezierSegment =
 [<AutoOpen>]
 module PolyQuadraticBezierSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PolyQuadraticBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
         static member inline PolyQuadraticBezierSegment<'msg>(points: string) =

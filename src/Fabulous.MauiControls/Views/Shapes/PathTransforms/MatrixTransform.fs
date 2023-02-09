@@ -28,6 +28,7 @@ module MatrixTransform =
 [<AutoOpen>]
 module MatrixTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a MatrixTransform widget</summary>
         /// <param name="m11">The M11 component of the matrix transform</param>
         /// <param name="m12">The M12 component of the matrix transform</param>

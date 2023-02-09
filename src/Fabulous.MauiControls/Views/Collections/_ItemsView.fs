@@ -13,7 +13,7 @@ module ItemsView =
 
     let HorizontalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.HorizontalScrollBarVisibilityProperty
-    
+
     let ItemsSource =
         Attributes.defineSimpleScalar<WidgetItems>
             "ItemsView_ItemsSource"
@@ -54,11 +54,7 @@ type ItemsViewModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The empty view widget</param>
     [<Extension>]
-    static member inline emptyView
-        (
-            this: WidgetBuilder<'msg, #IFabItemsView>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline emptyView(this: WidgetBuilder<'msg, #IFabItemsView>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(ItemsView.EmptyView.WithValue(content.Compile()))
 
     /// <summary>Set the visibility of the horizontal scroll bar</summary>
@@ -88,7 +84,7 @@ type ItemsViewModifiers =
     [<Extension>]
     static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ScrollToRequestEventArgs -> 'msg) =
         this.AddScalar(ItemsView.ScrollToRequested.WithValue(fun args -> fn args |> box))
-        
+
     /// <summary>Set the threshold of items not yet visible in the list at which the RemainingItemsThresholdReached event will be fired</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The threshold of items not yet visible in the list</param>

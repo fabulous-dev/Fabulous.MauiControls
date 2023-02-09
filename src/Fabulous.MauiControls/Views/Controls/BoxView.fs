@@ -20,11 +20,12 @@ module BoxView =
 [<AutoOpen>]
 module BoxViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a BoxView widget with a color</summary>
         /// <param name="color">The color value</param>
         static member inline BoxView<'msg>(color: Color) =
             WidgetBuilder<'msg, IFabBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(color))
-            
+
         /// <summary>Create a BoxView widget with a color</summary>
         /// <param name="color">The color value</param>
         static member inline BoxView<'msg>(color: FabColor) =

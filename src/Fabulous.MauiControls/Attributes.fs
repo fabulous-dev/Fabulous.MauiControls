@@ -105,7 +105,7 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v.ToMauiColor()))
-        
+
     /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
     /// Note that the input type is FabColor because it is just 4 bytes
     /// But it converts back to Microsoft.Maui.Brush when a value is applied

@@ -28,7 +28,7 @@ module WebView =
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
-        
+
 module WebViewPlatform =
     let DisplayZoomControls =
         Attributes.defineBool "WebView_DisplayZoomControls" (fun _ newValueOpt node ->
@@ -55,6 +55,7 @@ module WebViewPlatform =
 [<AutoOpen>]
 module WebViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a WebView with a source</summary>
         /// <param name="source">The web source</param>
         static member inline WebView<'msg>(source: WebViewSource) =
@@ -75,7 +76,7 @@ module WebViewBuilders =
         /// <param name="uri">The Uri source</param>
         static member inline WebView<'msg>(uri: Uri) =
             View.WebView<'msg>(WebViewSource.op_Implicit uri)
-            
+
         /// <summary>Create a WebView with a Url source</summary>
         /// <param name="url">The Url source</param>
         static member inline WebView<'msg>(url: string) =

@@ -13,11 +13,9 @@ module TextCell =
 
     let Detail = Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
-    let DetailColor =
-        Attributes.defineBindableWithEquality TextCell.DetailColorProperty
-    
-    let DetailFabColor =
-        Attributes.defineBindableColor TextCell.DetailColorProperty
+    let DetailColor = Attributes.defineBindableWithEquality TextCell.DetailColorProperty
+
+    let DetailFabColor = Attributes.defineBindableColor TextCell.DetailColorProperty
 
     let Text = Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
@@ -28,6 +26,7 @@ module TextCell =
 [<AutoOpen>]
 module TextCellBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TextCell widget with a text</summary>
         /// <param name="text">The text value</param>
         static member inline TextCell<'msg>(text: string) =
@@ -41,7 +40,7 @@ type TextCellModifiers =
     [<Extension>]
     static member inline detailColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) =
         this.AddScalar(TextCell.DetailColor.WithValue(value))
-        
+
     /// <summary>Set the color of the detail text</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the detail text</param>
@@ -55,14 +54,14 @@ type TextCellModifiers =
     [<Extension>]
     static member inline detailText(this: WidgetBuilder<'msg, #IFabTextCell>, text: string) =
         this.AddScalar(TextCell.Detail.WithValue(text))
-        
+
     /// <summary>Set the text color of the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The text color value</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) =
         this.AddScalar(TextCell.TextColor.WithValue(value))
-        
+
     /// <summary>Set the text color of the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The text color value</param>

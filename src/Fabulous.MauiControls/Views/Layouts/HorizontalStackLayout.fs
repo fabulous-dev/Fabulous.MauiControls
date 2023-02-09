@@ -13,14 +13,19 @@ module HorizontalStackLayout =
 [<AutoOpen>]
 module HorizontalStackLayoutBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Creates a HStack widget</summary>
         static member inline HStack<'msg>() =
             CollectionBuilder<'msg, IFabHorizontalStackLayout, IFabView>(HorizontalStackLayout.WidgetKey, LayoutOfView.Children)
-            
+
         /// <summary>Creates a HStack widget with spacing between children</summary>
         /// <param name="spacing">The spacing between children</param>
         static member inline HStack<'msg>(spacing: float) =
-            CollectionBuilder<'msg, IFabHorizontalStackLayout, IFabView>(HorizontalStackLayout.WidgetKey, LayoutOfView.Children, StackBase.Spacing.WithValue(spacing))
+            CollectionBuilder<'msg, IFabHorizontalStackLayout, IFabView>(
+                HorizontalStackLayout.WidgetKey,
+                LayoutOfView.Children,
+                StackBase.Spacing.WithValue(spacing)
+            )
 
 [<Extension>]
 type HorizontalStackLayoutModifiers =

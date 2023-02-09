@@ -81,13 +81,11 @@ module GridAttached =
 [<AutoOpen>]
 module GridBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Grid widget with only one cell</summary>
         static member inline Grid<'msg>() =
-            CollectionBuilder<'msg, IFabGrid, IFabView>(
-                Grid.WidgetKey,
-                LayoutOfView.Children
-            )
-        
+            CollectionBuilder<'msg, IFabGrid, IFabView>(Grid.WidgetKey, LayoutOfView.Children)
+
         /// <summary>Create a Grid widget with the given column and row definitions</summary>
         /// <param name="coldefs">The column definitions</param>
         /// <param name="rowdefs">The row definitions</param>
@@ -130,7 +128,7 @@ type GridAttachedModifiers =
     [<Extension>]
     static member inline gridColumn(this: WidgetBuilder<'msg, #IFabView>, value: int) =
         this.AddScalar(GridAttached.Column.WithValue(value))
-    
+
     /// <summary>Set how many columns this widget will span</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The number of columns to span</param>

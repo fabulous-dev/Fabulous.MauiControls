@@ -23,6 +23,7 @@ module BezierSegment =
 [<AutoOpen>]
 module BezierSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a BezierSegment with 3 points</summary>
         /// <param name="point1">The first point</param>
         /// <param name="point2">The second point</param>

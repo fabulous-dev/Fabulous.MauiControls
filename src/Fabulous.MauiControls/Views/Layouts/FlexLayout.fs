@@ -30,7 +30,7 @@ module FlexLayout =
         Attributes.defineBindableEnum<FlexPosition> FlexLayout.PositionProperty
 
     let Wrap = Attributes.defineBindableEnum<FlexWrap> FlexLayout.WrapProperty
-    
+
 module FlexLayoutAttached =
     let AlignSelf =
         Attributes.defineBindableEnum<FlexAlignSelf> FlexLayout.AlignSelfProperty
@@ -43,14 +43,15 @@ module FlexLayoutAttached =
     let Order = Attributes.defineBindableInt FlexLayout.OrderProperty
 
     let Shrink = Attributes.defineBindableFloat FlexLayout.ShrinkProperty
-    
+
 [<AutoOpen>]
 module FlexLayoutBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a FlexLayout</summary>
         static member inline FlexLayout<'msg>() =
             CollectionBuilder<'msg, IFabFlexLayout, IFabView>(FlexLayout.WidgetKey, LayoutOfView.Children)
-            
+
         /// <summary>Create a FlexLayout widget with a wrap value</summary>
         /// <param name="wrap">The wrap value</param>
         static member inline FlexLayout<'msg>(wrap: FlexWrap) =

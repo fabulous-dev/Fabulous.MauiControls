@@ -36,6 +36,7 @@ module ContentPage =
 [<AutoOpen>]
 module ContentPageBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ContentPage with a content widget</summary>
         /// <param name="content">The content widget</param>
         static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =

@@ -16,12 +16,12 @@ module AbsoluteLayoutAttached =
     let LayoutBounds =
         Attributes.defineBindableWithEquality AbsoluteLayout.LayoutBoundsProperty
 
-    let LayoutFlags =
-        Attributes.defineBindableEnum AbsoluteLayout.LayoutFlagsProperty
+    let LayoutFlags = Attributes.defineBindableEnum AbsoluteLayout.LayoutFlagsProperty
 
 [<AutoOpen>]
 module AbsoluteLayoutBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an AbsoluteLayout widget</summary>
         static member inline AbsoluteLayout<'msg>() =
             CollectionBuilder<'msg, IFabAbsoluteLayout, IFabView>(AbsoluteLayout.WidgetKey, LayoutOfView.Children)

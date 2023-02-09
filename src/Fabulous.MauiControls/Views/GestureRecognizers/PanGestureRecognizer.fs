@@ -19,6 +19,7 @@ module PanGestureRecognizer =
 [<AutoOpen>]
 module PanGestureRecognizerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PanGestureRecognizer that listens for Pan event</summary>
         /// <param name="onPanUpdated">Message to dispatch</param>
         static member inline PanGestureRecognizer<'msg>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
@@ -35,7 +36,7 @@ type PanGestureRecognizerModifiers =
     [<Extension>]
     static member inline touchPoints(this: WidgetBuilder<'msg, #IFabPanGestureRecognizer>, value: int) =
         this.AddScalar(PanGestureRecognizer.TouchPoints.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct PanGestureRecognizer control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

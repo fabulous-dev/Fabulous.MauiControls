@@ -19,7 +19,7 @@ module ScrollView =
     let Content =
         Attributes.definePropertyWidget "ScrollView_Content" (fun target -> (target :?> ScrollView).Content :> obj) (fun target value ->
             (target :?> ScrollView).Content <- value)
-        
+
     let HorizontalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ScrollView.HorizontalScrollBarVisibilityProperty
 
@@ -28,7 +28,7 @@ module ScrollView =
 
     let Scrolled =
         Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
-        
+
     let ScrollPosition =
         Attributes.defineSimpleScalarWithEquality<ScrollToData> "ScrollView_ScrollPosition" (fun _ newValueOpt node ->
             let view = node.Target :?> ScrollView
@@ -52,6 +52,7 @@ module ScrollViewAnimations =
 [<AutoOpen>]
 module ScrollViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ScrollView widget with a content</summary>
         /// <param name="content">The content of the ScrollView</param>
         static member inline ScrollView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
@@ -65,14 +66,14 @@ type ScrollViewModifiers =
     [<Extension>]
     static member inline horizontalScrollBarVisibility(this: WidgetBuilder<'msg, #IFabScrollView>, value: ScrollBarVisibility) =
         this.AddScalar(ScrollView.HorizontalScrollBarVisibility.WithValue(value))
-        
+
     /// <summary>Set the supported scrolling directions of the ScrollView</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The scrolling direction</param>
     [<Extension>]
     static member inline orientation(this: WidgetBuilder<'msg, #IFabScrollView>, value: ScrollOrientation) =
         this.AddScalar(ScrollView.Orientation.WithValue(value))
-        
+
     /// <summary>Set the scroll position</summary>
     /// <param name="this">Current widget</param>
     /// <param name="x">The X position of scroll</param>
@@ -101,7 +102,7 @@ type ScrollViewModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabScrollView>, value: ViewRef<ScrollView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-        
+
 [<Extension>]
 type ScrollViewAnimationModifiers =
     /// <summary>Animate the scroll position</summary>

@@ -29,6 +29,7 @@ module ScaleTransform =
 [<AutoOpen>]
 module ScaleTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a ScaleTransform widget with a scale and a center point</summary>
         /// <param name="scaleX">The X component of the scale</param>
         /// <param name="scaleY">The Y component of the scale</param>
@@ -41,7 +42,7 @@ module ScaleTransformBuilders =
                 ScaleTransform.CenterX.WithValue(centerX),
                 ScaleTransform.CenterY.WithValue(centerY)
             )
-            
+
 [<Extension>]
 type ScaleTransformModifiers =
     /// <summary>Link a ViewRef to access the direct ScaleTransform control instance</summary>

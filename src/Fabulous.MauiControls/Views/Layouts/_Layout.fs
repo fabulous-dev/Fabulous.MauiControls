@@ -14,7 +14,7 @@ module Layout =
 
     let IsClippedToBounds =
         Attributes.defineBindableBool Layout.IsClippedToBoundsProperty
-        
+
     let Padding =
         Attributes.defineBindableWithEquality<Thickness> Layout.PaddingProperty
 
@@ -33,7 +33,7 @@ type LayoutModifiers =
     [<Extension>]
     static member inline isClippedToBounds(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
         this.AddScalar(Layout.IsClippedToBounds.WithValue(value))
-    
+
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The padding value</param>
@@ -47,8 +47,7 @@ type LayoutExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
+    static member inline padding(this: WidgetBuilder<'msg, #IFabLayout>, uniformSize: float) = this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>

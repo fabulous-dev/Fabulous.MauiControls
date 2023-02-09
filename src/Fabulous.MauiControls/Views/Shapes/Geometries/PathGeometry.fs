@@ -29,13 +29,11 @@ module PathGeometry =
 [<AutoOpen>]
 module PathGeometryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PathGeometry widget</summary>
         static member inline PathGeometry<'msg>() =
-            CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(
-                PathGeometry.WidgetKey,
-                PathGeometry.FiguresWidgets
-            )
-            
+            CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(PathGeometry.WidgetKey, PathGeometry.FiguresWidgets)
+
         /// <summary>Create a PathGeometry widget with the fill rule</summary>
         /// <param name="fillRule">The fill rule</param>
         static member inline PathGeometry<'msg>(fillRule: FillRule) =
@@ -48,10 +46,7 @@ module PathGeometryBuilders =
         /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
         /// <param name="figures">The figure data string</param>
         static member inline PathGeometry<'msg>(figures: string) =
-            WidgetBuilder<'msg, IFabPathGeometry>(
-                PathGeometry.WidgetKey,
-                PathGeometry.FiguresString.WithValue(figures)
-            )
+            WidgetBuilder<'msg, IFabPathGeometry>(PathGeometry.WidgetKey, PathGeometry.FiguresString.WithValue(figures))
 
         /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
         /// <param name="figures">The figure data string</param>
@@ -62,7 +57,7 @@ module PathGeometryBuilders =
                 PathGeometry.FiguresString.WithValue(figures),
                 PathGeometry.FillRule.WithValue(fillRule)
             )
-            
+
 [<Extension>]
 type PathGeometryModifiers =
     /// <summary>Link a ViewRef to access the direct PathGeometry control instance</summary>

@@ -9,7 +9,7 @@ type IFabSwipeView =
 
 module SwipeView =
     let WidgetKey = Widgets.register<SwipeView>()
-    
+
     let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
     let CloseRequested =
@@ -38,6 +38,7 @@ module SwipeView =
 [<AutoOpen>]
 module SwipeViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SwipeView widget with a content</summary>
         /// <param name="content">The content widget</param>
         static member inline SwipeView(content: WidgetBuilder<'msg, #IFabView>) =
@@ -49,33 +50,21 @@ type SwipeViewModifiers() =
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
-    static member inline bottomItems
-        (
-            this: WidgetBuilder<'msg, #IFabSwipeView>,
-            content: WidgetBuilder<'msg, #IFabSwipeItems>
-        ) =
+    static member inline bottomItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
         this.AddWidget(SwipeView.BottomSwipeItems.WithValue(content.Compile()))
-        
+
     /// <summary>Set the left swipe items</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
-    static member inline leftItems
-        (
-            this: WidgetBuilder<'msg, #IFabSwipeView>,
-            content: WidgetBuilder<'msg, #IFabSwipeItems>
-        ) =
+    static member inline leftItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
         this.AddWidget(SwipeView.LeftSwipeItems.WithValue(content.Compile()))
 
     /// <summary>Set the right swipe items</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
-    static member inline rightItems
-        (
-            this: WidgetBuilder<'msg, #IFabSwipeView>,
-            content: WidgetBuilder<'msg, #IFabSwipeItems>
-        ) =
+    static member inline rightItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
         this.AddWidget(SwipeView.RightSwipeItems.WithValue(content.Compile()))
 
     /// <summary>Set the swipe threshold</summary>
@@ -84,14 +73,14 @@ type SwipeViewModifiers() =
     [<Extension>]
     static member inline threshold(this: WidgetBuilder<'msg, #IFabSwipeView>, value: int) =
         this.AddScalar(SwipeView.SwipeThreshold.WithValue(value))
-  
+
     /// <summary>Listen to the SwipeStarted event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSwipeStarted(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeStartedEventArgs -> 'msg) =
         this.AddScalar(SwipeView.SwipeStarted.WithValue(fun args -> fn args |> box))
-        
+
     /// <summary>Listen to the SwipeChanging event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
@@ -124,13 +113,9 @@ type SwipeViewModifiers() =
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
-    static member inline topItems
-        (
-            this: WidgetBuilder<'msg, #IFabSwipeView>,
-            content: WidgetBuilder<'msg, #IFabSwipeItems>
-        ) =
+    static member inline topItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
         this.AddWidget(SwipeView.TopSwipeItems.WithValue(content.Compile()))
-        
+
     /// <summary>Link a ViewRef to access the direct SwipeView control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

@@ -15,18 +15,18 @@ type IFabPage =
 module Page =
     let Appearing =
         Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
-        
+
     let BackgroundImageSource =
         Attributes.defineBindableWithEquality Page.BackgroundImageSourceProperty
 
     let Disappearing =
         Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
-        
+
     let IconImageSource =
         Attributes.defineBindableWithEquality Page.IconImageSourceProperty
 
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
-        
+
     let Padding = Attributes.defineBindableWithEquality Page.PaddingProperty
 
     let Title = Attributes.defineBindableWithEquality Page.TitleProperty
@@ -60,7 +60,7 @@ type PageModifiers =
     [<Extension>]
     static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: ImageSource) =
         this.AddScalar(Page.IconImageSource.WithValue(value))
-            
+
     /// <summary>Set the page as busy. This will cause the global activity indicator to show a busy state</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The busy value</param>
@@ -101,7 +101,7 @@ type PageModifiers =
     [<Extension>]
     static member inline toolbarItems<'msg, 'marker when 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabToolbarItem> Page.ToolbarItems this
-        
+
 [<Extension>]
 type PageExtraModifiers =
     /// <summary>Set the image source of the background</summary>
@@ -129,15 +129,13 @@ type PageExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: string) =
-        this.icon(ImageSource.FromFile(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: string) = this.icon(ImageSource.FromFile(value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) =
-        this.icon(ImageSource.FromUri(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) = this.icon(ImageSource.FromUri(value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
@@ -150,8 +148,7 @@ type PageExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, uniformSize: float) = this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>

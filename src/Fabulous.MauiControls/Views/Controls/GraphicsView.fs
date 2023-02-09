@@ -39,6 +39,7 @@ module GraphicsView =
 module GraphicsViewBuilders =
     /// <summary>GraphicsView defines the Drawable property, of type IDrawable, which specifies the content that will be drawn.</summary>
     type Fabulous.Maui.View with
+
         /// <summary>Create a GraphicsView widget with a drawable content</summary>
         /// <param name="drawable">The drawable content</param>
         static member inline GraphicsView<'msg>(drawable: IDrawable) =
@@ -80,7 +81,7 @@ type GraphicsViewModifiers =
     [<Extension>]
     static member inline onMoveHoverInteraction(this: WidgetBuilder<'msg, #IGraphicsView>, fn: TouchEventArgs -> 'msg) =
         this.AddScalar(GraphicsView.MoveHoverInteraction.WithValue(fun args -> fn args |> box))
-        
+
     /// <summary>Listen for the StartHoverInteraction event, with TouchEventArgs, which is raised when a pointer enters the hit test area of the GraphicsView</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>

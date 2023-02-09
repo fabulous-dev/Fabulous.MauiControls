@@ -16,16 +16,17 @@ module RefreshView =
 
     let RefreshColor =
         Attributes.defineBindableWithEquality RefreshView.RefreshColorProperty
-        
+
     let RefreshFabColor =
         Attributes.defineBindableColor RefreshView.RefreshColorProperty
-    
+
     let Refreshing =
         Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a RefreshView widget with content</summary>
         /// <param name="isRefreshing">The refresh state</param>
         /// <param name="onRefreshing">Message to dispatch when refresh state changes</param>
@@ -48,7 +49,7 @@ type RefreshViewModifiers =
     [<Extension>]
     static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: Color) =
         this.AddScalar(RefreshView.RefreshColor.WithValue(value))
-        
+
     /// <summary>Set the color of the refresh indicator</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the refresh indicator</param>

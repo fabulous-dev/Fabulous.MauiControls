@@ -12,8 +12,7 @@ type IFabMenuItem =
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
 
-    let Accelerator =
-        Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
+    let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
 
     let Clicked =
         Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
@@ -28,6 +27,7 @@ module MenuItem =
 [<AutoOpen>]
 module MenuItemBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
@@ -70,15 +70,13 @@ type MenuItemExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: string) =
-        this.icon(ImageSource.FromFile(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: string) = this.icon(ImageSource.FromFile(value))
 
     /// <summary>Set the source of the icon image</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Uri) =
-        this.icon(ImageSource.FromUri(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Uri) = this.icon(ImageSource.FromUri(value))
 
     /// <summary>Set the source of the icon image</summary>
     /// <param name="this">Current widget</param>

@@ -21,6 +21,7 @@ module EllipseGeometry =
 [<AutoOpen>]
 module EllipseGeometryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a EllipseGeometry widget with a center point and a radius</summary>
         /// <param name="center">The center point</param>
         /// <param name="radiusX">The X component of the radius</param>

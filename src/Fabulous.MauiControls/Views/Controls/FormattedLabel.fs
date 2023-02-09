@@ -23,6 +23,7 @@ module FormattedLabel =
 [<AutoOpen>]
 module FormattedLabelBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a FormattedLabel widget</summary>
         static member inline FormattedLabel<'msg>() =
             CollectionBuilder<'msg, IFabFormattedLabel, IFabSpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)

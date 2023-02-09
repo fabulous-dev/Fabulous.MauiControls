@@ -72,13 +72,13 @@ module Picker =
             (target :?> FabPicker).CustomSelectedIndexChanged)
 
     let TextColor = Attributes.defineBindableWithEquality Picker.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor Picker.TextColorProperty
 
     let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
     let TitleColor = Attributes.defineBindableWithEquality Picker.TitleColorProperty
-    
+
     let TitleFabColor = Attributes.defineBindableColor Picker.TitleColorProperty
 
     let VerticalTextAlignment =
@@ -99,6 +99,7 @@ module PickerPlatform =
 [<AutoOpen>]
 module PickerBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Picker widget with a list of items, the selected index and listen to the selected index changes</summary>
         /// <param name="items">The items list</param>
         /// <param name="selectedIndex">The selected index</param>
@@ -118,7 +119,7 @@ type PickerModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabPicker>, value: float) =
         this.AddScalar(Picker.CharacterSpacing.WithValue(value))
-        
+
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>
     /// <param name="size">The font size</param>

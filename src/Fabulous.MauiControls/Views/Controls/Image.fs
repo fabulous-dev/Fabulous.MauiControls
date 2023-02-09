@@ -27,11 +27,12 @@ module Image =
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: ImageSource) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(source))
-            
+
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
@@ -42,29 +43,29 @@ module ImageBuilders =
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: string) =
             View.Image<'msg>(ImageSource.FromFile(source))
-            
+
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
         static member inline Image<'msg>(source: string, aspect: Aspect) =
             View.Image<'msg>(ImageSource.FromFile(source), aspect)
-            
+
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: Uri) =
             View.Image<'msg>(ImageSource.FromUri(source))
-            
+
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
         static member inline Image<'msg>(source: Uri, aspect: Aspect) =
             View.Image<'msg>(ImageSource.FromUri(source), aspect)
-            
+
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: Stream) =
             View.Image<'msg>(ImageSource.FromStream(fun () -> source))
-            
+
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>

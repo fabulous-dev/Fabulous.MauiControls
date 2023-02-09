@@ -12,7 +12,7 @@ module CheckBox =
     let WidgetKey = Widgets.register<CheckBox>()
 
     let Color = Attributes.defineBindableWithEquality CheckBox.ColorProperty
-    
+
     let FabColor = Attributes.defineBindableWithEquality CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
@@ -21,6 +21,7 @@ module CheckBox =
 [<AutoOpen>]
 module CheckBoxBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a CheckBox widget with a state and listen for state changes</summary>
         /// <param name="isChecked">The state of the checkbox</param>
         /// <param name="onCheckedChanged">Message to dispatch</param>
@@ -38,7 +39,7 @@ type CheckBoxModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #IFabCheckBox>, value: Color) =
         this.AddScalar(CheckBox.Color.WithValue(value))
-        
+
     /// <summary>Set the color of the check box</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the check box</param>

@@ -22,6 +22,7 @@ module Shadow =
 [<AutoOpen>]
 module ShadowBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Shadow widget with a brush and an offset</summary>
         /// <param name="brush">Brush, of type Brush, represents the brush used to colorize the shadow</param>
         /// <param name="offset">OffSet, of type Point, specifies the offset for the shadow, which represents the position of the light source that creates the shadow</param>

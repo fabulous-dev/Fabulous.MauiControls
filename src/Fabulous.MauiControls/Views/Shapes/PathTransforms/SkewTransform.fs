@@ -29,6 +29,7 @@ module SkewTransform =
 [<AutoOpen>]
 module SkewTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SkewTransform widget with a scale and a center point</summary>
         /// <param name="angleX">The X component of the angle</param>
         /// <param name="angleY">The Y component of the angle</param>

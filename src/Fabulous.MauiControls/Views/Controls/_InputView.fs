@@ -26,12 +26,14 @@ module InputView =
     let Placeholder =
         Attributes.defineBindableWithEquality<string> InputView.PlaceholderProperty
 
-    let PlaceholderColor = Attributes.defineBindableWithEquality InputView.PlaceholderColorProperty
-    
-    let PlaceholderFabColor = Attributes.defineBindableColor InputView.PlaceholderColorProperty
+    let PlaceholderColor =
+        Attributes.defineBindableWithEquality InputView.PlaceholderColorProperty
+
+    let PlaceholderFabColor =
+        Attributes.defineBindableColor InputView.PlaceholderColorProperty
 
     let TextColor = Attributes.defineBindableWithEquality InputView.TextColorProperty
-    
+
     let TextFabColor = Attributes.defineBindableColor InputView.TextColorProperty
 
     let TextTransform =

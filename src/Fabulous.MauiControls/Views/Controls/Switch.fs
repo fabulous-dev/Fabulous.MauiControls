@@ -12,11 +12,11 @@ module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
     let ColorOn = Attributes.defineBindableWithEquality Switch.OnColorProperty
-    
+
     let FabColorOn = Attributes.defineBindableColor Switch.OnColorProperty
 
     let ThumbColor = Attributes.defineBindableWithEquality Switch.ThumbColorProperty
-    
+
     let ThumbFabColor = Attributes.defineBindableColor Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
@@ -25,6 +25,7 @@ module Switch =
 [<AutoOpen>]
 module SwitchBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Switch widget with a toggle state and listen for toggle state changes</summary>
         /// <param name="isToggled">The toggle state</param>
         /// <param name="onToggled">Message to dispatch</param>
@@ -49,14 +50,14 @@ type SwitchModifiers =
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitch>, value: FabColor) =
         this.AddScalar(Switch.FabColorOn.WithValue(value))
-        
+
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>
     [<Extension>]
     static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSwitch>, value: Color) =
         this.AddScalar(Switch.ThumbColor.WithValue(value))
-        
+
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>

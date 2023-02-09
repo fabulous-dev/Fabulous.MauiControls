@@ -57,6 +57,7 @@ module CollectionView =
 [<AutoOpen>]
 module CollectionViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a CollectionView widget with a list of items</summary>
         /// <param name="items">The items list</param>
         static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
@@ -79,22 +80,14 @@ type CollectionViewModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The footer widget</param>
     [<Extension>]
-    static member inline footer
-        (
-            this: WidgetBuilder<'msg, #IFabCollectionView>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline footer(this: WidgetBuilder<'msg, #IFabCollectionView>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(CollectionView.Footer.WithValue(content.Compile()))
 
     /// <summary>Set the header</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The header widget</param>
     [<Extension>]
-    static member inline header
-        (
-            this: WidgetBuilder<'msg, #IFabCollectionView>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline header(this: WidgetBuilder<'msg, #IFabCollectionView>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(CollectionView.Header.WithValue(content.Compile()))
 
     /// <summary>Set the item sizing strategy</summary>
@@ -110,7 +103,7 @@ type CollectionViewModifiers =
     [<Extension>]
     static member inline onSelectionChanged(this: WidgetBuilder<'msg, #IFabCollectionView>, fn: SelectionChangedEventArgs -> 'msg) =
         this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> fn args |> box))
- 
+
     /// <summary>Set the selection mode</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The selection mode</param>

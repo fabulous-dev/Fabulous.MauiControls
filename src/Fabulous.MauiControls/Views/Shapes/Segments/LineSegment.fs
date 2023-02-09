@@ -16,6 +16,7 @@ module LineSegment =
 [<AutoOpen>]
 module LineSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a LineSegment widget with a start and end point</summary>
         /// <param name="point">The start and end point</param>
         static member inline LineSegment<'msg>(point: Point) =

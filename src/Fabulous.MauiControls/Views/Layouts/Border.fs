@@ -76,6 +76,7 @@ module Border =
 [<AutoOpen>]
 module BorderBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Border widget, a stroke color and a content widget</summary>
         /// <param name="stroke">The color of the stroke</param>
         /// <param name="content">The content widget</param>
@@ -83,10 +84,7 @@ module BorderBuilders =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        Border.Stroke.WithValue(stroke),
-                        Border.StrokeShape.WithValue(Rectangle())
-                    ),
+                    StackList.two(Border.Stroke.WithValue(stroke), Border.StrokeShape.WithValue(Rectangle())),
                     ValueSome [| Border.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )
@@ -95,11 +93,7 @@ module BorderBuilders =
         /// <summary>Create a Border widget with a Rectangle shape, a stroke color and a content widget</summary>
         /// <param name="stroke">The color of the stroke</param>
         /// <param name="content">The content widget</param>
-        static member inline Border
-            (
-                stroke: WidgetBuilder<'msg, #IFabBrush>,
-                content: WidgetBuilder<'msg, #IFabView>
-            ) =
+        static member inline Border(stroke: WidgetBuilder<'msg, #IFabBrush>, content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
                 AttributesBundle(
@@ -140,14 +134,14 @@ type BorderModifiers =
     [<Extension>]
     static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IFabBorder>, value: float) =
         this.AddScalar(Border.StrokeDashOffset.WithValue(value))
-        
+
     /// <summary>Set the stroke line cap of the border</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The line cap value</param>
     [<Extension>]
     static member inline strokeLineCap(this: WidgetBuilder<'msg, #IFabBorder>, value: PenLineCap) =
         this.AddScalar(Border.StrokeLineCap.WithValue(value))
-        
+
     /// <summary>Set the stroke line join of the border</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The line join value</param>
@@ -173,11 +167,7 @@ type BorderModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The shape widget</param>
     [<Extension>]
-    static member inline strokeShape
-        (
-            this: WidgetBuilder<'msg, #IFabBorder>,
-            content: WidgetBuilder<'msg, #IFabShape>
-        ) =
+    static member inline strokeShape(this: WidgetBuilder<'msg, #IFabBorder>, content: WidgetBuilder<'msg, #IFabShape>) =
         this.AddWidget(Border.StrokeShapeWidget.WithValue(content.Compile()))
 
     /// <summary>Set the stroke thickness of the border</summary>
@@ -200,8 +190,7 @@ type BorderExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding inside the border</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
+    static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, uniformSize: float) = this.padding(Thickness(uniformSize))
 
     /// <summary>Set the padding inside the border</summary>
     /// <param name="this">Current widget</param>

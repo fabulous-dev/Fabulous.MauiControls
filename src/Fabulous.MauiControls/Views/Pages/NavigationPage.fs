@@ -268,7 +268,7 @@ module NavigationPage =
 
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty
-        
+
     let BarBackgroundFabColor =
         Attributes.defineBindableSolidBrushColor NavigationPage.BarBackgroundProperty
 
@@ -300,14 +300,13 @@ module NavigationPageAttached =
     let IconColor =
         Attributes.defineBindableWithEquality NavigationPage.IconColorProperty
 
-    let IconFabColor =
-        Attributes.defineBindableColor NavigationPage.IconColorProperty
+    let IconFabColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
 
     let TitleIconImageSource =
         Attributes.defineBindableWithEquality NavigationPage.TitleIconImageSourceProperty
 
     let TitleView = Attributes.defineBindableWidget NavigationPage.TitleViewProperty
-    
+
 module NavigationPagePlatform =
     let HideNavigationBarSeparator =
         Attributes.defineBool "NavigationPage_HideNavigationBarSeparator" (fun _ newValueOpt node ->
@@ -345,6 +344,7 @@ module NavigationPagePlatform =
 [<AutoOpen>]
 module NavigationPageBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a NavigationPage widget</summary>
         static member inline NavigationPage<'msg>() =
             CollectionBuilder<'msg, IFabNavigationPage, IFabPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
@@ -357,14 +357,14 @@ type NavigationPageModifiers =
     [<Extension>]
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: Brush) =
         this.AddScalar(NavigationPage.BarBackground.WithValue(value))
-        
+
     /// <summary>Set the background color of the bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The background color value</param>
     [<Extension>]
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: FabColor) =
         this.AddScalar(NavigationPage.BarBackgroundFabColor.WithValue(value))
-        
+
     /// <summary>Set the background color of the bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The background color value</param>
@@ -423,7 +423,7 @@ type NavigationPageAttachedModifiers =
     [<Extension>]
     static member inline hasBackButton(this: WidgetBuilder<'msg, #IFabPage>, value: bool) =
         this.AddScalar(NavigationPageAttached.HasBackButton.WithValue(value))
-    
+
     /// <summary>Set whether the page has a navigation bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name= "value">true if the page has navigation bar ; otherwise, false</param>
@@ -456,13 +456,9 @@ type NavigationPageAttachedModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The title view widget</param>
     [<Extension>]
-    static member inline titleView
-        (
-            this: WidgetBuilder<'msg, #IFabPage>,
-            content: WidgetBuilder<'msg, #IFabView>
-        ) =
+    static member inline titleView(this: WidgetBuilder<'msg, #IFabPage>, content: WidgetBuilder<'msg, #IFabView>) =
         this.AddWidget(NavigationPageAttached.TitleView.WithValue(content.Compile()))
-        
+
 [<Extension>]
 type NavigationPageExtraAttachedModifiers =
     /// <summary>Set the image source of the title icon</summary>
@@ -501,7 +497,7 @@ type NavigationPagePlatformModifiers =
     [<Extension>]
     static member inline isNavigationBarTranslucent(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: bool) =
         this.AddScalar(NavigationPagePlatform.IsNavigationBarTranslucent.WithValue(value))
-        
+
     /// <summary>iOS platform specific. Set whether to use large title display</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">true to enable large title display. Otherwise, false</param>

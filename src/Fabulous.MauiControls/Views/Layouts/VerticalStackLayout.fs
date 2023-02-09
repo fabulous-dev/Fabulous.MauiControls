@@ -13,14 +13,19 @@ module VerticalStackLayout =
 [<AutoOpen>]
 module VerticalStackLayoutBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Creates a VStack widget</summary>
         static member inline VStack<'msg>() =
             CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(VerticalStackLayout.WidgetKey, LayoutOfView.Children)
-            
+
         /// <summary>Creates a VStack widget with spacing between children</summary>
         /// <param name="spacing">The spacing between children</param>
         static member inline VStack<'msg>(spacing: float) =
-            CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(VerticalStackLayout.WidgetKey, LayoutOfView.Children, StackBase.Spacing.WithValue(spacing))
+            CollectionBuilder<'msg, IFabVerticalStackLayout, IFabView>(
+                VerticalStackLayout.WidgetKey,
+                LayoutOfView.Children,
+                StackBase.Spacing.WithValue(spacing)
+            )
 
 [<Extension>]
 type VerticalStackLayoutModifiers =

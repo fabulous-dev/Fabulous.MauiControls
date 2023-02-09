@@ -19,9 +19,8 @@ module ImageButton =
 
     let BorderColor =
         Attributes.defineBindableWithEquality ImageButton.BorderColorProperty
-        
-    let BorderFabColor =
-        Attributes.defineBindableColor ImageButton.BorderColorProperty
+
+    let BorderFabColor = Attributes.defineBindableColor ImageButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 
@@ -50,51 +49,57 @@ module ImageButton =
 [<AutoOpen>]
 module ImageButtonBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabImageButton>(ImageButton.WidgetKey, ImageButton.Clicked.WithValue(onClicked), ImageButton.Source.WithValue(source))
-            
+
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg, aspect: Aspect) =
-            WidgetBuilder<'msg, IFabImageButton>(ImageButton.WidgetKey, ImageButton.Clicked.WithValue(onClicked), ImageButton.Source.WithValue(source), ImageButton.Aspect.WithValue(aspect))
-        
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(onClicked),
+                ImageButton.Source.WithValue(source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
+
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: string, onClicked: 'msg) =
             View.ImageButton(ImageSource.FromFile(source), onClicked)
-            
+
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: string, onClicked: 'msg, aspect: Aspect) =
             View.ImageButton(ImageSource.FromFile(source), onClicked, aspect)
-            
+
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg) =
             View.ImageButton(ImageSource.FromUri(source), onClicked)
-            
+
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg, aspect: Aspect) =
             View.ImageButton(ImageSource.FromUri(source), onClicked, aspect)
-            
+
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg) =
-            View.ImageButton(ImageSource.FromStream(fun() -> source), onClicked)
-            
+            View.ImageButton(ImageSource.FromStream(fun () -> source), onClicked)
+
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
@@ -110,7 +115,7 @@ type ImageButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabImageButton>, value: Color) =
         this.AddScalar(ImageButton.BorderColor.WithValue(value))
-        
+
     /// <summary>Set the color of the image button border</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the image button border</param>
@@ -187,9 +192,8 @@ type ImageButtonExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding inside the button</param>
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabImageButton>, uniformSize: float) =
-        this.padding(Thickness(uniformSize))
-        
+    static member inline padding(this: WidgetBuilder<'msg, #IFabImageButton>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>
     /// <param name="left">The left component of the padding inside the button</param>

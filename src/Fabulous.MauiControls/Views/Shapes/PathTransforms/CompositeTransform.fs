@@ -63,6 +63,7 @@ module CompositeTransform =
 [<AutoOpen>]
 module CompositeTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a CompositeTransform widget with a center, a scale, and a skew</summary>
         /// <param name="centerX">The X component of the center</param>
         /// <param name="centerY">The Y component of the center</param>
@@ -94,7 +95,7 @@ type CompositeTransformModifiers =
     [<Extension>]
     static member inline rotation(this: WidgetBuilder<'msg, #IFabCompositeTransform>, angle: float) =
         this.AddScalar(CompositeTransform.Rotation.WithValue(angle))
-        
+
     /// <summary>Link a ViewRef to access the direct CompositeTransform control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

@@ -101,7 +101,7 @@ module VisualElement =
 
     let Background =
         Attributes.defineBindableWithEquality VisualElement.BackgroundProperty
-        
+
     let BackgroundFabColor =
         Attributes.defineBindableSolidBrushColor VisualElement.BackgroundProperty
 
@@ -156,7 +156,7 @@ module VisualElement =
     let WidthRequest = Attributes.defineBindableFloat VisualElement.WidthRequestProperty
 
     let ZIndex = Attributes.defineBindableInt VisualElement.ZIndexProperty
-    
+
 module VisualElementAnimations =
     let FadeTo =
         Attributes.defineSimpleScalarWithEquality<FadeToData> "VisualElement_FadeTo" (fun _ newValueOpt node ->
@@ -244,7 +244,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Brush) =
         this.AddScalar(VisualElement.Background.WithValue(value))
-        
+
     /// <summary>Set the color which will fill the background of the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color to use</param>
@@ -263,11 +263,7 @@ type VisualElementModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The geometry widget to use</param>
     [<Extension>]
-    static member inline clip
-        (
-            this: WidgetBuilder<'msg, #IFabVisualElement>,
-            content: WidgetBuilder<'msg, #IFabGeometry>
-        ) =
+    static member inline clip(this: WidgetBuilder<'msg, #IFabVisualElement>, content: WidgetBuilder<'msg, #IFabGeometry>) =
         this.AddWidget(VisualElement.Clip.WithValue(content.Compile()))
 
     /// <summary>Set the current focus state of the widget, and listen to focus state changes</summary>
@@ -319,7 +315,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline maximumHeight(this: WidgetBuilder<'msg, #IFabVisualElement>, value: float) =
         this.AddScalar(VisualElement.MaximumHeightRequest.WithValue(value))
-        
+
     /// <summary>Set a value which overrides the maximum width the widget will request during layout</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The maximum width the widget requires</param>
@@ -366,11 +362,7 @@ type VisualElementModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The shadow widget</param>
     [<Extension>]
-    static member inline shadow
-        (
-            this: WidgetBuilder<'msg, #IFabVisualElement>,
-            content: WidgetBuilder<'msg, #IFabShadow>
-        ) =
+    static member inline shadow(this: WidgetBuilder<'msg, #IFabVisualElement>, content: WidgetBuilder<'msg, #IFabShadow>) =
         this.AddWidget(VisualElement.Shadow.WithValue(content.Compile()))
 
     /// <summary>Set the X translation delta of the widget</summary>
@@ -393,7 +385,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline visual(this: WidgetBuilder<'msg, #IFabVisualElement>, value: IVisual) =
         this.AddScalar(VisualElement.Visual.WithValue(value))
-        
+
     /// <summary>Set the desired width override of this widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The width this widget desires to be</param>
@@ -407,7 +399,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline zIndex(this: WidgetBuilder<'msg, #IFabVisualElement>, value: int) =
         this.AddScalar(VisualElement.ZIndex.WithValue(value))
-        
+
 [<Extension>]
 type VisualElementAnimationModifiers =
     /// <summary>Animate the Opacity value from their current values to the new values</summary>
@@ -545,11 +537,10 @@ type VisualElementExtraModifiers =
     /// <param name="value">The color to use</param>
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) = this.background(value.ToMauiColor())
-    
+
     /// <summary> Set the height and width of the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="height">The desired height</param>
     /// <param name="width">The desired width</param>
     [<Extension>]
-    static member inline size(this: WidgetBuilder<'msg, #IFabVisualElement>, height: float, width: float) =
-        this.height(height).width(width)
+    static member inline size(this: WidgetBuilder<'msg, #IFabVisualElement>, height: float, width: float) = this.height(height).width(width)

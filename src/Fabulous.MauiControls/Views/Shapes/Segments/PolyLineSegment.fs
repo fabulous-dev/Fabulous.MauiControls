@@ -34,6 +34,7 @@ module PolyLineSegment =
 [<AutoOpen>]
 module PolyLineSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PolyLineSegment with a list of points</summary>
         /// <param name="points">The points list</param>
         static member inline PolyLineSegment<'msg>(points: string) =

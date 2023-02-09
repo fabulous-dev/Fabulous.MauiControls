@@ -19,16 +19,13 @@ module Rectangle =
 [<AutoOpen>]
 module RectangleBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Rectangle widget with a stroke thickness and a stroke brush</summary>
         /// <param name="strokeThickness">The stroke thickness value</param>
         /// <param name="stroke">The stroke brush value</param>
         static member inline Rectangle<'msg>(strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabRectangle>(
-                Rectangle.WidgetKey,
-                Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(stroke)
-            )
-            
+            WidgetBuilder<'msg, IFabRectangle>(Rectangle.WidgetKey, Shape.StrokeThickness.WithValue(strokeThickness), Shape.Stroke.WithValue(stroke))
+
         /// <summary>Create a Rectangle widget with a stroke thickness and a stroke brush</summary>
         /// <param name="strokeThickness">The stroke thickness value</param>
         /// <param name="stroke">The stroke brush value</param>
@@ -37,9 +34,7 @@ module RectangleBuilders =
                 Rectangle.WidgetKey,
                 AttributesBundle(
                     StackList.one(Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [|
-                        Shape.StrokeWidget.WithValue(stroke.Compile())
-                    |],
+                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )
@@ -52,7 +47,7 @@ type RectangleModifiers =
     [<Extension>]
     static member inline radiusX(this: WidgetBuilder<'msg, #IFabRectangle>, value: float) =
         this.AddScalar(Rectangle.RadiusX.WithValue(value))
-        
+
     /// <summary>Set the Y component of the radius</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The Y component of the radius</param>
@@ -74,5 +69,4 @@ type RectangleExtraModifiers =
     /// <param name="x">The X component of the radius</param>
     /// <param name="y">The Y component of the radius</param>
     [<Extension>]
-    static member inline radiusX(this: WidgetBuilder<'msg, #IFabRectangle>, x: float, y: float) =
-        this.radiusX(x).radiusY(y)
+    static member inline radiusX(this: WidgetBuilder<'msg, #IFabRectangle>, x: float, y: float) = this.radiusX(x).radiusY(y)

@@ -37,6 +37,7 @@ module Path =
 [<AutoOpen>]
 module PathBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Path widget with a data path string</summary>
         /// <param name="data">The data path</param>
         static member inline Path<'msg>(data: string) =
@@ -55,16 +56,12 @@ type PathModifiers =
     [<Extension>]
     static member inline renderTransform(this: WidgetBuilder<'msg, #IFabPath>, value: string) =
         this.AddScalar(Path.RenderTransformString.WithValue(value))
-        
+
     /// <summary>Set the render transform</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The render transform widget</param>
     [<Extension>]
-    static member inline renderTransform
-        (
-            this: WidgetBuilder<'msg, #IFabPath>,
-            content: WidgetBuilder<'msg, #IFabTransform>
-        ) =
+    static member inline renderTransform(this: WidgetBuilder<'msg, #IFabPath>, content: WidgetBuilder<'msg, #IFabTransform>) =
         this.AddWidget(Path.RenderTransformWidget.WithValue(content.Compile()))
 
     /// <summary>Link a ViewRef to access the direct Path control instance</summary>

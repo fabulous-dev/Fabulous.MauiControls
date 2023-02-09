@@ -20,6 +20,7 @@ module QuadraticBezierSegment =
 [<AutoOpen>]
 module QuadraticBezierSegmentBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a QuadraticBezierSegment with a list of points</summary>
         /// <param name="point1">The first point</param>
         /// <param name="point2">The second point</param>

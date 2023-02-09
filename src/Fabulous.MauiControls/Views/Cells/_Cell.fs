@@ -24,7 +24,7 @@ module Cell =
                 | ValueSome v -> v
 
             cell.Height <- value)
-        
+
     let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Tapped =
@@ -52,7 +52,7 @@ type CellModifiers =
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
         this.AddScalar(Cell.Appearing.WithValue(msg))
-        
+
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>

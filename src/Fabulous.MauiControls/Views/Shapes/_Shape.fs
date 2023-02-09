@@ -10,7 +10,7 @@ type IFabShape =
 
 module Shape =
     let Aspect = Attributes.defineBindableWithEquality<Stretch> Shape.AspectProperty
-    
+
     let Fill = Attributes.defineBindableWithEquality<Brush> Shape.FillProperty
 
     let FillWidget = Attributes.defineBindableWidget Shape.FillProperty
@@ -58,7 +58,7 @@ type ShapeModifiers =
     [<Extension>]
     static member inline aspect(this: WidgetBuilder<'msg, #IFabShape>, value: Stretch) =
         this.AddScalar(Shape.Aspect.WithValue(value))
-        
+
     /// <summary>Set the fill brush of the shape</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The brush value</param>
@@ -70,11 +70,7 @@ type ShapeModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The brush widget</param>
     [<Extension>]
-    static member inline fill
-        (
-            this: WidgetBuilder<'msg, #IFabShape>,
-            content: WidgetBuilder<'msg, #IFabBrush>
-        ) =
+    static member inline fill(this: WidgetBuilder<'msg, #IFabShape>, content: WidgetBuilder<'msg, #IFabBrush>) =
         this.AddWidget(Shape.FillWidget.WithValue(content.Compile()))
 
     /// <summary>Set the stroke brush of the shape</summary>
@@ -88,13 +84,9 @@ type ShapeModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="content">The brush widget</param>
     [<Extension>]
-    static member inline stroke
-        (
-            this: WidgetBuilder<'msg, #IFabShape>,
-            content: WidgetBuilder<'msg, #IFabBrush>
-        ) =
+    static member inline stroke(this: WidgetBuilder<'msg, #IFabShape>, content: WidgetBuilder<'msg, #IFabBrush>) =
         this.AddWidget(Shape.StrokeWidget.WithValue(content.Compile()))
-        
+
     /// <summary>Set the stroke dash pattern of the shape</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The dash pattern value</param>
@@ -108,7 +100,7 @@ type ShapeModifiers =
     [<Extension>]
     static member inline strokeDashArray(this: WidgetBuilder<'msg, #IFabShape>, value: seq<float>) =
         this.AddScalar(Shape.StrokeDashArrayList.WithValue(Array.ofSeq value))
-        
+
     /// <summary>Set the offset of the stroke dash pattern</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The dash offset value</param>
@@ -136,7 +128,7 @@ type ShapeModifiers =
     [<Extension>]
     static member inline strokeMiterLimit(this: WidgetBuilder<'msg, #IFabShape>, value: float) =
         this.AddScalar(Shape.StrokeMiterLimit.WithValue(value))
-        
+
     /// <summary>Set the stroke thickness brush of the shape</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The thickness value</param>

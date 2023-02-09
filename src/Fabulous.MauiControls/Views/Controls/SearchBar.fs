@@ -12,9 +12,11 @@ type IFabSearchBar =
 module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()
 
-    let CancelButtonColor = Attributes.defineBindableWithEquality SearchBar.CancelButtonColorProperty
-    
-    let CancelButtonFabColor = Attributes.defineBindableColor SearchBar.CancelButtonColorProperty
+    let CancelButtonColor =
+        Attributes.defineBindableWithEquality SearchBar.CancelButtonColorProperty
+
+    let CancelButtonFabColor =
+        Attributes.defineBindableColor SearchBar.CancelButtonColorProperty
 
     let CursorPosition = Attributes.defineBindableInt SearchBar.CursorPositionProperty
 
@@ -46,6 +48,7 @@ module SearchBar =
 [<AutoOpen>]
 module SearchBarBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SearchBar widget with a text and listen for both text changes and search button presses</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
@@ -65,14 +68,14 @@ type SearchBarModifiers =
     [<Extension>]
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #IFabSearchBar>, value: Color) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(value))
-        
+
     /// <summary>Set the color of the cancel button text</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the cancel button text</param>
     [<Extension>]
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #IFabSearchBar>, value: FabColor) =
         this.AddScalar(SearchBar.CancelButtonFabColor.WithValue(value))
-        
+
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>
     /// <param name="size">The font size</param>

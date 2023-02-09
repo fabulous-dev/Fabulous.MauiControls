@@ -44,6 +44,7 @@ module Editor =
 [<AutoOpen>]
 module EditorBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an Editor widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>

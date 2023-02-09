@@ -25,6 +25,7 @@ module SwipeItems =
 [<AutoOpen>]
 module SwipeItemsBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SwipeItems widget</summary>
         static member inline SwipeItems<'msg>() =
             CollectionBuilder<'msg, IFabSwipeItems, IFabSwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
@@ -44,7 +45,7 @@ type SwipeItemsModifiers =
     [<Extension>]
     static member inline swipeBehaviorOnInvoked(this: WidgetBuilder<'msg, #IFabSwipeItems>, value: SwipeBehaviorOnInvoked) =
         this.AddScalar(SwipeItems.SwipeBehaviorOnInvoked.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct SwipeItems control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

@@ -37,6 +37,7 @@ module Polygon =
 [<AutoOpen>]
 module PolygonBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Polygon widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
         /// <param name="strokeThickness">The stroke thickness</param>
@@ -57,13 +58,8 @@ module PolygonBuilders =
             WidgetBuilder<'msg, IFabPolygon>(
                 Polygon.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        Polygon.PointsList.WithValue(Array.ofSeq points),
-                        Shape.StrokeThickness.WithValue(strokeThickness)
-                    ),
-                    ValueSome [|
-                        Shape.StrokeWidget.WithValue(stroke.Compile())
-                    |],
+                    StackList.two(Polygon.PointsList.WithValue(Array.ofSeq points), Shape.StrokeThickness.WithValue(strokeThickness)),
+                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )

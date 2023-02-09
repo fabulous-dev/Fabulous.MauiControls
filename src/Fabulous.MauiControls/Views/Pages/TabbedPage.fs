@@ -21,8 +21,7 @@ module TabbedPage =
     let BarTextColor =
         Attributes.defineBindableWithEquality TabbedPage.BarTextColorProperty
 
-    let BarTextFabColor =
-        Attributes.defineBindableColor TabbedPage.BarTextColorProperty
+    let BarTextFabColor = Attributes.defineBindableColor TabbedPage.BarTextColorProperty
 
     let SelectedTabColor =
         Attributes.defineBindableWithEquality TabbedPage.SelectedTabColorProperty
@@ -50,6 +49,7 @@ module TabbedPage =
 [<AutoOpen>]
 module TabbedPageBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TabbedPage widget</summary>
         static member inline TabbedPage<'msg>() =
             CollectionBuilder<'msg, IFabTabbedPage, IFabPage>(TabbedPage.WidgetKey, MultiPageOfPage.Children)
@@ -62,7 +62,7 @@ type TabbedPageModifiers =
     [<Extension>]
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: Color) =
         this.AddScalar(TabbedPage.BarBackgroundColor.WithValue(value))
-        
+
     /// <summary>Set the background color of the bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The background color of the bar</param>

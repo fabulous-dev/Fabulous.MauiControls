@@ -25,6 +25,7 @@ module SwipeItem =
 [<AutoOpen>]
 module SwipeItemBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a SwipeItem widget and listen for the Invoke event</summary>
         /// <param name="onInvoked">Message to dispatch</param>
         static member inline SwipeItem<'msg>(onInvoked: 'msg) =
@@ -38,7 +39,7 @@ type SwipeItemModifiers() =
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSwipeItem>, value: Color) =
         this.AddScalar(SwipeItem.BackgroundColor.WithValue(value))
-        
+
     /// <summary>Set the background color of the SwipeItem</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The background color</param>

@@ -77,6 +77,7 @@ module CarouselView =
 [<AutoOpen>]
 module CarouselViewBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a CarouselView widget with a list of items</summary>
         /// <param name="items">The items list</param>
         static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
@@ -90,7 +91,7 @@ type CarouselViewModifiers =
     [<Extension>]
     static member inline indicatorView(this: WidgetBuilder<'msg, #IFabCarouselView>, value: ViewRef<IndicatorView>) =
         this.AddScalar(CarouselView.IndicatorView.WithValue(value))
-        
+
     /// <summary>Set whether the carousel bounces</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">true if bounce is enabled; otherwise, false</param>
@@ -139,15 +140,14 @@ type CarouselViewModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabCarouselView>, value: ViewRef<CarouselView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-      
+
 [<Extension>]
 type CarouselViewExtraModifiers =
     /// <summary>Set the peek area insets</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The peek area insets</param>
     [<Extension>]
-    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #IFabCarouselView>, value: float) =
-        this.peekAreaInsets(Thickness(value))
+    static member inline peekAreaInsets(this: WidgetBuilder<'msg, #IFabCarouselView>, value: float) = this.peekAreaInsets(Thickness(value))
 
     /// <summary>Set the peek area insets</summary>
     /// <param name="this">Current widget</param>

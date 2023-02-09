@@ -17,11 +17,12 @@ module RectangleGeometry =
 [<AutoOpen>]
 module RectangleGeometryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a RectangleGeometry widget with a dimension</summary>
         /// <param name="rect">The dimension value</param>
         static member inline RectangleGeometry<'msg>(rect: Rect) =
             WidgetBuilder<'msg, IFabRectangleGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))
-            
+
 [<Extension>]
 type RectangleGeometryModifiers =
     /// <summary>Link a ViewRef to access the direct RectangleGeometry control instance</summary>

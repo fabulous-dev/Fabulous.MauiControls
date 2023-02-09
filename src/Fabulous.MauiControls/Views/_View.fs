@@ -12,7 +12,7 @@ type IFabView =
 module View' =
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> View).GestureRecognizers)
-        
+
     let HorizontalOptions =
         Attributes.defineSmallBindable<LayoutOptions> View.HorizontalOptionsProperty SmallScalars.LayoutOptions.decode
 
@@ -28,7 +28,7 @@ type ViewModifiers =
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> View'.GestureRecognizers this
-        
+
     /// <summary>Set the LayoutOptions that define how the widget gets laid in a layout cycle</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">A LayoutOptions which defines how to lay out the widget</param>
@@ -61,9 +61,8 @@ type ViewExtraModifiers =
     /// <summary>Align the widget at the vertical end side</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IFabView>) =
-        this.verticalOptions(LayoutOptions.End)
-        
+    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IFabView>) = this.verticalOptions(LayoutOptions.End)
+
     /// <summary>Align the widget at the horizontal start side</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
@@ -75,19 +74,19 @@ type ViewExtraModifiers =
     [<Extension>]
     static member inline alignStartVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.verticalOptions(LayoutOptions.Start)
-        
+
     /// <summary>Center the widget horizontally</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
     static member inline centerHorizontal(this: WidgetBuilder<'msg, #IFabView>) =
         this.horizontalOptions(LayoutOptions.Center)
-        
+
     /// <summary>Center the widget vertically</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
     static member inline centerVertical(this: WidgetBuilder<'msg, #IFabView>) =
         this.verticalOptions(LayoutOptions.Center)
-    
+
     /// <summary>Center the widget horizontally and vertically</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
@@ -110,8 +109,7 @@ type ViewExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The margin value uniformly applied to all sides</param>
     [<Extension>]
-    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, uniformSize: float) =
-        this.margin(Thickness(uniformSize))
+    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, uniformSize: float) = this.margin(Thickness(uniformSize))
 
     /// <summary>Set the margin for the view</summary>
     /// <param name="this">Current widget</param>

@@ -25,6 +25,7 @@ module RoundRectangleGeometry =
 [<AutoOpen>]
 module RoundRectangleGeometryBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a RoundRectangleGeometry widget with a corner radius and a dimension</summary>
         /// <param name="cornerRadius">The corner radius</param>
         /// <param name="rect">The dimension</param>
@@ -43,7 +44,7 @@ type RoundRectangleGeometryModifiers =
     [<Extension>]
     static member inline fillRule(this: WidgetBuilder<'msg, #IFabRoundRectangleGeometry>, value: FillRule) =
         this.AddScalar(RoundRectangleGeometry.FillRule.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct RoundRectangleGeometry control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

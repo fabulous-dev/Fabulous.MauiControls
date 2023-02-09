@@ -26,10 +26,11 @@ module PathFigure =
 [<AutoOpen>]
 module PathFigureBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a PathFigure widget</summary>
         static member inline PathFigure<'msg>() =
             CollectionBuilder<'msg, IFabPathFigure, IFabPathSegment>(PathFigure.WidgetKey, PathFigure.Segments)
-            
+
         /// <summary>Create a PathFigure widget with a start point</summary>
         /// <param name="startPoint">The start point</param>
         static member inline PathFigure<'msg>(startPoint: Point) =
@@ -50,7 +51,7 @@ type PathFigureModifiers =
     [<Extension>]
     static member inline isFilled(this: WidgetBuilder<'msg, #IFabPathFigure>, value: bool) =
         this.AddScalar(PathFigure.IsFilled.WithValue(value))
-        
+
     /// <summary>Link a ViewRef to access the direct PathFigure control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

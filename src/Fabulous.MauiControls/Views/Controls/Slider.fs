@@ -36,20 +36,24 @@ module Slider =
 
     let DragStarted =
         Attributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
-    
-    let MaximumTrackColor = Attributes.defineBindableWithEquality Slider.MaximumTrackColorProperty
-    
-    let MaximumTrackFabColor = Attributes.defineBindableColor Slider.MaximumTrackColorProperty
+
+    let MaximumTrackColor =
+        Attributes.defineBindableWithEquality Slider.MaximumTrackColorProperty
+
+    let MaximumTrackFabColor =
+        Attributes.defineBindableColor Slider.MaximumTrackColorProperty
 
     let MinimumMaximum =
         Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" SliderUpdaters.updateSliderMinMax
 
-    let MinimumTrackColor = Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
-    
-    let MinimumTrackFabColor = Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
+    let MinimumTrackColor =
+        Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
+
+    let MinimumTrackFabColor =
+        Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
 
     let ThumbColor = Attributes.defineBindableWithEquality Slider.ThumbColorProperty
-    
+
     let ThumbFabColor = Attributes.defineBindableColor Slider.ThumbColorProperty
 
     let ThumbImageSource =
@@ -61,6 +65,7 @@ module Slider =
 [<AutoOpen>]
 module SliderBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a Slider widget with a min/max bounds and a value, listen for the value changes</summary>
         /// <param name="min">The minimum bound</param>
         /// <param name="max">The maximum bound</param>
@@ -88,42 +93,42 @@ type SliderModifiers =
     [<Extension>]
     static member inline onDragStarted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
         this.AddScalar(Slider.DragStarted.WithValue(msg))
-        
+
     /// <summary>Set the color of the maximum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the maximum track</param>
     [<Extension>]
     static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.MaximumTrackColor.WithValue(value))
-        
+
     /// <summary>Set the color of the maximum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the maximum track</param>
     [<Extension>]
     static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
         this.AddScalar(Slider.MaximumTrackFabColor.WithValue(value))
-        
+
     /// <summary>Set the color of the minimum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the minimum track</param>
     [<Extension>]
     static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.MinimumTrackColor.WithValue(value))
-        
+
     /// <summary>Set the color of the minimum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the minimum track</param>
     [<Extension>]
     static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
         this.AddScalar(Slider.MinimumTrackFabColor.WithValue(value))
-        
+
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>
     [<Extension>]
     static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.ThumbColor.WithValue(value))
-        
+
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>
@@ -144,7 +149,7 @@ type SliderModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabSlider>, value: ViewRef<Slider>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-        
+
 [<Extension>]
 type SliderExtraModifiers =
     /// <summary>Set the image source of the thumb</summary>

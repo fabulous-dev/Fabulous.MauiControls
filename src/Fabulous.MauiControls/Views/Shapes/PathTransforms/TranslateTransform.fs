@@ -17,6 +17,7 @@ module TranslateTransform =
 [<AutoOpen>]
 module TranslateTransformBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a TranslateTransform widget with translation value</summary>
         /// <param name="x">The X component of the translation</param>
         /// <param name="y">The Y component of the translation</param>

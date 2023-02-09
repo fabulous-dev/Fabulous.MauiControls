@@ -49,14 +49,11 @@ module FlyoutPage =
 [<AutoOpen>]
 module FlyoutPageBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create a flyout page with a flyout and a detail widgets</summary>
         /// <param name="flyout">The flyout widget</param>
         /// <param name="detail">The detail widget</param>
-        static member inline FlyoutPage
-            (
-                flyout: WidgetBuilder<'msg, #IFabPage>,
-                detail: WidgetBuilder<'msg, #IFabPage>
-            ) =
+        static member inline FlyoutPage(flyout: WidgetBuilder<'msg, #IFabPage>, detail: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabFlyoutPage>
                 FlyoutPage.WidgetKey
                 [| FlyoutPage.Flyout.WithValue(flyout.Compile())
@@ -70,7 +67,7 @@ type FlyoutPageModifiers =
     [<Extension>]
     static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: FlyoutLayoutBehavior) =
         this.AddScalar(FlyoutPage.FlyoutLayoutBehavior.WithValue(value))
-        
+
     /// <summary>Set whether the flyout is presented, and listen for presentation state changes</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The value indicating whether the flyout is presented</param>

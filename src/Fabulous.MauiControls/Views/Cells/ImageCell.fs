@@ -18,6 +18,7 @@ module ImageCell =
 [<AutoOpen>]
 module ImageCellBuilders =
     type Fabulous.Maui.View with
+
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
