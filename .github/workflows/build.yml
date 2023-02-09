@@ -54,7 +54,7 @@ jobs:
         path: ${NUPKG_FOLDER}
     - name: Test templates
       run: |
-        LOCAL_NUGET_PATH=$(realpath ${NUPKG_FOLDER})
+        LOCAL_NUGET_PATH=$(readlink -f ${NUPKG_FOLDER})
         dotnet nuget add source $LOCAL_NUGET_PATH --name local
         dotnet new install Fabulous.MauiControls.Templates::${NIGHTLY_VERSION}
         dotnet new fabulous-mauicontrols -n TestTemplates
