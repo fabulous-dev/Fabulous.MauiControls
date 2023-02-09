@@ -10,7 +10,7 @@ env:
   CONFIG: Release
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
-  TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates.nupkg
+  TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates
   TEST_TEMPLATE_FOLDER: TestTemplates
 
 jobs:
@@ -54,7 +54,7 @@ jobs:
         path: nupkgs/
     - name: Test templates
       run: |
-        dotnet new install ${TEMPLATE_PKG}
+        dotnet new install ${TEMPLATE_PKG}.${NIGHTLY_VERSION}.nupkg
         rm -rf ${TEST_TEMPLATE_FOLDER}
         dotnet new fabulous-mauicontrols -n ${TEST_TEMPLATE_FOLDER}
         dotnet build ${TEST_TEMPLATE_FOLDER}
