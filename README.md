@@ -27,9 +27,8 @@ let update msg model =
 let view model =
     Application(
         ContentPage(
-            "Counter app",
             VStack(spacing = 16.) {
-                Image(Aspect.AspectFit, "fabulous.png")
+                Image("fabulous.png")
 
                 Label($"Count is {model.Count}")
 
