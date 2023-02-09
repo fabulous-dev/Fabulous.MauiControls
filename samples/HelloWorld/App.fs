@@ -38,7 +38,7 @@ module App =
             ContentPage(
                 ScrollView(
                     (VStack(spacing = 25.) {
-                        Image(Aspect.AspectFit, "dotnet_bot.png")
+                        Image("dotnet_bot.png")
                             .semantics(description = "Cute dotnet bot waving hi to you!")
                             .height(200.)
                             .centerHorizontal()

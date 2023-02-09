@@ -59,7 +59,9 @@ module Button =
 
     let Text = Attributes.defineBindableWithEquality<string> Button.TextProperty
 
-    let TextColor = Attributes.defineBindableColor Button.TextColorProperty
+    let TextColor = Attributes.defineBindableWithEquality Button.TextColorProperty
+
+    let TextFabColor = Attributes.defineBindableColor Button.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Button.TextTransformProperty
@@ -122,27 +124,6 @@ type ButtonModifiers =
             spacing: float
         ) =
         this.AddScalar(Button.ContentLayout.WithValue(Button.ButtonContentLayout(position, spacing)))
-        
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: FabColor) =
-        this.AddScalar(Button.TextColor.WithValue(value))
-
-    /// <summary>Set the transformation of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The transformation of the text</param>
-    [<Extension>]
-    static member inline textTransform(this: WidgetBuilder<'msg, #IFabButton>, value: TextTransform) =
-        this.AddScalar(Button.TextTransform.WithValue(value))
-
-    /// <summary>Set the padding inside the button</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The padding inside the button</param>
-    [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, value: Thickness) =
-        this.AddScalar(Button.Padding.WithValue(value))
 
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>
@@ -207,6 +188,34 @@ type ButtonModifiers =
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IFabButton>, msg: 'msg) =
         this.AddScalar(Button.Released.WithValue(msg))
+
+    /// <summary>Set the padding inside the button</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The padding inside the button</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, value: Thickness) =
+        this.AddScalar(Button.Padding.WithValue(value))
+        
+    /// <summary>Set the color of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the text</param>
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
+        this.AddScalar(Button.TextColor.WithValue(value))
+        
+    /// <summary>Set the color of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The color of the text</param>
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: FabColor) =
+        this.AddScalar(Button.TextFabColor.WithValue(value))
+
+    /// <summary>Set the transformation of the text</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The transformation of the text</param>
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, #IFabButton>, value: TextTransform) =
+        this.AddScalar(Button.TextTransform.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Button control instance</summary>
     /// <param name="this">Current widget</param>

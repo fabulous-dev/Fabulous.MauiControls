@@ -17,24 +17,24 @@ type Tests() =
 
         let oldWidget =
             NavigationPage() {
-                ContentPage("Onboarding", Label("Hello")).automationId("onboarding")
+                ContentPage(Label("Hello")).automationId("onboarding")
 
-                ContentPage("HowMuch", Label("Hello")).automationId("howMuch")
+                ContentPage(Label("Hello")).automationId("howMuch")
 
-                ContentPage("RepaymentDate", Label("Hello")).automationId("repaymentDate")
+                ContentPage(Label("Hello")).automationId("repaymentDate")
 
-                ContentPage("YourDetails", Label("Hello")).automationId("yourDetails")
+                ContentPage(Label("Hello")).automationId("yourDetails")
             }
 
         let newWidget =
             NavigationPage() {
-                ContentPage("Onboarding", Label("Hello")).automationId("onboarding")
+                ContentPage(Label("Hello")).automationId("onboarding")
 
-                ContentPage("HowMuch", Label("Hello")).automationId("howMuch")
+                ContentPage(Label("Hello")).automationId("howMuch")
 
-                ContentPage("RepaymentDate", Label("Hello")).automationId("repaymentDate")
+                ContentPage(Label("Hello")).automationId("repaymentDate")
 
-                ContentPage("VerificationCode", Label("Hello"))
+                ContentPage(Label("Hello"))
                     .automationId("verificationCode")
                     .onMounted("verificationCodeMounted")
                     .onUnmounted("verificationCodeUnmounted")
@@ -42,13 +42,13 @@ type Tests() =
 
         let newWidget2 =
             NavigationPage() {
-                ContentPage("Onboarding", Label("Hello")).automationId("onboarding")
+                ContentPage(Label("Hello")).automationId("onboarding")
 
-                ContentPage("HowMuch", Label("Hello")).automationId("howMuch")
+                ContentPage(Label("Hello")).automationId("howMuch")
 
-                ContentPage("RepaymentDate", Label("Hello")).automationId("repaymentDate")
+                ContentPage(Label("Hello")).automationId("repaymentDate")
 
-                ContentPage("YourAddress", Label("Hello")).automationId("yourAddress")
+                ContentPage(Label("Hello")).automationId("yourAddress")
             }
 
         let treeContext: ViewTreeContext =
