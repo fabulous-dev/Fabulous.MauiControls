@@ -194,7 +194,7 @@ module Program =
     let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg, 'marker>) =
         { program with
             ExceptionHandler = handler }
-        
+
     /// Allow the app to react to theme changes
     let withThemeAwareness (program: Program<'arg, 'model, 'msg, #IFabApplication>) =
         { Init = ThemeAwareProgram.init program.Init

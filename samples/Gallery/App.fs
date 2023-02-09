@@ -49,6 +49,4 @@ module App =
             )
         )
 
-    let program =
-        Program.stateful init update view
-        |> Program.withThemeAwareness
+    let program = Program.stateful init update view |> Program.withThemeAwareness
