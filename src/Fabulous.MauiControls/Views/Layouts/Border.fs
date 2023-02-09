@@ -84,7 +84,7 @@ module BorderBuilders =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
                 AttributesBundle(
-                    StackList.two(Border.Stroke.WithValue(stroke), Border.StrokeShape.WithValue(Rectangle())),
+                    StackList.one(Border.Stroke.WithValue(stroke)),
                     ValueSome [| Border.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )
@@ -97,7 +97,7 @@ module BorderBuilders =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
                 AttributesBundle(
-                    StackList.one(Border.StrokeShape.WithValue(Rectangle())),
+                    StackList.empty(),
                     ValueSome
                         [| Border.Content.WithValue(content.Compile())
                            Border.StrokeWidget.WithValue(stroke.Compile()) |],
@@ -155,6 +155,13 @@ type BorderModifiers =
     [<Extension>]
     static member inline strokeMiterLimit(this: WidgetBuilder<'msg, #IFabBorder>, value: float) =
         this.AddScalar(Border.StrokeMiterLimit.WithValue(value))
+
+    /// <summary>Set the stroke shape of the border</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The shape value</param>
+    [<Extension>]
+    static member inline strokeShape(this: WidgetBuilder<'msg, #IFabBorder>, value: Shape) =
+        this.AddScalar(Border.StrokeShape.WithValue(value))
 
     /// <summary>Set the stroke shape of the border</summary>
     /// <param name="this">Current widget</param>
