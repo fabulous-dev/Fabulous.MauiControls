@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.3.1] - 2023-02-09
+
 ### Added
 - Add missing RoundRectangle widget
 - Add alternative `.size(uniformSize)` modifier to all widgets
