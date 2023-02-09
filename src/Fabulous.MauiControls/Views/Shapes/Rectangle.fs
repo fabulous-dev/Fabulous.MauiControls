@@ -29,7 +29,7 @@ module RectangleBuilders =
         /// <summary>Create a Rectangle widget with a stroke thickness and a stroke brush</summary>
         /// <param name="strokeThickness">The stroke thickness value</param>
         /// <param name="stroke">The stroke brush value</param>
-        static member inline Rectangle(strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabRectangle>) =
+        static member inline Rectangle(strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
             WidgetBuilder<'msg, IFabRectangle>(
                 Rectangle.WidgetKey,
                 AttributesBundle(
@@ -69,4 +69,11 @@ type RectangleExtraModifiers =
     /// <param name="x">The X component of the radius</param>
     /// <param name="y">The Y component of the radius</param>
     [<Extension>]
-    static member inline radiusX(this: WidgetBuilder<'msg, #IFabRectangle>, x: float, y: float) = this.radiusX(x).radiusY(y)
+    static member inline radius(this: WidgetBuilder<'msg, #IFabRectangle>, x: float, y: float) = this.radiusX(x).radiusY(y)
+
+    /// <summary>Set the radius</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="uniformRadius">The radius value to apply to all corners</param>
+    [<Extension>]
+    static member inline radius(this: WidgetBuilder<'msg, #IFabRectangle>, uniformRadius: float) =
+        this.radius(uniformRadius, uniformRadius)

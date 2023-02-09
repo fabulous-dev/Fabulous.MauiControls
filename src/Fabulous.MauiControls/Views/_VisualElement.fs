@@ -102,9 +102,6 @@ module VisualElement =
     let Background =
         Attributes.defineBindableWithEquality VisualElement.BackgroundProperty
 
-    let BackgroundFabColor =
-        Attributes.defineBindableSolidBrushColor VisualElement.BackgroundProperty
-
     let BackgroundWidget =
         Attributes.defineBindableWidget VisualElement.BackgroundProperty
 
@@ -244,13 +241,6 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Brush) =
         this.AddScalar(VisualElement.Background.WithValue(value))
-
-    /// <summary>Set the color which will fill the background of the widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color to use</param>
-    [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) =
-        this.AddScalar(VisualElement.BackgroundFabColor.WithValue(value))
 
     /// <summary>Set the brush widget which will fill the background of the widget</summary>
     /// <param name="this">Current widget</param>
@@ -526,21 +516,15 @@ type VisualElementAnimationModifiers =
 
 [<Extension>]
 type VisualElementExtraModifiers =
-    /// <summary>Set the color which will fill the background of the widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color to use</param>
-    [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: Color) = this.background(SolidColorBrush(value))
-
-    /// <summary>Set the color which will fill the background of the widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color to use</param>
-    [<Extension>]
-    static member inline background(this: WidgetBuilder<'msg, #IFabVisualElement>, value: FabColor) = this.background(value.ToMauiColor())
-
     /// <summary> Set the height and width of the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="height">The desired height</param>
     /// <param name="width">The desired width</param>
     [<Extension>]
     static member inline size(this: WidgetBuilder<'msg, #IFabVisualElement>, height: float, width: float) = this.height(height).width(width)
+
+    /// <summary> Set the height and width of the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="uniformSize">The desired height and width</param>
+    [<Extension>]
+    static member inline size(this: WidgetBuilder<'msg, #IFabVisualElement>, uniformSize: float) = this.size(uniformSize, uniformSize)

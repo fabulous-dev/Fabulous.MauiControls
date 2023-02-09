@@ -13,7 +13,7 @@ module CheckBox =
 
     let Color = Attributes.defineBindableWithEquality CheckBox.ColorProperty
 
-    let FabColor = Attributes.defineBindableWithEquality CheckBox.ColorProperty
+    let FabColor = Attributes.defineBindableColor CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
