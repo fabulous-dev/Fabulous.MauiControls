@@ -1,10 +1,7 @@
 namespace Gallery
 
 open Microsoft.FSharp.Core
-open Microsoft.Maui.Accessibility
-open Fabulous
 open Fabulous.Maui
-open Gallery.Samples
 
 open type Fabulous.Maui.View
 
@@ -52,4 +49,6 @@ module App =
             )
         )
 
-    let program = Program.stateful init update view
+    let program =
+        Program.stateful init update view
+        |> Program.withThemeAwareness
