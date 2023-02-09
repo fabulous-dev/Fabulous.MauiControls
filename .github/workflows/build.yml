@@ -57,6 +57,6 @@ jobs:
         dotnet new install ${TEMPLATE_PKG}.${NIGHTLY_VERSION}.nupkg
         rm -rf ${TEST_TEMPLATE_FOLDER}
         dotnet new fabulous-mauicontrols -n ${TEST_TEMPLATE_FOLDER}
-        dotnet build ${TEST_TEMPLATE_FOLDER}
+        dotnet build ${TEST_TEMPLATE_FOLDER} -p:ManagePackageVersionsCentrally=false
     - name: Push
       run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
