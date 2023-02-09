@@ -86,6 +86,7 @@
     <Compile Include="Views\Shapes\_Shape.fs" />
     <Compile Include="Views\Shapes\Ellipse.fs" />
     <Compile Include="Views\Shapes\Rectangle.fs" />
+    <Compile Include="Views\Shapes\RoundRectangle.fs" />
     <Compile Include="Views\Shapes\Path.fs" />
     <Compile Include="Views\Shapes\Line.fs" />
     <Compile Include="Views\Shapes\Polygon.fs" />
