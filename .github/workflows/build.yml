@@ -11,7 +11,7 @@ env:
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
   TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates
-  TEST_TEMPLATE_FOLDER: TestTemplates
+  NUPKG_FOLDER: nupkgs
 
 jobs:
   build:
@@ -45,18 +45,19 @@ jobs:
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/PKG_VERSION/${NIGHTLY_VERSION}/g"
-        dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --output nupkgs
-        dotnet pack ${TEMPLATE_PROJ} -p:Version=${NIGHTLY_VERSION} -p:IsNightlyBuild=true -c ${CONFIG} --output nupkgs
+        dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --output ${NUPKG_FOLDER}
+        dotnet pack ${TEMPLATE_PROJ} -p:Version=${NIGHTLY_VERSION} -p:IsNightlyBuild=true -c ${CONFIG} --output ${NUPKG_FOLDER}
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: Packages
-        path: nupkgs/
+        path: ${NUPKG_FOLDER}
     - name: Test templates
       run: |
-        dotnet new install ${TEMPLATE_PKG}.${NIGHTLY_VERSION}.nupkg
-        rm -rf ${TEST_TEMPLATE_FOLDER}
-        dotnet new fabulous-mauicontrols -n ${TEST_TEMPLATE_FOLDER}
-        dotnet build ${TEST_TEMPLATE_FOLDER} -p:ManagePackageVersionsCentrally=false
+        LOCAL_NUGET_PATH=$(realpath ${NUPKG_FOLDER})
+        dotnet nuget add source $LOCAL_NUGET_PATH --name local
+        dotnet new install Fabulous.MauiControls.Templates::${NIGHTLY_VERSION}
+        dotnet new fabulous-mauicontrols -n TestTemplates
+        dotnet build TestTemplates -p:ManagePackageVersionsCentrally=false
     - name: Push
       run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
