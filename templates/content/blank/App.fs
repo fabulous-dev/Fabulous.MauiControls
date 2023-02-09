@@ -32,10 +32,9 @@ module App =
     let view model =
         Application(
             ContentPage(
-                "HelloWorld",
                 ScrollView(
                     (VStack(spacing = 25.) {
-                        Image(Aspect.AspectFit, "dotnet_bot.png")
+                        Image("dotnet_bot.png")
                             .semantics(description = "Cute dotnet bot waving hi to you!")
                             .height(200.)
                             .centerHorizontal()
@@ -60,7 +59,7 @@ module App =
                             .semantics(hint = "Counts the number of times you click")
                             .centerHorizontal()
                     })
-                        .padding(Thickness(30., 0., 30., 0.))
+                        .padding(30., 0., 30., 0.)
                         .centerVertical()
                 )
             )

@@ -42,10 +42,16 @@
       "datatype": "string",
       "defaultValue": "com.companyname"
     },
-    "FabulousXFPkgVersion": {
+    "FabulousPkgVersion": {
       "type": "parameter",
       "dataType": "string",
-      "replaces": "FabulousXFPkgVersion",
+      "replaces": "FabulousPkgVersion",
+      "defaultValue": "2.2.1"
+    },
+    "FabulousMauiControlsPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FabulousMauiControlsPkgVersion",
       "defaultValue": "PKG_VERSION"
     },
     "FSharpCorePkgVersion": {

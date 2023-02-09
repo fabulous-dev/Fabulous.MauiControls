@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add alternative Brush modifiers to accept either `Microsoft.Maui.Graphics.Brush` or a Brush widget
 - Add XML documentation for all widgets and modifiers
 - Add new `GraphicsView` widget
+- Add ThemeAware support by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/19)
 
 ### Fixed
 - Fix the crash at startup when targeting Windows by using FSharp.Maui.WinUICompat by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/10)
