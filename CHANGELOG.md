@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.3.2] - 2023-02-10
+
+### Fixed
+- Make sure Info.plist is not ignored during build by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/22)
+
 ## [2.3.1] - 2023-02-09
 
 ### Added
