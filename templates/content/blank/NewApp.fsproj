@@ -69,13 +69,13 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'ios'">
-    <None Include="$(iOSProjectFolder)Info.plist" />
+    <None Include="$(iOSProjectFolder)Info.plist" LogicalName="Info.plist" />
     <Compile Include="$(iOSProjectFolder)AppDelegate.fs" />
     <Compile Include="$(iOSProjectFolder)Program.fs" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">
-    <None Include="$(MacCatalystProjectFolder)Info.plist" />
+    <None Include="$(MacCatalystProjectFolder)Info.plist" LogicalName="Info.plist" />
     <Compile Include="$(MacCatalystProjectFolder)AppDelegate.fs" />
     <Compile Include="$(MacCatalystProjectFolder)Program.fs" />
   </ItemGroup>
