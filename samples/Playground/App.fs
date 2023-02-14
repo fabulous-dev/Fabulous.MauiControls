@@ -10,59 +10,65 @@ open Microsoft.Maui.Primitives
 open type Fabulous.Maui.View
 
 module App =
-    type FieldFocused =
-        | Entry1
-        | Entry2
-        | Entry3
-
-    type Model = { Focus: FieldFocused option }
-
+    type Path =
+        | Home
+        | Details
+        | Subdetails of int
+        
+    type Model =
+        { Stack: Path list }
+        
     type Msg =
-        | TextChanged of string
-        | FocusChanged of FieldFocused * bool
-        | SetFocus of FieldFocused option
-
-    let init () = { Focus = None }
-
+        | StackUpdated of Path list
+        | GoTo of Path
+        | GoBack
+        | GoToRoot
+        
+    let init() =
+        { Stack = [ Home ] }
+        
     let update msg model =
         match msg with
-        | TextChanged _ -> model
-        | FocusChanged(field, isFocused) ->
-            if isFocused then
-                { model with Focus = Some field }
-            else
-                { model with Focus = None }
-
-        | SetFocus field -> { model with Focus = field }
-
-    let focusChanged field args = FocusChanged(field, args)
+        | StackUpdated stack ->
+            { model with Stack = stack }
+        | GoTo path ->
+            { model with Stack = path :: model.Stack }
+        | GoBack ->
+            { model with Stack = model.Stack |> List.tail }
+        | GoToRoot ->
+            { model with Stack = [model.Stack |> List.last] }
 
     let view model =
         Application(
-            ContentPage(
-                (VStack(spacing = 20.) {
-                    let text =
-                        match model.Focus with
-                        | None -> "None"
-                        | Some f -> f.ToString()
-
-                    Label($"Field currently selected: {text}")
-
-                    Entry("Entry1", TextChanged)
-                        .focus(model.Focus = Some Entry1, focusChanged Entry1)
-
-                    Entry("Entry2", TextChanged)
-                        .focus(model.Focus = Some Entry2, focusChanged Entry2)
-
-                    Entry("Entry3", TextChanged)
-                        .focus(model.Focus = Some Entry3, focusChanged Entry3)
-
-                    Button("Set focus on Entry1", SetFocus(Some Entry1))
-                    Button("Set focus on Entry2", SetFocus(Some Entry2))
-                    Button("Set focus on Entry3", SetFocus(Some Entry3))
-                    Button("Unfocus", SetFocus None)
-                })
-                    .margin(20.)
+            NavigationStack(List.rev model.Stack, StackUpdated, fun path ->
+                match path with
+                | Home ->
+                    ContentPage(
+                        VStack(spacing = 15.) {
+                            Label("Home")
+                            Button("Go to Details", GoTo Details)
+                        }
+                    )
+                        .title("Home")
+                | Details ->
+                    ContentPage(
+                        VStack(spacing = 15.) {
+                            Label("Details")
+                            for i in 1..3 do
+                                Button($"Go to Subdetails {i}", GoTo (Subdetails i))
+                            Button("Go back", GoBack)
+                        }
+                    )
+                        .title("Details")
+                | Subdetails i ->
+                    ContentPage(
+                        VStack(spacing = 15.) {
+                            Label($"Subdetails {i}")
+                            Button("Go back", GoBack)
+                            Button("Go to root", GoToRoot)
+                        }
+                    )
+                        .title($"Subdetails {i}")
             )
         )
 
