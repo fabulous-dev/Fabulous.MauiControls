@@ -4,4 +4,9 @@ open Gallery.Samples
 
 module RegisteredSamples =
     let samples =
-        [ ImageButton.sample; Label.sample; TextButton.sample; ThemeAware.sample ; Border.sample ]
+        [ ImageButton.sample
+          Label.sample
+          TextButton.sample
+          ThemeAware.sample
+          Border.sample
+          Shadow.sample ]

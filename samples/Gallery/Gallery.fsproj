@@ -50,6 +50,7 @@
     <Compile Include="Common.fs" />
     <Compile Include="Samples\TextButton.fs" />
     <Compile Include="Samples\Border.fs" />
+    <Compile Include="Samples\Shadow.fs" />
     <Compile Include="Samples\ImageButton.fs" />
     <Compile Include="Samples\Label.fs" />
     <Compile Include="Samples\ThemeAware.fs" />
