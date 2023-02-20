@@ -92,5 +92,5 @@ module Shapes =
 
     let sample =
         { Name = "2D Shapes and Geometries"
-          Description = "Avalonia provides a library of common vector-drawn 2D shapes such as Ellipse, Line, Path, Polygon and Rectangle."
+          Description = "Vector-drawn 2D shapes such as Ellipse, Line, Path, Polygon, Polyline and Rectangle."
           Program = Helper.createProgram init update view }

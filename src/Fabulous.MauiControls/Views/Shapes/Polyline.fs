@@ -24,14 +24,17 @@ module Polyline =
             | ValueSome string -> target.SetValue(Polyline.PointsProperty, PointCollectionConverter().ConvertFromInvariantString(string)))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point seq> "Polyline_PointsList" (fun _ newValueOpt node ->
+        Attributes.defineSimpleScalarWithEquality<Point array> "Polyline_PointsList" (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
 
             match newValueOpt with
             | ValueNone -> target.ClearValue(Polyline.PointsProperty)
             | ValueSome points ->
                 let coll = PointCollection()
-                points |> Array.ofSeq |> Array.iter coll.Add
+
+                for point in points do
+                    coll.Add(point)
+
                 target.SetValue(Polyline.PointsProperty, coll))
 
 [<AutoOpen>]
@@ -46,7 +49,7 @@ module PolylineBuilders =
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
         static member inline Polyline(points: seq<Point>) =
-            WidgetBuilder<'msg, IFabPolyline>(Polyline.WidgetKey, Polyline.PointsList.WithValue(points))
+            WidgetBuilder<'msg, IFabPolyline>(Polyline.WidgetKey, Polyline.PointsList.WithValue(Array.ofSeq points))
 
 [<Extension>]
 type PolylineModifiers =
