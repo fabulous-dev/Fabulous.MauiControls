@@ -9,14 +9,11 @@ open type Fabulous.Maui.View
 module Border =
     let view () =
         VStack(spacing = 15.) {
-            Label("A control which decorates a child with a border and background")
-
             (VStack(16.) {
                 Border(SolidColorBrush(Colors.BlueViolet), Label("Border"))
                     .background(SolidColorBrush(Colors.ForestGreen))
                     .strokeThickness(2.)
                     .padding(16.)
-
             })
                 .margin(0., 16., 0., 0.)
                 .centerHorizontal()

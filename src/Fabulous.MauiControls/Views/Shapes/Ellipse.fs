@@ -16,24 +16,9 @@ module Ellipse =
 module EllipseBuilders =
     type Fabulous.Maui.View with
 
-        /// <summary>Create an Ellipse widget with a stroke brush and a stroke thickness</summary>
-        /// <param name="strokeThickness">The stroke thickness value</param>
-        /// <param name="stroke">The stroke value</param>
-        static member inline Ellipse<'msg>(strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey, Shape.StrokeThickness.WithValue(strokeThickness), Shape.Stroke.WithValue(stroke))
-
-        /// <summary>Create an Ellipse widget with a stroke brush and a stroke thickness</summary>
-        /// <param name="strokeThickness">The stroke thickness value</param>
-        /// <param name="stroke">The stroke value</param>
-        static member inline Ellipse(strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
-            WidgetBuilder<'msg, IFabEllipse>(
-                Ellipse.WidgetKey,
-                AttributesBundle(
-                    StackList.one(Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
-            )
+        /// <summary>Create an Ellipse widget</summary>
+        static member inline Ellipse<'msg>() =
+            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
 
 [<Extension>]
 type EllipseModifiers =

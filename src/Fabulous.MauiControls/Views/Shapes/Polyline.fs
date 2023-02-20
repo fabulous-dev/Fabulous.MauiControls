@@ -24,14 +24,14 @@ module Polyline =
             | ValueSome string -> target.SetValue(Polyline.PointsProperty, PointCollectionConverter().ConvertFromInvariantString(string)))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point array> "Polyline_PointsList" (fun _ newValueOpt node ->
+        Attributes.defineSimpleScalarWithEquality<Point seq> "Polyline_PointsList" (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
 
             match newValueOpt with
             | ValueNone -> target.ClearValue(Polyline.PointsProperty)
             | ValueSome points ->
                 let coll = PointCollection()
-                points |> Array.iter coll.Add
+                points |> Array.ofSeq |> Array.iter coll.Add
                 target.SetValue(Polyline.PointsProperty, coll))
 
 [<AutoOpen>]
@@ -40,29 +40,13 @@ module PolylineBuilders =
 
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Polyline<'msg>(points: string, strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabPolyline>(
-                Polyline.WidgetKey,
-                Polyline.PointsString.WithValue(points),
-                Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(stroke)
-            )
+        static member inline Polyline<'msg>(points: string) =
+            WidgetBuilder<'msg, IFabPolyline>(Polyline.WidgetKey, Polyline.PointsString.WithValue(points))
 
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Polyline(points: seq<Point>, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
-            WidgetBuilder<'msg, IFabPolyline>(
-                Polygon.WidgetKey,
-                AttributesBundle(
-                    StackList.two(Polyline.PointsList.WithValue(Array.ofSeq points), Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
-            )
+        static member inline Polyline(points: seq<Point>) =
+            WidgetBuilder<'msg, IFabPolyline>(Polyline.WidgetKey, Polyline.PointsList.WithValue(points))
 
 [<Extension>]
 type PolylineModifiers =

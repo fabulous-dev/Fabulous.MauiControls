@@ -9,4 +9,5 @@ module RegisteredSamples =
           TextButton.sample
           ThemeAware.sample
           Border.sample
-          Shadow.sample ]
+          Shadow.sample
+          Shapes.sample ]

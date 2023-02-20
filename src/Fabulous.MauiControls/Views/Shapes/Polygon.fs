@@ -38,31 +38,15 @@ module Polygon =
 module PolygonBuilders =
     type Fabulous.Maui.View with
 
-        /// <summary>Create a Polygon widget with a list of points, a stroke thickness, a stroke brush</summary>
+        /// <summary>Create a Polygon widget with a list of points</summary>
         /// <param name="points">The points list</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Polygon<'msg>(points: string, strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabPolygon>(
-                Polygon.WidgetKey,
-                Polygon.PointsString.WithValue(points),
-                Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(stroke)
-            )
+        static member inline Polygon<'msg>(points: string) =
+            WidgetBuilder<'msg, IFabPolygon>(Polygon.WidgetKey, Polygon.PointsString.WithValue(points))
 
-        /// <summary>Create a Polygon widget with a list of points, a stroke thickness, a stroke brush</summary>
+        /// <summary>Create a Polygon widget with a list of points</summary>
         /// <param name="points">The points list</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Polygon(points: seq<Point>, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
-            WidgetBuilder<'msg, IFabPolygon>(
-                Polygon.WidgetKey,
-                AttributesBundle(
-                    StackList.two(Polygon.PointsList.WithValue(Array.ofSeq points), Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
-            )
+        static member inline Polygon(points: seq<Point>) =
+            WidgetBuilder<'msg, IFabPolygon>(Polygon.WidgetKey, Polygon.PointsList.WithValue(Array.ofSeq points))
 
 [<Extension>]
 type PolygonModifiers =
