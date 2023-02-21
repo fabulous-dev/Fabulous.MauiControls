@@ -13,4 +13,6 @@ module RegisteredSamples =
           Shadow.sample
           Shapes.sample
           ListView.sample
-          GroupedListView.sample ]
+          GroupedListView.sample
+          CollectionView.sample
+          GroupedCollectionView.sample ]
