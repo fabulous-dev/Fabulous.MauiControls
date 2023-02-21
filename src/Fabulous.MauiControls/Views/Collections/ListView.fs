@@ -104,8 +104,13 @@ module ListViewBuilders =
 
         /// <summary>Create a ListView with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>(items: seq<'itemData>) =
-            WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
+        /// <param name="template">The template to use for each item</param>
+        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>
+            (
+                items: seq<'itemData>,
+                template: 'itemData -> WidgetBuilder<'msg, 'itemMarker>
+            ) =
+            WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items template
 
         /// <summary>Create a ListView with a list of grouped items</summary>
         /// <param name="items">The grouped items list</param>

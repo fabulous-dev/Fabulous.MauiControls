@@ -1,6 +1,7 @@
 namespace Gallery
 
 open Gallery.Samples
+open Microsoft.Maui.Controls
 
 module RegisteredSamples =
     let samples =
@@ -10,4 +11,6 @@ module RegisteredSamples =
           ThemeAware.sample
           Border.sample
           Shadow.sample
-          Shapes.sample ]
+          Shapes.sample
+          ListView.sample
+          GroupedListView.sample ]

@@ -55,6 +55,8 @@
     <Compile Include="Samples\ImageButton.fs" />
     <Compile Include="Samples\Label.fs" />
     <Compile Include="Samples\ThemeAware.fs" />
+    <Compile Include="Samples\ListView.fs" />
+    <Compile Include="Samples\GroupedListView.fs" />
     <Compile Include="Samples.fs" />
     <Compile Include="Overview.fs" />
     <Compile Include="SamplePage.fs" />
