@@ -20,24 +20,9 @@ module Rectangle =
 module RectangleBuilders =
     type Fabulous.Maui.View with
 
-        /// <summary>Create a Rectangle widget with a stroke thickness and a stroke brush</summary>
-        /// <param name="strokeThickness">The stroke thickness value</param>
-        /// <param name="stroke">The stroke brush value</param>
-        static member inline Rectangle<'msg>(strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabRectangle>(Rectangle.WidgetKey, Shape.StrokeThickness.WithValue(strokeThickness), Shape.Stroke.WithValue(stroke))
-
-        /// <summary>Create a Rectangle widget with a stroke thickness and a stroke brush</summary>
-        /// <param name="strokeThickness">The stroke thickness value</param>
-        /// <param name="stroke">The stroke brush value</param>
-        static member inline Rectangle(strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
-            WidgetBuilder<'msg, IFabRectangle>(
-                Rectangle.WidgetKey,
-                AttributesBundle(
-                    StackList.one(Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
-            )
+        /// <summary>Create a Rectangle widget</summary>
+        static member inline Rectangle() =
+            WidgetBuilder<'msg, IFabRectangle>(Rectangle.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
 
 [<Extension>]
 type RectangleModifiers =

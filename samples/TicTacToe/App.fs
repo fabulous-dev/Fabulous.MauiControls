@@ -199,13 +199,13 @@ module App =
                             | AppTheme.Dark -> Controls.SolidColorBrush(Colors.White)
                             | _ -> Controls.SolidColorBrush(Colors.Black)
 
-                        Rectangle(5., gridColor).gridRow(1).gridColumnSpan(5)
+                        Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(1).gridColumnSpan(5)
 
-                        Rectangle(5., gridColor).gridRow(3).gridColumnSpan(5)
+                        Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(3).gridColumnSpan(5)
 
-                        Rectangle(5., gridColor).gridColumn(1).gridRowSpan(5)
+                        Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(1).gridRowSpan(5)
 
-                        Rectangle(5., gridColor).gridColumn(3).gridRowSpan(5)
+                        Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(3).gridRowSpan(5)
 
                         for row, col as pos in positions do
                             if canPlay model model.Board.[pos] then

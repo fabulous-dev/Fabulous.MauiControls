@@ -36,30 +36,8 @@ module LineBuilders =
         /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Line<'msg>(startPoint: Point, endPoint: Point, strokeThickness: float, stroke: Brush) =
-            WidgetBuilder<'msg, IFabLine>(
-                Line.WidgetKey,
-                Line.Points.WithValue(struct (startPoint, endPoint)),
-                Shape.StrokeThickness.WithValue(strokeThickness),
-                Shape.Stroke.WithValue(stroke)
-            )
-
-        /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
-        /// <param name="startPoint">The start point</param>
-        /// <param name="endPoint">The end point</param>
-        /// <param name="strokeThickness">The stroke thickness</param>
-        /// <param name="stroke">The stroke brush</param>
-        static member inline Line(startPoint: Point, endPoint: Point, strokeThickness: float, stroke: WidgetBuilder<'msg, #IFabBrush>) =
-            WidgetBuilder<'msg, IFabLine>(
-                Line.WidgetKey,
-                AttributesBundle(
-                    StackList.two(Line.Points.WithValue(struct (startPoint, endPoint)), Shape.StrokeThickness.WithValue(strokeThickness)),
-                    ValueSome [| Shape.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
-            )
+        static member inline Line<'msg>(startPoint: Point, endPoint: Point) =
+            WidgetBuilder<'msg, IFabLine>(Line.WidgetKey, Line.Points.WithValue(struct (startPoint, endPoint)))
 
 [<Extension>]
 type LineModifiers =
