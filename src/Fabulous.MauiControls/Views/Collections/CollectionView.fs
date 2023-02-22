@@ -61,7 +61,11 @@ module CollectionViewBuilders =
         /// <summary>Create a CollectionView widget with a list of items</summary>
         /// <param name="items">The items list</param>
         /// <param name="template">The template to use for each item</param>
-        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>, template: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
+        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>
+            (
+                items: seq<'itemData>,
+                template: 'itemData -> WidgetBuilder<'msg, 'itemMarker>
+            ) =
             WidgetHelpers.buildItems<'msg, IFabCollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items template
 
         /// <summary>Create a CollectionView widget with a list of grouped items</summary>

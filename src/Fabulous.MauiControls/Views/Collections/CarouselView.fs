@@ -80,8 +80,13 @@ module CarouselViewBuilders =
 
         /// <summary>Create a CarouselView widget with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
-            WidgetHelpers.buildItems<'msg, IFabCarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items
+        /// <param name="template">The template to use for each item</param>
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>
+            (
+                items: seq<'itemData>,
+                template: 'itemData -> WidgetBuilder<'msg, 'itemMarker>
+            ) =
+            WidgetHelpers.buildItems<'msg, IFabCarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items template
 
 [<Extension>]
 type CarouselViewModifiers =

@@ -36,14 +36,18 @@ module CollectionView =
         match msg with
         | SelectedChanged args ->
             let selection =
-                args.CurrentSelection |> Seq.tryHead
-                |> Option.map (fun x -> (x :?> DataType).Name)
+                args.CurrentSelection
+                |> Seq.tryHead
+                |> Option.map(fun x -> (x :?> DataType).Name)
                 |> Option.defaultValue ""
-            { model with CurrentSelection = selection }
+
+            { model with
+                CurrentSelection = selection }
 
     let view model =
-        VStack(){
+        VStack() {
             Label($"Current selection: {model.CurrentSelection}")
+
             CollectionView(model.SampleData, (fun x -> Label($"{x.Name} ({x.Species})")))
                 .selectionMode(SelectionMode.Single)
                 .itemSizingStrategy(ItemSizingStrategy.MeasureAllItems)

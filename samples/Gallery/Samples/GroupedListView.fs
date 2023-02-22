@@ -30,7 +30,8 @@ module GroupedListView =
                           $"Header {i}",
                           [ { FirstName = "John"; LastName = "Doe" }
                             { FirstName = "Jane"; LastName = "Doe" }
-                            { FirstName = "John"; LastName = "Smith" } ]
+                            { FirstName = "John"
+                              LastName = "Smith" } ]
                       ) ]
             ) }
 

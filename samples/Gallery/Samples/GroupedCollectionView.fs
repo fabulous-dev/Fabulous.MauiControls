@@ -13,8 +13,8 @@ module GroupedCollectionView =
 
     type ContactGroup(header: string, contacts: Contact list, footer: string) =
         inherit ObservableCollection<Contact>(contacts)
-        member _.Header = header        
-        member _.Footer = footer  
+        member _.Header = header
+        member _.Footer = footer
 
     type Model =
         { Contacts: Contact list
@@ -31,7 +31,8 @@ module GroupedCollectionView =
                           $"Header {i}",
                           [ { FirstName = "John"; LastName = "Doe" }
                             { FirstName = "Pepe"; LastName = "Doe" }
-                            { FirstName = "Julia"; LastName = "Smith" } ],
+                            { FirstName = "Julia"
+                              LastName = "Smith" } ],
                           $"Footer {i}"
                       ) ]
             ) }
@@ -48,7 +49,7 @@ module GroupedCollectionView =
             (fun group -> Label($"{group.Footer}").font(attributes = FontAttributes.Bold)))
             .selectionMode(SelectionMode.Multiple)
             .itemSizingStrategy(ItemSizingStrategy.MeasureAllItems)
-          
+
     let sample =
         { Name = "GroupedCollectionView"
           Description = "A collection view that groups items"

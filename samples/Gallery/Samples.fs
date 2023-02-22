@@ -15,4 +15,5 @@ module RegisteredSamples =
           ListView.sample
           GroupedListView.sample
           CollectionView.sample
-          GroupedCollectionView.sample ]
+          GroupedCollectionView.sample
+          CarouselView.sample ]

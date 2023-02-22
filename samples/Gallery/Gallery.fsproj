@@ -56,6 +56,7 @@
     <Compile Include="Samples\Label.fs" />
     <Compile Include="Samples\ThemeAware.fs" />
     <Compile Include="Samples\ListView.fs" />
+    <Compile Include="Samples\CarouselView.fs" />
     <Compile Include="Samples\CollectionView.fs" />
     <Compile Include="Samples\GroupedListView.fs" />
     <Compile Include="Samples\GroupedCollectionView.fs" />
