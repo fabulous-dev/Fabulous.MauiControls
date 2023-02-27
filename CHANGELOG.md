@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.4.0] - 2023-02-27
+
 ### Added
 - Add Border constructor taking only a content widget by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
 - Add Border stroke modifiers by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
