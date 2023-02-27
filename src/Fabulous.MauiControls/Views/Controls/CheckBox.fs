@@ -11,9 +11,7 @@ type IFabCheckBox =
 module CheckBox =
     let WidgetKey = Widgets.register<CheckBox>()
 
-    let Color = Attributes.defineBindableWithEquality CheckBox.ColorProperty
-
-    let FabColor = Attributes.defineBindableColor CheckBox.ColorProperty
+    let Color = Attributes.defineBindableColor CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
@@ -39,13 +37,6 @@ type CheckBoxModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #IFabCheckBox>, value: Color) =
         this.AddScalar(CheckBox.Color.WithValue(value))
-
-    /// <summary>Set the color of the check box</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the check box</param>
-    [<Extension>]
-    static member inline color(this: WidgetBuilder<'msg, #IFabCheckBox>, value: FabColor) =
-        this.AddScalar(CheckBox.FabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct CheckBox control instance</summary>
     /// <param name="this">Current widget</param>

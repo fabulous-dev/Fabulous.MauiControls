@@ -11,9 +11,7 @@ type IFabBoxView =
 module BoxView =
     let WidgetKey = Widgets.register<BoxView>()
 
-    let Color = Attributes.defineBindableWithEquality BoxView.ColorProperty
-
-    let FabColor = Attributes.defineBindableColor BoxView.ColorProperty
+    let Color = Attributes.defineBindableColor BoxView.ColorProperty
 
     let CornerRadius = Attributes.defineBindableFloat BoxView.CornerRadiusProperty
 
@@ -25,11 +23,6 @@ module BoxViewBuilders =
         /// <param name="color">The color value</param>
         static member inline BoxView<'msg>(color: Color) =
             WidgetBuilder<'msg, IFabBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(color))
-
-        /// <summary>Create a BoxView widget with a color</summary>
-        /// <param name="color">The color value</param>
-        static member inline BoxView<'msg>(color: FabColor) =
-            WidgetBuilder<'msg, IFabBoxView>(BoxView.WidgetKey, BoxView.FabColor.WithValue(color))
 
 [<Extension>]
 type BoxViewModifiers =

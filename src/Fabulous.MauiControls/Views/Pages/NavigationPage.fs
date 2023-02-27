@@ -269,16 +269,10 @@ module NavigationPage =
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty
 
-    let BarBackgroundFabColor =
-        Attributes.defineBindableSolidBrushColor NavigationPage.BarBackgroundProperty
-
     let BarBackgroundWidget =
         Attributes.defineBindableWidget NavigationPage.BarBackgroundProperty
 
     let BarTextColor =
-        Attributes.defineBindableWithEquality NavigationPage.BarTextColorProperty
-
-    let BarTextFabColor =
         Attributes.defineBindableColor NavigationPage.BarTextColorProperty
 
     let Pages =
@@ -297,10 +291,7 @@ module NavigationPageAttached =
     let HasNavigationBar =
         Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
 
-    let IconColor =
-        Attributes.defineBindableWithEquality NavigationPage.IconColorProperty
-
-    let IconFabColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
+    let IconColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
 
     let TitleIconImageSource =
         Attributes.defineBindableWithEquality NavigationPage.TitleIconImageSourceProperty
@@ -360,13 +351,6 @@ type NavigationPageModifiers =
 
     /// <summary>Set the background color of the bar</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="value">The background color value</param>
-    [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: FabColor) =
-        this.AddScalar(NavigationPage.BarBackgroundFabColor.WithValue(value))
-
-    /// <summary>Set the background color of the bar</summary>
-    /// <param name="this">Current widget</param>
     /// <param name="content">The background color value</param>
     [<Extension>]
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, content: WidgetBuilder<'msg, #IFabBrush>) =
@@ -378,13 +362,6 @@ type NavigationPageModifiers =
     [<Extension>]
     static member inline barTextColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: Color) =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(value))
-
-    /// <summary>Set the text color of the bar</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color value</param>
-    [<Extension>]
-    static member inline barTextColor(this: WidgetBuilder<'msg, #IFabNavigationPage>, value: FabColor) =
-        this.AddScalar(NavigationPage.BarTextFabColor.WithValue(value))
 
     /// <summary>Listen to the user pressing the system back button. Doesn't support the iOS back button</summary>
     /// <param name="this">Current widget</param>
@@ -437,13 +414,6 @@ type NavigationPageAttachedModifiers =
     [<Extension>]
     static member inline iconColor(this: WidgetBuilder<'msg, #IFabPage>, value: Color) =
         this.AddScalar(NavigationPageAttached.IconColor.WithValue(value))
-
-    /// <summary>Set the color of the page icon</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name= "value">The color of the page icon</param>
-    [<Extension>]
-    static member inline iconColor(this: WidgetBuilder<'msg, #IFabPage>, value: FabColor) =
-        this.AddScalar(NavigationPageAttached.IconFabColor.WithValue(value))
 
     /// <summary>Set the image source of the title icon</summary>
     /// <param name="this">Current widget</param>

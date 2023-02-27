@@ -17,10 +17,7 @@ module ImageButton =
     let Aspect =
         Attributes.defineBindableEnum<Microsoft.Maui.Aspect> ImageButton.AspectProperty
 
-    let BorderColor =
-        Attributes.defineBindableWithEquality ImageButton.BorderColorProperty
-
-    let BorderFabColor = Attributes.defineBindableColor ImageButton.BorderColorProperty
+    let BorderColor = Attributes.defineBindableColor ImageButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 
@@ -115,13 +112,6 @@ type ImageButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabImageButton>, value: Color) =
         this.AddScalar(ImageButton.BorderColor.WithValue(value))
-
-    /// <summary>Set the color of the image button border</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the image button border</param>
-    [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IFabImageButton>, value: FabColor) =
-        this.AddScalar(ImageButton.BorderFabColor.WithValue(value))
 
     /// <summary>Set the width of the image button border</summary>
     /// <param name="this">Current widget</param>

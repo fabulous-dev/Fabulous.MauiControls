@@ -14,11 +14,7 @@ module RefreshView =
 
     let IsRefreshing = Attributes.defineBindableBool RefreshView.IsRefreshingProperty
 
-    let RefreshColor =
-        Attributes.defineBindableWithEquality RefreshView.RefreshColorProperty
-
-    let RefreshFabColor =
-        Attributes.defineBindableColor RefreshView.RefreshColorProperty
+    let RefreshColor = Attributes.defineBindableColor RefreshView.RefreshColorProperty
 
     let Refreshing =
         Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
@@ -49,13 +45,6 @@ type RefreshViewModifiers =
     [<Extension>]
     static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: Color) =
         this.AddScalar(RefreshView.RefreshColor.WithValue(value))
-
-    /// <summary>Set the color of the refresh indicator</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the refresh indicator</param>
-    [<Extension>]
-    static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: FabColor) =
-        this.AddScalar(RefreshView.RefreshFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RefreshView control instance</summary>
     /// <param name="this">Current widget</param>

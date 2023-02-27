@@ -71,15 +71,11 @@ module Picker =
         Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
             (target :?> FabPicker).CustomSelectedIndexChanged)
 
-    let TextColor = Attributes.defineBindableWithEquality Picker.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor Picker.TextColorProperty
+    let TextColor = Attributes.defineBindableColor Picker.TextColorProperty
 
     let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
-    let TitleColor = Attributes.defineBindableWithEquality Picker.TitleColorProperty
-
-    let TitleFabColor = Attributes.defineBindableColor Picker.TitleColorProperty
+    let TitleColor = Attributes.defineBindableColor Picker.TitleColorProperty
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
@@ -170,13 +166,6 @@ type PickerModifiers =
     static member inline textColor(this: WidgetBuilder<'msg, #IFabPicker>, value: Color) =
         this.AddScalar(Picker.TextColor.WithValue(value))
 
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabPicker>, value: FabColor) =
-        this.AddScalar(Picker.TextFabColor.WithValue(value))
-
     /// <summary>Set the title of the picker</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The title value</param>
@@ -190,13 +179,6 @@ type PickerModifiers =
     [<Extension>]
     static member inline titleColor(this: WidgetBuilder<'msg, #IFabPicker>, value: Color) =
         this.AddScalar(Picker.TitleColor.WithValue(value))
-
-    /// <summary>Set the color of the title</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the title</param>
-    [<Extension>]
-    static member inline titleColor(this: WidgetBuilder<'msg, #IFabPicker>, value: FabColor) =
-        this.AddScalar(Picker.TitleFabColor.WithValue(value))
 
     /// <summary>Set the vertical text alignment</summary>
     /// <param name="this">Current widget</param>

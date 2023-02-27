@@ -13,10 +13,7 @@ type IFabRadioButton =
 module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
-    let BorderColor =
-        Attributes.defineBindableWithEquality RadioButton.BorderColorProperty
-
-    let BorderFabColor = Attributes.defineBindableColor RadioButton.BorderColorProperty
+    let BorderColor = Attributes.defineBindableColor RadioButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat RadioButton.BorderWidthProperty
 
@@ -47,9 +44,7 @@ module RadioButton =
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent "RadioButton_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
 
-    let TextColor = Attributes.defineBindableWithEquality RadioButton.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor RadioButton.TextColorProperty
+    let TextColor = Attributes.defineBindableColor RadioButton.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
@@ -95,13 +90,6 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabRadioButton>, value: Color) =
         this.AddScalar(RadioButton.BorderColor.WithValue(value))
-
-    /// <summary>Set the border color of the radio button</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The border color of the radio button</param>
-    [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IFabRadioButton>, value: FabColor) =
-        this.AddScalar(RadioButton.BorderFabColor.WithValue(value))
 
     /// <summary>Set the border width of the radio button.</summary>
     /// <param name="this">Current widget</param>
@@ -173,13 +161,6 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabRadioButton>, value: Color) =
         this.AddScalar(RadioButton.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabRadioButton>, value: FabColor) =
-        this.AddScalar(RadioButton.TextFabColor.WithValue(value))
 
     /// <summary>Set the transformation of the text</summary>
     /// <param name="this">Current widget</param>

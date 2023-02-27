@@ -14,9 +14,6 @@ module IndicatorView =
     let HideSingle = Attributes.defineBindableBool IndicatorView.HideSingleProperty
 
     let IndicatorColor =
-        Attributes.defineBindableWithEquality IndicatorView.IndicatorColorProperty
-
-    let IndicatorFabColor =
         Attributes.defineBindableColor IndicatorView.IndicatorColorProperty
 
     let IndicatorsShape =
@@ -39,9 +36,6 @@ module IndicatorView =
         Attributes.defineBindableInt IndicatorView.MaximumVisibleProperty
 
     let SelectedIndicatorColor =
-        Attributes.defineBindableWithEquality IndicatorView.SelectedIndicatorColorProperty
-
-    let SelectedIndicatorFabColor =
         Attributes.defineBindableColor IndicatorView.SelectedIndicatorColorProperty
 
 [<AutoOpen>]
@@ -67,13 +61,6 @@ type IndicatorViewModifiers =
     [<Extension>]
     static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: Color) =
         this.AddScalar(IndicatorView.IndicatorColor.WithValue(value))
-
-    /// <summary>Set the indicator color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the indicator</param>
-    [<Extension>]
-    static member inline indicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: FabColor) =
-        this.AddScalar(IndicatorView.IndicatorFabColor.WithValue(value))
 
     /// <summary>Set the indicator shape</summary>
     /// <param name="this">Current widget</param>
@@ -102,10 +89,3 @@ type IndicatorViewModifiers =
     [<Extension>]
     static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: Color) =
         this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(value))
-
-    /// <summary>Set the selected indicator color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the indicator</param>
-    [<Extension>]
-    static member inline selectedIndicatorColor(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: FabColor) =
-        this.AddScalar(IndicatorView.SelectedIndicatorFabColor.WithValue(value))

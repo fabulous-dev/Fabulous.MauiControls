@@ -38,23 +38,15 @@ module Slider =
         Attributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
 
     let MaximumTrackColor =
-        Attributes.defineBindableWithEquality Slider.MaximumTrackColorProperty
-
-    let MaximumTrackFabColor =
         Attributes.defineBindableColor Slider.MaximumTrackColorProperty
 
     let MinimumMaximum =
         Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" SliderUpdaters.updateSliderMinMax
 
     let MinimumTrackColor =
-        Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
+        Attributes.defineBindableColor Slider.MinimumTrackColorProperty
 
-    let MinimumTrackFabColor =
-        Attributes.defineBindableWithEquality Slider.MinimumTrackColorProperty
-
-    let ThumbColor = Attributes.defineBindableWithEquality Slider.ThumbColorProperty
-
-    let ThumbFabColor = Attributes.defineBindableColor Slider.ThumbColorProperty
+    let ThumbColor = Attributes.defineBindableColor Slider.ThumbColorProperty
 
     let ThumbImageSource =
         Attributes.defineBindableWithEquality Slider.ThumbImageSourceProperty
@@ -101,13 +93,6 @@ type SliderModifiers =
     static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.MaximumTrackColor.WithValue(value))
 
-    /// <summary>Set the color of the maximum track</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the maximum track</param>
-    [<Extension>]
-    static member inline maximumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
-        this.AddScalar(Slider.MaximumTrackFabColor.WithValue(value))
-
     /// <summary>Set the color of the minimum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the minimum track</param>
@@ -115,26 +100,12 @@ type SliderModifiers =
     static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.MinimumTrackColor.WithValue(value))
 
-    /// <summary>Set the color of the minimum track</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the minimum track</param>
-    [<Extension>]
-    static member inline minimumTrackColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
-        this.AddScalar(Slider.MinimumTrackFabColor.WithValue(value))
-
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>
     [<Extension>]
     static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, value: Color) =
         this.AddScalar(Slider.ThumbColor.WithValue(value))
-
-    /// <summary>Set the color of the thumb</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the thumb</param>
-    [<Extension>]
-    static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSlider>, value: FabColor) =
-        this.AddScalar(Slider.ThumbFabColor.WithValue(value))
 
     /// <summary>Set the image source of the thumb</summary>
     /// <param name="this">Current widget</param>

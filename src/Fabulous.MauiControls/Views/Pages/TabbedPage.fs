@@ -13,20 +13,11 @@ module TabbedPage =
     let WidgetKey = Widgets.register<TabbedPage>()
 
     let BarBackgroundColor =
-        Attributes.defineBindableWithEquality TabbedPage.BarBackgroundColorProperty
-
-    let BarBackgroundFabColor =
         Attributes.defineBindableColor TabbedPage.BarBackgroundColorProperty
 
-    let BarTextColor =
-        Attributes.defineBindableWithEquality TabbedPage.BarTextColorProperty
-
-    let BarTextFabColor = Attributes.defineBindableColor TabbedPage.BarTextColorProperty
+    let BarTextColor = Attributes.defineBindableColor TabbedPage.BarTextColorProperty
 
     let SelectedTabColor =
-        Attributes.defineBindableWithEquality TabbedPage.SelectedTabColorProperty
-
-    let SelectedTabFabColor =
         Attributes.defineBindableColor TabbedPage.SelectedTabColorProperty
 
     let ToolbarPlacement =
@@ -41,9 +32,6 @@ module TabbedPage =
             AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
 
     let UnselectedTabColor =
-        Attributes.defineBindableWithEquality TabbedPage.UnselectedTabColorProperty
-
-    let UnselectedTabFabColor =
         Attributes.defineBindableColor TabbedPage.UnselectedTabColorProperty
 
 [<AutoOpen>]
@@ -63,26 +51,12 @@ type TabbedPageModifiers =
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: Color) =
         this.AddScalar(TabbedPage.BarBackgroundColor.WithValue(value))
 
-    /// <summary>Set the background color of the bar</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The background color of the bar</param>
-    [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: FabColor) =
-        this.AddScalar(TabbedPage.BarBackgroundFabColor.WithValue(value))
-
     /// <summary>Set the text color of the bar</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The text color of the bar</param>
     [<Extension>]
     static member inline barTextColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: Color) =
         this.AddScalar(TabbedPage.BarTextColor.WithValue(value))
-
-    /// <summary>Set the text color of the bar</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The text color of the bar</param>
-    [<Extension>]
-    static member inline barTextColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: FabColor) =
-        this.AddScalar(TabbedPage.BarTextFabColor.WithValue(value))
 
     /// <summary>Set the color of the selected tab</summary>
     /// <param name="this">Current widget</param>
@@ -91,26 +65,12 @@ type TabbedPageModifiers =
     static member inline selectedTabColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: Color) =
         this.AddScalar(TabbedPage.SelectedTabColor.WithValue(value))
 
-    /// <summary>Set the color of the selected tab</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the selected tab</param>
-    [<Extension>]
-    static member inline selectedTabColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: FabColor) =
-        this.AddScalar(TabbedPage.SelectedTabFabColor.WithValue(value))
-
     /// <summary>Set the color of the unselected tab</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the unselected tab</param>
     [<Extension>]
     static member inline unselectedTabColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: Color) =
         this.AddScalar(TabbedPage.UnselectedTabColor.WithValue(value))
-
-    /// <summary>Set the color of the unselected tab</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the unselected tab</param>
-    [<Extension>]
-    static member inline unselectedTabColor(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: FabColor) =
-        this.AddScalar(TabbedPage.UnselectedTabFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct TabbedPage control instance</summary>
     /// <param name="this">Current widget</param>

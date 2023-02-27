@@ -13,10 +13,7 @@ type IFabSpan =
 module Span =
     let WidgetKey = Widgets.register<Span>()
 
-    let BackgroundColor =
-        Attributes.defineBindableWithEquality Span.BackgroundColorProperty
-
-    let BackgroundFabColor = Attributes.defineBindableColor Span.BackgroundColorProperty
+    let BackgroundColor = Attributes.defineBindableColor Span.BackgroundColorProperty
 
     let CharacterSpacing = Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
@@ -36,9 +33,7 @@ module Span =
 
     let LineHeight = Attributes.defineBindableFloat Span.LineHeightProperty
 
-    let TextColor = Attributes.defineBindableWithEquality Span.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor Span.TextColorProperty
+    let TextColor = Attributes.defineBindableColor Span.TextColorProperty
 
     let Text = Attributes.defineBindableWithEquality<string> Span.TextProperty
 
@@ -65,13 +60,6 @@ type SpanModifiers =
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSpan>, value: Color) =
         this.AddScalar(Span.BackgroundColor.WithValue(value))
-
-    /// <summary>Set the background color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The background color</param>
-    [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSpan>, value: FabColor) =
-        this.AddScalar(Span.BackgroundFabColor.WithValue(value))
 
     /// <summary>Set the character spacing</summary>
     /// <param name="this">Current widget</param>
@@ -128,13 +116,6 @@ type SpanModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabSpan>, value: Color) =
         this.AddScalar(Span.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabSpan>, value: FabColor) =
-        this.AddScalar(Span.TextFabColor.WithValue(value))
 
     /// <summary>Set the decorations of the text</summary>
     /// <param name="this">Current widget</param>

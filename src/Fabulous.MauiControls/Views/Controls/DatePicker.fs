@@ -38,9 +38,7 @@ module DatePicker =
     let MinimumDate =
         Attributes.defineBindableWithEquality<DateTime> DatePicker.MinimumDateProperty
 
-    let TextColor = Attributes.defineBindableWithEquality DatePicker.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor DatePicker.TextColorProperty
+    let TextColor = Attributes.defineBindableColor DatePicker.TextColorProperty
 
 module DatePickerPlatform =
     let UpdateMode =
@@ -139,13 +137,6 @@ type DatePickerModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabDatePicker>, value: Color) =
         this.AddScalar(DatePicker.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabDatePicker>, value: FabColor) =
-        this.AddScalar(DatePicker.TextFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
     /// <param name="this">Current widget</param>

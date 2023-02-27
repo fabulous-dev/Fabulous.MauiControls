@@ -14,9 +14,7 @@ type IFabButton =
 module Button =
     let WidgetKey = Widgets.register<Button>()
 
-    let BorderColor = Attributes.defineBindableWithEquality Button.BorderColorProperty
-
-    let BorderFabColor = Attributes.defineBindableColor Button.BorderColorProperty
+    let BorderColor = Attributes.defineBindableColor Button.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat Button.BorderWidthProperty
 
@@ -59,9 +57,7 @@ module Button =
 
     let Text = Attributes.defineBindableWithEquality<string> Button.TextProperty
 
-    let TextColor = Attributes.defineBindableWithEquality Button.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor Button.TextColorProperty
+    let TextColor = Attributes.defineBindableColor Button.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Button.TextTransformProperty
@@ -84,13 +80,6 @@ type ButtonModifiers =
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
         this.AddScalar(Button.BorderColor.WithValue(value))
-
-    /// <summary>Set the border color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The border color</param>
-    [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IFabButton>, value: FabColor) =
-        this.AddScalar(Button.BorderFabColor.WithValue(value))
 
     /// <summary>Set the character spacing</summary>
     /// <param name="this">Current widget</param>
@@ -203,13 +192,6 @@ type ButtonModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: Color) =
         this.AddScalar(Button.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabButton>, value: FabColor) =
-        this.AddScalar(Button.TextFabColor.WithValue(value))
 
     /// <summary>Set the transformation of the text</summary>
     /// <param name="this">Current widget</param>
