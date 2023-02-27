@@ -77,28 +77,12 @@ module Border =
 module BorderBuilders =
     type Fabulous.Maui.View with
 
-        /// <summary>Create a Border widget, a stroke color and a content widget</summary>
-        /// <param name="stroke">The color of the stroke</param>
+        /// <summary>Create a Border widget with a content widget</summary>
         /// <param name="content">The content widget</param>
-        static member inline Border(stroke: Brush, content: WidgetBuilder<'msg, #IFabView>) =
+        static member inline Border(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
-                AttributesBundle(StackList.one(Border.Stroke.WithValue(stroke)), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
-            )
-
-        /// <summary>Create a Border widget with a Rectangle shape, a stroke color and a content widget</summary>
-        /// <param name="stroke">The color of the stroke</param>
-        /// <param name="content">The content widget</param>
-        static member inline Border(stroke: WidgetBuilder<'msg, #IFabBrush>, content: WidgetBuilder<'msg, #IFabView>) =
-            WidgetBuilder<'msg, IFabBorder>(
-                Border.WidgetKey,
-                AttributesBundle(
-                    StackList.empty(),
-                    ValueSome
-                        [| Border.Content.WithValue(content.Compile())
-                           Border.StrokeWidget.WithValue(stroke.Compile()) |],
-                    ValueNone
-                )
+                AttributesBundle(StackList.empty(), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
 [<Extension>]
@@ -109,6 +93,20 @@ type BorderModifiers =
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, value: Thickness) =
         this.AddScalar(Border.Padding.WithValue(value))
+
+    /// <summary>Set the stroke brush of the border</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The brush value</param>
+    [<Extension>]
+    static member inline stroke(this: WidgetBuilder<'msg, #IFabBorder>, value: Brush) =
+        this.AddScalar(Border.Stroke.WithValue(value))
+
+    /// <summary>Set the stroke brush of the border</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The brush widget</param>
+    [<Extension>]
+    static member inline stroke(this: WidgetBuilder<'msg, #IFabBorder>, value: WidgetBuilder<'msg, #IFabBrush>) =
+        this.AddWidget(Border.StrokeWidget.WithValue(value.Compile()))
 
     /// <summary>Set the stroke dash pattern of the border</summary>
     /// <param name="this">Current widget</param>
