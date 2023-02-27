@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add Border constructor taking only a content widget by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
+- Add Border stroke modifiers by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
+
+### Changed
+- Change IndicatorView.maximumVisible and RefreshView.refreshColor to support inheritance by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/29)
 
 ### Removed
 - Remove FabColor and all related modifiers in favor of Microsoft.Maui.Graphics.Color by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/27)

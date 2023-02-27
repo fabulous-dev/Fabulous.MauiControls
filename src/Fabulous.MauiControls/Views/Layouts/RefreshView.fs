@@ -43,7 +43,7 @@ type RefreshViewModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the refresh indicator</param>
     [<Extension>]
-    static member inline refreshColor(this: WidgetBuilder<'msg, IFabRefreshView>, value: Color) =
+    static member inline refreshColor(this: WidgetBuilder<'msg, #IFabRefreshView>, value: Color) =
         this.AddScalar(RefreshView.RefreshColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RefreshView control instance</summary>
