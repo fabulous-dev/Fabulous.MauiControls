@@ -291,8 +291,7 @@ module NavigationPageAttached =
     let HasNavigationBar =
         Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
 
-    let IconColor =
-        Attributes.defineBindableColor NavigationPage.IconColorProperty
+    let IconColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
 
     let TitleIconImageSource =
         Attributes.defineBindableWithEquality NavigationPage.TitleIconImageSourceProperty

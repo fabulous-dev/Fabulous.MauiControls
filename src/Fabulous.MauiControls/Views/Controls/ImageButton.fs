@@ -17,8 +17,7 @@ module ImageButton =
     let Aspect =
         Attributes.defineBindableEnum<Microsoft.Maui.Aspect> ImageButton.AspectProperty
 
-    let BorderColor =
-        Attributes.defineBindableColor ImageButton.BorderColorProperty
+    let BorderColor = Attributes.defineBindableColor ImageButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 

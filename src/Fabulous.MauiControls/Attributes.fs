@@ -37,8 +37,8 @@ module SmallScalars =
 type SmallScalarExtensions() =
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<Microsoft.Maui.Graphics.Color>, value) =
-        this.WithValue(value, fun c -> c.ToUint() |> uint64)
-        
+        this.WithValue(value, (fun c -> c.ToUint() |> uint64))
+
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<LayoutOptions>, value) =
         this.WithValue(value, SmallScalars.LayoutOptions.encode)

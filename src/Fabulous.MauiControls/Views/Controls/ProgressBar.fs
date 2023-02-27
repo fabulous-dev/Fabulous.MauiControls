@@ -21,8 +21,7 @@ module ProgressBar =
 
     let Progress = Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
-    let ProgressColor =
-        Attributes.defineBindableColor ProgressBar.ProgressColorProperty
+    let ProgressColor = Attributes.defineBindableColor ProgressBar.ProgressColorProperty
 
 module ProgressBarAnimations =
     let ProgressTo =

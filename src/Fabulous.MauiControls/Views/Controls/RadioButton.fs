@@ -13,8 +13,7 @@ type IFabRadioButton =
 module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
-    let BorderColor =
-        Attributes.defineBindableColor RadioButton.BorderColorProperty
+    let BorderColor = Attributes.defineBindableColor RadioButton.BorderColorProperty
 
     let BorderWidth = Attributes.defineBindableFloat RadioButton.BorderWidthProperty
 

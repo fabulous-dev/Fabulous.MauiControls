@@ -77,8 +77,7 @@ module ListView =
     let SelectionMode =
         Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
 
-    let SeparatorColor =
-        Attributes.defineBindableColor ListView.SeparatorColorProperty
+    let SeparatorColor = Attributes.defineBindableColor ListView.SeparatorColorProperty
 
     let SeparatorVisibility =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty

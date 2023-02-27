@@ -14,8 +14,7 @@ module RefreshView =
 
     let IsRefreshing = Attributes.defineBindableBool RefreshView.IsRefreshingProperty
 
-    let RefreshColor =
-        Attributes.defineBindableColor RefreshView.RefreshColorProperty
+    let RefreshColor = Attributes.defineBindableColor RefreshView.RefreshColorProperty
 
     let Refreshing =
         Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)

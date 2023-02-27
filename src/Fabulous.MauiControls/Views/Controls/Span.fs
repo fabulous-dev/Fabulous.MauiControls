@@ -13,8 +13,7 @@ type IFabSpan =
 module Span =
     let WidgetKey = Widgets.register<Span>()
 
-    let BackgroundColor =
-        Attributes.defineBindableColor Span.BackgroundColorProperty
+    let BackgroundColor = Attributes.defineBindableColor Span.BackgroundColorProperty
 
     let CharacterSpacing = Attributes.defineBindableFloat Span.CharacterSpacingProperty
 

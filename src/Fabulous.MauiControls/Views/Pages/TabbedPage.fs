@@ -15,8 +15,7 @@ module TabbedPage =
     let BarBackgroundColor =
         Attributes.defineBindableColor TabbedPage.BarBackgroundColorProperty
 
-    let BarTextColor =
-        Attributes.defineBindableColor TabbedPage.BarTextColorProperty
+    let BarTextColor = Attributes.defineBindableColor TabbedPage.BarTextColorProperty
 
     let SelectedTabColor =
         Attributes.defineBindableColor TabbedPage.SelectedTabColorProperty
