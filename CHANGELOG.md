@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add Border constructor taking only a content widget by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
+
 ### Removed
 - Remove FabColor and all related modifiers in favor of Microsoft.Maui.Graphics.Color by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/27)
+- Remove Border constructors taking stroke values to align with other Shape widgets by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/28)
 
 ## [2.3.2] - 2023-02-10
 

@@ -93,7 +93,7 @@ type BorderModifiers =
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, value: Thickness) =
         this.AddScalar(Border.Padding.WithValue(value))
-         
+
     /// <summary>Set the stroke brush of the border</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The brush value</param>
