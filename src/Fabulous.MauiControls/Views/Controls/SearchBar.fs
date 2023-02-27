@@ -13,9 +13,6 @@ module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()
 
     let CancelButtonColor =
-        Attributes.defineBindableWithEquality SearchBar.CancelButtonColorProperty
-
-    let CancelButtonFabColor =
         Attributes.defineBindableColor SearchBar.CancelButtonColorProperty
 
     let CursorPosition = Attributes.defineBindableInt SearchBar.CursorPositionProperty
@@ -68,13 +65,6 @@ type SearchBarModifiers =
     [<Extension>]
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #IFabSearchBar>, value: Color) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(value))
-
-    /// <summary>Set the color of the cancel button text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the cancel button text</param>
-    [<Extension>]
-    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #IFabSearchBar>, value: FabColor) =
-        this.AddScalar(SearchBar.CancelButtonFabColor.WithValue(value))
 
     /// <summary>Set the font</summary>
     /// <param name="this">Current widget</param>

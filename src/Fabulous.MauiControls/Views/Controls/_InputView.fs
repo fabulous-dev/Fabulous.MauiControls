@@ -27,14 +27,9 @@ module InputView =
         Attributes.defineBindableWithEquality<string> InputView.PlaceholderProperty
 
     let PlaceholderColor =
-        Attributes.defineBindableWithEquality InputView.PlaceholderColorProperty
-
-    let PlaceholderFabColor =
         Attributes.defineBindableColor InputView.PlaceholderColorProperty
 
-    let TextColor = Attributes.defineBindableWithEquality InputView.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor InputView.TextColorProperty
+    let TextColor = Attributes.defineBindableColor InputView.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> InputView.TextTransformProperty
@@ -94,26 +89,12 @@ type InputViewModifiers =
     static member inline placeholderColor(this: WidgetBuilder<'msg, #IFabInputView>, value: Color) =
         this.AddScalar(InputView.PlaceholderColor.WithValue(value))
 
-    /// <summary>Set the color of the placeholder text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the placeholder text</param>
-    [<Extension>]
-    static member inline placeholderColor(this: WidgetBuilder<'msg, #IFabInputView>, value: FabColor) =
-        this.AddScalar(InputView.PlaceholderFabColor.WithValue(value))
-
     /// <summary>Sets the color of the text</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the text</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabInputView>, value: Color) =
         this.AddScalar(InputView.TextColor.WithValue(value))
-
-    /// <summary>Sets the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabInputView>, value: FabColor) =
-        this.AddScalar(InputView.TextFabColor.WithValue(value))
 
     /// <summary>Sets the transformation of the text</summary>
     /// <param name="this">Current widget</param>

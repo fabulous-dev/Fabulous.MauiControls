@@ -49,24 +49,13 @@ module Entry =
 
 module EntryPlatform =
     let CursorColor =
-        Attributes.defineSimpleScalarWithEquality<Color> "Entry_CursorColor" (fun _ newValueOpt node ->
+        Attributes.defineSmallScalar "Entry_CursorColor" (fun c -> Color.FromUint(uint c)) (fun _ newValueOpt node ->
             let entry = node.Target :?> Entry
 
             let value =
                 match newValueOpt with
                 | ValueNone -> null
                 | ValueSome x -> x
-
-            iOSSpecific.Entry.SetCursorColor(entry, value))
-
-    let CursorFabColor =
-        Attributes.defineSmallScalar<FabColor> "Entry_CursorColor" SmallScalars.FabColor.decode (fun _ newValueOpt node ->
-            let entry = node.Target :?> Entry
-
-            let value =
-                match newValueOpt with
-                | ValueNone -> null
-                | ValueSome x -> x.ToMauiColor()
 
             iOSSpecific.Entry.SetCursorColor(entry, value))
 
@@ -199,10 +188,3 @@ type EntryPlatformModifiers =
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IFabEntry>, value: Color) =
         this.AddScalar(EntryPlatform.CursorColor.WithValue(value))
-
-    /// <summary>iOS platform specific. Set the cursor color.</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The cursor color</param>
-    [<Extension>]
-    static member inline cursorColor(this: WidgetBuilder<'msg, #IFabEntry>, value: FabColor) =
-        this.AddScalar(EntryPlatform.CursorFabColor.WithValue(value))

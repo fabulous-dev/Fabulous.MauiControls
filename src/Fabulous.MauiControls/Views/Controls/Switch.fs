@@ -11,13 +11,9 @@ type IFabSwitch =
 module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
-    let ColorOn = Attributes.defineBindableWithEquality Switch.OnColorProperty
+    let ColorOn = Attributes.defineBindableColor Switch.OnColorProperty
 
-    let FabColorOn = Attributes.defineBindableColor Switch.OnColorProperty
-
-    let ThumbColor = Attributes.defineBindableWithEquality Switch.ThumbColorProperty
-
-    let ThumbFabColor = Attributes.defineBindableColor Switch.ThumbColorProperty
+    let ThumbColor = Attributes.defineBindableColor Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
         Attributes.defineBindableWithEvent "Switch_Toggled" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
@@ -44,26 +40,12 @@ type SwitchModifiers =
     static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitch>, value: Color) =
         this.AddScalar(Switch.ColorOn.WithValue(value))
 
-    /// <summary>Set the color of the on state</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the on state</param>
-    [<Extension>]
-    static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitch>, value: FabColor) =
-        this.AddScalar(Switch.FabColorOn.WithValue(value))
-
     /// <summary>Set the color of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the thumb</param>
     [<Extension>]
     static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSwitch>, value: Color) =
         this.AddScalar(Switch.ThumbColor.WithValue(value))
-
-    /// <summary>Set the color of the thumb</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the thumb</param>
-    [<Extension>]
-    static member inline thumbColor(this: WidgetBuilder<'msg, #IFabSwitch>, value: FabColor) =
-        this.AddScalar(Switch.ThumbFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Switch control instance</summary>
     /// <param name="this">Current widget</param>

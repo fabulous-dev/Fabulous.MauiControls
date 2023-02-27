@@ -37,9 +37,7 @@ module Label =
 
     let Padding = Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
 
-    let TextColor = Attributes.defineBindableWithEquality Label.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor Label.TextColorProperty
+    let TextColor = Attributes.defineBindableColor Label.TextColorProperty
 
     let TextDecorations =
         Attributes.defineBindableEnum<TextDecorations> Label.TextDecorationsProperty
@@ -149,13 +147,6 @@ type LabelModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabLabel>, value: Color) =
         this.AddScalar(Label.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabLabel>, value: FabColor) =
-        this.AddScalar(Label.TextFabColor.WithValue(value))
 
     /// <summary>Set the decorations of the text</summary>
     /// <param name="this">Current widget</param>

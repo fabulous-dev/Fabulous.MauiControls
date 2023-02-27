@@ -13,15 +13,11 @@ module TextCell =
 
     let Detail = Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
-    let DetailColor = Attributes.defineBindableWithEquality TextCell.DetailColorProperty
-
-    let DetailFabColor = Attributes.defineBindableColor TextCell.DetailColorProperty
+    let DetailColor = Attributes.defineBindableColor TextCell.DetailColorProperty
 
     let Text = Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
-    let TextColor = Attributes.defineBindableWithEquality TextCell.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor TextCell.TextColorProperty
+    let TextColor = Attributes.defineBindableColor TextCell.TextColorProperty
 
 [<AutoOpen>]
 module TextCellBuilders =
@@ -41,13 +37,6 @@ type TextCellModifiers =
     static member inline detailColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) =
         this.AddScalar(TextCell.DetailColor.WithValue(value))
 
-    /// <summary>Set the color of the detail text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the detail text</param>
-    [<Extension>]
-    static member inline detailColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: FabColor) =
-        this.AddScalar(TextCell.DetailFabColor.WithValue(value))
-
     /// <summary>Set the text of the detail text cell</summary>
     /// <param name="this">Current widget</param>
     /// <param name="text">The text of the detail text cell</param>
@@ -61,13 +50,6 @@ type TextCellModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: Color) =
         this.AddScalar(TextCell.TextColor.WithValue(value))
-
-    /// <summary>Set the text color of the widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The text color value</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabTextCell>, value: FabColor) =
-        this.AddScalar(TextCell.TextFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct TextCell control instance</summary>
     /// <param name="this">Current widget</param>

@@ -11,9 +11,7 @@ type IFabSwitchCell =
 module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
-    let OnColor = Attributes.defineBindableWithEquality SwitchCell.OnColorProperty
-
-    let OnFabColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
+    let OnColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
 
     let OnWithEvent =
         Attributes.defineBindableWithEvent "SwitchCell_OnChanged" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
@@ -43,13 +41,6 @@ type SwitchCellModifiers =
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitchCell>, value: Color) =
         this.AddScalar(SwitchCell.OnColor.WithValue(value))
-
-    /// <summary>Set the color of the on state</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the on state in the light theme.</param>
-    [<Extension>]
-    static member inline colorOn(this: WidgetBuilder<'msg, #IFabSwitchCell>, value: FabColor) =
-        this.AddScalar(SwitchCell.OnFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct SwitchCell control instance</summary>
     /// <param name="this">Current widget</param>

@@ -67,9 +67,6 @@ module ListView =
         Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
 
     let RefreshControlColor =
-        Attributes.defineBindableWithEquality ListView.RefreshControlColorProperty
-
-    let RefreshControlFabColor =
         Attributes.defineBindableColor ListView.RefreshControlColorProperty
 
     let Refreshing =
@@ -81,9 +78,6 @@ module ListView =
         Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
 
     let SeparatorColor =
-        Attributes.defineBindableWithEquality ListView.SeparatorColorProperty
-
-    let SeparatorFabColor =
         Attributes.defineBindableColor ListView.SeparatorColorProperty
 
     let SeparatorVisibility =
@@ -218,13 +212,6 @@ type ListViewModifiers =
     static member inline refreshControlColor(this: WidgetBuilder<'msg, #IFabListView>, value: Color) =
         this.AddScalar(ListView.RefreshControlColor.WithValue(value))
 
-    /// <summary>Set the refresh control color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The refresh control color</param>
-    [<Extension>]
-    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IFabListView>, value: FabColor) =
-        this.AddScalar(ListView.RefreshControlFabColor.WithValue(value))
-
     /// <summary>Set the row height</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The row height</param>
@@ -238,13 +225,6 @@ type ListViewModifiers =
     [<Extension>]
     static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, value: Color) =
         this.AddScalar(ListView.SeparatorColor.WithValue(value))
-
-    /// <summary>Set the separator color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The separator color</param>
-    [<Extension>]
-    static member inline separatorColor(this: WidgetBuilder<'msg, #IFabListView>, value: FabColor) =
-        this.AddScalar(ListView.SeparatorFabColor.WithValue(value))
 
     /// <summary>Set the separator visibility</summary>
     /// <param name="this">Current widget</param>

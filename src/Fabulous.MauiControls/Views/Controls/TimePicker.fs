@@ -51,9 +51,7 @@ module TimePicker =
 
     let Format = Attributes.defineBindableWithEquality<string> TimePicker.FormatProperty
 
-    let TextColor = Attributes.defineBindableWithEquality TimePicker.TextColorProperty
-
-    let TextFabColor = Attributes.defineBindableColor TimePicker.TextColorProperty
+    let TextColor = Attributes.defineBindableColor TimePicker.TextColorProperty
 
 module TimePickerPlatform =
     let UpdateMode =
@@ -138,13 +136,6 @@ type TimePickerModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabTimePicker>, value: Color) =
         this.AddScalar(TimePicker.TextColor.WithValue(value))
-
-    /// <summary>Set the color of the text</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the text</param>
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IFabTimePicker>, value: FabColor) =
-        this.AddScalar(TimePicker.TextFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct TimePicker control instance</summary>
     /// <param name="this">Current widget</param>

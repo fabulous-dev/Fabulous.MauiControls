@@ -44,10 +44,7 @@ module EntryCell =
 
     let Label = Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
-    let LabelColor = Attributes.defineBindableWithEquality EntryCell.LabelColorProperty
-
-    let LabelFabColor =
-        Attributes.defineBindableWithEquality EntryCell.LabelColorProperty
+    let LabelColor = Attributes.defineBindableColor EntryCell.LabelColorProperty
 
     let OnCompleted =
         Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
@@ -98,13 +95,6 @@ type EntryCellModifiers =
     [<Extension>]
     static member inline labelColor(this: WidgetBuilder<'msg, #IFabEntryCell>, value: Color) =
         this.AddScalar(EntryCell.LabelColor.WithValue(value))
-
-    /// <summary>Set the color of the label</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the label</param>
-    [<Extension>]
-    static member inline labelColor(this: WidgetBuilder<'msg, #IFabEntryCell>, value: FabColor) =
-        this.AddScalar(EntryCell.LabelFabColor.WithValue(value))
 
     /// <summary>Listen to the Completed event</summary>
     /// <param name="this">Current widget</param>

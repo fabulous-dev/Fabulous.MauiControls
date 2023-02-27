@@ -12,9 +12,6 @@ module SwipeItem =
     let WidgetKey = Widgets.register<SwipeItem>()
 
     let BackgroundColor =
-        Attributes.defineBindableWithEquality SwipeItem.BackgroundColorProperty
-
-    let BackgroundFabColor =
         Attributes.defineBindableColor SwipeItem.BackgroundColorProperty
 
     let Invoked =
@@ -39,13 +36,6 @@ type SwipeItemModifiers() =
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSwipeItem>, value: Color) =
         this.AddScalar(SwipeItem.BackgroundColor.WithValue(value))
-
-    /// <summary>Set the background color of the SwipeItem</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The background color</param>
-    [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #IFabSwipeItem>, value: FabColor) =
-        this.AddScalar(SwipeItem.BackgroundFabColor.WithValue(value))
 
     /// <summary>Set the visibility of the SwipeItem</summary>
     /// <param name="this">Current widget</param>

@@ -11,9 +11,7 @@ type IFabActivityIndicator =
 module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()
 
-    let Color = Attributes.defineBindableWithEquality ActivityIndicator.ColorProperty
-
-    let FabColor = Attributes.defineBindableColor ActivityIndicator.ColorProperty
+    let Color = Attributes.defineBindableColor ActivityIndicator.ColorProperty
 
     let IsRunning = Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 
@@ -34,13 +32,6 @@ type ActivityIndicatorModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, value: Color) =
         this.AddScalar(ActivityIndicator.Color.WithValue(value))
-
-    /// <summary>Set the activity indicator color</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the activity indicator</param>
-    [<Extension>]
-    static member inline color(this: WidgetBuilder<'msg, #IFabActivityIndicator>, value: FabColor) =
-        this.AddScalar(ActivityIndicator.FabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct ActivityIndicator control instance</summary>
     /// <param name="this">Current widget</param>

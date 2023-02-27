@@ -17,12 +17,6 @@ module ValueEventData =
 
 /// Maui.Controls specific attributes that can be encoded as 8 bytes
 module SmallScalars =
-    module FabColor =
-        let inline encode (v: FabColor) : uint64 = SmallScalars.UInt.encode v.RGBA
-
-        let inline decode (encoded: uint64) : FabColor =
-            { RGBA = SmallScalars.UInt.decode encoded }
-
     module LayoutOptions =
         let inline encode (v: LayoutOptions) : uint64 =
             let alignment = uint64 v.Alignment
@@ -42,12 +36,12 @@ module SmallScalars =
 [<Extension>]
 type SmallScalarExtensions() =
     [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<Microsoft.Maui.Graphics.Color>, value) =
+        this.WithValue(value, fun c -> c.ToUint() |> uint64)
+        
+    [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<LayoutOptions>, value) =
         this.WithValue(value, SmallScalars.LayoutOptions.encode)
-
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<FabColor>, value) =
-        this.WithValue(value, SmallScalars.FabColor.encode)
 
 module Attributes =
     /// Define an attribute for a BindableProperty
@@ -93,31 +87,14 @@ module Attributes =
     let inline defineBindableInt (bindableProperty: BindableProperty) =
         defineSmallBindable bindableProperty SmallScalars.Int.decode
 
-    /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
-    /// Note that the input type is FabColor because it is just 4 bytes
-    /// But it converts back to Microsoft.Maui.Color when a value is applied
-    /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
-    /// However, Maui.Color will be boxed and thus slower.
-    let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
-        Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
+    /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes)
+    let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<Microsoft.Maui.Graphics.Color> =
+        Attributes.defineSmallScalar bindableProperty.PropertyName (fun c -> Microsoft.Maui.Graphics.Color.FromUint(uint c)) (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
 
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, v.ToMauiColor()))
-
-    /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
-    /// Note that the input type is FabColor because it is just 4 bytes
-    /// But it converts back to Microsoft.Maui.Brush when a value is applied
-    /// Note if you want to use Microsoft.Maui.Color directly you can do that with "defineBindable".
-    /// However, Maui.Color will be boxed and thus slower.
-    let inline defineBindableSolidBrushColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
-        Attributes.defineSmallScalar<FabColor> bindableProperty.PropertyName SmallScalars.FabColor.decode (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
-
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, SolidColorBrush(v.ToMauiColor())))
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableEnum< ^T when ^T: enum<int>> (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition< ^T > =

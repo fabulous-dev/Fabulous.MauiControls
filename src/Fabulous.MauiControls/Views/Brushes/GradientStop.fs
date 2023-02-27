@@ -12,9 +12,7 @@ type IFabGradientStop =
 module GradientStop =
     let WidgetKey = Widgets.register<GradientStop>()
 
-    let Color = Attributes.defineBindableWithEquality GradientStop.ColorProperty
-
-    let FabColor = Attributes.defineBindableColor GradientStop.ColorProperty
+    let Color = Attributes.defineBindableColor GradientStop.ColorProperty
 
     let Offset = Attributes.defineBindableFloat GradientStop.OffsetProperty
 
@@ -27,12 +25,6 @@ module GradientStopBuilders =
         /// <param name="color">The color value</param>
         static member inline GradientStop(offset: float, color: Color) =
             WidgetBuilder<'msg, IFabGradientStop>(GradientStop.WidgetKey, GradientStop.Offset.WithValue(offset), GradientStop.Color.WithValue(color))
-
-        /// <summary>Create a GradientStop widget with an offset position and a color</summary>
-        /// <param name="offset">The offset value</param>
-        /// <param name="color">The color value</param>
-        static member inline GradientStop(offset: float, color: FabColor) =
-            WidgetBuilder<'msg, IFabGradientStop>(GradientStop.WidgetKey, GradientStop.Offset.WithValue(offset), GradientStop.FabColor.WithValue(color))
 
 [<Extension>]
 type GradientStopModifiers =

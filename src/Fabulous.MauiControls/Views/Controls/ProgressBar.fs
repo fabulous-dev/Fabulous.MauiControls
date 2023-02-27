@@ -22,9 +22,6 @@ module ProgressBar =
     let Progress = Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
     let ProgressColor =
-        Attributes.defineBindableWithEquality ProgressBar.ProgressColorProperty
-
-    let ProgressFabColor =
         Attributes.defineBindableColor ProgressBar.ProgressColorProperty
 
 module ProgressBarAnimations =
@@ -67,13 +64,6 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(value))
-
-    /// <summary>Set the color of the progress bar</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The color of the progress bar</param>
-    [<Extension>]
-    static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: FabColor) =
-        this.AddScalar(ProgressBar.ProgressFabColor.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
     /// <param name="this">Current widget</param>
