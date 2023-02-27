@@ -80,7 +80,7 @@ type IndicatorViewModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The maximum number of visible indicators</param>
     [<Extension>]
-    static member inline maximumVisible(this: WidgetBuilder<'msg, IFabIndicatorView>, value: int) =
+    static member inline maximumVisible(this: WidgetBuilder<'msg, #IFabIndicatorView>, value: int) =
         this.AddScalar(IndicatorView.MaximumVisible.WithValue(value))
 
     /// <summary>Set the selected indicator color</summary>
