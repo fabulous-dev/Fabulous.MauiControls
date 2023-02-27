@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Removed
+- Remove FabColor and all related modifiers in favor of Microsoft.Maui.Graphics.Color by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/27)
 
 ## [2.3.2] - 2023-02-10
 
