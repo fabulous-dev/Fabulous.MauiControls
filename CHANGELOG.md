@@ -84,7 +84,11 @@ _No unreleased changes_
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.1.3...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.4.0...HEAD
+[2.4.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.4.0
+[2.3.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.3.2
+[2.3.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.3.1
+[2.3.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.3.0
 [2.2.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.2.0
 [2.1.3]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.1.3
 [2.1.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.1.2
