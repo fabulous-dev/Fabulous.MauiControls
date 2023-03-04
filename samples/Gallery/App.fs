@@ -1,7 +1,9 @@
 namespace Gallery
 
+open Fabulous.Maui.SmallScalars
 open Microsoft.FSharp.Core
 open Fabulous.Maui
+open Microsoft.Maui.Controls
 
 open type Fabulous.Maui.View
 
@@ -42,11 +44,23 @@ module App =
 
     let view model =
         Application(
-            ContentPage(
-                match List.head model.Paths with
-                | Overview -> AnyView(Overview.view GoToSample)
-                | Sample(index, sampleModel) -> AnyView(SamplePage.view GoBack SampleMsg index sampleModel)
-            )
+            TabbedPage() {
+                ContentPage(
+                    match List.head model.Paths with
+                    | Overview -> AnyView(Overview.view GoToSample)
+                    | Sample(index, sampleModel) -> AnyView(SamplePage.view GoBack SampleMsg index sampleModel)
+                )
+                    .title("Samples")
+
+                ContentPage(
+                    VStack() {
+                        Label("Fabulous.Maui Gallery")
+                            .horizontalOptions(LayoutOptions.Center)
+                            .verticalOptions(LayoutOptions.Center)
+                    }
+                )
+                    .title("Info")
+            }
         )
 
     let program = Program.stateful init update view |> Program.withThemeAwareness
