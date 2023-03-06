@@ -10,7 +10,8 @@ module Border =
     let view () =
         VStack(spacing = 15.) {
             (VStack(16.) {
-                Border(SolidColorBrush(Colors.BlueViolet), Label("Border"))
+                Border(Label("Border"))
+                    .stroke(SolidColorBrush(Colors.BlueViolet))
                     .background(SolidColorBrush(Colors.ForestGreen))
                     .strokeThickness(2.)
                     .padding(16.)
@@ -18,27 +19,31 @@ module Border =
                 .margin(0., 16., 0., 0.)
                 .centerHorizontal()
 
-            Border(SolidColorBrush(Colors.BlueViolet), Label("Border and Background"))
+            Border(Label("Border and Background"))
+                .stroke(SolidColorBrush(Colors.BlueViolet))
                 .background(SolidColorBrush(Colors.ForestGreen))
                 .strokeThickness(4.)
                 .padding(16.)
                 .centerHorizontal()
 
-            Border(SolidColorBrush(Colors.BlueViolet), Label("Rounded Corners"))
+            Border(Label("Rounded Corners"))
+                .stroke(SolidColorBrush(Colors.BlueViolet))
                 .strokeShape(RoundRectangle(CornerRadius(8.)))
                 .strokeThickness(8.)
                 .padding(16.)
                 .centerHorizontal()
 
 
-            Border(SolidColorBrush(Colors.Magenta), Label("Rounded Corners"))
+            Border(Label("Rounded Corners"))
+                .stroke(SolidColorBrush(Colors.Magenta))
                 .background(SolidColorBrush(Colors.Green))
                 .strokeShape(RoundRectangle(CornerRadius(8.)))
                 .padding(16.)
                 .centerHorizontal()
 
 
-            Border(SolidColorBrush(Colors.Green), Image("dotnet_bot.png"))
+            Border(Image("dotnet_bot.png"))
+                .stroke(SolidColorBrush(Colors.Green))
                 .width(100.)
                 .height(100.)
                 .strokeThickness(0.)
