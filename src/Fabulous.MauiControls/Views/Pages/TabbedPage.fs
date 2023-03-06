@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 open Microsoft.Maui.Graphics
@@ -87,3 +88,13 @@ type TabbedPagePlatformModifiers =
     [<Extension>]
     static member inline toolbarPlacement(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: AndroidSpecific.ToolbarPlacement) =
         this.AddScalar(TabbedPage.ToolbarPlacement.WithValue(value))
+
+[<Extension>]
+type TabbedPageYieldExtensions =
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabTabbedPage, IFabPage>, x: WidgetBuilder<'msg, #IFabPage>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield(_: CollectionBuilder<'msg, #IFabTabbedPage, IFabPage>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabPage>>) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
