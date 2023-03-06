@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+_No unreleased changes_
+
+## [2.5.0] - 2023-03-06
 
 ### Fixed
 - Fix an issue where adding pages inside a TabbedPage was not allowed by @edgarfgp (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/30)
@@ -85,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.4.0...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.5.0...HEAD
+[2.5.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.5.0
 [2.4.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.4.0
 [2.3.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.3.2
 [2.3.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.3.1
