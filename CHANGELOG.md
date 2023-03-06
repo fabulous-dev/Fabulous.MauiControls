@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix an issue where adding pages inside a TabbedPage was not allowed by @edgarfgp (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/30)
 
+### Changed
+- `minimumDate` and `maximumDate` modifiers for DatePicker are removed in favor of mandatory min-max parameters in DatePicker constructor by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/31)
+
 ## [2.4.0] - 2023-02-27
 
 ### Added
