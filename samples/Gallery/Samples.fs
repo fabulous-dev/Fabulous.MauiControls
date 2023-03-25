@@ -10,4 +10,5 @@ module RegisteredSamples =
           ThemeAware.sample
           Border.sample
           Shadow.sample
-          Shapes.sample ]
+          Shapes.sample
+          FormattedLabel.sample ]
