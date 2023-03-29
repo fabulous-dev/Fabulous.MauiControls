@@ -52,6 +52,7 @@
     <Compile Include="Samples\Border.fs" />
     <Compile Include="Samples\Shapes.fs" />
     <Compile Include="Samples\Shadow.fs" />
+    <Compile Include="Samples\FormattedLabel.fs" />
     <Compile Include="Samples\ImageButton.fs" />
     <Compile Include="Samples\Label.fs" />
     <Compile Include="Samples\ThemeAware.fs" />
