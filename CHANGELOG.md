@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-_No unreleased changes_
+
+### Added
+- Add modifier `onAppLinkRequestReceived` to `Application` widget by @TimLariviere
 
 ## [2.5.0] - 2023-03-06
 

@@ -15,6 +15,7 @@ type FabApplication() =
     let start = Event<EventHandler, EventArgs>()
     let sleep = Event<EventHandler, EventArgs>()
     let resume = Event<EventHandler, EventArgs>()
+    let appLinkRequestReceived = Event<EventHandler<Uri>, Uri>()
 
     [<CLIEvent>]
     member _.Start = start.Publish
@@ -30,6 +31,12 @@ type FabApplication() =
     member _.Resume = resume.Publish
 
     override this.OnResume() = resume.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.AppLinkRequestReceived = appLinkRequestReceived.Publish
+
+    override this.OnAppLinkRequestReceived(uri) =
+        appLinkRequestReceived.Trigger(this, uri)
 
 module Application =
     let WidgetKey = Widgets.register<FabApplication>()
@@ -61,6 +68,9 @@ module Application =
 
     let Start =
         Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
+
+    let AppLinkRequestReceived =
+        Attributes.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
 
     let UserAppTheme =
         Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
@@ -139,6 +149,13 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, fn: AppTheme -> 'msg) =
         this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
+
+    /// <summary>Listen for the AppLinkRequestReceived event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onAppLinkRequestReceived(this: WidgetBuilder<'msg, #IFabApplication>, fn: Uri -> 'msg) =
+        this.AddScalar(Application.AppLinkRequestReceived.WithValue(fun args -> fn args |> box))
 
     /// <summary>Set the user app theme</summary>
     /// <param name="this">Current widget</param>
