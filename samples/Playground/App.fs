@@ -9,6 +9,19 @@ open Microsoft.Maui.Primitives
 
 open type Fabulous.Maui.View
 
+type KeyCodeResult =
+    | VolumeUp
+    | VolumeDown
+    | Back
+    | Unknown
+
+type IKeyCodeReceivedService =
+    [<CLIEvent>]
+    abstract KeyCodeReceived: IEvent<KeyCodeResult>
+
+module CodeReceivedService =
+    let mutable Instance: IKeyCodeReceivedService = Unchecked.defaultof<_>
+
 module App =
     type FieldFocused =
         | Entry1
@@ -21,6 +34,7 @@ module App =
         | TextChanged of string
         | FocusChanged of FieldFocused * bool
         | SetFocus of FieldFocused option
+        | FooMsg of KeyCodeResult
 
     let init () = { Focus = None }
 
@@ -34,6 +48,8 @@ module App =
                 { model with Focus = None }
 
         | SetFocus field -> { model with Focus = field }
+
+        | FooMsg keyCode -> model
 
     let focusChanged field args = FocusChanged(field, args)
 
@@ -66,4 +82,11 @@ module App =
             )
         )
 
-    let program = Program.stateful init update view
+    let codeReceivedSubscription _model =
+        Cmd.ofSub(fun dispatch ->
+            let codeReceivedService = CodeReceivedService.Instance
+            codeReceivedService.KeyCodeReceived.Add(fun code -> dispatch(FooMsg code)))
+
+    let program =
+        Program.stateful init update view
+        |> Program.withSubscription codeReceivedSubscription
