@@ -36,7 +36,13 @@
     <Compile Include="BasicNavigation\PageA.fs" />
     <Compile Include="BasicNavigation\PageB.fs" />
     <Compile Include="BasicNavigation\PageC.fs" />
-    <Compile Include="BasicNavigation\BasicNavigation.fs" />
+    <Compile Include="BasicNavigation\Sample.fs" />
+    <Compile Include="NavigationPath\NavigationTypes.fs" />
+    <Compile Include="NavigationPath\PageA.fs" />
+    <Compile Include="NavigationPath\PageB.fs" />
+    <Compile Include="NavigationPath\PageC.fs" />
+    <Compile Include="NavigationPath\NavigationState.fs" />
+    <Compile Include="NavigationPath\Sample.fs" />
     <Compile Include="App.fs" />
     <Compile Include="MauiProgram.fs" />
   </ItemGroup>

@@ -13,7 +13,7 @@ open type Fabulous.Maui.View
 /// NOTE: This approach is not using any official navigation system.
 /// Hence there is no back button, no navigation history, no animations, etc by default.
 /// Fabulous will only give the illusion of navigation by swapping the pages.
-module BasicNavigation =
+module Sample =
     [<RequireQualifiedAccess>]
     type Step =
         | PageA
