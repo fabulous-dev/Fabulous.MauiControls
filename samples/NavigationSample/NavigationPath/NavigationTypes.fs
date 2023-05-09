@@ -15,27 +15,25 @@ type NavigationPath =
 type NavigationController() =
     let navigated = Event<NavigationPath>()
     let backNavigated = Event<unit>()
-    
+
     member this.Navigated = navigated.Publish
     member this.BackNavigated = backNavigated.Publish
-    
-    member this.NavigateTo(path: NavigationPath) =
-        navigated.Trigger(path)
-        
-    member this.NavigateBack() =
-        backNavigated.Trigger()
-        
+
+    member this.NavigateTo(path: NavigationPath) = navigated.Trigger(path)
+
+    member this.NavigateBack() = backNavigated.Trigger()
+
 /// The Navigation module is a set of helper functions that will wrap the call to NavigationController into a Cmd.
 /// We do that because navigation is a side-effect and we want to keep it in a Cmd.
 module Navigation =
-    let private navigateTo (nav: NavigationController) path: Cmd<'msg> =
-        [ fun _ -> nav.NavigateTo(path) ]
+    let private navigateTo (nav: NavigationController) path : Cmd<'msg> = [ fun _ -> nav.NavigateTo(path) ]
 
-    let navigateBack (nav: NavigationController): Cmd<'msg> =
-        [ fun _ -> nav.NavigateBack() ]
-        
+    let navigateBack (nav: NavigationController) : Cmd<'msg> = [ fun _ -> nav.NavigateBack() ]
+
     let navigateToPageA nav = navigateTo nav NavigationPath.PageA
-    
-    let navigateToPageB nav initialCount = navigateTo nav (NavigationPath.PageB initialCount)
-    
-    let navigateToPageC nav someArgs stepCount = navigateTo nav (NavigationPath.PageC(someArgs, stepCount))
+
+    let navigateToPageB nav initialCount =
+        navigateTo nav (NavigationPath.PageB initialCount)
+
+    let navigateToPageC nav someArgs stepCount =
+        navigateTo nav (NavigationPath.PageC(someArgs, stepCount))

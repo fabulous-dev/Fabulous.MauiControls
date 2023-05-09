@@ -6,4 +6,5 @@
 type App() =
     inherit FSharp.Maui.WinUICompat.App()
 
-    override this.CreateMauiApp() = NavigationSample.MauiProgram.CreateMauiApp()
+    override this.CreateMauiApp() =
+        NavigationSample.MauiProgram.CreateMauiApp()

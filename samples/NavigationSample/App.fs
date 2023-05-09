@@ -22,8 +22,6 @@ module App =
             { BasicNavigationModel = m }, Cmd.map BasicNavigationMsg c
 
     let view model =
-        Application(
-            View.map BasicNavigationMsg (NavigationPath.Sample.view model.BasicNavigationModel)
-        )
+        Application(View.map BasicNavigationMsg (NavigationPath.Sample.view model.BasicNavigationModel))
 
     let program = Program.statefulWithCmd init update view
