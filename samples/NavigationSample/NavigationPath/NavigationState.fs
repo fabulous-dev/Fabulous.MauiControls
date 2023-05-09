@@ -5,6 +5,12 @@ open Fabulous.Maui
 
 open type Fabulous.Maui.View
 
+/// MVU is a very explicit but also very verbose pattern.
+/// Everything needs to be explicitly written out.
+///
+/// This NavigationState file acts as the glue between the different pages.
+/// Relying on the NavigationPath DU, we call the init, update and view functions of the different pages.
+/// Like this, everything is centralized and the root of the app doesn't have to know about the other pages.
 module NavigationState =
     type Model =
         | PageAModel of PageA.Model
@@ -48,3 +54,31 @@ module NavigationState =
         match model with
         | PageAModel model -> update nav (PageAMsg PageA.BackButtonPressed) (PageAModel model)
         | _ -> model, Cmd.none
+        
+/// The NavigationStack represents the history of the navigation.
+/// This is a simple stack of pages that the app will use to remember and display the pages needed.
+type NavigationStack =
+    { BackStack: NavigationState.Model list
+      CurrentPage: NavigationState.Model
+      ForwardStack: NavigationState.Model list }
+    
+    static member Init(model: NavigationState.Model) =
+        { BackStack = []
+          CurrentPage = model
+          ForwardStack = [] }
+    
+    member this.Push(model: NavigationState.Model) =
+        { BackStack = this.CurrentPage :: this.BackStack
+          CurrentPage = model
+          ForwardStack = [] }
+        
+    member this.Pop() =
+        match this.BackStack with
+        | [] -> this
+        | head :: tail ->
+            { BackStack = tail
+              CurrentPage = head
+              ForwardStack = [] }
+        
+    member this.UpdateCurrentPage(newPage: NavigationState.Model) =
+        { this with CurrentPage = newPage }

@@ -5,6 +5,8 @@ open Fabulous.Maui
 
 open type Fabulous.Maui.View
 
+/// Each pages are "isolated". They have their own MVU loop and own types.
+/// The only dependency they receive from outside is the NavigationController, which is passed to the update function.
 module PageA =
     type Model =
         { Count: int }
@@ -12,41 +14,40 @@ module PageA =
     type Msg =
         | Increment
         | Decrement
+        | GoBack
         | GoToPageB
         | GoToPageC
         | BackButtonPressed
         
+    /// Since the NavigationPath.PageA doesn't take arguments, the init function excepts a unit parameter.
     let init () = { Count = 0 }
 
     let update (nav: NavigationController) msg model =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }, Cmd.none
         | Decrement -> { model with Count = model.Count - 1 }, Cmd.none
+        | GoBack -> model, Navigation.navigateBack nav
         | GoToPageB -> model, Navigation.navigateToPageB nav model.Count
         | GoToPageC -> model, Navigation.navigateToPageC nav "Hello from Page A!" model.Count
         | BackButtonPressed -> { model with Count = model.Count - 1 }, Cmd.none
         
     let view model =
         ContentPage(
-            Grid(coldefs = [Star], rowdefs = [Auto; Star; Auto]) {
-                Label("Page A")
-                    .font(32.)
-                    .centerTextHorizontal()
-                    .margin(0., 0., 0., 30.)
-                
-                (VStack() {                    
+            Grid(coldefs = [Star], rowdefs = [Star; Auto]) {                
+                VStack() {
                     Label($"Count: {model.Count}")
                         .centerTextHorizontal()
                         
                     Button("Increment", Increment)
                     Button("Decrement", Decrement)
-                })
-                    .gridRow(1)
+                }
                     
                 (VStack() {
+                    Button("Go back", GoBack)
                     Button("Go to Page B", GoToPageB)
                     Button("Go to Page C", GoToPageC)
                 })
-                    .gridRow(2)
+                    .gridRow(1)
             }
         )
+            .title("Page A")

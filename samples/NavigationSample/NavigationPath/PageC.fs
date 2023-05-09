@@ -14,6 +14,7 @@ module PageC =
     type Msg =
         | Increment
         | Decrement
+        | GoBack
         | GoToPageA
         | GoToPageB
         
@@ -26,18 +27,14 @@ module PageC =
         match msg with
         | Increment -> { model with Count = model.Count + model.StepCount }, Cmd.none
         | Decrement -> { model with Count = model.Count - model.StepCount }, Cmd.none
-        | GoToPageA -> model, Navigation.navigateToPageB nav model.Count
-        | GoToPageB -> model, Navigation.navigateToPageC nav "Hello from Page A!" model.Count
+        | GoBack -> model, Navigation.navigateBack nav
+        | GoToPageA -> model, Navigation.navigateToPageA nav
+        | GoToPageB -> model, Navigation.navigateToPageB nav model.Count
         
     let view model =
         ContentPage(
-            Grid(coldefs = [Star], rowdefs = [Auto; Star; Auto]) {
-                Label("Page C")
-                    .font(32.)
-                    .centerTextHorizontal()
-                    .margin(0., 0., 0., 30.)
-                
-                (VStack() {
+            Grid(coldefs = [Star], rowdefs = [Star; Auto]) {                
+                VStack() {
                     Label($"Args: {model.Args}")
                     Label($"StepCount: {model.StepCount}")
                     
@@ -46,13 +43,14 @@ module PageC =
                         
                     Button("Increment", Increment)
                     Button("Decrement", Decrement)
-                })
-                    .gridRow(1)
+                }
                     
                 (VStack() {
+                    Button("Go back", GoBack)
                     Button("Go to Page A", GoToPageA)
                     Button("Go to Page B", GoToPageB)
                 })
-                    .gridRow(2)
+                    .gridRow(1)
             }
         )
+            .title("Page C")
