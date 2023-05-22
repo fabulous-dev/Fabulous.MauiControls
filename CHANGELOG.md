@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.6.0] - 2023-05-22
+
+### Changed
+- Update Fabulous dependency to 2.3.0 < 2.4.0 supported
+
 ## [2.5.1] - 2023-03-30
 
 ### Added
