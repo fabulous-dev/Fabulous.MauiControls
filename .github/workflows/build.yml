@@ -36,8 +36,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Use Xcode $(XCODE_VERSION)
-      run: sudo xcode-select -s $(XCODE_PATH)
+    - name: Use Xcode ${XCODE_VERSION}
+      run: sudo xcode-select -s ${XCODE_PATH}
     - name: Install dotnet workload
       run: dotnet workload install maui
     - name: Restore
