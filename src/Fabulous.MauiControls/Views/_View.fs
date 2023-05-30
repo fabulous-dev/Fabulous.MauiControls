@@ -13,12 +13,6 @@ module View' =
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> View).GestureRecognizers)
 
-    let GestureRecognizer =
-        Attributes.defineWidget
-            "GestureRecognizer"
-            ViewGestureRecognizerUpdaters.gestureRecognizerDiff
-            ViewGestureRecognizerUpdaters.gestureRecognizerUpdateNode
-
     let HorizontalOptions =
         Attributes.defineSmallBindable<LayoutOptions> View.HorizontalOptionsProperty SmallScalars.LayoutOptions.decode
 
@@ -34,13 +28,6 @@ type ViewModifiers =
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> View'.GestureRecognizers this
-
-    /// <summary>Set the gesture recognizer associated with this widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The gesture recognizer</param>
-    [<Extension>]
-    static member inline gestureRecognizer(this: WidgetBuilder<'msg, #IFabView>, value: WidgetBuilder<'msg, #IFabTapGestureRecognizer>) =
-        this.AddWidget(View'.GestureRecognizer.WithValue(value.Compile()))
 
     /// <summary>Set the LayoutOptions that define how the widget gets laid in a layout cycle</summary>
     /// <param name="this">Current widget</param>
