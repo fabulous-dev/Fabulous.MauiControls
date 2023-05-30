@@ -10,29 +10,6 @@ open Microsoft.Maui.Graphics
 type IFabSpan =
     inherit IFabElement
 
-module SpanGestureRecognizerUpdaters =
-    let gestureRecognizerDiff (diff: WidgetDiff) (node: IViewNode) =
-        let target = node.Target :?> Span
-        let gestures = target.GestureRecognizers
-
-        if gestures <> null then
-            let childViewNode = node.TreeContext.GetViewNode(gestures)
-            childViewNode.ApplyDiff(&diff)
-
-    let gestureRecognizerUpdateNode (_: Widget voption) (currOpt: Widget voption) (node: IViewNode) =
-        let target = node.Target :?> Span
-        let gestures = target.GestureRecognizers
-
-        match currOpt with
-        | ValueNone -> gestures.Clear()
-        | ValueSome widget ->
-            let struct (_, gesture) = Helpers.createViewForWidget node widget
-            let gesture = gesture :?> IGestureRecognizer
-
-            if gestures <> null then
-                gestures.Add(gesture)
-
-
 module Span =
     let WidgetKey = Widgets.register<Span>()
 
@@ -53,12 +30,6 @@ module Span =
 
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer> "Span_GestureRecognizers" (fun target -> (target :?> Span).GestureRecognizers)
-
-    let GestureRecognizer =
-        Attributes.defineWidget
-            "GestureRecognizer"
-            SpanGestureRecognizerUpdaters.gestureRecognizerDiff
-            SpanGestureRecognizerUpdaters.gestureRecognizerUpdateNode
 
     let LineHeight = Attributes.defineBindableFloat Span.LineHeightProperty
 
@@ -132,13 +103,6 @@ type SpanModifiers =
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabSpan>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> Span.GestureRecognizers this
 
-    /// <summary>Set the gesture recognizer associated with this widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The gesture recognizer</param>
-    [<Extension>]
-    static member inline gestureRecognizer(this: WidgetBuilder<'msg, #IFabSpan>, value: WidgetBuilder<'msg, #IFabTapGestureRecognizer>) =
-        this.AddWidget(Span.GestureRecognizer.WithValue(value.Compile()))
-
     /// <summary>Set the line height</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The line height</param>
@@ -191,3 +155,12 @@ type SpanYieldExtensions =
             x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
+
+[<Extension>]
+type SpanAttachedCollectionModifiers =
+    /// <summary>Set the gesture recognizer associated with this widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The gesture recognizer</param>
+    [<Extension>]
+    static member gestureRecognizer(this: WidgetBuilder<'msg, #IFabSpan>, value: WidgetBuilder<'msg, #IFabGestureRecognizer>) =
+        this.gestureRecognizers() { value }

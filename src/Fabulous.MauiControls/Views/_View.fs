@@ -9,28 +9,6 @@ open Microsoft.Maui.Controls
 type IFabView =
     inherit IFabVisualElement
 
-module ViewGestureRecognizerUpdaters =
-    let gestureRecognizerDiff (diff: WidgetDiff) (node: IViewNode) =
-        let target = node.Target :?> View
-        let gestures = target.GestureRecognizers
-
-        if gestures <> null then
-            let childViewNode = node.TreeContext.GetViewNode(gestures)
-            childViewNode.ApplyDiff(&diff)
-
-    let gestureRecognizerUpdateNode (_: Widget voption) (currOpt: Widget voption) (node: IViewNode) =
-        let target = node.Target :?> View
-        let gestures = target.GestureRecognizers
-
-        match currOpt with
-        | ValueNone -> gestures.Clear()
-        | ValueSome widget ->
-            let struct (_, gesture) = Helpers.createViewForWidget node widget
-            let gesture = gesture :?> IGestureRecognizer
-
-            if gestures <> null then
-                gestures.Add(gesture)
-
 module View' =
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> View).GestureRecognizers)
@@ -173,3 +151,12 @@ type ViewYieldExtensions =
             x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
+
+[<Extension>]
+type ViewAttachedCollectionModifiers =
+    /// <summary>Set the gesture recognizer associated with this widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The gesture recognizer</param>
+    [<Extension>]
+    static member gestureRecognizer(this: WidgetBuilder<'msg, #IFabView>, value: WidgetBuilder<'msg, #IFabGestureRecognizer>) =
+        this.gestureRecognizers() { value }
