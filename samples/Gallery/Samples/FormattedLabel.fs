@@ -19,14 +19,16 @@ module FormattedLabel =
     let update msg model =
         match msg with
         | TapCommand -> model
-        | OpenUrl s -> model
+        | OpenUrl _ -> model
 
     let view model =
         VStack(spacing = 15.) {
             (FormattedLabel() {
                 Span("Red Bold, ").textColor(Colors.Red).font(attributes = FontAttributes.Bold)
 
-                Span("default, ").font(size = 14.).gestureRecognizers() { TapGestureRecognizer(TapCommand) }
+                Span("default, ")
+                    .font(size = 14.)
+                    .gestureRecognizer(TapGestureRecognizer(TapCommand))
 
                 Span("italic small.").font(attributes = FontAttributes.Italic, size = 12.)
 
@@ -39,9 +41,8 @@ module FormattedLabel =
                 Span("here")
                     .textColor(Colors.Blue)
                     .textDecorations(TextDecorations.Underline)
-                    .gestureRecognizers() {
-                    TapGestureRecognizer(OpenUrl "https://learn.microsoft.com/dotnet/maui/")
-                }
+                    .gestureRecognizer(TapGestureRecognizer(OpenUrl "https://learn.microsoft.com/dotnet/maui/"))
+
 
                 Span(" to view .NET MAUI documentation.")
             }

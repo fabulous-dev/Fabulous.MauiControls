@@ -155,3 +155,12 @@ type SpanYieldExtensions =
             x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
+
+[<Extension>]
+type SpanAttachedCollectionModifiers =
+    /// <summary>Set the gesture recognizer associated with this widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The gesture recognizer</param>
+    [<Extension>]
+    static member gestureRecognizer(this: WidgetBuilder<'msg, #IFabSpan>, value: WidgetBuilder<'msg, #IFabGestureRecognizer>) =
+        this.gestureRecognizers() { value }
