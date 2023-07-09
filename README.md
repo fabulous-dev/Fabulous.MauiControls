@@ -51,7 +51,7 @@ dotnet new fabulous-mauicontrols -n MyApp
 
 ## Documentation
 
-The full documentation for Fabulous.MauiControls can be found at [docs.fabulous.dev/v2/maui.controls](https://docs.fabulous.dev/maui).
+The full documentation for Fabulous.MauiControls can be found at [docs.fabulous.dev/maui](https://docs.fabulous.dev/maui).
 
 Other useful links:
 - [The official Fabulous website](https://fabulous.dev)
