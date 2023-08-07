@@ -10,10 +10,12 @@ open System
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
     { Value: 'data
-      Event: 'eventArgs -> obj }
+      Event: 'eventArgs -> MsgValue }
 
 module ValueEventData =
-    let create (value: 'data) (event: 'eventArgs -> obj) = { Value = value; Event = event }
+    let create (value: 'data) (event: 'eventArgs -> 'msg) =
+        { Value = value
+          Event = event >> box >> MsgValue }
 
 /// Maui.Controls specific attributes that can be encoded as 8 bytes
 module SmallScalars =

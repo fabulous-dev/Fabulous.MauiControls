@@ -109,7 +109,7 @@ module DatePickerBuilders =
         static member inline DatePicker<'msg>(min: DateTime, max: DateTime, date: DateTime, onDateSelected: DateTime -> 'msg) =
             WidgetBuilder<'msg, IFabDatePicker>(
                 DatePicker.WidgetKey,
-                DatePicker.DateWithEvent.WithValue(ValueEventData.create (struct (min, max, date)) (fun args -> onDateSelected args.NewDate |> box))
+                DatePicker.DateWithEvent.WithValue(ValueEventData.create (struct (min, max, date)) (fun _ -> onDateSelected))
             )
 
 [<Extension>]

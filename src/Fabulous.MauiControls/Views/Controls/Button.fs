@@ -70,7 +70,7 @@ module ButtonBuilders =
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline Button<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(onClicked))
+            WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(MsgValue(onClicked)))
 
 [<Extension>]
 type ButtonModifiers =
@@ -170,14 +170,14 @@ type ButtonModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IFabButton>, msg: 'msg) =
-        this.AddScalar(Button.Pressed.WithValue(msg))
+        this.AddScalar(Button.Pressed.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Released event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IFabButton>, msg: 'msg) =
-        this.AddScalar(Button.Released.WithValue(msg))
+        this.AddScalar(Button.Released.WithValue(MsgValue(msg)))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

@@ -38,7 +38,7 @@ module SkewTransformBuilders =
         static member inline SkewTransform<'msg>(angleX: float, angleY: float, centerX: float, centerY: float) =
             WidgetBuilder<'msg, IFabSkewTransform>(
                 SkewTransform.WidgetKey,
-                SkewTransform.AnglesXY.WithValue((angleX, angleY)),
+                SkewTransform.AnglesXY.WithValue(struct (angleX, angleY)),
                 SkewTransform.CenterX.WithValue(centerX),
                 SkewTransform.CenterY.WithValue(centerY)
             )

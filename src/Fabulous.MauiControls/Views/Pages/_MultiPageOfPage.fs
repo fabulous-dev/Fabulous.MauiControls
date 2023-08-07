@@ -21,4 +21,4 @@ type MultiPageOfPageModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, msg: 'msg) =
-        this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(msg))
+        this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(MsgValue(msg)))

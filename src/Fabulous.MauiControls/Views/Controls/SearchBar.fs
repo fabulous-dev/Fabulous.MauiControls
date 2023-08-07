@@ -53,8 +53,8 @@ module SearchBarBuilders =
         static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
             WidgetBuilder<'msg, IFabSearchBar>(
                 SearchBar.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)),
-                SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed)
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun _ -> onTextChanged)),
+                SearchBar.SearchButtonPressed.WithValue(MsgValue(onSearchButtonPressed))
             )
 
 [<Extension>]

@@ -67,7 +67,7 @@ module SliderBuilders =
             WidgetBuilder<'msg, IFabSlider>(
                 Slider.WidgetKey,
                 Slider.MinimumMaximum.WithValue(struct (min, max)),
-                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box))
+                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun _ -> onValueChanged))
             )
 
 [<Extension>]
@@ -77,14 +77,14 @@ type SliderModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDragCompleted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
-        this.AddScalar(Slider.DragCompleted.WithValue(msg))
+        this.AddScalar(Slider.DragCompleted.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the DragStarted event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDragStarted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
-        this.AddScalar(Slider.DragStarted.WithValue(msg))
+        this.AddScalar(Slider.DragStarted.WithValue(MsgValue(msg)))
 
     /// <summary>Set the color of the maximum track</summary>
     /// <param name="this">Current widget</param>

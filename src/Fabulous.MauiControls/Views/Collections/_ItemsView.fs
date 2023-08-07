@@ -93,7 +93,7 @@ type ItemsViewModifiers =
     static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #IFabItemsView>, value: int, onThresholdReached: 'msg) =
         this
             .AddScalar(ItemsView.RemainingItemsThreshold.WithValue(value))
-            .AddScalar(ItemsView.RemainingItemsThresholdReached.WithValue(onThresholdReached))
+            .AddScalar(ItemsView.RemainingItemsThresholdReached.WithValue(MsgValue(onThresholdReached)))
 
     /// <summary>Set the visibility of the vertical scroll bar</summary>
     /// <param name="this">Current widget</param>

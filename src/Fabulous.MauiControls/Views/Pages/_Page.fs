@@ -73,14 +73,14 @@ type PageModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.Appearing.WithValue(msg))
+        this.AddScalar(Page.Appearing.WithValue(MsgValue(msg)))
 
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.Disappearing.WithValue(msg))
+        this.AddScalar(Page.Disappearing.WithValue(MsgValue(msg)))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>

@@ -49,10 +49,7 @@ module EditorBuilders =
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
         static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
-            WidgetBuilder<'msg, IFabEditor>(
-                Editor.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
-            )
+            WidgetBuilder<'msg, IFabEditor>(Editor.WidgetKey, InputView.TextWithEvent.WithValue(ValueEventData.create text (fun _ -> onTextChanged)))
 
 [<Extension>]
 type EditorModifiers =
@@ -125,7 +122,7 @@ type EditorModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEditor>, msg: 'msg) =
-        this.AddScalar(Editor.Completed.WithValue(msg))
+        this.AddScalar(Editor.Completed.WithValue(MsgValue(msg)))
 
     /// <summary>Set the selection length</summary>
     /// <param name="this">Current widget</param>

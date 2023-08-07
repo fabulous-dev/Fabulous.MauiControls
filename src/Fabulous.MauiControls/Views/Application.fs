@@ -127,21 +127,21 @@ type ApplicationModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Resume.WithValue(msg))
+        this.AddScalar(Application.Resume.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Start event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Start.WithValue(msg))
+        this.AddScalar(Application.Start.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Sleep event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Sleep.WithValue(msg))
+        this.AddScalar(Application.Sleep.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the RequestedThemeChanged event</summary>
     /// <param name="this">Current widget</param>

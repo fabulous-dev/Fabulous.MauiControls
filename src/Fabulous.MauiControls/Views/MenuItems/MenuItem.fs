@@ -32,7 +32,7 @@ module MenuItemBuilders =
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
         static member inline MenuItem<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(onClicked))
+            WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(MsgValue(onClicked)))
 
 [<Extension>]
 type MenuItemModifiers =
