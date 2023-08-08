@@ -37,7 +37,7 @@ module MatrixTransformBuilders =
         /// <param name="offsetX">The X component of the offset</param>
         /// <param name="offsetY">The Y component of the offset</param>
         static member inline MatrixTransform<'msg>(m11: float, m12: float, m21: float, m22: float, offsetX: float, offsetY: float) =
-            WidgetBuilder<'msg, IFabMatrixTransform>(MatrixTransform.WidgetKey, MatrixTransform.Matrix.WithValue((m11, m12, m21, m22, offsetX, offsetY)))
+            WidgetBuilder<'msg, IFabMatrixTransform>(MatrixTransform.WidgetKey, MatrixTransform.Matrix.WithValue(struct (m11, m12, m21, m22, offsetX, offsetY)))
 
 [<Extension>]
 type MatrixTransformModifiers =

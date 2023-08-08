@@ -31,7 +31,7 @@ module RefreshViewBuilders =
             WidgetBuilder<'msg, IFabRefreshView>(
                 RefreshView.WidgetKey,
                 AttributesBundle(
-                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.Refreshing.WithValue(onRefreshing)),
+                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.Refreshing.WithValue(MsgValue(onRefreshing))),
                     ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )

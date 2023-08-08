@@ -51,7 +51,11 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabImageButton>(ImageButton.WidgetKey, ImageButton.Clicked.WithValue(onClicked), ImageButton.Source.WithValue(source))
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(source)
+            )
 
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
@@ -60,7 +64,7 @@ module ImageButtonBuilders =
         static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(onClicked),
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(source),
                 ImageButton.Aspect.WithValue(aspect)
             )
@@ -153,14 +157,14 @@ type ImageButtonModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IFabImageButton>, msg: 'msg) =
-        this.AddScalar(ImageButton.Pressed.WithValue(msg))
+        this.AddScalar(ImageButton.Pressed.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Released event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IFabImageButton>, msg: 'msg) =
-        this.AddScalar(ImageButton.Released.WithValue(msg))
+        this.AddScalar(ImageButton.Released.WithValue(MsgValue(msg)))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

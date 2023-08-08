@@ -69,7 +69,7 @@ module EntryBuilders =
         static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntry>(
                 Entry.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]
@@ -150,7 +150,7 @@ type EntryModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, msg: 'msg) =
-        this.AddScalar(Entry.Completed.WithValue(msg))
+        this.AddScalar(Entry.Completed.WithValue(MsgValue(msg)))
 
     /// <summary>Set the return type of the keyboard</summary>
     /// <param name="this">Current widget</param>

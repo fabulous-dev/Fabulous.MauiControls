@@ -369,14 +369,14 @@ type NavigationPageModifiers =
     /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
     [<Extension>]
     static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabNavigationPage>, msg: 'msg) =
-        this.AddScalar(NavigationPage.BackButtonPressed.WithValue(msg))
+        this.AddScalar(NavigationPage.BackButtonPressed.WithValue(MsgValue(msg)))
 
     /// <summary>Listen to the user back navigating</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onBackNavigated(this: WidgetBuilder<'msg, #IFabNavigationPage>, msg: 'msg) =
-        this.AddScalar(NavigationPage.BackNavigated.WithValue(msg))
+        this.AddScalar(NavigationPage.BackNavigated.WithValue(MsgValue(msg)))
 
     /// <summary>Link a ViewRef to access the direct NavigationPage control instance</summary>
     /// <param name="this">Current widget</param>

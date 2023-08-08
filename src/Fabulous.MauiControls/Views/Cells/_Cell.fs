@@ -51,18 +51,18 @@ type CellModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Appearing.WithValue(msg))
+        this.AddScalar(Cell.Appearing.WithValue(MsgValue(msg)))
 
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Disappearing.WithValue(msg))
+        this.AddScalar(Cell.Disappearing.WithValue(MsgValue(msg)))
 
     /// <summary>Listen to the Tapped event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onTapped(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Tapped.WithValue(msg))
+        this.AddScalar(Cell.Tapped.WithValue(MsgValue(msg)))

@@ -75,7 +75,7 @@ module TimePickerBuilders =
         static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
             WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
-                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun args -> onTimeSelected args.NewTime |> box))
+                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
             )
 
 [<Extension>]

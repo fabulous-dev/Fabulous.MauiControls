@@ -52,7 +52,7 @@ type GraphicsViewModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCancelInteraction(this: WidgetBuilder<'msg, #IGraphicsView>, msg: 'msg) =
-        this.AddScalar(GraphicsView.CancelInteraction.WithValue(msg))
+        this.AddScalar(GraphicsView.CancelInteraction.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the DragInteraction event, with TouchEventArgs, which is raised when the GraphicsView is dragged</summary>
     /// <param name="this">Current widget</param>
@@ -66,7 +66,7 @@ type GraphicsViewModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onEndHoverInteraction(this: WidgetBuilder<'msg, #IGraphicsView>, msg: 'msg) =
-        this.AddScalar(GraphicsView.EndHoverInteraction.WithValue(msg))
+        this.AddScalar(GraphicsView.EndHoverInteraction.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the EndInteraction event, with TouchEventArgs, which is raised when the press that raised the StartInteraction event is released</summary>
     /// <param name="this">Current widget</param>

@@ -99,49 +99,49 @@ type ApplicationModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopped.WithValue(fn >> box))
+        this.AddScalar(Application.ModalPopped.WithValue(fn))
 
     /// <summary>Listen for the ModalPopping event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopping.WithValue(fn >> box))
+        this.AddScalar(Application.ModalPopping.WithValue(fn))
 
     /// <summary>Listen for the ModalPushed event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushed.WithValue(fn >> box))
+        this.AddScalar(Application.ModalPushed.WithValue(fn))
 
     /// <summary>Listen for the ModalPushing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
+        this.AddScalar(Application.ModalPushing.WithValue(fn))
 
     /// <summary>Listen for the Resume event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Resume.WithValue(msg))
+        this.AddScalar(Application.Resume.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Start event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Start.WithValue(msg))
+        this.AddScalar(Application.Start.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Sleep event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Sleep.WithValue(msg))
+        this.AddScalar(Application.Sleep.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the RequestedThemeChanged event</summary>
     /// <param name="this">Current widget</param>

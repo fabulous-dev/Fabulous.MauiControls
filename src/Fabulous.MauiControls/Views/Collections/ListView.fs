@@ -188,7 +188,7 @@ type ListViewModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onRefreshing(this: WidgetBuilder<'msg, #IFabListView>, msg: 'msg) =
-        this.AddScalar(ListView.Refreshing.WithValue(msg))
+        this.AddScalar(ListView.Refreshing.WithValue(MsgValue(msg)))
 
     /// <summary>Listen for the Scrolled event</summary>
     /// <param name="this">Current widget</param>

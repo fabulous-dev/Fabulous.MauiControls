@@ -70,7 +70,7 @@ module EntryCellBuilders =
             WidgetBuilder<'msg, IFabEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box))
+                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]
@@ -101,7 +101,7 @@ type EntryCellModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntryCell>, msg: 'msg) =
-        this.AddScalar(EntryCell.OnCompleted.WithValue(msg))
+        this.AddScalar(EntryCell.OnCompleted.WithValue(MsgValue(msg)))
 
     /// <summary>Set the placeholder text</summary>
     /// <param name="this">Current widget</param>
