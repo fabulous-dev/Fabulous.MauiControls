@@ -70,7 +70,7 @@ module EntryCellBuilders =
             WidgetBuilder<'msg, IFabEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun _ -> onTextChanged))
+                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]

@@ -52,7 +52,7 @@ type ContentPageModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
-        this.AddScalar(ContentPage.SizeAllocated.WithValue(fn >> box))
+        this.AddScalar(ContentPage.SizeAllocated.WithValue(fn))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     /// <param name="this">Current widget</param>

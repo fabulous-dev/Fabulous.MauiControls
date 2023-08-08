@@ -104,7 +104,9 @@ module PickerBuilders =
             WidgetBuilder<'msg, IFabPicker>(
                 Picker.WidgetKey,
                 Picker.ItemsSource.WithValue(Array.ofList items),
-                Picker.SelectedIndexWithEvent.WithValue(ValueEventData.create selectedIndex (fun _ -> onSelectedIndexChanged))
+                Picker.SelectedIndexWithEvent.WithValue(
+                    ValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
+                )
             )
 
 [<Extension>]

@@ -26,7 +26,10 @@ module SwitchBuilders =
         /// <param name="isToggled">The toggle state</param>
         /// <param name="onToggled">Message to dispatch</param>
         static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
-            WidgetBuilder<'msg, IFabSwitch>(Switch.WidgetKey, Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun _ -> onToggled)))
+            WidgetBuilder<'msg, IFabSwitch>(
+                Switch.WidgetKey,
+                Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
+            )
 
 [<Extension>]
 type SwitchModifiers =

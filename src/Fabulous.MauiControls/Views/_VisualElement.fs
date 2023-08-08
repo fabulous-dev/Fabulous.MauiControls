@@ -262,7 +262,7 @@ type VisualElementModifiers =
     /// <param name="onFocusChanged">Message to dispatch when the widget's focus state changes</param>
     [<Extension>]
     static member inline focus(this: WidgetBuilder<'msg, #IFabVisualElement>, value: bool, onFocusChanged: bool -> 'msg) =
-        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ValueEventData.create value (fun args -> onFocusChanged args |> box)))
+        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ValueEventData.create value onFocusChanged))
 
     /// <summary>Set the layout flow direction</summary>
     /// <param name="this">Current widget</param>

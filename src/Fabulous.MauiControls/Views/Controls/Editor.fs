@@ -49,7 +49,10 @@ module EditorBuilders =
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
         static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
-            WidgetBuilder<'msg, IFabEditor>(Editor.WidgetKey, InputView.TextWithEvent.WithValue(ValueEventData.create text (fun _ -> onTextChanged)))
+            WidgetBuilder<'msg, IFabEditor>(
+                Editor.WidgetKey,
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+            )
 
 [<Extension>]
 type EditorModifiers =

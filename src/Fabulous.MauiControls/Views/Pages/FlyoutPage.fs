@@ -74,7 +74,7 @@ type FlyoutPageModifiers =
     /// <param name="onChanged">Message to dispatch</param>
     [<Extension>]
     static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
-        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
+        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value onChanged))
 
     /// <summary>Set whether gesture is enabled to open the flyout</summary>
     /// <param name="this">Current widget</param>
@@ -88,7 +88,7 @@ type FlyoutPageModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabFlyoutPage>, fn: bool -> 'msg) =
-        this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> fn args.Handled |> box))
+        this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> fn args.Handled))
 
     /// <summary>Link a ViewRef to access the direct FlyoutPage control instance</summary>
     /// <param name="this">Current widget</param>

@@ -67,7 +67,10 @@ module EntryBuilders =
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
         static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
-            WidgetBuilder<'msg, IFabEntry>(Entry.WidgetKey, InputView.TextWithEvent.WithValue(ValueEventData.create text (fun _ -> onTextChanged)))
+            WidgetBuilder<'msg, IFabEntry>(
+                Entry.WidgetKey,
+                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+            )
 
 [<Extension>]
 type EntryModifiers =

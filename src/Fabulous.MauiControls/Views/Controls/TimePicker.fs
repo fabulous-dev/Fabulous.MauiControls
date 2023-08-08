@@ -73,7 +73,10 @@ module TimePickerBuilders =
         /// <param name="time">The selected time</param>
         /// <param name="onTimeSelected">Message to dispatch</param>
         static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
-            WidgetBuilder<'msg, IFabTimePicker>(TimePicker.WidgetKey, TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun _ -> onTimeSelected)))
+            WidgetBuilder<'msg, IFabTimePicker>(
+                TimePicker.WidgetKey,
+                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
+            )
 
 [<Extension>]
 type TimePickerModifiers =

@@ -67,7 +67,7 @@ module SliderBuilders =
             WidgetBuilder<'msg, IFabSlider>(
                 Slider.WidgetKey,
                 Slider.MinimumMaximum.WithValue(struct (min, max)),
-                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun _ -> onValueChanged))
+                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
             )
 
 [<Extension>]
