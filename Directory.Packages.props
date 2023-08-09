@@ -7,13 +7,14 @@
   <ItemGroup>
     <PackageVersion Include="Fabulous" Version="2.4.0" />
     <PackageVersion Include="FsCheck.NUnit" Version="2.16.4" />
-    <PackageVersion Include="FSharp.Android.Resource" Version="1.0.4" />
-    <PackageVersion Include="FSharp.Core" Version="7.0.0" />
+    <PackageVersion Include="FSharp.Core" Version="8.0.100-beta.23371.8" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="NUnit" Version="3.13.3" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageVersion Include="FSharp.Maui.WinUICompat" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.0-preview.7.8842" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-preview.7.8842" />
   </ItemGroup>
 
 </Project>
