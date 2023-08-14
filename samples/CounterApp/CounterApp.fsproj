@@ -93,6 +93,12 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
   </ItemGroup>
 
   <ItemGroup>
