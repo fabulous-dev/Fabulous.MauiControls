@@ -7,12 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Fixed
+- Check the focus state of the target before calling focus/unfocus by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/43)
 
 ## [2.8.0] - 2023-08-08
 
 ### Changed
-- Remove ambiguity when declaring event attributes by using MsgValue instead of obj by @edgarfgp (#42)
+- Remove ambiguity when declaring event attributes by using MsgValue instead of obj by @edgarfgp (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/42)
 
 ## [2.7.0] - 2023-06-01
 
