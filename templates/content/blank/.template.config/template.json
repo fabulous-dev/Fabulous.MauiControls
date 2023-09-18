@@ -58,7 +58,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "7.0.0"
+      "defaultValue": "8.0.100-beta.23418.2"
     },
     "FSharpMauiWinUICompatPkgVersion": {
       "type": "parameter",
@@ -70,7 +70,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "MicrosoftMauiControlsPkgVersion",
-      "defaultValue": "8.0.0-preview.7.8842"
+      "defaultValue": "8.0.0-rc.1.9171"
     }
   }
 }
