@@ -1,5 +1,7 @@
 namespace Fabulous.Maui
 
+#nowarn "0044" // Disable obsolete warnings in Fabulous.MauiControls. Please remove after deleting obsolete code.
+
 open System
 open System.IO
 open System.Runtime.CompilerServices
@@ -12,6 +14,7 @@ type IFabMenuItem =
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
 
+    [<Obsolete("MenuItem.Accelerator is obsolete in Maui and might be removed soon. Use MenuFlyoutItem.KeyboardAccelerators instead.")>]
     let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
 
     let Clicked =
@@ -40,6 +43,7 @@ type MenuItemModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The accelerator value</param>
     [<Extension>]
+    [<Obsolete("Modifier accelerator is obsolete in Maui and might be removed soon. Please use MenuFlyoutItem.keyboardAccelerators instead.")>]
     static member inline accelerator(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Accelerator) =
         this.AddScalar(MenuItem.Accelerator.WithValue(value))
 

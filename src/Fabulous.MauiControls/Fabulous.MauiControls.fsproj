@@ -45,8 +45,10 @@
     <Compile Include="Views\GestureRecognizers\DragGestureRecognizer.fs" />
     <Compile Include="Views\GestureRecognizers\DropGestureRecognizer.fs" />
     <Compile Include="Views\_View.fs" />
+    <Compile Include="Views\KeyboardAccelerator.fs" />
     <Compile Include="Views\MenuItems\MenuItem.fs" />
     <Compile Include="Views\MenuItems\ToolbarItem.fs" />
+    <Compile Include="Views\MenuItems\MenuFlyoutItem.fs" />
     <Compile Include="Views\Cells\_Cell.fs" />
     <Compile Include="Views\Cells\ViewCell.fs" />
     <Compile Include="Views\Cells\TextCell.fs" />
