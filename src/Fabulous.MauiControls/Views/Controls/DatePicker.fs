@@ -59,7 +59,7 @@ module DatePicker =
                         // Set the new event handler
                         let handler =
                             EventHandler<DateChangedEventArgs>(fun _ args ->
-                                let r = curr.Event args
+                                let (MsgValue r) = curr.Event args
                                 Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)

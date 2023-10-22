@@ -3,7 +3,6 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
-open Fabulous.Maui
 open Microsoft.Maui.Controls
 open System
 
@@ -160,7 +159,7 @@ module Attributes =
                         // Set the new event handler
                         let handler =
                             EventHandler<'args>(fun _ args ->
-                                let r = curr.Event args
+                                let (MsgValue r) = curr.Event args
                                 Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
