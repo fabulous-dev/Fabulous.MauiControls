@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.8.1] - 2023-10-22
+
 ### Fixed
 - Check the focus state of the target before calling focus/unfocus by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/43)
 - Fix crash when dispatching a message after an event occurred by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/44)
@@ -114,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.8.0...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/2.8.1...HEAD
+[2.8.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.8.1
 [2.8.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.8.0
 [2.7.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.7.0
 [2.6.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.6.0
