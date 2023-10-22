@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Check the focus state of the target before calling focus/unfocus by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/43)
+- Fix crash when dispatching a message after an event occurred by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/44)
 
 ## [2.8.0] - 2023-08-08
 
