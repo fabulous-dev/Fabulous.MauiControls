@@ -1,11 +1,6 @@
 namespace Playground
 
-open Fabulous
 open Fabulous.Maui
-open Microsoft.Maui
-open Microsoft.Maui.Graphics
-open Microsoft.Maui.Accessibility
-open Microsoft.Maui.Primitives
 
 open type Fabulous.Maui.View
 

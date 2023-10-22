@@ -39,10 +39,10 @@ module VisualElementUpdaters =
     let updateVisualElementFocus oldValueOpt (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
         let target = node.Target :?> VisualElement
 
-        let onEventName = $"Focus_On"
+        let onEventName = "Focus_On"
         let onEvent = target.Focused
 
-        let offEventName = $"Focus_Off"
+        let offEventName = "Focus_Off"
         let offEvent = target.Unfocused
 
         match newValueOpt with
@@ -59,7 +59,9 @@ module VisualElementUpdaters =
             // Only clear the property if a value was set before
             match oldValueOpt with
             | ValueNone -> ()
-            | ValueSome _ -> target.Unfocus()
+            | ValueSome _ ->
+                if target.IsFocused then
+                    target.Unfocus()
 
         | ValueSome curr ->
             // Clean up the old event handlers if any
@@ -72,15 +74,16 @@ module VisualElementUpdaters =
             | ValueSome handler -> offEvent.RemoveHandler(handler)
 
             // Set the new value
-            if curr.Value then
-                target.Focus() |> ignore
-            else
-                target.Unfocus()
+            if target.IsFocused <> curr.Value then
+                if curr.Value then
+                    target.Focus() |> ignore
+                else
+                    target.Unfocus()
 
             // Set the new event handlers
             let onHandler =
                 EventHandler<FocusEventArgs>(fun _ args ->
-                    let r = curr.Event true
+                    let (MsgValue r) = curr.Event true
                     Dispatcher.dispatch node r)
 
             node.SetHandler(onEventName, ValueSome onHandler)
@@ -88,7 +91,7 @@ module VisualElementUpdaters =
 
             let offHandler =
                 EventHandler<FocusEventArgs>(fun _ args ->
-                    let r = curr.Event false
+                    let (MsgValue r) = curr.Event false
                     Dispatcher.dispatch node r)
 
             node.SetHandler(offEventName, ValueSome offHandler)
