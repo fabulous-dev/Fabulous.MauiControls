@@ -10,7 +10,7 @@ env:
   CONFIG: Release
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
-  XCODE_PATH: /Applications/Xcode_14.3.app/Contents/Developer
+  XCODE_PATH: /Applications/Xcode_15.0.1.app/Contents/Developer
 
 jobs:
   release:

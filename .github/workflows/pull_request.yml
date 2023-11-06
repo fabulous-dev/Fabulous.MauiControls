@@ -4,7 +4,7 @@ on: pull_request
 env:
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   CONFIG: Release
-  XCODE_PATH: /Applications/Xcode_14.3.app/Contents/Developer
+  XCODE_PATH: /Applications/Xcode_15.0.1.app/Contents/Developer
 
 jobs:
   pull_request:

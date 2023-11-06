@@ -151,10 +151,10 @@
       FSharp.Core is fixed to a specific version that is not necessarily the latest one.
       This version will be used as the lower bound in the NuGet package
     -->
-    <PackageReference Include="FSharp.Core" VersionOverride="8.0.100-beta.23418.2" PrivateAssets="All" />
+    <PackageReference Include="FSharp.Core" VersionOverride="8.0.100-beta.23475.2" PrivateAssets="All" />
     <PackageReference Include="Fabulous" VersionOverride="[2.4.0, 2.5.0)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.0-rc.1.9171" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.0-rc.1.9171" />
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.0-rc.2.9511" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.0-rc.2.9511" />
   </ItemGroup>
 </Project>
