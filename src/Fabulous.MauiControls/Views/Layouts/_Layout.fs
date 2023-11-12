@@ -38,7 +38,7 @@ type LayoutModifiers =
 
     /// <summary>Set whether the layout can extend inside the safe area on iOS</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="value">false, the layout can extend inside the safe area on iOS; true, the layout is constrained outside the safe area</param>
+    /// <param name="value">false, the layout is constrained outside the safe area; true, the layout can extend into the safe area</param>
     [<Extension>]
     static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
         this.AddScalar(Layout.IgnoreSafeArea.WithValue(value))
@@ -62,7 +62,7 @@ type LayoutExtraModifiers =
     /// <summary>Allow the layout to extend into the safe area</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabLayout>) = this.ignoreSafeArea(false)
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabLayout>) = this.ignoreSafeArea(true)
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
