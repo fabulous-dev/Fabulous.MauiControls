@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Added
+- Add missing `ignoreSafeArea` modifier to layout widgets (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/44)
 
 ## [2.8.1] - 2023-10-22
 
