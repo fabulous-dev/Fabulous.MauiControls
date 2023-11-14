@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [8.0.0] - 2023-11-14
+
+IMPORTANT: Fabulous.MauiControls will now follow the same versioning as .NET MAUI to reflect the dependency on a specific version of .NET MAUI.  
+Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
+
+### Changed
+- Target .NET 8.0
+
 ### Added
 - Add missing `ignoreSafeArea` modifier to layout widgets (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/44)
 
