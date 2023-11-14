@@ -13,7 +13,7 @@ module Layout =
         Attributes.defineBindableBool Layout.CascadeInputTransparentProperty
 
     let IgnoreSafeArea =
-        Attributes.defineSimpleScalarWithEquality "Layout_IgnoreSafeArea" (fun prevOpt currOpt node ->
+        Attributes.defineSmallScalar "Layout_IgnoreSafeArea" SmallScalars.Bool.decode (fun prevOpt currOpt node ->
             let target = node.Target :?> Layout
 
             match struct (prevOpt, currOpt) with
