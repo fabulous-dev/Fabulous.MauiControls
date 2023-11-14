@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [8.0.1] - 2023-11-14
+
+### Fixed
+- Remove call to Android's Resource.UpdateIdValues in the template since it's no longer available in .NET MAUI 8.0 (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/48)
+
 ## [8.0.0] - 2023-11-14
 
 IMPORTANT: Fabulous.MauiControls will now follow the same versioning as .NET MAUI to reflect the dependency on a specific version of .NET MAUI.  
@@ -129,7 +134,8 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.0.0...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.0.1...HEAD
+[8.0.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.1
 [8.0.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.0
 [2.8.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.8.1
 [2.8.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.8.0
