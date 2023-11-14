@@ -18,7 +18,7 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 - Target .NET 8.0 (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/47)
 
 ### Added
-- Add missing `ignoreSafeArea` modifier to layout widgets (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/44)
+- Add missing `ignoreSafeArea` modifier to layout widgets (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/47)
 
 ## [2.8.1] - 2023-10-22
 
