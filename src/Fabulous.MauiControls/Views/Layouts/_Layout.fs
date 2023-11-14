@@ -12,6 +12,15 @@ module Layout =
     let CascadeInputTransparent =
         Attributes.defineBindableBool Layout.CascadeInputTransparentProperty
 
+    let IgnoreSafeArea =
+        Attributes.defineSmallScalar "Layout_IgnoreSafeArea" SmallScalars.Bool.decode (fun prevOpt currOpt node ->
+            let target = node.Target :?> Layout
+
+            match struct (prevOpt, currOpt) with
+            | ValueNone, ValueNone -> ()
+            | ValueSome _, ValueNone -> target.IgnoreSafeArea <- false
+            | _, ValueSome value -> target.IgnoreSafeArea <- value)
+
     let IsClippedToBounds =
         Attributes.defineBindableBool Layout.IsClippedToBoundsProperty
 
@@ -26,6 +35,13 @@ type LayoutModifiers =
     [<Extension>]
     static member inline cascadeInputTransparent(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
         this.AddScalar(Layout.CascadeInputTransparent.WithValue(value))
+
+    /// <summary>Set whether the layout can extend inside the safe area on iOS</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">false, the layout is constrained outside the safe area; true, the layout can extend into the safe area</param>
+    [<Extension>]
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabLayout>, value: bool) =
+        this.AddScalar(Layout.IgnoreSafeArea.WithValue(value))
 
     /// <summary>Set whether the content is clipped to the layout's bounds</summary>
     /// <param name="this">Current widget</param>
@@ -43,6 +59,11 @@ type LayoutModifiers =
 
 [<Extension>]
 type LayoutExtraModifiers =
+    /// <summary>Allow the layout to extend into the safe area</summary>
+    /// <param name="this">Current widget</param>
+    [<Extension>]
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IFabLayout>) = this.ignoreSafeArea(true)
+
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>

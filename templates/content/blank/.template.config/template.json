@@ -58,19 +58,19 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "7.0.0"
-    },
-    "FSharpAndroidResourcePkgVersion": {
-      "type": "parameter",
-      "dataType": "string",
-      "replaces": "FSharpAndroidResourcePkgVersion",
-      "defaultValue": "1.0.4"
+      "defaultValue": "8.0.100"
     },
     "FSharpMauiWinUICompatPkgVersion": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpMauiWinUICompatPkgVersion",
       "defaultValue": "1.1.0"
+    },
+    "MicrosoftMauiControlsPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "MicrosoftMauiControlsPkgVersion",
+      "defaultValue": "8.0.3"
     }
   }
 }

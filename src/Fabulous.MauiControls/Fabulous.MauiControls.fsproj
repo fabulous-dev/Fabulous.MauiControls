@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
@@ -45,8 +45,10 @@
     <Compile Include="Views\GestureRecognizers\DragGestureRecognizer.fs" />
     <Compile Include="Views\GestureRecognizers\DropGestureRecognizer.fs" />
     <Compile Include="Views\_View.fs" />
+    <Compile Include="Views\KeyboardAccelerator.fs" />
     <Compile Include="Views\MenuItems\MenuItem.fs" />
     <Compile Include="Views\MenuItems\ToolbarItem.fs" />
+    <Compile Include="Views\MenuItems\MenuFlyoutItem.fs" />
     <Compile Include="Views\Cells\_Cell.fs" />
     <Compile Include="Views\Cells\ViewCell.fs" />
     <Compile Include="Views\Cells\TextCell.fs" />
@@ -149,8 +151,10 @@
       FSharp.Core is fixed to a specific version that is not necessarily the latest one.
       This version will be used as the lower bound in the NuGet package
     -->
-    <PackageReference Include="FSharp.Core" VersionOverride="7.0.0" PrivateAssets="All" />
+    <PackageReference Include="FSharp.Core" VersionOverride="8.0.100" PrivateAssets="All" />
     <PackageReference Include="Fabulous" VersionOverride="[2.4.0, 2.5.0)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.3" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.3" />
   </ItemGroup>
 </Project>
