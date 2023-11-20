@@ -5,6 +5,7 @@ open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 module ButtonExt =
     let Clicked': ScalarAttributeDefinition<(unit -> unit), (unit -> unit)> =
@@ -142,8 +143,6 @@ module App =
     
     open type Fabulous.Maui.View
     
-    let sharedContext = ComponentContext()
-    
     let view() =
         Application(
             ContentPage(
@@ -193,6 +192,7 @@ module App =
                                 .font(attributes = FontAttributes.Bold)
                                 
                             SharedContextBetweenComponents()
+                                .background(Colors.LightBlue)
                         }
                     })
                         .centerVertical()
