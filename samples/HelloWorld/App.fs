@@ -62,10 +62,16 @@ module Counter =
 module ParentChild =
     let child count =
         view {
-            let count10 = count * 10
+            let! multiplier = state 1
+            let countMultiplied = count * multiplier.Current
             
-            Label($"Count * 10 = {count10}")
-                .centerHorizontal()
+            VStack() {
+                Label($"Count * {multiplier.Current} = {countMultiplied}")
+                    .centerHorizontal()
+                    
+                Button'("Increment Multiplier", fun () -> multiplier.Set(multiplier.Current + 1))
+                Button'("Decrement Multiplier", fun () -> multiplier.Set(multiplier.Current - 1))
+            }
         }
         
     let parent =
@@ -75,11 +81,11 @@ module ParentChild =
             VStack() {
                 Label($"Count is {count.Current}")
                     .centerHorizontal()
+                
+                Button'("Increment Count", fun () -> count.Set(count.Current + 1))
+                Button'("Decrement Count", fun () -> count.Set(count.Current - 1))
                     
                 Component(child count.Current)
-                
-                Button'("Increment", fun () -> count.Set(count.Current + 1))
-                Button'("Decrement", fun () -> count.Set(count.Current - 1))
             }
         }
 
