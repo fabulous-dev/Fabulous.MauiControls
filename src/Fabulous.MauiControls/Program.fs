@@ -133,6 +133,11 @@ module Program =
 
     /// Start the program
     let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IFabApplication>) : Application =
+        do Component.SetComponentFunctions(
+            (fun view -> (view :?> BindableObject).GetValue(ComponentProperty) :?> Component),
+            (fun view comp -> (view :?> BindableObject).SetValue(ComponentProperty, comp))
+        )
+        
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner

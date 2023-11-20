@@ -4,6 +4,7 @@ open System
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.Maui
+open Microsoft.Maui.Controls
 
 module ButtonExt =
     let Clicked': ScalarAttributeDefinition<(unit -> unit), (unit -> unit)> =
@@ -45,6 +46,16 @@ module ButtonBuildersExt =
         
 open type Fabulous.Maui.View
 
+module SimpleComponent =
+    let body: ComponentBodyBuilder<unit, IFabLabel> =
+        view {
+            Label("Hello Component")
+                .centerHorizontal()
+        }
+        
+    type Fabulous.Maui.View with
+        static member inline SimpleComponent() = Component(body)
+
 module Counter =
     let body: ComponentBodyBuilder<unit, IFabVerticalStackLayout> =
         view {
@@ -58,6 +69,9 @@ module Counter =
                 Button'("Decrement", fun () -> count.Set(count.Current - 1))
             }
         }
+        
+    type Fabulous.Maui.View with
+        static member inline Counter() = Component(body)
         
 module ParentChild =
     let child count =
@@ -89,6 +103,9 @@ module ParentChild =
             }
         }
         
+    type Fabulous.Maui.View with
+        static member inline ParentChild() = Component(parent)
+        
 module BindingBetweenParentAndChild =
     let child (count: BindingRequest<'T>) =
         view {
@@ -119,16 +136,77 @@ module BindingBetweenParentAndChild =
             
         }
         
+    type Fabulous.Maui.View with
+        static member inline BindingBetweenParentAndChild() = Component(parent)
+        
+module SharedContextBetweenComponents =
+    let body =
+        view {
+            let sharedContext = ComponentContext()
+            
+            VStack() {
+                Label("Shared context between components")
+                    .centerHorizontal()
+                
+                Component(Counter.body, sharedContext)
+                Component(Counter.body, sharedContext)
+            }
+        }
+        
 module App =
-    let sharedContext = Context()
+    open SimpleComponent
+    open Counter
+    open ParentChild
+    open BindingBetweenParentAndChild
+    
+    open type Fabulous.Maui.View
+    
+    let sharedContext = ComponentContext()
     
     let view() =
         Application(
             ContentPage(
-                (VStack(spacing = 40.) {
-                    Component(BindingBetweenParentAndChild.parent)
-                })
-                    .centerVertical()
+                ScrollView(
+                    (VStack(spacing = 40.) {
+                        // Simple component
+                        VStack(spacing = 20.) {
+                            Label("Simple component")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            SimpleComponent()
+                        }
+                        
+                        // Simple component with state
+                        VStack(spacing = 20.) {
+                            Label("Simple components with individual states")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            Counter()
+                            Counter()
+                        }
+                        
+                        // Parent child component
+                        VStack(spacing = 20.) {
+                            Label("Parent child component")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            ParentChild()
+                        }
+                        
+                        // Binding between parent and child
+                        VStack(spacing = 20.) {
+                            Label("Binding between parent and child")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            BindingBetweenParentAndChild()
+                        }
+                    })
+                        .centerVertical()
+                )
             )
         )
 
