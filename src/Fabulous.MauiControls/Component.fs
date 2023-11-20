@@ -79,12 +79,11 @@ type Component() as this =
     do this.Loaded.Add(this.OnLoaded)
     do this.Unloaded.Add(this.OnUnloaded)
     
+    // NOTE: Using Context and Body as properties is quite brittle as they need to be set in the right order.
     member val Context: Context = null with get, set
     member this.Body
         with get () = _body
-        and set (value) =
-            _body <- value
-            this.Initialize()
+        and set (value) = _body <- value
     
     member this.Initialize() =
         if this.Context = null then
@@ -119,6 +118,7 @@ type Component() as this =
         Reconciler.update MauiViewHelpers.canReuseView (ValueSome prevWidget) _widget viewNode
         
     member this.OnLoaded(_) =
+        this.Initialize()
         _contextSubscription <- this.Context.RenderNeeded.Subscribe(this.Render)
         
     member this.OnUnloaded(_) =
@@ -140,6 +140,13 @@ module Component =
         | ValueSome body -> target.Body <- body
     )
     
+    let Context = Attributes.defineSimpleScalar "Component_Context" ScalarAttributeComparers.equalityCompare (fun _ currOpt node ->
+        let target = node.Target :?> Component
+        match currOpt with
+        | ValueNone -> target.Context <- Context()
+        | ValueSome context -> target.Context <- context
+    )
+    
 [<AutoOpen>]
 module ComponentBuilders =
     type Fabulous.Maui.View with
@@ -152,6 +159,18 @@ module ComponentBuilders =
             WidgetBuilder<'msg, IFabComponent>(
                 Component.WidgetKey,
                 Component.Body.WithValue(compiledBody)
+            )
+            
+        static member inline Component<'msg, 'marker>([<InlineIfLambda>] body: ComponentBodyBuilder<'msg, 'marker>, context: Context) =
+            let compiledBody = ComponentBody(fun ctx ->
+                let widgetBuilder = body.Invoke(ctx)
+                widgetBuilder.Compile()
+            )
+            
+            WidgetBuilder<'msg, IFabComponent>(
+                Component.WidgetKey,
+                Component.Body.WithValue(compiledBody),
+                Component.Context.WithValue(context)
             )
             
 ////////////// State //////////////
@@ -217,7 +236,7 @@ type [<Struct>] State<'T>=
 type StateExtensions =
     [<Extension>]
     static member inline Bind(_: ViewBuilder, [<InlineIfLambda>] fn: StateRequest<'T>, [<InlineIfLambda>] continuation: State<'T> -> ComponentBodyBuilder<'msg, 'marker>) =
-        ComponentBodyBuilder(fun ctx ->
+        ComponentBodyBuilder<'msg, 'marker>(fun ctx ->
             let key = ctx.MoveNext()
             
             let value =
@@ -235,3 +254,59 @@ type StateExtensions =
 [<AutoOpen>]
 module StateHelpers =
     let inline state value = StateRequest(fun () -> value)
+    
+    
+////////////// Binding //////////////
+
+(*
+
+The idea of Binding is to listen to a State<'T> that is managed by another Context and be able to update it
+while notifying the two Contexts involved (source and target)
+
+let child (count: BindingRequest<int>) =
+    view {
+        let! boundCount = bind count
+    
+        Button($"Count is {boundCount.Value}", fun () -> boundCount.Set(boundCount.Value + 1))
+    }
+    
+let parent =
+    view {
+        let! count = state 0
+        
+        VStack() {
+            Text($"Count is {count.Value}")
+            child (Binding.ofState count)
+        }
+    }
+
+*)
+
+type BindingRequest<'T> = delegate of unit -> State<'T>
+
+type [<Struct>] Binding<'T> =
+    val public Context: Context
+    val public Source: State<'T>
+    
+    new (ctx, source) = { Context = ctx; Source = source }
+        
+    member inline this.Current = this.Source.Current
+    
+    member inline this.Set(value: 'T) =
+        this.Source.Set(value)
+        this.Context.NeedsRender()
+
+[<Extension>]
+type BindingExtensions =
+    [<Extension>]
+    static member inline Bind(_: ViewBuilder, [<InlineIfLambda>] request: BindingRequest<'T>, [<InlineIfLambda>] continuation: Binding<'T> -> ComponentBodyBuilder<'msg, 'marker>) =
+        ComponentBodyBuilder(fun ctx ->
+            let source = request.Invoke()
+            let state = Binding<'T>(ctx, source)
+            (continuation state).Invoke(ctx)
+        )
+        
+[<AutoOpen>]
+module BindingHelpers =
+    let inline ofState (source: State<'T>) = BindingRequest(fun () -> source)
+    let inline bind (binding: Binding<'T>) = binding

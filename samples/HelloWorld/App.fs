@@ -46,7 +46,7 @@ module ButtonBuildersExt =
 open type Fabulous.Maui.View
 
 module Counter =
-    let body =
+    let body: ComponentBodyBuilder<unit, IFabVerticalStackLayout> =
         view {
             let! count = state 0
             
@@ -74,7 +74,7 @@ module ParentChild =
             }
         }
         
-    let parent =
+    let parent: ComponentBodyBuilder<unit, IFabVerticalStackLayout> =
         view {
             let! count = state 0
             
@@ -88,32 +88,45 @@ module ParentChild =
                 Component(child count.Current)
             }
         }
-
+        
+module BindingBetweenParentAndChild =
+    let child (count: BindingRequest<'T>) =
+        view {
+            let! boundCount = count
+            
+            VStack() {
+                Label($"Child.Count is {boundCount.Current}")
+                    .centerHorizontal()
+                
+                Button'("Increment", fun () -> boundCount.Set(boundCount.Current + 1))
+                Button'("Decrement", fun () -> boundCount.Set(boundCount.Current - 1))
+            }
+        }
+        
+    let parent =
+        view {
+            let! count = state 0
+            
+            VStack() {
+                Label($"Parent.Count is {count.Current}")
+                    .centerHorizontal()
+                    
+                Button'("Increment", fun () -> count.Set(count.Current + 1))
+                Button'("Decrement", fun () -> count.Set(count.Current - 1))
+                
+                Component(child (ofState count))
+            }
+            
+        }
+        
 module App =
+    let sharedContext = Context()
+    
     let view() =
         Application(
             ContentPage(
                 (VStack(spacing = 40.) {
-                    VStack(spacing = 10.) {
-                        Label("Component 1")
-                            .centerHorizontal()
-                            
-                        Component(Counter.body)
-                    }
-                    
-                    VStack(spacing = 10.) {
-                        Label("Component 2")
-                            .centerHorizontal()
-                            
-                        Component(Counter.body)
-                    }
-                    
-                    VStack(spacing = 10.) {
-                        Label("Parent Child")
-                            .centerHorizontal()
-                            
-                        Component(ParentChild.parent)
-                    }
+                    Component(BindingBetweenParentAndChild.parent)
                 })
                     .centerVertical()
             )
