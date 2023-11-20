@@ -46,118 +46,99 @@ module ButtonBuildersExt =
         
 open type Fabulous.Maui.View
 
-module SimpleComponent =
-    let body: ComponentBodyBuilder<unit, IFabLabel> =
-        view {
-            Label("Hello Component")
-                .centerHorizontal()
-        }
-        
+module Components =
     type Fabulous.Maui.View with
-        static member inline SimpleComponent() = Component(body)
+        static member inline SimpleComponent() =
+            Component() {
+                Label("Hello Component")
+                    .centerHorizontal()
+            }
 
-module Counter =
-    let body: ComponentBodyBuilder<unit, IFabVerticalStackLayout> =
-        view {
-            let! count = state 0
-            
-            VStack() {
-                Label($"Count is {count.Current}")
-                    .centerHorizontal()
+        static member inline Counter() =
+            Component() {
+                let! count = state 0
                 
-                Button'("Increment", fun () -> count.Set(count.Current + 1))
-                Button'("Decrement", fun () -> count.Set(count.Current - 1))
-            }
-        }
-        
-    type Fabulous.Maui.View with
-        static member inline Counter() = Component(body)
-        
-module ParentChild =
-    let child count =
-        view {
-            let! multiplier = state 1
-            let countMultiplied = count * multiplier.Current
-            
-            VStack() {
-                Label($"Count * {multiplier.Current} = {countMultiplied}")
-                    .centerHorizontal()
+                VStack() {
+                    Label($"Count is {count.Current}")
+                        .centerHorizontal()
                     
-                Button'("Increment Multiplier", fun () -> multiplier.Set(multiplier.Current + 1))
-                Button'("Decrement Multiplier", fun () -> multiplier.Set(multiplier.Current - 1))
+                    Button'("Increment", fun () -> count.Set(count.Current + 1))
+                    Button'("Decrement", fun () -> count.Set(count.Current - 1))
+                }
             }
-        }
-        
-    let parent: ComponentBodyBuilder<unit, IFabVerticalStackLayout> =
-        view {
-            let! count = state 0
             
-            VStack() {
-                Label($"Count is {count.Current}")
-                    .centerHorizontal()
+        static member inline ParentChild_Child(count: int) =
+            Component() {
+                let! multiplier = state 1
+                let countMultiplied = count * multiplier.Current
                 
-                Button'("Increment Count", fun () -> count.Set(count.Current + 1))
-                Button'("Decrement Count", fun () -> count.Set(count.Current - 1))
+                VStack() {
+                    Label($"Count * {multiplier.Current} = {countMultiplied}")
+                        .centerHorizontal()
+                        
+                    Button'("Increment Multiplier", fun () -> multiplier.Set(multiplier.Current + 1))
+                    Button'("Decrement Multiplier", fun () -> multiplier.Set(multiplier.Current - 1))
+                }
+            }
+        
+        static member inline ParentChild_Parent() =
+            Component() {
+                let! count = state 0
+                
+                VStack() {
+                    Label($"Count is {count.Current}")
+                        .centerHorizontal()
                     
-                Component(child count.Current)
-            }
-        }
-        
-    type Fabulous.Maui.View with
-        static member inline ParentChild() = Component(parent)
-        
-module BindingBetweenParentAndChild =
-    let child (count: BindingRequest<'T>) =
-        view {
-            let! boundCount = count
-            
-            VStack() {
-                Label($"Child.Count is {boundCount.Current}")
-                    .centerHorizontal()
-                
-                Button'("Increment", fun () -> boundCount.Set(boundCount.Current + 1))
-                Button'("Decrement", fun () -> boundCount.Set(boundCount.Current - 1))
-            }
-        }
-        
-    let parent =
-        view {
-            let! count = state 0
-            
-            VStack() {
-                Label($"Parent.Count is {count.Current}")
-                    .centerHorizontal()
+                    Button'("Increment Count", fun () -> count.Set(count.Current + 1))
+                    Button'("Decrement Count", fun () -> count.Set(count.Current - 1))
                     
-                Button'("Increment", fun () -> count.Set(count.Current + 1))
-                Button'("Decrement", fun () -> count.Set(count.Current - 1))
-                
-                Component(child (ofState count))
+                    View.ParentChild_Child(count.Current)
+                }
             }
             
-        }
-        
-    type Fabulous.Maui.View with
-        static member inline BindingBetweenParentAndChild() = Component(parent)
-        
-module SharedContextBetweenComponents =
-    let body =
-        view {
-            let sharedContext = ComponentContext()
-            
-            VStack() {
-                Label("Shared context between components")
-                    .centerHorizontal()
+        static member inline Child(count: BindingRequest<'T>) =
+            Component() {
+                let! boundCount = count
                 
-                Component(Counter.body, sharedContext)
-                Component(Counter.body, sharedContext)
+                VStack() {
+                    Label($"Child.Count is {boundCount.Current}")
+                        .centerHorizontal()
+                    
+                    Button'("Increment", fun () -> boundCount.Set(boundCount.Current + 1))
+                    Button'("Decrement", fun () -> boundCount.Set(boundCount.Current - 1))
+                }
             }
-        }
+        
+        static member inline BindingBetweenParentAndChild() =
+            Component() {
+                let! count = state 0
+                
+                VStack() {
+                    Label($"Parent.Count is {count.Current}")
+                        .centerHorizontal()
+                        
+                    Button'("Increment", fun () -> count.Set(count.Current + 1))
+                    Button'("Decrement", fun () -> count.Set(count.Current - 1))
+                    
+                    View.Child(ofState count)
+                }
+            }
+        
+        static member inline SharedContextBetweenComponents() =
+            Component() {
+                let sharedContext = ComponentContext()
+                
+                VStack() {
+                    View.Counter()
+                        .withContext(sharedContext)
+                        
+                    View.Counter()
+                        .withContext(sharedContext)
+                }
+            }
         
 module App =
-    open SimpleComponent
-    open Counter
-    open ParentChild
-    open BindingBetweenParentAndChild
+    open Components
     
     open type Fabulous.Maui.View
     
@@ -193,7 +174,7 @@ module App =
                                 .centerHorizontal()
                                 .font(attributes = FontAttributes.Bold)
                                 
-                            ParentChild()
+                            ParentChild_Parent()
                         }
                         
                         // Binding between parent and child
@@ -203,6 +184,15 @@ module App =
                                 .font(attributes = FontAttributes.Bold)
                                 
                             BindingBetweenParentAndChild()
+                        }
+                        
+                        // Shared context between components
+                        VStack(spacing = 20.) {
+                            Label("Shared context between components")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            SharedContextBetweenComponents()
                         }
                     })
                         .centerVertical()
