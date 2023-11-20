@@ -1,83 +1,116 @@
 namespace HelloWorld
 
+open System
 open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 open Fabulous.Maui
-open Microsoft.Maui
-open Microsoft.Maui.Graphics
-open Microsoft.Maui.Accessibility
-open Microsoft.Maui.Primitives
 
+module ButtonExt =
+    let Clicked': ScalarAttributeDefinition<(unit -> unit), (unit -> unit)> =
+        let name = "Button_Clicked'"
+                    
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(
+                ScalarAttributeComparers.noCompare,
+                (fun _ (newValueOpt: (unit -> unit) voption) node ->
+                    let event = (node.Target :?> Microsoft.Maui.Controls.Button).Clicked
+
+                    match node.TryGetHandler(name) with
+                    | ValueNone -> ()
+                    | ValueSome handler -> event.RemoveHandler handler
+
+                    match newValueOpt with
+                    | ValueNone -> node.SetHandler(name, ValueNone)
+
+                    | ValueSome(fn) ->
+                        let handler = EventHandler(fun _ _ -> fn())
+
+                        event.AddHandler handler
+                        node.SetHandler(name, ValueSome handler))
+            )
+
+            |> AttributeDefinitionStore.registerScalar
+
+        { Key = key; Name = name }
+
+[<AutoOpen>]
+module ButtonBuildersExt =
+    type Fabulous.Maui.View with
+        static member inline Button'<'msg>(text: string, onClick: unit -> unit) =
+            WidgetBuilder<'msg, IFabButton>(
+                Button.WidgetKey,
+                Button.Text.WithValue(text),
+                ButtonExt.Clicked'.WithValue(onClick)
+            )
+        
 open type Fabulous.Maui.View
 
+module Counter =
+    let body =
+        view {
+            let! count = state 0
+            
+            VStack() {
+                Label($"Count is {count.Current}")
+                    .centerHorizontal()
+                
+                Button'("Increment", fun () -> count.Set(count.Current + 1))
+                Button'("Decrement", fun () -> count.Set(count.Current - 1))
+            }
+        }
+        
+module ParentChild =
+    let child count =
+        view {
+            let count10 = count * 10
+            
+            Label($"Count * 10 = {count10}")
+                .centerHorizontal()
+        }
+        
+    let parent =
+        view {
+            let! count = state 0
+            
+            VStack() {
+                Label($"Count is {count.Current}")
+                    .centerHorizontal()
+                    
+                Component(child count.Current)
+                
+                Button'("Increment", fun () -> count.Set(count.Current + 1))
+                Button'("Decrement", fun () -> count.Set(count.Current - 1))
+            }
+        }
+
 module App =
-    type Model = { Count: int; EnteredText: string }
-
-    type Msg =
-        | Clicked
-        | UserWroteSomething of string
-
-    type CmdMsg = SemanticAnnounce of string
-
-    let semanticAnnounce text =
-        Cmd.ofSub(fun _ -> SemanticScreenReader.Announce(text))
-
-    let mapCmd cmdMsg =
-        match cmdMsg with
-        | SemanticAnnounce text -> semanticAnnounce text
-
-    let init () = { Count = 0; EnteredText = "" }, []
-
-    let update msg model =
-        match msg with
-        | Clicked -> { model with Count = model.Count + 1 }, [ SemanticAnnounce $"Clicked {model.Count} times" ]
-
-        | UserWroteSomething text -> { model with EnteredText = text }, []
-
-    let view model =
+    let view() =
         Application(
             ContentPage(
-                ScrollView(
-                    (VStack(spacing = 25.) {
-                        Image("dotnet_bot.png")
-                            .semantics(description = "Cute dotnet bot waving hi to you!")
-                            .height(200.)
+                (VStack(spacing = 40.) {
+                    VStack(spacing = 10.) {
+                        Label("Component 1")
                             .centerHorizontal()
-
-                        Label("Hello, World!")
-                            .semantics(SemanticHeadingLevel.Level1)
-                            .font(size = 32.)
-                            .centerTextHorizontal()
-
-                        Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                            .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
-                            .font(size = 18.)
-                            .centerTextHorizontal()
-
-                        let text =
-                            if model.Count = 0 then
-                                "Click me"
-                            else
-                                $"Clicked {model.Count} times"
-
-                        Button(text, Clicked)
-                            .semantics(hint = "Counts the number of times you click")
+                            
+                        Component(Counter.body)
+                    }
+                    
+                    VStack(spacing = 10.) {
+                        Label("Component 2")
                             .centerHorizontal()
-
-                        Entry(model.EnteredText, UserWroteSomething)
-                            .semantics(hint = "Type something here")
-
-                        let userText =
-                            if model.EnteredText = "" then
-                                "You wrote nothing"
-                            else
-                                $"You wrote '{model.EnteredText}'"
-
-                        Label(userText).semantics(description = userText).centerHorizontal()
-                    })
-                        .padding(Thickness(30., 0., 30., 0.))
-                        .centerVertical()
-                )
+                            
+                        Component(Counter.body)
+                    }
+                    
+                    VStack(spacing = 10.) {
+                        Label("Parent Child")
+                            .centerHorizontal()
+                            
+                        Component(ParentChild.parent)
+                    }
+                })
+                    .centerVertical()
             )
         )
 
-    let program = Program.statefulWithCmdMsg init update view mapCmd
+    let program = Program.stateless view

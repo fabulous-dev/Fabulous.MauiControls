@@ -145,6 +145,7 @@
     <Compile Include="Async.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />
     <Compile Include="Style.fs" />
+    <Compile Include="Component.fs" />
   </ItemGroup>
   <ItemGroup>
     <!--
