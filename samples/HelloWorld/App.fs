@@ -84,7 +84,7 @@ module Components =
         
         static member inline ParentChild_Parent() =
             Component() {
-                let! count = state 0
+                let! count = state 1
                 
                 VStack() {
                     Label($"Count is {count.Current}")
@@ -155,69 +155,84 @@ module App =
     
     open type Fabulous.Maui.View
     
-    let view() =
-        Application(
-            ContentPage(
-                ScrollView(
-                    (VStack(spacing = 40.) {
-                        // Simple component
-                        VStack(spacing = 20.) {
-                            Label("Simple component")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            SimpleComponent()
-                        }
-                        
-                        // Simple component with state
-                        VStack(spacing = 20.) {
-                            Label("Simple components with individual states")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            Counter()
-                            Counter()
-                        }
-                        
-                        // Parent child component
-                        VStack(spacing = 20.) {
-                            Label("Parent child component")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            ParentChild_Parent()
-                        }
-                        
-                        // Binding between parent and child
-                        VStack(spacing = 20.) {
-                            Label("Binding between parent and child")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            BindingBetweenParentAndChild()
-                        }
-                        
-                        // Shared context between components
-                        VStack(spacing = 20.) {
-                            Label("Shared context between components")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            SharedContextBetweenComponents()
-                        }
-                        
-                        // Modifiers on component
-                        VStack(spacing = 20.) {
-                            Label("Modifiers on component")
-                                .centerHorizontal()
-                                .font(attributes = FontAttributes.Bold)
-                                
-                            ModifiersOnComponent()
-                        }
-                    })
-                        .centerVertical()
+    let app () =
+        Component() {
+            let! appState = state 0
+            
+            Application(
+                ContentPage(
+                    ScrollView(
+                        (VStack(spacing = 40.) {
+                            // App state display
+                            VStack(spacing = 20.) {
+                                Label("App state")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                VStack(spacing = 0.) { 
+                                    Label($"AppState = {appState.Current}")
+                                    Button'("Increment", fun () -> appState.Set(appState.Current + 1))
+                                    Button'("Decrement", fun () -> appState.Set(appState.Current - 1))
+                                }
+                            }
+                            
+                            // Simple component
+                            VStack(spacing = 20.) {
+                                Label("Simple component")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                SimpleComponent()
+                            }
+                            
+                            // Simple component with state
+                            VStack(spacing = 20.) {
+                                Label("Simple components with individual states")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                Counter()
+                                Counter()
+                            }
+                            
+                            // Parent child component
+                            VStack(spacing = 20.) {
+                                Label("Parent child component")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                ParentChild_Parent()
+                            }
+                            
+                            // Binding between parent and child
+                            VStack(spacing = 20.) {
+                                Label("Binding between parent and child")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                BindingBetweenParentAndChild()
+                            }
+                            
+                            // Shared context between components
+                            VStack(spacing = 20.) {
+                                Label("Shared context between components")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                SharedContextBetweenComponents()
+                            }
+                            
+                            // Modifiers on component
+                            VStack(spacing = 20.) {
+                                Label("Modifiers on component")
+                                    .centerHorizontal()
+                                    .font(attributes = FontAttributes.Bold)
+                                    
+                                ModifiersOnComponent()
+                            }
+                        })
+                            .centerVertical()
+                    )
                 )
             )
-        )
-
-    let program = Program.stateless view
+        }
