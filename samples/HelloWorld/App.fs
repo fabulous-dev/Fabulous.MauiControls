@@ -8,14 +8,14 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 
 module ButtonExt =
-    let Clicked': ScalarAttributeDefinition<(unit -> unit), (unit -> unit)> =
+    let Clicked': ScalarAttributeDefinition<unit -> unit, unit -> unit> =
         let name = "Button_Clicked'"
                     
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
                 (fun _ (newValueOpt: (unit -> unit) voption) node ->
-                    let event = (node.Target :?> Microsoft.Maui.Controls.Button).Clicked
+                    let event = (node.Target :?> Button).Clicked
 
                     match node.TryGetHandler(name) with
                     | ValueNone -> ()
@@ -137,6 +137,18 @@ module Components =
                         .withContext(sharedContext)
                 }
             }
+            
+        static member inline ModifiersOnComponent() =
+            Component() {
+                let! toggle = state false
+                
+                VStack() {
+                    Button'("Toggle", fun () -> toggle.Set(not toggle.Current))
+                    
+                    View.SimpleComponent()
+                        .background(SolidColorBrush(if toggle.Current then Colors.Red else Colors.Blue))
+                }
+            }
         
 module App =
     open Components
@@ -192,7 +204,15 @@ module App =
                                 .font(attributes = FontAttributes.Bold)
                                 
                             SharedContextBetweenComponents()
-                                .background(Colors.LightBlue)
+                        }
+                        
+                        // Modifiers on component
+                        VStack(spacing = 20.) {
+                            Label("Modifiers on component")
+                                .centerHorizontal()
+                                .font(attributes = FontAttributes.Bold)
+                                
+                            ModifiersOnComponent()
                         }
                     })
                         .centerVertical()
