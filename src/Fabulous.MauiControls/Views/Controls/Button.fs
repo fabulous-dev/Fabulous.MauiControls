@@ -24,6 +24,9 @@ module Button =
     let Clicked =
         Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
 
+    let Clicked' =
+        Attributes.defineEventNoArgNoDispatch "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+
     let ContentLayout =
         Attributes.defineBindableWithEquality<Button.ButtonContentLayout> Button.ContentLayoutProperty
 
@@ -71,6 +74,12 @@ module ButtonBuilders =
         /// <param name="onClicked">Message to dispatch</param>
         static member inline Button<'msg>(text: string, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(MsgValue(onClicked)))
+
+        /// <summary>Create a Button widget with a text and listen for the Click event</summary>
+        /// <param name="text">The button on the tex</param>
+        /// <param name="onClicked">Function to execute</param>
+        static member inline Button(text: string, onClicked: unit -> unit) =
+            WidgetBuilder<unit, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked'.WithValue(onClicked))
 
 [<Extension>]
 type ButtonModifiers =

@@ -132,7 +132,7 @@ module Program =
         define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c) view
 
     /// Start the program
-    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IFabApplication>) : Application =       
+    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IFabApplication>) : Application =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
