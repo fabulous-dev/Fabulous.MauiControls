@@ -97,7 +97,7 @@ module Components =
                 }
             }
             
-        static member inline Child(count: BindingRequest<'T>) =
+        static member inline Child(count: ComponentBindingRequest<int>) =
             Component() {
                 let! boundCount = count
                 
@@ -171,6 +171,8 @@ module App =
                                     
                                 VStack(spacing = 0.) { 
                                     Label($"AppState = {appState.Current}")
+                                        .centerHorizontal()
+                                        
                                     Button'("Increment", fun () -> appState.Set(appState.Current + 1))
                                     Button'("Decrement", fun () -> appState.Set(appState.Current - 1))
                                 }
