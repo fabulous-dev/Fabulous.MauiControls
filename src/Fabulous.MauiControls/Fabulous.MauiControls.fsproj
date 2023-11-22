@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
-    <UseLocalProjectReference>true</UseLocalProjectReference>
+    <UseLocalProjectReference>false</UseLocalProjectReference>
   </PropertyGroup>
   <!-- NuGet Package -->
   <PropertyGroup>
@@ -160,7 +160,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Condition="$(UseLocalProjectReference) == false" Include="Fabulous" VersionOverride="[2.4.0, 2.5.0)" />
+    <PackageReference Condition="$(UseLocalProjectReference) == false" Include="Fabulous" VersionOverride="[2.5.0-pre1]" />
     <ProjectReference Condition="$(UseLocalProjectReference) == true" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
 </Project>
