@@ -22,11 +22,11 @@ type AppHostBuilderExtensions =
             (Program.startApplicationWithArgs arg program) :> Microsoft.Maui.IApplication)
 
     [<Extension>]
-    static member inline UseFabulousApp(this: MauiAppBuilder, [<InlineIfLambda>] root: unit -> WidgetBuilder<'msg, #IFabApplication>) : MauiAppBuilder =
+    static member UseFabulousApp(this: MauiAppBuilder, root: WidgetBuilder<'msg, #IFabApplication>) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             Component.registerComponentFunctions()
 
-            let widget = root().Compile()
+            let widget = root.Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
             let viewTreeContext =

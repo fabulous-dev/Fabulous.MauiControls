@@ -91,6 +91,12 @@ module ApplicationBuilders =
         /// <param name="mainPage">The main page widget</param>
         static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
+            
+        static member inline Application<'msg, 'childMarker & #IFabPage>() =
+            SingleChildBuilder<'msg, IFabApplication, 'childMarker>(
+                Application.WidgetKey,
+                Application.MainPage
+            )
 
 [<Extension>]
 type ApplicationModifiers =

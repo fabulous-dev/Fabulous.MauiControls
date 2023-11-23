@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
-    <UseLocalProjectReference>false</UseLocalProjectReference>
+    <UseLocalProjectReference>true</UseLocalProjectReference>
   </PropertyGroup>
   <!-- NuGet Package -->
   <PropertyGroup>

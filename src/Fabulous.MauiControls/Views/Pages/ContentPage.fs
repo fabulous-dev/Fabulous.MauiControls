@@ -44,6 +44,12 @@ module ContentPageBuilders =
                 ContentPage.WidgetKey,
                 AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
+            
+        static member inline ContentPage<'msg, 'childMarker & #IFabView>() =
+            SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(
+                ContentPage.WidgetKey,
+                ContentPage.Content
+            )
 
 [<Extension>]
 type ContentPageModifiers =
