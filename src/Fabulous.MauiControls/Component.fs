@@ -18,4 +18,4 @@ module ComponentBuilders =
     type Fabulous.Maui.View with
         static member inline Component<'marker>() = ComponentBuilder()
         
-        static member MvuComponent(init, update) = MvuComponentBuilder(init, update)
+        static member MvuComponent(program) = MvuComponentBuilder(program)

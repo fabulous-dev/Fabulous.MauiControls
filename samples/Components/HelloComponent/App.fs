@@ -5,7 +5,7 @@ open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
 module App =
-    let view =
+    let view() =
         Component() {
             Application(
                 ContentPage(
@@ -18,7 +18,7 @@ module App =
     let createMauiApp() =
         MauiApp
             .CreateBuilder()
-            .UseFabulousApp(view)
+            .UseFabulousApp(view())
             .ConfigureFonts(fun fonts ->
                 fonts
                     .AddFont("OpenSans-Regular.ttf", "OpenSansRegular")
