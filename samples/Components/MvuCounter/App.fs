@@ -1,4 +1,4 @@
-namespace CounterApp
+namespace MvuCounter
 
 open Fabulous
 open Fabulous.Maui

@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+﻿namespace MultipleMvus
 
 open Foundation
 open Microsoft.Maui

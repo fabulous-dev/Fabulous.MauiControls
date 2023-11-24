@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+﻿namespace TicTacComponent
 
 open Android.App
 open Microsoft.Maui

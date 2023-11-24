@@ -1,4 +1,4 @@
-﻿namespace CounterApp
+﻿namespace MvuCounter
 
 open Foundation
 open Microsoft.Maui

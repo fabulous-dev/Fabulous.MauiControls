@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+﻿namespace MultipleMvus
 
 open Android.App
 open Android.Content.PM

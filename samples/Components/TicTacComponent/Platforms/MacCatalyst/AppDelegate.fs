@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+﻿namespace TicTacComponent
 
 open Foundation
 open Microsoft.Maui

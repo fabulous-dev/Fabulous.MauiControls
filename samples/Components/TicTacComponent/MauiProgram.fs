@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+namespace TicTacComponent
 
 open Microsoft.Maui.Hosting
 open Fabulous.Maui

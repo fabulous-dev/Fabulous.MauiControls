@@ -1,4 +1,4 @@
-﻿namespace MvuCounter
+﻿namespace MultipleMvus
 
 open Foundation
 open Microsoft.Maui
@@ -7,4 +7,4 @@ open Microsoft.Maui
 type AppDelegate() =
     inherit MauiUIApplicationDelegate()
 
-    override this.CreateMauiApp() = MauiProgram.CreateMauiApp()
+    override _.CreateMauiApp() = MauiProgram.CreateMauiApp()

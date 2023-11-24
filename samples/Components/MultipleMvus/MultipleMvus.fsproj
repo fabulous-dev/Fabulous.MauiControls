@@ -11,11 +11,11 @@
     <EnableDefaultItems>false</EnableDefaultItems>
 
     <!-- Display name -->
-    <ApplicationTitle>MvuCounter</ApplicationTitle>
+    <ApplicationTitle>MultipleMvus</ApplicationTitle>
 
     <!-- App Identifier -->
-    <ApplicationId>org.fabulous.maui.mvucounter</ApplicationId>
-    <ApplicationIdGuid>18386f5a-09a9-42eb-a8b2-db54c26897d3</ApplicationIdGuid>
+    <ApplicationId>org.fabulous.maui.multiplemvus</ApplicationId>
+    <ApplicationIdGuid>418b4576-ed03-4236-a506-5b7c0660f414</ApplicationIdGuid>
 
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
