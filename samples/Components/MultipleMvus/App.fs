@@ -67,4 +67,5 @@ module App =
                     .width(250.)
                     .center()
             }
-        }
+        })
+            .withEnvironment(Container, container)
