@@ -10,20 +10,20 @@ module App =
     let view =
         Component() {
             let! count = State(0)
-            
+
             Application(
                 ContentPage(
                     (VStack() {
                         Label($"%d{count.Current}").centerTextHorizontal()
-                        Button("Increment", fun () -> count.Set(count.Current + 1))
-                        Button("Decrement", fun () -> count.Set(count.Current - 1))
+                        Button("Increment", (fun () -> count.Set(count.Current + 1)))
+                        Button("Decrement", (fun () -> count.Set(count.Current - 1)))
                     })
                         .center()
                 )
             )
         }
-        
-    let createMauiApp() =
+
+    let createMauiApp () =
         MauiApp
             .CreateBuilder()
             .UseFabulousApp(view)

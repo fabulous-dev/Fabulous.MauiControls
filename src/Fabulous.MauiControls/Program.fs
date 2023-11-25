@@ -73,7 +73,7 @@ module MauiViewHelpers =
         | _ -> true
 
 module Program =
-    let inline private define (view: 'model -> WidgetBuilder<'msg, 'marker>) (program: Program<'arg, 'model, 'msg>): Program<'arg, 'model, 'msg, 'marker> =
+    let inline private define (view: 'model -> WidgetBuilder<'msg, 'marker>) (program: Program<'arg, 'model, 'msg>) : Program<'arg, 'model, 'msg, 'marker> =
         { Program = program
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
@@ -81,13 +81,15 @@ module Program =
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
-        let program = Program.ForComponent.define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none)
+        let program =
+            Program.ForComponent.define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none)
+
         define view program
 
     /// Create a program using an MVU loop
     let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> WidgetBuilder<'msg, 'marker>) =
         define view (Program.ForComponent.stateful init update)
-        
+
     /// Create a program using an MVU loop. Add support for Cmd
     let statefulWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)
@@ -119,11 +121,13 @@ module Program =
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
     let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        { program with Program = Program.ForComponent.withSubscription subscribe program.Program }
+        { program with
+            Program = Program.ForComponent.withSubscription subscribe program.Program }
 
     /// Configure how the output messages from Fabulous will be handled
     let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        { program with Program = Program.ForComponent.withLogger logger program.Program }
+        { program with
+            Program = Program.ForComponent.withLogger logger program.Program }
 
     /// Trace all the updates to the debug output
     let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
@@ -144,7 +148,8 @@ module Program =
 
     /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
     let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        { program with Program = Program.ForComponent.withExceptionHandler handler program.Program }
+        { program with
+            Program = Program.ForComponent.withExceptionHandler handler program.Program }
 
     /// Allow the app to react to theme changes
     let withThemeAwareness (program: Program<'arg, 'model, 'msg, #IFabApplication>) =

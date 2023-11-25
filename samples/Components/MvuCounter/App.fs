@@ -48,13 +48,13 @@ module App =
                 timerCmd()
             else
                 model, Cmd.none
-                
+
     let program = Program.ForComponent.statefulWithCmd init update
 
-    let view() =
+    let view () =
         MvuComponent(program) {
             let! model = Mvu.State
-            
+
             Application() {
                 ContentPage() {
                     (VStack() {

@@ -186,7 +186,7 @@ module App =
     /// The visual contents of a cell depends on this condition.
     let canPlay model cell =
         (cell = Empty) && (getGameResult model = StillPlaying)
-        
+
     let program =
         Program.ForComponent.stateful init update
         |> Program.ForComponent.withSubscription(fun _ ->
@@ -203,7 +203,7 @@ module App =
     let view () =
         MvuComponent(program) {
             let! model = Mvu.State
-            
+
             Application(
                 ContentPage(
                     Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {

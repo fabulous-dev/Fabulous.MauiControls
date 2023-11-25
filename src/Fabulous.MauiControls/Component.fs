@@ -16,8 +16,9 @@ module Component =
 [<AutoOpen>]
 module ComponentBuilders =
     type Fabulous.Maui.View with
+
         static member inline Component<'marker>() = ComponentBuilder()
-        
+
         static member inline MvuComponent(program: Program<unit, 'model, 'msg>) = MvuComponentBuilder(program, ())
-        
+
         static member inline MvuComponent(program: Program<'arg, 'model, 'msg>, arg: 'arg) = MvuComponentBuilder(program, arg)
