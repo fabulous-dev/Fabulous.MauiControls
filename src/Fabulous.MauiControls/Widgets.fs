@@ -23,7 +23,7 @@ module Widgets =
               Name = typeof<'T>.Name
               TargetType = typeof<'T>
               CreateView =
-                fun (widget, treeContext, parentNode) ->
+                fun (widget, treeContext, env, parentNode) ->
                     treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
 
                     let view = new 'T()
@@ -33,8 +33,13 @@ module Widgets =
                         match parentNode with
                         | ValueNone -> None
                         | ValueSome node -> Some node
+                        
+                    let env =
+                        match env with
+                        | ValueNone -> EnvironmentContext()
+                        | ValueSome env -> env // Only Components needs to create a new environment
 
-                    let node = ViewNode(parentNode, treeContext, weakReference)
+                    let node = ViewNode(parentNode, treeContext, env, weakReference)
 
                     ViewNode.set node view
 
@@ -43,7 +48,7 @@ module Widgets =
                     Reconciler.update treeContext.CanReuseView ValueNone widget node
                     struct (node :> IViewNode, box view)
               AttachView =
-                fun (widget, treeContext, parentNode, view) ->
+                fun (widget, treeContext, env, parentNode, view) ->
                     treeContext.Logger.Debug("Attaching view for {0}", typeof<'T>.Name)
 
                     let view = unbox<'T> view
@@ -53,8 +58,13 @@ module Widgets =
                         match parentNode with
                         | ValueNone -> None
                         | ValueSome node -> Some node
+                        
+                    let env =
+                        match env with
+                        | ValueNone -> EnvironmentContext()
+                        | ValueSome env -> env // Only Components needs to create a new environment
 
-                    let node = ViewNode(parentNode, treeContext, weakReference)
+                    let node = ViewNode(parentNode, treeContext, env, weakReference)
 
                     ViewNode.set node view
 

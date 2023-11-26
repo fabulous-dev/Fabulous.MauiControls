@@ -32,10 +32,9 @@ type AppHostBuilderExtensions =
                 { CanReuseView = MauiViewHelpers.canReuseView
                   GetViewNode = ViewNode.get
                   Logger = ProgramHelpers.defaultLogger()
-                  Dispatch = ignore
-                  EnvironmentContext = EnvironmentContext() }
+                  Dispatch = ignore }
 
-            let struct (_node, view) = widgetDef.CreateView(widget, viewTreeContext, ValueNone)
+            let struct (_node, view) = widgetDef.CreateView(widget, viewTreeContext, ValueNone, ValueNone)
 
             view :?> Microsoft.Maui.IApplication)
 
@@ -51,9 +50,8 @@ type AppHostBuilderExtensions =
                 { CanReuseView = MauiViewHelpers.canReuseView
                   GetViewNode = ViewNode.get
                   Logger = program.Logger
-                  Dispatch = ignore
-                  EnvironmentContext = EnvironmentContext() }
+                  Dispatch = ignore }
 
-            let struct (_node, view) = widgetDef.CreateView(widget, viewTreeContext, ValueNone)
+            let struct (_node, view) = widgetDef.CreateView(widget, viewTreeContext, ValueNone, ValueNone)
 
             view :?> Microsoft.Maui.IApplication)
