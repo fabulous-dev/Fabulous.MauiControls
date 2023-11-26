@@ -6,8 +6,8 @@ open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
 module EnvironmentKeys =
-    let LetsTry = EnvironmentKey "letsTry"
-    let LetsTry2 = EnvironmentKey "letsTry2"
+    let LetsTry = EnvironmentKey.Create<int>("letsTry")
+    let LetsTry2 = EnvironmentKey.Create<int>("letsTry2")
 
 module App =
     [<Literal>]
@@ -17,8 +17,8 @@ module App =
     
     let grandChild() =
         Component() {
-            let! letsTryValue = Environment.Get<int>(EnvironmentKeys.LetsTry)
-            let! letsTryValue2 = Environment.Get<int>(EnvironmentKeys.LetsTry2)
+            let! letsTryValue = Environment.Get(EnvironmentKeys.LetsTry)
+            let! letsTryValue2 = Environment.Get(EnvironmentKeys.LetsTry2)
             
             (VStack() {
                 Label($"Environment value 1 is {letsTryValue}")
@@ -31,7 +31,7 @@ module App =
         
     let child() =
         Component() {
-            let! valueBeforeOverriding = Environment.Get<int>(EnvironmentKeys.LetsTry)
+            let! valueBeforeOverriding = Environment.Get(EnvironmentKeys.LetsTry)
             do! Environment.Set(EnvironmentKeys.LetsTry, 100)
             do! Environment.Set(EnvironmentKeys.LetsTry2, 15)
             
