@@ -3,56 +3,78 @@ namespace HelloComponent
 open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui.ApplicationModel
-open Microsoft.Maui.Graphics
 open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
 module App =
-    let themeViewer() =
+    let Count = EnvironmentKey("Count", 0)
+    
+    let subCountViewer() =
         Component() {
-            printfn "Evaluated themeViewer()"
-            let! theme = Environment(EnvironmentKeys.Theme)
-            Label($"Theme is {theme.Current}")
-                .center()
+            let! count = Environment(Count)
+            Label($"[SubCountViewer] Count = {count.Current}")
         }
-        
-    let themeSetter() =
+    
+    let subCountSetter() =
         Component() {
-            printfn "Evaluated themeSetter()"
-            let! theme = Environment(EnvironmentKeys.Theme)
+            let! count = Environment(Count)
             VStack() {
-                Button("Change theme", fun () ->
-                    let newTheme =
-                        match theme.Current with
-                        | AppTheme.Light -> AppTheme.Dark
-                        | _ -> AppTheme.Light
-                    
-                    theme.Set(newTheme)
-                )
-                
-                Button("Unset theme", fun () ->
-                    theme.Set(AppTheme.Unspecified)
-                )
+                Button("[SubCountSetter] Increment", fun () -> count.Set(count.Current + 1))
+                Button("[SubCountSetter] Decrement", fun () -> count.Set(count.Current - 1))
             }
         }
         
-    let themeViewerAndSetter() =
+    let subCount() =
+        (Component() {
+            VStack() {
+                subCountViewer()
+                subCountSetter()
+            }
+        })
+            .environment(Count, 10)
+        
+    let countViewer() =
         Component() {
-            printfn "Evaluated themeViewerAndSetter()"
-            (VStack() {
-                themeViewer()
-                themeSetter()
-            })
-                .center()
+            let! count = Environment(Count)
+            VStack() {
+                Label($"[CountViewer] Count = {count.Current}")
+            }
+        }
+        
+    let countSetter() =
+        Component() {
+            let! count = Environment(Count)
+            VStack() {
+                Button("[CountSetter] Increment", fun () -> count.Set(count.Current + 1))
+                Button("[CountSetter] Decrement", fun () -> count.Set(count.Current - 1))
+            }
+        }
+        
+    let count'() =
+        Component() {
+            VStack() {
+                countViewer()
+                countSetter()
+            }
         }
 
     let view() =
-        printfn "Evaluated view()"
-        Application() {
-            ContentPage() {
-                themeViewerAndSetter()
+        (Component() {
+            let! count = Environment(Count)
+            Application() {
+                ContentPage() {
+                    VStack() {
+                        Label($"[view] Count = {count.Current}")
+                        Button("[view] Increment", fun () -> count.Set(count.Current + 1))
+                        Button("[view] Decrement", fun () -> count.Set(count.Current - 1))
+                        
+                        count'()
+                        subCount()
+                    }
+                }
             }
-        }
+        })
+            .environment(Count, 0)
     
     let createMauiApp() =
         MauiApp
