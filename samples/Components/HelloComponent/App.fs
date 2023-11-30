@@ -2,68 +2,62 @@ namespace HelloComponent
 
 open Fabulous
 open Fabulous.Maui
+open Microsoft.Maui.ApplicationModel
+open Microsoft.Maui.Graphics
 open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
-module EnvironmentKeys =
-    let LetsTry = EnvironmentKey.Create<int>("letsTry")
-    let LetsTry2 = EnvironmentKey.Create<int>("letsTry2")
-
 module App =
-    [<Literal>]
-    let letsTry = "key"
-    [<Literal>]
-    let letsTry2 = "key2"
-    
-    let grandChild() =
+    let themeViewer() =
         Component() {
-            let! letsTryValue = Environment.Get(EnvironmentKeys.LetsTry)
-            let! letsTryValue2 = Environment.Get(EnvironmentKeys.LetsTry2)
-            
-            (VStack() {
-                Label($"Environment value 1 is {letsTryValue}")
-                    .center()
-                Label($"Environment value 2 is {letsTryValue2}")
-                    .center()
-            })
+            printfn "Evaluated themeViewer()"
+            let! theme = Environment(EnvironmentKeys.Theme)
+            Label($"Theme is {theme.Current}")
                 .center()
         }
         
-    let child() =
+    let themeSetter() =
         Component() {
-            let! valueBeforeOverriding = Environment.Get(EnvironmentKeys.LetsTry)
-            do! Environment.Set(EnvironmentKeys.LetsTry, 100)
-            do! Environment.Set(EnvironmentKeys.LetsTry2, 15)
-            
+            printfn "Evaluated themeSetter()"
+            let! theme = Environment(EnvironmentKeys.Theme)
             VStack() {
-                Label("Child")
-                    .center()
+                Button("Change theme", fun () ->
+                    let newTheme =
+                        match theme.Current with
+                        | AppTheme.Light -> AppTheme.Dark
+                        | _ -> AppTheme.Light
                     
-                Label($"Environment value before overriding is {valueBeforeOverriding}")
-                grandChild()
+                    theme.Set(newTheme)
+                )
+                
+                Button("Unset theme", fun () ->
+                    theme.Set(AppTheme.Unspecified)
+                )
             }
         }
-    
-    let view() =
+        
+    let themeViewerAndSetter() =
         Component() {
-            do! Environment.Set(EnvironmentKeys.LetsTry, 10)
-            
-            Application() {
-                ContentPage() {
-                    (VStack() {
-                        Label("Parent")
-                            .center()
-                        child()
-                    })
-                        .center()
-                }
+            printfn "Evaluated themeViewerAndSetter()"
+            (VStack() {
+                themeViewer()
+                themeSetter()
+            })
+                .center()
+        }
+
+    let view() =
+        printfn "Evaluated view()"
+        Application() {
+            ContentPage() {
+                themeViewerAndSetter()
             }
         }
     
     let createMauiApp() =
         MauiApp
             .CreateBuilder()
-            .UseFabulousApp(view())
+            .UseFabulousApp(view)
             .ConfigureFonts(fun fonts ->
                 fonts
                     .AddFont("OpenSans-Regular.ttf", "OpenSansRegular")

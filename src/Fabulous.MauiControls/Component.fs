@@ -8,9 +8,15 @@ module Component =
         BindableProperty.CreateAttached("Component", typeof<IBaseComponent>, typeof<BindableObject>, null)
 
     let registerComponentFunctions () =
-        Component.setComponentFunctions(
+        BaseComponent.setComponentFunctions(
             (fun view -> (view :?> BindableObject).GetValue(ComponentProperty) :?> IBaseComponent),
-            (fun view comp -> (view :?> BindableObject).SetValue(ComponentProperty, comp))
+            (fun view comp ->
+                let previousComp = BaseComponent.getAttachedComponent view
+                if previousComp <> null then
+                    previousComp.Dispose()
+                    
+                (view :?> BindableObject).SetValue(ComponentProperty, comp)
+            )
         )
 
 [<AutoOpen>]

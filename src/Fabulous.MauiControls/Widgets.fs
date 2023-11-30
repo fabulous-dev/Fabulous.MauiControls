@@ -33,11 +33,6 @@ module Widgets =
                         match parentNode with
                         | ValueNone -> None
                         | ValueSome node -> Some node
-                        
-                    let env =
-                        match env with
-                        | ValueNone -> EnvironmentContext()
-                        | ValueSome env -> env // Only Components needs to create a new environment
 
                     let node = ViewNode(parentNode, treeContext, env, weakReference)
 
@@ -58,11 +53,6 @@ module Widgets =
                         match parentNode with
                         | ValueNone -> None
                         | ValueSome node -> Some node
-                        
-                    let env =
-                        match env with
-                        | ValueNone -> EnvironmentContext()
-                        | ValueSome env -> env // Only Components needs to create a new environment
 
                     let node = ViewNode(parentNode, treeContext, env, weakReference)
 
@@ -118,9 +108,9 @@ module WidgetHelpers =
         =
         let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
-              FooterTemplate = Some(fun d -> (groupFooterTemplate(unbox d)).Compile())
-              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
+              HeaderTemplate = fun d -> groupHeaderTemplate(unbox d).Compile()
+              FooterTemplate = Some(fun d -> groupFooterTemplate(unbox d).Compile())
+              ItemTemplate = fun d -> itemTemplate(unbox d).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
@@ -133,8 +123,8 @@ module WidgetHelpers =
         =
         let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
+              HeaderTemplate = fun d -> groupHeaderTemplate(unbox d).Compile()
               FooterTemplate = None
-              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
+              ItemTemplate = fun d -> itemTemplate(unbox d).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))

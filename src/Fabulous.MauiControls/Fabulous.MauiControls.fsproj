@@ -143,6 +143,7 @@
     <Compile Include="Views\_Semantics.fs" />
     <Compile Include="ThemeAware.fs" />
     <Compile Include="Component.fs" />
+    <Compile Include="Environment.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Async.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />
