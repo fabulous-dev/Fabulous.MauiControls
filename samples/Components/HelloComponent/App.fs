@@ -6,8 +6,31 @@ open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
+[<AutoOpen>]
+module AppEnvironmentKeys =
+    let CountKey = EnvironmentKey("Count", 0)
+    type EnvironmentKeys with
+        static member Count = CountKey
+
+open type Fabulous.Maui.EnvironmentKeys
+
 module App =
-    let Count = EnvironmentKey("Count", 0)
+    let themeViewer() =
+        Component() {
+            let! theme = Environment(Theme)
+            
+            VStack() {
+                Label($"[themeViewer] Current theme is %A{theme.Current}")
+                Button("[themeViewer] Toggle theme", fun () ->
+                    theme.Set(
+                        if theme.Current = AppTheme.Light then
+                            AppTheme.Dark
+                        else
+                            AppTheme.Light
+                    )
+                )
+            }
+        }
     
     let subCountViewer() =
         Component() {
@@ -61,15 +84,18 @@ module App =
     let view() =
         (Component() {
             let! count = Environment(Count)
+            let! theme = Environment(Theme)
             Application() {
                 ContentPage() {
                     VStack() {
+                        Label($"[view] Current theme is %A{theme.Current}")
                         Label($"[view] Count = {count.Current}")
                         Button("[view] Increment", fun () -> count.Set(count.Current + 1))
                         Button("[view] Decrement", fun () -> count.Set(count.Current - 1))
                         
                         count'()
                         subCount()
+                        themeViewer()
                     }
                 }
             }
