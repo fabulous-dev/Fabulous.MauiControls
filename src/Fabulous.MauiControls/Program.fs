@@ -84,11 +84,12 @@ module Program =
                 fun (env, target) ->
                     let fab = program.Environment.Subscribe(env, target)
                     let maui = EnvironmentHelpers.subscribe(env, target)
+
                     { new IDisposable with
                         member this.Dispose() =
                             fab.Dispose()
                             maui.Dispose() } }
-        
+
         { Program = { program with Environment = env }
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
