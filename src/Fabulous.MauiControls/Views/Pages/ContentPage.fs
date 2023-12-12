@@ -45,6 +45,9 @@ module ContentPageBuilders =
                 AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
+        static member inline ContentPage<'msg, 'childMarker>() =
+            SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)
+
 [<Extension>]
 type ContentPageModifiers =
     /// <summary>Listen for SizeAllocated event</summary>

@@ -23,7 +23,7 @@ module Widgets =
               Name = typeof<'T>.Name
               TargetType = typeof<'T>
               CreateView =
-                fun (widget, treeContext, parentNode) ->
+                fun (widget, treeContext, env, parentNode) ->
                     treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
 
                     let view = new 'T()
@@ -34,7 +34,7 @@ module Widgets =
                         | ValueNone -> None
                         | ValueSome node -> Some node
 
-                    let node = ViewNode(parentNode, treeContext, weakReference)
+                    let node = ViewNode(parentNode, treeContext, env, weakReference)
 
                     ViewNode.set node view
 
@@ -43,7 +43,7 @@ module Widgets =
                     Reconciler.update treeContext.CanReuseView ValueNone widget node
                     struct (node :> IViewNode, box view)
               AttachView =
-                fun (widget, treeContext, parentNode, view) ->
+                fun (widget, treeContext, env, parentNode, view) ->
                     treeContext.Logger.Debug("Attaching view for {0}", typeof<'T>.Name)
 
                     let view = unbox<'T> view
@@ -54,7 +54,7 @@ module Widgets =
                         | ValueNone -> None
                         | ValueSome node -> Some node
 
-                    let node = ViewNode(parentNode, treeContext, weakReference)
+                    let node = ViewNode(parentNode, treeContext, env, weakReference)
 
                     ViewNode.set node view
 
@@ -108,9 +108,9 @@ module WidgetHelpers =
         =
         let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
-              FooterTemplate = Some(fun d -> (groupFooterTemplate(unbox d)).Compile())
-              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
+              HeaderTemplate = fun d -> groupHeaderTemplate(unbox d).Compile()
+              FooterTemplate = Some(fun d -> groupFooterTemplate(unbox d).Compile())
+              ItemTemplate = fun d -> itemTemplate(unbox d).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
@@ -123,8 +123,8 @@ module WidgetHelpers =
         =
         let data: GroupedWidgetItems =
             { OriginalItems = items
-              HeaderTemplate = fun d -> (groupHeaderTemplate(unbox d)).Compile()
+              HeaderTemplate = fun d -> groupHeaderTemplate(unbox d).Compile()
               FooterTemplate = None
-              ItemTemplate = fun d -> (itemTemplate(unbox d)).Compile() }
+              ItemTemplate = fun d -> itemTemplate(unbox d).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))

@@ -1,12 +1,11 @@
 ﻿namespace Fabulous.Maui
 
+open System
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
 open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Controls
-open System
-open System.Diagnostics
 
 module MauiViewHelpers =
     let private tryGetScalarValue (widget: Widget) (def: SimpleScalarAttributeDefinition<'data>) =
@@ -74,49 +73,52 @@ module MauiViewHelpers =
 
         | _ -> true
 
-    let defaultLogger () =
-        let log (level, message) =
-            let traceLevel =
-                match level with
-                | LogLevel.Debug -> "Debug"
-                | LogLevel.Info -> "Information"
-                | LogLevel.Warn -> "Warning"
-                | LogLevel.Error -> "Error"
-                | _ -> "Error"
-
-            Trace.WriteLine(message, traceLevel)
-
-        { Log = log
-          MinLogLevel = LogLevel.Error }
-
-    let defaultExceptionHandler exn =
-        Trace.WriteLine(String.Format("Unhandled exception: {0}", exn.ToString()), "Debug")
-        false
-
 module Program =
-    let inline private define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> WidgetBuilder<'msg, 'marker>) =
-        { Init = init
-          Update = (fun (msg, model) -> update msg model)
-          Subscribe = fun _ -> Cmd.none
+    let inline private define (view: 'model -> WidgetBuilder<'msg, 'marker>) (program: Program<'arg, 'model, 'msg>) : Program<'arg, 'model, 'msg, 'marker> =
+        let env =
+            { Initialize =
+                fun env ->
+                    program.Environment.Initialize(env)
+                    EnvironmentHelpers.initialize(env)
+              Subscribe =
+                fun (env, target) ->
+                    let fab = program.Environment.Subscribe(env, target)
+                    let maui = EnvironmentHelpers.subscribe(env, target)
+
+                    { new IDisposable with
+                        member this.Dispose() =
+                            fab.Dispose()
+                            maui.Dispose() } }
+
+        { Program = { program with Environment = env }
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
-          SyncAction = MainThread.BeginInvokeOnMainThread
-          Logger = MauiViewHelpers.defaultLogger()
-          ExceptionHandler = MauiViewHelpers.defaultExceptionHandler }
+          SyncAction = MainThread.BeginInvokeOnMainThread }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
-        define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
+        let program =
+            Program.ForComponent.define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none)
+
+        define view program
 
     /// Create a program using an MVU loop
     let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> WidgetBuilder<'msg, 'marker>) =
-        define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
+        define view (Program.ForComponent.stateful init update)
 
     /// Create a program using an MVU loop. Add support for Cmd
     let statefulWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
         (view: 'model -> WidgetBuilder<'msg, #IFabApplication>)
+        =
+        define view (Program.ForComponent.statefulWithCmd init update)
+
+    /// Create a program using an MVU loop. Add support for Cmd
+    let statefulWithCmdMemo
+        (init: 'arg -> 'model * Cmd<'msg>)
+        (update: 'msg -> 'model -> 'model * Cmd<'msg>)
+        (view: 'model -> WidgetBuilder<'msg, Memo.Memoized<#IFabApplication>>)
         =
         define init update view
 
@@ -127,53 +129,43 @@ module Program =
         (view: 'model -> WidgetBuilder<'msg, 'marker>)
         (mapCmd: 'cmdMsg -> Cmd<'msg>)
         =
-        let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
-
-        define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c) view
+        define view (Program.ForComponent.statefulWithCmdMsg init update mapCmd)
 
     /// Start the program
     let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IFabApplication>) : Application =
-        let runner = Runners.create program
+        let stateKey = StateStore.getNextKey()
+        let runner = Runners.create stateKey program.Program
         runner.Start(arg)
-        let adapter = ViewAdapters.create ViewNode.get runner
+        let adapter = ViewAdapters.create ViewNode.get stateKey program runner
         adapter.CreateView() |> unbox
 
     /// Start the program
     let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application = startApplicationWithArgs () program
 
+    /// Start the program
+    let startApplicationWithArgsMemo (arg: 'arg) (program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : Application =
+        let runner = Runners.create program
+        runner.Start(arg)
+        let adapter = ViewAdapters.create ViewNode.get runner
+        let view = adapter.CreateView()
+        unbox view
+
+    /// Start the program
+    let startApplicationMemo (program: Program<unit, 'model, 'msg, Memo.Memoized<'marker>>) : Application = startApplicationWithArgsMemo () program
+
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
     let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        let sub model =
-            Cmd.batch [ program.Subscribe model; subscribe model ]
-
-        { program with Subscribe = sub }
+        { program with
+            Program = Program.ForComponent.withSubscription subscribe program.Program }
 
     /// Configure how the output messages from Fabulous will be handled
-    let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg, 'marker>) = { program with Logger = logger }
+    let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg, 'marker>) =
+        { program with
+            Program = Program.ForComponent.withLogger logger program.Program }
 
     /// Trace all the updates to the debug output
     let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        let traceInit arg =
-            try
-                let initModel, cmd = program.Init(arg)
-                trace("Initial model: {0}", $"%0A{initModel}")
-                initModel, cmd
-            with e ->
-                trace("Error in init function: {0}", $"%0A{e}")
-                reraise()
-
-        let traceUpdate (msg, model) =
-            trace("Message: {0}", $"%0A{msg}")
-
-            try
-                let newModel, cmd = program.Update(msg, model)
-                trace("Updated model: {0}", $"%0A{newModel}")
-                newModel, cmd
-            with e ->
-                trace("Error in model function: {0}", $"%0A{e}")
-                reraise()
-
         let traceView model =
             trace("View, model = {0}", $"%0A{model}")
 
@@ -186,25 +178,26 @@ module Program =
                 reraise()
 
         { program with
-            Init = traceInit
-            Update = traceUpdate
+            Program = Program.ForComponent.withTrace trace program.Program
             View = traceView }
 
     /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
     let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg, 'marker>) =
         { program with
-            ExceptionHandler = handler }
+            Program = Program.ForComponent.withExceptionHandler handler program.Program }
 
     /// Allow the app to react to theme changes
     let withThemeAwareness (program: Program<'arg, 'model, 'msg, #IFabApplication>) =
-        { Init = ThemeAwareProgram.init program.Init
-          Update = ThemeAwareProgram.update program.Update
-          Subscribe = fun model -> program.Subscribe model.Model |> Cmd.map ThemeAwareProgram.Msg.ModelMsg
+        { Program =
+            { Environment = program.Program.Environment
+              Init = ThemeAwareProgram.init program.Program.Init
+              Update = ThemeAwareProgram.update program.Program.Update
+              Subscribe = fun model -> program.Program.Subscribe model.Model |> Cmd.map ThemeAwareProgram.Msg.ModelMsg
+              Logger = program.Program.Logger
+              ExceptionHandler = program.Program.ExceptionHandler }
           View = ThemeAwareProgram.view program.View
           CanReuseView = program.CanReuseView
-          SyncAction = program.SyncAction
-          Logger = program.Logger
-          ExceptionHandler = program.ExceptionHandler }
+          SyncAction = program.SyncAction }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =

@@ -1,8 +1,7 @@
-﻿namespace Fabulous.Maui
+namespace Fabulous.Maui
 
 open Fabulous
 open System.Runtime.CompilerServices
-open Microsoft.Maui.Controls
 open Microsoft.Maui.Hosting
 open Microsoft.Maui.Controls.Hosting
 open System
@@ -16,25 +15,20 @@ type AppHostBuilderExtensions =
             (Program.startApplication program) :> Microsoft.Maui.IApplication)
 
     [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : MauiAppBuilder =
+        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) -> (Program.startApplicationMemo program) :> Microsoft.Maui.IApplication)
+
+    [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, #IFabApplication>, arg: 'arg) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             Component.registerComponentFunctions()
             (Program.startApplicationWithArgs arg program) :> Microsoft.Maui.IApplication)
 
     [<Extension>]
-    static member inline UseFabulousApp(this: MauiAppBuilder, [<InlineIfLambda>] root: unit -> WidgetBuilder<'msg, #IFabApplication>) : MauiAppBuilder =
-        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
-            Component.registerComponentFunctions()
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>, arg: 'arg) : MauiAppBuilder =
+        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) -> (Program.startApplicationWithArgsMemo arg program) :> Microsoft.Maui.IApplication)
 
-            let widget = root().Compile()
-            let widgetDef = WidgetDefinitionStore.get widget.Key
-
-            let viewTreeContext =
-                { CanReuseView = MauiViewHelpers.canReuseView
-                  GetViewNode = ViewNode.get
-                  Logger = MauiViewHelpers.defaultLogger()
-                  Dispatch = ignore }
-
-            let struct (_node, view) = widgetDef.CreateView(widget, viewTreeContext, ValueNone)
-
-            view :?> Microsoft.Maui.IApplication)
+    [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, view: unit -> WidgetBuilder<unit, #IFabApplication>) : MauiAppBuilder =
+        let program = Program.stateless view
+        this.UseFabulousApp(program)

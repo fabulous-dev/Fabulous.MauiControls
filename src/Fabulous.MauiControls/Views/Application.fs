@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.Maui
 
 open System
+open System.Reflection
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
@@ -91,6 +92,9 @@ module ApplicationBuilders =
         /// <param name="mainPage">The main page widget</param>
         static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
+
+        static member inline Application<'msg, 'childMarker>() =
+            SingleChildBuilder<'msg, IFabApplication, 'childMarker>(Application.WidgetKey, Application.MainPage)
 
 [<Extension>]
 type ApplicationModifiers =

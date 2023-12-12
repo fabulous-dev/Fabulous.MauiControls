@@ -14,6 +14,12 @@ _No unreleased changes_
 ### Added
 - Add new Component API by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/49)
 
+## [8.0.2] - 2023-12-12
+
+### Added
+- Added additional Any widgets to support Memo widget as a root by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/52)
+- Added missing Cell.ContextActions and MultiPage.CurrentPage modifiers by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/52)
+
 ## [8.0.1] - 2023-11-14
 
 ### Fixed
@@ -141,6 +147,7 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 
 [unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.1.0-pre1...HEAD
 [8.1.0-pre1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre1
+[8.0.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.2
 [8.0.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.1
 [8.0.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.0
 [2.8.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/2.8.1
