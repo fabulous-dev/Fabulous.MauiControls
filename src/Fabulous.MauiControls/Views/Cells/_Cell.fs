@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 
 type IFabCell =
@@ -29,6 +30,9 @@ module Cell =
 
     let Tapped =
         Attributes.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
+
+    let ContextActions =
+        Attributes.defineListWidgetCollection "Cell_ContextActions" (fun target -> (target :?> Cell).ContextActions)
 
 [<Extension>]
 type CellModifiers =
@@ -66,3 +70,19 @@ type CellModifiers =
     [<Extension>]
     static member inline onTapped(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
         this.AddScalar(Cell.Tapped.WithValue(MsgValue(msg)))
+
+    /// <summary>Set the context actions of the cell</summary>
+    /// <param name="this">Current widget</param>
+    [<Extension>]
+    static member inline contextActions<'msg, 'marker when 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabMenuItem> Cell.ContextActions this
+
+[<Extension>]
+type CellYieldExtensions =
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabCell and 'itemType :> IFabMenuItem>
+        (
+            _: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
