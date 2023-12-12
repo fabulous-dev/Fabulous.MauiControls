@@ -120,6 +120,14 @@ module Program =
         =
         define init update view
 
+    /// Create a program using an MVU loop. Add support for Cmd
+    let statefulWithCmdMemo
+        (init: 'arg -> 'model * Cmd<'msg>)
+        (update: 'msg -> 'model -> 'model * Cmd<'msg>)
+        (view: 'model -> WidgetBuilder<'msg, Memo.Memoized<#IFabApplication>>)
+        =
+        define init update view
+
     /// Create a program using an MVU loop. Add support for CmdMsg
     let statefulWithCmdMsg
         (init: 'arg -> 'model * 'cmdMsg list)
@@ -140,6 +148,17 @@ module Program =
 
     /// Start the program
     let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application = startApplicationWithArgs () program
+
+    /// Start the program
+    let startApplicationWithArgsMemo (arg: 'arg) (program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : Application =
+        let runner = Runners.create program
+        runner.Start(arg)
+        let adapter = ViewAdapters.create ViewNode.get runner
+        let view = adapter.CreateView()
+        unbox view
+
+    /// Start the program
+    let startApplicationMemo (program: Program<unit, 'model, 'msg, Memo.Memoized<'marker>>) : Application = startApplicationWithArgsMemo () program
 
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
