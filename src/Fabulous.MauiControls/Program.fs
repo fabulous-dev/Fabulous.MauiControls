@@ -1,5 +1,6 @@
 ﻿namespace Fabulous.Maui
 
+open System
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
@@ -74,7 +75,22 @@ module MauiViewHelpers =
 
 module Program =
     let inline private define (view: 'model -> WidgetBuilder<'msg, 'marker>) (program: Program<'arg, 'model, 'msg>) : Program<'arg, 'model, 'msg, 'marker> =
-        { Program = program
+        let env =
+            { Initialize =
+                fun env ->
+                    program.Environment.Initialize(env)
+                    EnvironmentHelpers.initialize(env)
+              Subscribe =
+                fun (env, target) ->
+                    let fab = program.Environment.Subscribe(env, target)
+                    let maui = EnvironmentHelpers.subscribe(env, target)
+
+                    { new IDisposable with
+                        member this.Dispose() =
+                            fab.Dispose()
+                            maui.Dispose() } }
+
+        { Program = { program with Environment = env }
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
           SyncAction = MainThread.BeginInvokeOnMainThread }
@@ -154,7 +170,8 @@ module Program =
     /// Allow the app to react to theme changes
     let withThemeAwareness (program: Program<'arg, 'model, 'msg, #IFabApplication>) =
         { Program =
-            { Init = ThemeAwareProgram.init program.Program.Init
+            { Environment = program.Program.Environment
+              Init = ThemeAwareProgram.init program.Program.Init
               Update = ThemeAwareProgram.update program.Program.Update
               Subscribe = fun model -> program.Program.Subscribe model.Model |> Cmd.map ThemeAwareProgram.Msg.ModelMsg
               Logger = program.Program.Logger

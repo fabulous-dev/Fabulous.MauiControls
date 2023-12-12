@@ -7,7 +7,7 @@ type MauiProgram =
     static member CreateMauiApp() =
         MauiApp
             .CreateBuilder()
-            .UseFabulousApp(App.view())
+            .UseFabulousApp(App.view)
             .ConfigureFonts(fun fonts ->
                 fonts
                     .AddFont("OpenSans-Regular.ttf", "OpenSansRegular")
