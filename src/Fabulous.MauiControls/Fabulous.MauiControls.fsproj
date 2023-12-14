@@ -161,7 +161,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Condition="$(UseLocalProjectReference) == false" Include="Fabulous" VersionOverride="[2.5.0-pre1]" />
+    <PackageReference Condition="$(UseLocalProjectReference) == false" Include="Fabulous" VersionOverride="[2.5.0-pre2]" />
     <ProjectReference Condition="$(UseLocalProjectReference) == true" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
 </Project>
