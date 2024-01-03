@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [8.0.3] - 2024-01-03
+
+### Fixed
+- Fixed a crash related to back navigation in NavigationPage by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/54)
+
 ## [8.0.2] - 2023-12-12
 
 ### Added
@@ -140,7 +145,8 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.0.2...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.0.3...HEAD
+[8.0.3]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.3
 [8.0.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.2
 [8.0.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.1
 [8.0.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.0
