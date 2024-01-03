@@ -12,7 +12,7 @@ _No unreleased changes_
 ## [8.0.3] - 2024-01-03
 
 ### Fixed
-- Fixed a crash related to back navigation in NavigationPage by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/54)
+- Fixed a crash related to back navigation in NavigationPage
 
 ## [8.0.2] - 2023-12-12
 
