@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [8.0.4] - 2024-01-08
+
+### Changed
+- Avoid allocating a new ImageSource instance on each update by using specialized attributes for each value type by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/54)
+
 ## [8.0.3] - 2024-01-03
 
 ### Fixed

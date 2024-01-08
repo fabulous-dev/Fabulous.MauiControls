@@ -24,6 +24,23 @@ module Image =
 
     let Source = Attributes.defineBindableWithEquality<ImageSource> Image.SourceProperty
 
+    /// Performance optimization: avoid allocating a new ImageSource instance on each update
+    /// we store the user value (eg. string, Uri, Stream) and convert it to an ImageSource only when needed
+    let inline private defineSourceAttribute<'model when 'model: equality> ([<InlineIfLambda>] convertModelToValue: 'model -> ImageSource) =
+        Attributes.defineScalar<'model, 'model> Image.SourceProperty.PropertyName id ScalarAttributeComparers.equalityCompare (fun _ newValueOpt node ->
+            let target = node.Target :?> Image
+
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(Image.SourceProperty)
+            | ValueSome v -> target.SetValue(Image.SourceProperty, convertModelToValue v))
+
+    let SourceFile = defineSourceAttribute<string> ImageSource.FromFile
+
+    let SourceUri = defineSourceAttribute<Uri> ImageSource.FromUri
+
+    let SourceStream =
+        defineSourceAttribute<Stream>(fun stream -> ImageSource.FromStream(fun () -> stream))
+
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.Maui.View with
@@ -42,35 +59,35 @@ module ImageBuilders =
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: string) =
-            View.Image<'msg>(ImageSource.FromFile(source))
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceFile.WithValue(source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
         static member inline Image<'msg>(source: string, aspect: Aspect) =
-            View.Image<'msg>(ImageSource.FromFile(source), aspect)
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceFile.WithValue(source), Image.Aspect.WithValue(aspect))
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: Uri) =
-            View.Image<'msg>(ImageSource.FromUri(source))
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceUri.WithValue(source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
         static member inline Image<'msg>(source: Uri, aspect: Aspect) =
-            View.Image<'msg>(ImageSource.FromUri(source), aspect)
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceUri.WithValue(source), Image.Aspect.WithValue(aspect))
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
         static member inline Image<'msg>(source: Stream) =
-            View.Image<'msg>(ImageSource.FromStream(fun () -> source))
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceStream.WithValue(source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
         static member inline Image<'msg>(source: Stream, aspect: Aspect) =
-            View.Image<'msg>(ImageSource.FromStream(fun () -> source), aspect)
+            WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.SourceStream.WithValue(source), Image.Aspect.WithValue(aspect))
 
 [<Extension>]
 type ImageModifiers =
