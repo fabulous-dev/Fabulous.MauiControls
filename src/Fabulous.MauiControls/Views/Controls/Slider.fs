@@ -48,8 +48,7 @@ module Slider =
 
     let ThumbColor = Attributes.defineBindableColor Slider.ThumbColorProperty
 
-    let ThumbImageSource =
-        Attributes.defineBindableWithEquality Slider.ThumbImageSourceProperty
+    let ThumbImageSource = Attributes.defineBindableImageSource Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
         Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
@@ -112,7 +111,7 @@ type SliderModifiers =
     /// <param name="value">The image source of the thumb</param>
     [<Extension>]
     static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: ImageSource) =
-        this.AddScalar(Slider.ThumbImageSource.WithValue(value))
+        this.AddScalar(Slider.ThumbImageSource.WithValue(ImageSourceValue.Source value))
 
     /// <summary>Link a ViewRef to access the direct Slider control instance</summary>
     /// <param name="this">Current widget</param>
@@ -128,18 +127,18 @@ type SliderExtraModifiers =
     /// <param name="value">The image source of the thumb</param>
     [<Extension>]
     static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: string) =
-        this.thumbImage(ImageSource.FromFile(value))
+        this.AddScalar(Slider.ThumbImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the image source of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source of the thumb</param>
     [<Extension>]
     static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: Uri) =
-        this.thumbImage(ImageSource.FromUri(value))
+        this.AddScalar(Slider.ThumbImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the image source of the thumb</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source of the thumb</param>
     [<Extension>]
     static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: Stream) =
-        this.thumbImage(ImageSource.FromStream(fun () -> value))
+        this.AddScalar(Slider.ThumbImageSource.WithValue(ImageSourceValue.Stream value))

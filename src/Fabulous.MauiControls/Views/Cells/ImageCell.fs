@@ -12,8 +12,7 @@ type IFabImageCell =
 module ImageCell =
     let WidgetKey = Widgets.register<ImageCell>()
 
-    let ImageSource =
-        Attributes.defineBindableWithEquality ImageCell.ImageSourceProperty
+    let ImageSource = Attributes.defineBindableImageSource ImageCell.ImageSourceProperty
 
 [<AutoOpen>]
 module ImageCellBuilders =
@@ -23,25 +22,25 @@ module ImageCellBuilders =
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: ImageSource) =
-            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(source))
+            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Source source))
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: string) =
-            View.ImageCell<'msg>(text, ImageSource.FromFile(source))
+            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.File source))
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: Uri) =
-            View.ImageCell<'msg>(text, ImageSource.FromUri(source))
+            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Uri source))
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: Stream) =
-            View.ImageCell<'msg>(text, ImageSource.FromStream(fun () -> source))
+            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Stream source))
 
 [<Extension>]
 type ImageCellModifiers =

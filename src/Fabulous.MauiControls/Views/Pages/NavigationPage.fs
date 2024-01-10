@@ -301,8 +301,7 @@ module NavigationPageAttached =
 
     let IconColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
 
-    let TitleIconImageSource =
-        Attributes.defineBindableWithEquality NavigationPage.TitleIconImageSourceProperty
+    let TitleIconImageSource = Attributes.defineBindableImageSource NavigationPage.TitleIconImageSourceProperty
 
     let TitleView = Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
@@ -428,7 +427,7 @@ type NavigationPageAttachedModifiers =
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline titleIcon(this: WidgetBuilder<'msg, #IFabPage>, value: ImageSource) =
-        this.AddScalar(NavigationPageAttached.TitleIconImageSource.WithValue(value))
+        this.AddScalar(NavigationPageAttached.TitleIconImageSource.WithValue(ImageSourceValue.Source value))
 
     /// <summary>Sets the value for TitleView</summary>
     /// <param name="this">Current widget</param>
@@ -444,21 +443,21 @@ type NavigationPageExtraAttachedModifiers =
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline titleIcon(this: WidgetBuilder<'msg, #IFabPage>, value: string) =
-        this.titleIcon(ImageSource.FromFile(value))
+        this.AddScalar(NavigationPageAttached.TitleIconImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the image source of the title icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline titleIcon(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) =
-        this.titleIcon(ImageSource.FromUri(value))
+        this.AddScalar(NavigationPageAttached.TitleIconImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the image source of the title icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline titleIcon(this: WidgetBuilder<'msg, #IFabPage>, value: Stream) =
-        this.titleIcon(ImageSource.FromStream(fun () -> value))
+        this.AddScalar(NavigationPageAttached.TitleIconImageSource.WithValue(ImageSourceValue.Stream value))
 
 [<Extension>]
 type NavigationPagePlatformModifiers =

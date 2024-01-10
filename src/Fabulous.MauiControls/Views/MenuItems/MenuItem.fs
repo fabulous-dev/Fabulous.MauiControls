@@ -20,8 +20,7 @@ module MenuItem =
     let Clicked =
         Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
 
-    let IconImageSource =
-        Attributes.defineBindableWithEquality MenuItem.IconImageSourceProperty
+    let IconImageSource = Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
 
     let IsDestructive = Attributes.defineBindableBool MenuItem.IsDestructiveProperty
 
@@ -52,7 +51,7 @@ type MenuItemModifiers =
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
     static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: ImageSource) =
-        this.AddScalar(MenuItem.IconImageSource.WithValue(value))
+        this.AddScalar(MenuItem.IconImageSource.WithValue(ImageSourceValue.Source value))
 
     /// <summary>Set a value that indicates whether or not the menu item removes its associated widget</summary>
     /// <param name="this">Current widget</param>
@@ -74,17 +73,19 @@ type MenuItemExtraModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: string) = this.icon(ImageSource.FromFile(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: string) =
+        this.AddScalar(MenuItem.IconImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the source of the icon image</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Uri) = this.icon(ImageSource.FromUri(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Uri) =
+        this.AddScalar(MenuItem.IconImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the source of the icon image</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>
     [<Extension>]
     static member inline icon(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Stream) =
-        this.icon(ImageSource.FromStream(fun () -> value))
+        this.AddScalar(MenuItem.IconImageSource.WithValue(ImageSourceValue.Stream value))

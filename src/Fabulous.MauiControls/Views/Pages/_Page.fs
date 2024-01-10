@@ -15,15 +15,13 @@ type IFabPage =
 module Page =
     let Appearing =
         Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
-
-    let BackgroundImageSource =
-        Attributes.defineBindableWithEquality Page.BackgroundImageSourceProperty
+        
+    let BackgroundImageSource = Attributes.defineBindableImageSource Page.BackgroundImageSourceProperty
 
     let Disappearing =
         Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
 
-    let IconImageSource =
-        Attributes.defineBindableWithEquality Page.IconImageSourceProperty
+    let IconImageSource = Attributes.defineBindableImageSource Page.IconImageSourceProperty
 
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 
@@ -52,14 +50,14 @@ type PageModifiers =
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IFabPage>, value: ImageSource) =
-        this.AddScalar(Page.BackgroundImageSource.WithValue(value))
+        this.AddScalar(Page.BackgroundImageSource.WithValue(ImageSourceValue.Source value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: ImageSource) =
-        this.AddScalar(Page.IconImageSource.WithValue(value))
+        this.AddScalar(Page.IconImageSource.WithValue(ImageSourceValue.Source value))
 
     /// <summary>Set the page as busy. This will cause the global activity indicator to show a busy state</summary>
     /// <param name="this">Current widget</param>
@@ -109,40 +107,42 @@ type PageExtraModifiers =
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IFabPage>, value: string) =
-        this.backgroundImageSource(ImageSource.FromFile(value))
+        this.AddScalar(Page.BackgroundImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the image source of the background</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) =
-        this.backgroundImageSource(ImageSource.FromUri(value))
+        this.AddScalar(Page.BackgroundImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the image source of the background</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IFabPage>, value: Stream) =
-        this.backgroundImageSource(ImageSource.FromStream(fun () -> value))
+        this.AddScalar(Page.BackgroundImageSource.WithValue(ImageSourceValue.Stream value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: string) = this.icon(ImageSource.FromFile(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: string) =
+        this.AddScalar(Page.IconImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) = this.icon(ImageSource.FromUri(value))
+    static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: Uri) =
+        this.AddScalar(Page.IconImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the image source of the icon</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The image source</param>
     [<Extension>]
     static member inline icon(this: WidgetBuilder<'msg, #IFabPage>, value: Stream) =
-        this.icon(ImageSource.FromStream(fun () -> value))
+        this.AddScalar(Page.IconImageSource.WithValue(ImageSourceValue.Stream value))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
