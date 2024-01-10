@@ -15,13 +15,15 @@ type IFabPage =
 module Page =
     let Appearing =
         Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
-        
-    let BackgroundImageSource = Attributes.defineBindableImageSource Page.BackgroundImageSourceProperty
+
+    let BackgroundImageSource =
+        Attributes.defineBindableImageSource Page.BackgroundImageSourceProperty
 
     let Disappearing =
         Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
 
-    let IconImageSource = Attributes.defineBindableImageSource Page.IconImageSourceProperty
+    let IconImageSource =
+        Attributes.defineBindableImageSource Page.IconImageSourceProperty
 
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 

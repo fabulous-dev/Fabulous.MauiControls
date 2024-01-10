@@ -20,7 +20,8 @@ module MenuItem =
     let Clicked =
         Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
 
-    let IconImageSource = Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
+    let IconImageSource =
+        Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
 
     let IsDestructive = Attributes.defineBindableBool MenuItem.IsDestructiveProperty
 

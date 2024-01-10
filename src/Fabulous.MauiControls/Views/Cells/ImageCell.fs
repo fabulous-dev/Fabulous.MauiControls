@@ -22,13 +22,21 @@ module ImageCellBuilders =
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: ImageSource) =
-            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Source source))
+            WidgetBuilder<'msg, IFabImageCell>(
+                ImageCell.WidgetKey,
+                TextCell.Text.WithValue(text),
+                ImageCell.ImageSource.WithValue(ImageSourceValue.Source source)
+            )
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: string) =
-            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.File source))
+            WidgetBuilder<'msg, IFabImageCell>(
+                ImageCell.WidgetKey,
+                TextCell.Text.WithValue(text),
+                ImageCell.ImageSource.WithValue(ImageSourceValue.File source)
+            )
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
@@ -40,7 +48,11 @@ module ImageCellBuilders =
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
         static member inline ImageCell<'msg>(text: string, source: Stream) =
-            WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Stream source))
+            WidgetBuilder<'msg, IFabImageCell>(
+                ImageCell.WidgetKey,
+                TextCell.Text.WithValue(text),
+                ImageCell.ImageSource.WithValue(ImageSourceValue.Stream source)
+            )
 
 [<Extension>]
 type ImageCellModifiers =

@@ -39,7 +39,7 @@ module Button =
         Attributes.defineBindableWithEquality<string> Button.FontFamilyProperty
 
     let FontSize = Attributes.defineBindableFloat Button.FontSizeProperty
-    
+
     let ImageSource = Attributes.defineBindableImageSource Button.ImageSourceProperty
 
     let LineBreakMode =

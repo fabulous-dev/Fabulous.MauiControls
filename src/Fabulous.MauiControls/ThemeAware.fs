@@ -9,18 +9,14 @@ open Fabulous.Maui
 type Theme =
     static let mutable _currentTheme = AppTheme.Unspecified
     static member Current = _currentTheme
+
     static member ListenForChanges(app: Application) =
-        app.RequestedThemeChanged.Add(fun args ->
-            _currentTheme <- args.RequestedTheme
-        )
+        app.RequestedThemeChanged.Add(fun args -> _currentTheme <- args.RequestedTheme)
 
 [<AbstractClass; Sealed>]
 type ThemeAware =
     static member With(light: 'T, dark: 'T) =
-        if Theme.Current = AppTheme.Dark then
-            dark
-        else
-            light
+        if Theme.Current = AppTheme.Dark then dark else light
 
 module ThemeAwareProgram =
     type Model<'model> = { Theme: AppTheme; Model: 'model }
@@ -32,9 +28,7 @@ module ThemeAwareProgram =
     let init (init: 'arg -> 'model * Cmd<'msg>) (arg: 'arg) =
         let model, cmd = init arg
 
-        { Theme = Theme.Current
-          Model = model },
-        Cmd.map ModelMsg cmd
+        { Theme = Theme.Current; Model = model }, Cmd.map ModelMsg cmd
 
     let update (update: 'msg * 'model -> 'model * Cmd<'msg>) (msg: Msg<'msg>, model: Model<'model>) =
         match msg with

@@ -23,7 +23,7 @@ module Image =
     let IsOpaque = Attributes.defineBindableBool Image.IsOpaqueProperty
 
     let Source = Attributes.defineBindableImageSource Image.SourceProperty
-    
+
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.Maui.View with

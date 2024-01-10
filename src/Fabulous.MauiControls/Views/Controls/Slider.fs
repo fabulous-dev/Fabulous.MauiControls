@@ -48,7 +48,8 @@ module Slider =
 
     let ThumbColor = Attributes.defineBindableColor Slider.ThumbColorProperty
 
-    let ThumbImageSource = Attributes.defineBindableImageSource Slider.ThumbImageSourceProperty
+    let ThumbImageSource =
+        Attributes.defineBindableImageSource Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
         Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)

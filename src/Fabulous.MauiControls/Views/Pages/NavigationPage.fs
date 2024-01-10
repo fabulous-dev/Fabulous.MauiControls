@@ -301,7 +301,8 @@ module NavigationPageAttached =
 
     let IconColor = Attributes.defineBindableColor NavigationPage.IconColorProperty
 
-    let TitleIconImageSource = Attributes.defineBindableImageSource NavigationPage.TitleIconImageSourceProperty
+    let TitleIconImageSource =
+        Attributes.defineBindableImageSource NavigationPage.TitleIconImageSourceProperty
 
     let TitleView = Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
