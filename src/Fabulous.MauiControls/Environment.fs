@@ -12,7 +12,7 @@ type EnvironmentKeys =
     class
     end
 
-module Theme =
+module EnvTheme =
     let Key = EnvironmentKey("Theme", AppInfo.RequestedTheme)
 
     let initialize (env: EnvironmentContext) = env.Set(Key, Key.DefaultValue, false)
@@ -42,13 +42,13 @@ module Theme =
 module EnvironmentBuilders =
     type EnvironmentKeys with
 
-        static member Theme = Theme.Key
+        static member Theme = EnvTheme.Key
 
 module EnvironmentHelpers =
-    let initialize (env: EnvironmentContext) = Theme.initialize env
+    let initialize (env: EnvironmentContext) = EnvTheme.initialize env
 
     let subscribe (env: EnvironmentContext, target: obj) =
-        let theme = Theme.subscribe env target
+        let theme = EnvTheme.subscribe env target
 
         { new IDisposable with
             member _.Dispose() = theme.Dispose() }

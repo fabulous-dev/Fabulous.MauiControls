@@ -1,4 +1,4 @@
-namespace Fabulous.Maui
+﻿namespace Fabulous.Maui
 
 open Fabulous
 open System.Runtime.CompilerServices
@@ -36,7 +36,7 @@ type AppHostBuilderExtensions =
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>, arg: 'arg) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             Component.registerComponentFunctions()
-            let app = Program.stateless view
+            let app = Program.startApplicationWithArgsMemo arg program
             Theme.ListenForChanges(app)
             app)
 
