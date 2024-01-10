@@ -120,7 +120,7 @@ module Program =
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
         (view: 'model -> WidgetBuilder<'msg, Memo.Memoized<#IFabApplication>>)
         =
-        define init update view
+        define view (Program.ForComponent.statefulWithCmd init update)
 
     /// Create a program using an MVU loop. Add support for CmdMsg
     let statefulWithCmdMsg
@@ -144,9 +144,10 @@ module Program =
 
     /// Start the program
     let startApplicationWithArgsMemo (arg: 'arg) (program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : Application =
-        let runner = Runners.create program
+        let stateKey = StateStore.getNextKey()
+        let runner = Runners.create stateKey program.Program
         runner.Start(arg)
-        let adapter = ViewAdapters.create ViewNode.get runner
+        let adapter = ViewAdapters.create ViewNode.get stateKey program runner
         let view = adapter.CreateView()
         unbox view
 

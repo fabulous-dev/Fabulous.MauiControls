@@ -1,4 +1,4 @@
-namespace Fabulous.Maui
+﻿namespace Fabulous.Maui
 
 open Fabulous
 open System.Runtime.CompilerServices
@@ -12,21 +12,33 @@ type AppHostBuilderExtensions =
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, #IFabApplication>) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             Component.registerComponentFunctions()
-            (Program.startApplication program) :> Microsoft.Maui.IApplication)
+            let app = Program.startApplication program
+            Theme.ListenForChanges(app)
+            app)
 
     [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : MauiAppBuilder =
-        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) -> (Program.startApplicationMemo program) :> Microsoft.Maui.IApplication)
+        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
+            Component.registerComponentFunctions()
+            let app = Program.startApplicationMemo program
+            Theme.ListenForChanges(app)
+            app)
 
     [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, #IFabApplication>, arg: 'arg) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             Component.registerComponentFunctions()
-            (Program.startApplicationWithArgs arg program) :> Microsoft.Maui.IApplication)
+            let app = Program.startApplicationWithArgs arg program
+            Theme.ListenForChanges(app)
+            app)
 
     [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>, arg: 'arg) : MauiAppBuilder =
-        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) -> (Program.startApplicationWithArgsMemo arg program) :> Microsoft.Maui.IApplication)
+        this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
+            Component.registerComponentFunctions()
+            let app = Program.startApplicationWithArgsMemo arg program
+            Theme.ListenForChanges(app)
+            app)
 
     [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, view: unit -> WidgetBuilder<unit, #IFabApplication>) : MauiAppBuilder =

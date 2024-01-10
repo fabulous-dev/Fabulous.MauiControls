@@ -43,8 +43,7 @@ module Button =
 
     let FontSize = Attributes.defineBindableFloat Button.FontSizeProperty
 
-    let ImageSource =
-        Attributes.defineBindableWithEquality<ImageSource> Button.ImageSourceProperty
+    let ImageSource = Attributes.defineBindableImageSource Button.ImageSourceProperty
 
     let LineBreakMode =
         Attributes.defineBindableWithEquality<LineBreakMode> Button.LineBreakModeProperty
@@ -165,7 +164,7 @@ type ButtonModifiers =
     /// <param name="source">The image source</param>
     [<Extension>]
     static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: ImageSource) =
-        this.AddScalar(Button.ImageSource.WithValue(source))
+        this.AddScalar(Button.ImageSource.WithValue(ImageSourceValue.Source source))
 
     /// <summary>Set the line break mode</summary>
     /// <param name="this">Current widget</param>
@@ -220,23 +219,24 @@ type ButtonModifiers =
 type ButtonExtraModifiers =
     /// <summary>Set the image source</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="source">The image source</param>
+    /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: string) =
-        this.image(ImageSource.FromFile(source))
+    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, value: string) =
+        this.AddScalar(Button.ImageSource.WithValue(ImageSourceValue.File value))
 
     /// <summary>Set the image source</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="source">The image source</param>
+    /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: Uri) = this.image(ImageSource.FromUri(source))
+    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, value: Uri) =
+        this.AddScalar(Button.ImageSource.WithValue(ImageSourceValue.Uri value))
 
     /// <summary>Set the image source</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="source">The image source</param>
+    /// <param name="value">The image source</param>
     [<Extension>]
-    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, source: Stream) =
-        this.image(ImageSource.FromStream(fun () -> source))
+    static member inline image(this: WidgetBuilder<'msg, #IFabButton>, value: Stream) =
+        this.AddScalar(Button.ImageSource.WithValue(ImageSourceValue.Stream value))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

@@ -41,7 +41,7 @@ module ImageButton =
     let Released =
         Attributes.defineEventNoArg "ImageButton_Released" (fun target -> (target :?> ImageButton).Released)
 
-    let Source = Attributes.defineBindableWithEquality ImageButton.SourceProperty
+    let Source = Attributes.defineBindableImageSource ImageButton.SourceProperty
 
 [<AutoOpen>]
 module ImageButtonBuilders =
@@ -54,7 +54,7 @@ module ImageButtonBuilders =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
                 ImageButton.Clicked.WithValue(MsgValue(onClicked)),
-                ImageButton.Source.WithValue(source)
+                ImageButton.Source.WithValue(ImageSourceValue.Source source)
             )
 
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
@@ -65,7 +65,7 @@ module ImageButtonBuilders =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
                 ImageButton.Clicked.WithValue(MsgValue(onClicked)),
-                ImageButton.Source.WithValue(source),
+                ImageButton.Source.WithValue(ImageSourceValue.Source source),
                 ImageButton.Aspect.WithValue(aspect)
             )
 
@@ -73,40 +73,67 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: string, onClicked: 'msg) =
-            View.ImageButton(ImageSource.FromFile(source), onClicked)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.File source)
+            )
 
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: string, onClicked: 'msg, aspect: Aspect) =
-            View.ImageButton(ImageSource.FromFile(source), onClicked, aspect)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.File source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
 
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg) =
-            View.ImageButton(ImageSource.FromUri(source), onClicked)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.Uri source)
+            )
 
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg, aspect: Aspect) =
-            View.ImageButton(ImageSource.FromUri(source), onClicked, aspect)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.Uri source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
 
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg) =
-            View.ImageButton(ImageSource.FromStream(fun () -> source), onClicked)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.Stream source)
+            )
 
         /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
         static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg, aspect: Aspect) =
-            View.ImageButton(ImageSource.FromStream(fun () -> source), onClicked, aspect)
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.Stream source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
 
 [<Extension>]
 type ImageButtonModifiers =
