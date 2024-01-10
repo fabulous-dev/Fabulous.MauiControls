@@ -19,6 +19,21 @@ _No unreleased changes_
 ### Added
 - Add new Component API by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/49)
 
+## [8.0.5] - 2024-01-10
+
+### Changed
+- Additional performance optimizations by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/55)
+
+## [8.0.4] - 2024-01-08
+
+### Changed
+- Avoid allocating a new ImageSource instance on each update by using specialized attributes for each value type by @TimLariviere (https://github.com/fabulous-dev/Fabulous.MauiControls/pull/54)
+
+## [8.0.3] - 2024-01-03
+
+### Fixed
+- Fixed a crash related to back navigation in NavigationPage
+
 ## [8.0.2] - 2023-12-12
 
 ### Added
@@ -153,6 +168,8 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 [unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.1.0-pre2...HEAD
 [8.1.0-pre1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre2
 [8.1.0-pre2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre1
+[8.0.5]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.5
+[8.0.4]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.4
 [8.0.2]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.2
 [8.0.1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.1
 [8.0.0]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.0.0

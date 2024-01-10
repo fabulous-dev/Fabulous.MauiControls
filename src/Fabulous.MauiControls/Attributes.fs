@@ -5,6 +5,15 @@ open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Microsoft.Maui.Controls
 open System
+open System.IO
+open Microsoft.Maui
+
+[<RequireQualifiedAccess>]
+type ImageSourceValue =
+    | Source of source: IImageSource
+    | File of file: string
+    | Uri of uri: Uri
+    | Stream of stream: Stream
 
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
@@ -105,6 +114,28 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v))
+
+    /// Performance optimization: avoid allocating a new ImageSource instance on each update
+    /// we store the user value (eg. string, Uri, Stream) and convert it to an ImageSource only when needed
+    let inline defineBindableImageSource (bindableProperty: BindableProperty) =
+        Attributes.defineScalar<ImageSourceValue, ImageSourceValue>
+            bindableProperty.PropertyName
+            id
+            ScalarAttributeComparers.equalityCompare
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v ->
+                    let value =
+                        match v with
+                        | ImageSourceValue.Source source -> source
+                        | ImageSourceValue.File file -> ImageSource.FromFile file
+                        | ImageSourceValue.Uri uri -> ImageSource.FromUri uri
+                        | ImageSourceValue.Stream stream -> ImageSource.FromStream(fun () -> stream)
+
+                    target.SetValue(bindableProperty, value))
 
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =

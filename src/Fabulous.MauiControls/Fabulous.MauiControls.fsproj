@@ -1,6 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <UseLocalProjectReference>false</UseLocalProjectReference>    
+    
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
     <UseLocalProjectReference>false</UseLocalProjectReference>
@@ -155,13 +157,12 @@
       This version will be used as the lower bound in the NuGet package
     -->
     <PackageReference Include="FSharp.Core" VersionOverride="8.0.100" PrivateAssets="All" />
+    <PackageReference Include="Fabulous" Condition="'$(UseLocalProjectReference)' != 'true'" VersionOverride="[2.5.0-pre2]" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.3" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.3" />
   </ItemGroup>
-  
   <ItemGroup>
-    <PackageReference Condition="$(UseLocalProjectReference) == false" Include="Fabulous" VersionOverride="[2.5.0-pre2]" />
-    <ProjectReference Condition="$(UseLocalProjectReference) == true" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
+    <ProjectReference Condition="'$(UseLocalProjectReference)' == 'true'" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
 </Project>
