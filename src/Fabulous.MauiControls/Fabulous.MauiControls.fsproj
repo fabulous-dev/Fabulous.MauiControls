@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <UseLocalProjectReference>false</UseLocalProjectReference>    
+    <UseLocalProjectReference>true</UseLocalProjectReference>    
     
     <TargetFrameworks>net8.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <IsPackable>true</IsPackable>
-    <UseLocalProjectReference>false</UseLocalProjectReference>
   </PropertyGroup>
   <!-- NuGet Package -->
   <PropertyGroup>
@@ -145,7 +144,6 @@
     <Compile Include="Views\_Semantics.fs" />
     <Compile Include="ThemeAware.fs" />
     <Compile Include="Component.fs" />
-    <Compile Include="Environment.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Async.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />
