@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <UseLocalProjectReference>true</UseLocalProjectReference>    
+    <UseLocalProjectReference>false</UseLocalProjectReference>    
     
     <TargetFrameworks>net8.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
@@ -159,8 +159,5 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.3" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Condition="'$(UseLocalProjectReference)' == 'true'" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
 </Project>
