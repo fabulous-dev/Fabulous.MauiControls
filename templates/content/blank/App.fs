@@ -65,4 +65,4 @@ module App =
             )
         )
 
-    let program = Program.statefulWithCmdMsg init update view mapCmd
+    let program = Program.statefulWithCmdMsg init update mapCmd |> Program.withView view

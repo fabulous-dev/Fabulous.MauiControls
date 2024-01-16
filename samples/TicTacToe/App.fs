@@ -112,7 +112,7 @@ module App =
           yield [ (0, 2); (1, 1); (2, 0) ] ]
 
     /// Determine if a line is a winning line.
-    let getLine (board: Board) line = line |> List.map(fun p -> board.[p])
+    let getLine (board: Board) line = line |> List.map(fun p -> board[p])
 
     /// Determine if a line is a winning line.
     let getLineWinner line =
@@ -208,13 +208,13 @@ module App =
                         Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(3).gridRowSpan(5)
 
                         for row, col as pos in positions do
-                            if canPlay model model.Board.[pos] then
+                            if canPlay model model.Board[pos] then
                                 Button("", Play pos)
                                     .background(Colors.LightBlue)
                                     .gridRow(row * 2)
                                     .gridColumn(col * 2)
                             else
-                                match model.Board.[pos] with
+                                match model.Board[pos] with
                                 | Empty -> ()
                                 | Full X ->
                                     Label("X")
@@ -250,7 +250,7 @@ module App =
         )
 
     let program =
-        Program.stateful init update view
+        Program.stateful init update
         |> Program.withSubscription(fun _ ->
             Cmd.ofSub(fun dispatch ->
                 DeviceDisplay.MainDisplayInfoChanged.Add(fun args ->
@@ -259,3 +259,4 @@ module App =
                         / DeviceDisplay.MainDisplayInfo.Density
 
                     dispatch(VisualBoardSizeChanged size))))
+        |> Program.withView view

@@ -49,10 +49,10 @@ module App =
             else
                 model, Cmd.none
 
-    let program = Program.ForComponent.statefulWithCmd init update
+    let program = Program.statefulWithCmd init update
 
     let view () =
-        MvuComponent(program) {
+        Component(program) {
             let! model = Mvu.State
 
             Application() {
