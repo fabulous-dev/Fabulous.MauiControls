@@ -1,5 +1,6 @@
 namespace Playground
 
+open Fabulous
 open Fabulous.Maui
 
 open type Fabulous.Maui.View
@@ -24,11 +25,11 @@ module App =
         | TextChanged _ -> model
         | FocusChanged(field, isFocused) ->
             if isFocused then
-                { model with Focus = Some field }
+                { Focus = Some field }
             else
-                { model with Focus = None }
+                { Focus = None }
 
-        | SetFocus field -> { model with Focus = field }
+        | SetFocus field -> { Focus = field }
 
     let focusChanged field args = FocusChanged(field, args)
 
@@ -61,4 +62,4 @@ module App =
             )
         )
 
-    let program = Program.stateful init update view
+    let program = Program.stateful init update |> Program.withView view
