@@ -82,34 +82,6 @@ module Program =
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) : Program<unit, unit, unit, 'marker> =
         Program.stateful (fun _ -> ()) (fun _ _ -> ()) |> withView view
 
-    /// Start the program
-    let startApplicationWithArgs<'arg, 'model, 'msg, 'marker when 'marker :> IFabApplication>
-        (arg: 'arg)
-        (program: Program<'arg, 'model, 'msg, 'marker>)
-        : Application =
-        let view =
-            View.Component(program.Program, arg) {
-                let! model = Mvu.State
-                program.View model
-            }
-
-        let widget = view.Compile()
-
-        let treeContext: ViewTreeContext =
-            { CanReuseView = program.CanReuseView
-              Logger = program.Program.Logger
-              Dispatch = ignore
-              GetViewNode = ViewNode.get
-              GetComponent = Component.get }
-
-        let def = WidgetDefinitionStore.get widget.Key
-        let struct (_, view) = def.CreateView(widget, treeContext, ValueNone)
-
-        unbox view
-
-    /// Start the program
-    let startApplication (program: Program<unit, 'model, 'msg, #IFabApplication>) : Application = startApplicationWithArgs () program
-
     /// Trace all the view updates to the debug output
     let withViewTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
         let traceView model =

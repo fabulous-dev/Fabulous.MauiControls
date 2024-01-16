@@ -188,8 +188,8 @@ module App =
         (cell = Empty) && (getGameResult model = StillPlaying)
 
     let program =
-        Program.ForComponent.stateful init update
-        |> Program.ForComponent.withSubscription(fun _ ->
+        Program.stateful init update
+        |> Program.withSubscription(fun _ ->
             Cmd.ofSub(fun dispatch ->
                 DeviceDisplay.MainDisplayInfoChanged.Add(fun args ->
                     let size =
@@ -201,7 +201,7 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view () =
-        MvuComponent(program) {
+        Component(program) {
             let! model = Mvu.State
 
             Application(

@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <Compile Include="App.fs" />
-    <Compile Include="MauiProgram.fs" />
   </ItemGroup>
 
   <ItemGroup>

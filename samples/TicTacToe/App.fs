@@ -250,7 +250,7 @@ module App =
         )
 
     let program =
-        Program.stateful init update view
+        Program.stateful init update
         |> Program.withSubscription(fun _ ->
             Cmd.ofSub(fun dispatch ->
                 DeviceDisplay.MainDisplayInfoChanged.Add(fun args ->
@@ -259,3 +259,4 @@ module App =
                         / DeviceDisplay.MainDisplayInfo.Density
 
                     dispatch(VisualBoardSizeChanged size))))
+        |> Program.withView view

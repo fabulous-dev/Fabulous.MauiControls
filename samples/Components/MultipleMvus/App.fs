@@ -19,7 +19,7 @@ module Counter =
         | Increment -> { Count = model.Count + 1 }
         | Decrement -> { Count = model.Count - 1 }
 
-    let program = Program.ForComponent.stateful init update
+    let program = Program.stateful init update
 
 module Form =
     type Model = { FirstName: string; LastName: string }
@@ -35,7 +35,7 @@ module Form =
         | FirstNameChanged s -> { model with FirstName = s }
         | LastNameChanged s -> { model with LastName = s }
 
-    let program = Program.ForComponent.stateful init update
+    let program = Program.stateful init update
 
 module App =
     let view () =
@@ -44,7 +44,7 @@ module App =
                 (VStack(spacing = 25.) {
                     Label("App")
 
-                    MvuComponent(Counter.program) {
+                    Component(Counter.program) {
                         let! model = Mvu.State
 
                         VStack() {
@@ -54,7 +54,7 @@ module App =
                         }
                     }
 
-                    MvuComponent(Form.program) {
+                    Component(Form.program) {
                         let! model = Mvu.State
 
                         VStack() {

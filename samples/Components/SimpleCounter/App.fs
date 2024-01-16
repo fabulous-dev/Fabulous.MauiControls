@@ -7,9 +7,9 @@ open Microsoft.Maui.Hosting
 open type Fabulous.Maui.View
 
 module App =
-    let view =
+    let view () =
         Component() {
-            let! count = State(0)
+            let! count = Context.State(0)
 
             Application(
                 ContentPage(
