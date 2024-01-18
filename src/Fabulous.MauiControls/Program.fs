@@ -73,8 +73,8 @@ module MauiViewHelpers =
         | _ -> true
 
 module Program =
-    let withView (view: 'model -> WidgetBuilder<'msg, 'marker>) (program: Program<'arg, 'model, 'msg>) : Program<'arg, 'model, 'msg, 'marker> =
-        { Program = program
+    let withView (view: 'model -> WidgetBuilder<'msg, 'marker>) (state: Program<'arg, 'model, 'msg>) : Program<'arg, 'model, 'msg, 'marker> =
+        { State = state
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
           SyncAction = MainThread.BeginInvokeOnMainThread }

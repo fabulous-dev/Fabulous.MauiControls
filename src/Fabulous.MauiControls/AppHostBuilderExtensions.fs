@@ -30,9 +30,9 @@ type AppHostBuilderExtensions =
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, #IFabApplication>, arg: 'arg) : MauiAppBuilder =
         this.UseFabulousApp(
             program.CanReuseView,
-            program.Program.Logger,
+            program.State.Logger,
             fun () ->
-                (View.Component(program.Program, arg) {
+                (View.Component(program.State, arg) {
                     let! model = Mvu.State
                     program.View model
                 })
@@ -44,5 +44,13 @@ type AppHostBuilderExtensions =
         this.UseFabulousApp(program, ())
 
     [<Extension>]
-    static member UseFabulousApp(this: MauiAppBuilder, view: unit -> WidgetBuilder<unit, #IFabApplication>) : MauiAppBuilder =
-        this.UseFabulousApp(MauiViewHelpers.canReuseView, ProgramDefaults.defaultLogger(), (fun () -> view().Compile()))
+    static member UseFabulousApp(this: MauiAppBuilder, view: unit -> WidgetBuilder<unit, #IFabApplication>, ?canReuseView, ?logger) : MauiAppBuilder =
+        this.UseFabulousApp(
+            (match canReuseView with
+             | Some fn -> fn
+             | None -> MauiViewHelpers.canReuseView),
+            (match logger with
+             | Some logger -> logger
+             | None -> ProgramDefaults.defaultLogger()),
+            fun () -> (View.Component() { view() }).Compile()
+        )
