@@ -187,17 +187,18 @@ module App =
     let canPlay model cell =
         (cell = Empty) && (getGameResult model = StillPlaying)
 
-    let program =
-        Program.stateful init update
-        |> Program.withSubscription(fun _ ->
-            Cmd.ofSub(fun dispatch ->
-                DeviceDisplay.MainDisplayInfoChanged.Add(fun args ->
-                    let size =
-                        System.Math.Min(args.DisplayInfo.Width, args.DisplayInfo.Height)
-                        / DeviceDisplay.MainDisplayInfo.Density
+    let subscribe _ =
+        let displayInfoChanged dispatch =
+            DeviceDisplay.MainDisplayInfoChanged.Subscribe(fun args ->
+                let size =
+                    System.Math.Min(args.DisplayInfo.Width, args.DisplayInfo.Height)
+                    / DeviceDisplay.MainDisplayInfo.Density
 
-                    dispatch(VisualBoardSizeChanged size))))
+                dispatch(VisualBoardSizeChanged size))
 
+        [ [ nameof displayInfoChanged ], displayInfoChanged ]
+
+    let program = Program.stateful init update |> Program.withSubscription subscribe
 
     /// The dynamic 'view' function giving the updated content for the view
     let view () =

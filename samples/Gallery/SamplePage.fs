@@ -5,7 +5,7 @@ open Fabulous.Maui
 open type Fabulous.Maui.View
 
 module SamplePage =
-    let view pop mapMsg index model =
+    let view (pop: 'msg) mapMsg index model =
         let sample = RegisteredSamples.samples[index]
 
         ScrollView(

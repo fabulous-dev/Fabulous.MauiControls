@@ -13,50 +13,32 @@ module CarouselView =
     let WidgetKey = Widgets.register<CarouselView>()
 
     let IndicatorView =
-        Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>> "CarouselView_IndicatorView" (fun oldValueOpt newValueOpt node ->
-            let handlerOpt =
-                node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
-
-            // Clean up previous handler
-            if handlerOpt.IsSome then
-                match struct (oldValueOpt, newValueOpt) with
-                | struct (ValueSome prev, _) -> prev.Attached.RemoveHandler(handlerOpt.Value)
-
-                | struct (ValueNone, ValueSome curr) ->
-                    // Despite not having a previous value, we might still be reusing the same ViewRef
-                    // So we still need to clean up
-                    curr.Attached.RemoveHandler(handlerOpt.Value)
-
-                | struct (ValueNone, ValueNone) -> ()
-
-                node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
-
-            let handler =
-                match handlerOpt with
-                | ValueSome handler -> handler
-                | ValueNone ->
-                    let newHandler =
-                        EventHandler<IndicatorView>(fun viewRef indicatorView ->
-                            let carouselView = node.Target :?> CarouselView
-
-                            if carouselView <> null then
-                                carouselView.IndicatorView <- indicatorView
-                            else
-                                // CarouselView has been disposed, clean up the handler
-                                let handler =
-                                    node
-                                        .TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
-                                        .Value
-
-                                (viewRef :?> ViewRef<IndicatorView>).Attached.RemoveHandler(handler))
-
-                    newHandler
-
+        Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>> "CarouselView_IndicatorView" (fun _ newValueOpt node ->
             match newValueOpt with
-            | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
+            | ValueNone ->
+                // Clean up the old event handler if any
+                match node.TryGetHandler(ViewRefAttributes.ViewRef.Name) with
+                | ValueNone -> ()
+                | ValueSome handler ->
+                    handler.Dispose()
+                    node.RemoveHandler(ViewRefAttributes.ViewRef.Name)
+
             | ValueSome curr ->
-                curr.Attached.AddHandler(handler)
-                node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueSome handler))
+                let handler =
+                    curr.Attached.Subscribe(fun _args ->
+                        let carouselView = node.Target :?> CarouselView
+
+                        if carouselView <> null then
+                            carouselView.IndicatorView <- curr.Value
+                        else
+                            // CarouselView has been disposed, clean up the handler
+                            match node.TryGetHandler(ViewRefAttributes.ViewRef.Name) with
+                            | ValueNone -> ()
+                            | ValueSome handler ->
+                                handler.Dispose()
+                                node.RemoveHandler(ViewRefAttributes.ViewRef.Name))
+
+                node.SetHandler(ViewRefAttributes.ViewRef.Name, handler))
 
     let IsBounceEnabled =
         Attributes.defineBindableBool CarouselView.IsBounceEnabledProperty

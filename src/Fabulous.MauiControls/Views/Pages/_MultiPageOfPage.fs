@@ -25,14 +25,13 @@ module MultiPageOfPage =
                 ScalarAttributeComparers.noCompare,
                 (fun oldValueOpt (newValueOpt: ValueEventData<int, int> voption) node ->
                     let target = node.Target :?> MultiPage<Page>
-                    let event = target.CurrentPageChanged
 
                     match newValueOpt with
                     | ValueNone ->
                         // The attribute is no longer applied, so we clean up the event
                         match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handler -> event.RemoveHandler(handler)
+                        | ValueSome handler -> handler.Dispose()
 
                         // Only clear the property if a value was set before
                         match oldValueOpt with
@@ -43,21 +42,19 @@ module MultiPageOfPage =
                         // Clean up the old event handler if any
                         match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handler -> event.RemoveHandler(handler)
+                        | ValueSome handler -> handler.Dispose()
 
                         // Set the new value
                         target.CurrentPage <- target.Children.[curr.Value]
 
                         // Set the new event handler
                         let handler =
-                            EventHandler(fun sender args ->
-                                let multiPage = sender :?> MultiPage<Page>
-                                let currentPageIndex = multiPage.Children.IndexOf(multiPage.CurrentPage)
+                            target.CurrentPageChanged.Subscribe(fun _args ->
+                                let currentPageIndex = target.Children.IndexOf(target.CurrentPage)
                                 let (MsgValue r) = curr.Event currentPageIndex
                                 Dispatcher.dispatch node r)
 
-                        node.SetHandler(name, ValueSome handler)
-                        event.AddHandler(handler))
+                        node.SetHandler(name, handler))
             )
             |> AttributeDefinitionStore.registerScalar
 
