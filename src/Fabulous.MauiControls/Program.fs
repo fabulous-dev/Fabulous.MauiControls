@@ -23,6 +23,9 @@ module MauiViewHelpers =
             | None -> ValueNone
             | Some attr -> ValueSome attr.Value
 
+    let defaultSyncAction (action: unit -> unit) =
+        MainThread.BeginInvokeOnMainThread(action)
+
     /// Extend the canReuseView function to check Microsoft.Maui specific constraints
     let rec canReuseView (prev: Widget) (curr: Widget) =
         if ViewHelpers.canReuseView prev curr && canReuseAutomationId prev curr then
