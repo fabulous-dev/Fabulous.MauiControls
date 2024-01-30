@@ -4,7 +4,7 @@ open Fabulous.Maui
 open type Fabulous.Maui.View
 
 module Overview =
-    let view push =
+    let view (push: int -> 'msg) =
         ScrollView(
             (VStack(spacing = 16.) {
                 Label("Fabulous Gallery").style(Styles.title)

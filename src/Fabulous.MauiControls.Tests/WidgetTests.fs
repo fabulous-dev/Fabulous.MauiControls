@@ -58,12 +58,13 @@ type WidgetTests() =
               Logger = ProgramDefaults.defaultLogger()
               Dispatch = dispatch
               GetComponent = Component.get
+              SetComponent = Component.set
               SyncAction = MainThread.BeginInvokeOnMainThread }
 
         let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)
 
-        let node = ViewNode(None, treeContext, weakRef)
+        let node = new ViewNode(None, treeContext, weakRef)
 
         Reconciler.update treeContext.CanReuseView ValueNone (oldWidget.Compile()) node
         Reconciler.update treeContext.CanReuseView (ValueSome(oldWidget.Compile())) (newWidget.Compile()) node
