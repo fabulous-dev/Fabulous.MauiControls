@@ -164,14 +164,13 @@ module Attributes =
                 ScalarAttributeComparers.noCompare,
                 (fun oldValueOpt (newValueOpt: ValueEventData<'data, 'args> voption) node ->
                     let target = node.Target :?> BindableObject
-                    let event = getEvent target
 
                     match newValueOpt with
                     | ValueNone ->
                         // The attribute is no longer applied, so we clean up the event
                         match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handler -> event.RemoveHandler(handler)
+                        | ValueSome handler -> handler.Dispose()
 
                         // Only clear the property if a value was set before
                         match oldValueOpt with
@@ -182,19 +181,20 @@ module Attributes =
                         // Clean up the old event handler if any
                         match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handler -> event.RemoveHandler(handler)
+                        | ValueSome handler -> handler.Dispose()
 
                         // Set the new value
                         target.SetValue(bindableProperty, curr.Value)
 
                         // Set the new event handler
+                        let event = getEvent target
+
                         let handler =
-                            EventHandler<'args>(fun _ args ->
+                            event.Subscribe(fun args ->
                                 let (MsgValue r) = curr.Event args
                                 Dispatcher.dispatch node r)
 
-                        node.SetHandler(name, ValueSome handler)
-                        event.AddHandler(handler))
+                        node.SetHandler(name, handler))
             )
             |> AttributeDefinitionStore.registerScalar
 

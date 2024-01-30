@@ -26,7 +26,8 @@ type AppHostBuilderExtensions =
                   Dispatch = ignore
                   SyncAction = syncAction
                   GetViewNode = ViewNode.get
-                  GetComponent = Component.get }
+                  GetComponent = Component.get
+                  SetComponent = Component.set }
 
             let def = WidgetDefinitionStore.get widget.Key
             let struct (_, view) = def.CreateView(widget, treeContext, ValueNone)

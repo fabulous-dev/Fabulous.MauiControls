@@ -17,7 +17,7 @@ module App =
     type CmdMsg = SemanticAnnounce of string
 
     let semanticAnnounce text =
-        Cmd.ofSub(fun _ -> SemanticScreenReader.Announce(text))
+        Cmd.ofEffect(fun _ -> SemanticScreenReader.Announce(text))
 
     let mapCmd cmdMsg =
         match cmdMsg with

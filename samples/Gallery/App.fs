@@ -2,6 +2,7 @@ namespace Gallery
 
 open Fabulous.Maui.SmallScalars
 open Microsoft.FSharp.Core
+open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui.Controls
 
@@ -29,18 +30,15 @@ module App =
                 let newSampleModel =
                     RegisteredSamples.samples[index].Program.update sMsg sampleModel
 
-                { model with
-                    Paths = Sample(index, newSampleModel) :: List.tail model.Paths }
+                { Paths = Sample(index, newSampleModel) :: List.tail model.Paths }
             | _ -> model
 
         | GoToSample index ->
             let sampleModel = RegisteredSamples.samples[index].Program.init()
             let paths = Sample(index, sampleModel) :: model.Paths
-            { model with Paths = paths }
+            { Paths = paths }
 
-        | GoBack ->
-            { model with
-                Paths = List.tail model.Paths }
+        | GoBack -> { Paths = List.tail model.Paths }
 
     let view model =
         Application(
@@ -63,4 +61,4 @@ module App =
             }
         )
 
-    let program = Program.stateful init update view |> Program.withThemeAwareness
+    let program = Program.stateful init update |> Program.withView view
