@@ -9,7 +9,14 @@ open System
 [<Extension>]
 type AppHostBuilderExtensions =
     [<Extension>]
-    static member inline private UseFabulousApp(this: MauiAppBuilder, canReuseView, logger, [<InlineIfLambda>] viewFn: unit -> Widget) : MauiAppBuilder =
+    static member inline private UseFabulousApp
+        (
+            this: MauiAppBuilder,
+            canReuseView,
+            logger,
+            syncAction: (unit -> unit) -> unit,
+            [<InlineIfLambda>] viewFn: unit -> Widget
+        ) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
             let widget = viewFn()
 
@@ -17,6 +24,7 @@ type AppHostBuilderExtensions =
                 { CanReuseView = canReuseView
                   Logger = logger
                   Dispatch = ignore
+                  SyncAction = syncAction
                   GetViewNode = ViewNode.get
                   GetComponent = Component.get }
 
@@ -31,6 +39,7 @@ type AppHostBuilderExtensions =
         this.UseFabulousApp(
             program.CanReuseView,
             program.State.Logger,
+            program.SyncAction,
             fun () ->
                 (View.Component(program.State, arg) {
                     let! model = Mvu.State
@@ -44,7 +53,14 @@ type AppHostBuilderExtensions =
         this.UseFabulousApp(program, ())
 
     [<Extension>]
-    static member UseFabulousApp(this: MauiAppBuilder, view: unit -> WidgetBuilder<unit, #IFabApplication>, ?canReuseView, ?logger) : MauiAppBuilder =
+    static member UseFabulousApp
+        (
+            this: MauiAppBuilder,
+            view: unit -> WidgetBuilder<unit, #IFabApplication>,
+            ?canReuseView,
+            ?logger,
+            ?syncAction: (unit -> unit) -> unit
+        ) : MauiAppBuilder =
         this.UseFabulousApp(
             (match canReuseView with
              | Some fn -> fn
@@ -52,5 +68,8 @@ type AppHostBuilderExtensions =
             (match logger with
              | Some logger -> logger
              | None -> ProgramDefaults.defaultLogger()),
+            (match syncAction with
+             | Some synAction -> synAction
+             | None -> MauiViewHelpers.defaultSyncAction),
             fun () -> (View.Component() { view() }).Compile()
         )

@@ -23,6 +23,9 @@ module MauiViewHelpers =
             | None -> ValueNone
             | Some attr -> ValueSome attr.Value
 
+    let defaultSyncAction (action: unit -> unit) =
+        MainThread.BeginInvokeOnMainThread(action)
+
     /// Extend the canReuseView function to check Microsoft.Maui specific constraints
     let rec canReuseView (prev: Widget) (curr: Widget) =
         if ViewHelpers.canReuseView prev curr && canReuseAutomationId prev curr then
@@ -77,7 +80,7 @@ module Program =
         { State = state
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
-          SyncAction = MainThread.BeginInvokeOnMainThread }
+          SyncAction = MauiViewHelpers.defaultSyncAction }
 
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) : Program<unit, unit, unit, 'marker> =
         Program.stateful (fun _ -> ()) (fun _ _ -> ()) |> withView view
