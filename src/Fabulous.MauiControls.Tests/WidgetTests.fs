@@ -2,6 +2,7 @@
 
 open System
 open Fabulous
+open Microsoft.Maui.ApplicationModel
 open NUnit.Framework
 
 open Fabulous.Maui
@@ -57,7 +58,7 @@ type WidgetTests() =
               Logger = ProgramDefaults.defaultLogger()
               Dispatch = dispatch
               GetComponent = Component.get
-              SyncAction = fun fn -> fn() }
+              SyncAction = MainThread.BeginInvokeOnMainThread }
 
         let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)

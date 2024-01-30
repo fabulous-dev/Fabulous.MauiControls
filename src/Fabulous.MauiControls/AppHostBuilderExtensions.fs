@@ -14,7 +14,7 @@ type AppHostBuilderExtensions =
             this: MauiAppBuilder,
             canReuseView,
             logger,
-            synAction: (unit -> unit) -> unit,
+            syncAction: (unit -> unit) -> unit,
             [<InlineIfLambda>] viewFn: unit -> Widget
         ) : MauiAppBuilder =
         this.UseMauiApp(fun (_serviceProvider: IServiceProvider) ->
@@ -24,7 +24,7 @@ type AppHostBuilderExtensions =
                 { CanReuseView = canReuseView
                   Logger = logger
                   Dispatch = ignore
-                  SyncAction = synAction
+                  SyncAction = syncAction
                   GetViewNode = ViewNode.get
                   GetComponent = Component.get }
 
@@ -59,7 +59,7 @@ type AppHostBuilderExtensions =
             view: unit -> WidgetBuilder<unit, #IFabApplication>,
             ?canReuseView,
             ?logger,
-            ?synAction: (unit -> unit) -> unit
+            ?syncAction: (unit -> unit) -> unit
         ) : MauiAppBuilder =
         this.UseFabulousApp(
             (match canReuseView with
@@ -68,7 +68,7 @@ type AppHostBuilderExtensions =
             (match logger with
              | Some logger -> logger
              | None -> ProgramDefaults.defaultLogger()),
-            (match synAction with
+            (match syncAction with
              | Some synAction -> synAction
              | None -> MauiViewHelpers.defaultSyncAction),
             fun () -> (View.Component() { view() }).Compile()
