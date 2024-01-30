@@ -56,7 +56,8 @@ type WidgetTests() =
               GetViewNode = ViewNode.get
               Logger = ProgramDefaults.defaultLogger()
               Dispatch = dispatch
-              GetComponent = Component.get }
+              GetComponent = Component.get
+              SyncAction = fun fn -> fn() }
 
         let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)

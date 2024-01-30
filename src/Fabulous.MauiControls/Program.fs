@@ -80,7 +80,7 @@ module Program =
         { State = state
           View = view
           CanReuseView = MauiViewHelpers.canReuseView
-          SyncAction = MainThread.BeginInvokeOnMainThread }
+          SyncAction = MauiViewHelpers.defaultSyncAction }
 
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) : Program<unit, unit, unit, 'marker> =
         Program.stateful (fun _ -> ()) (fun _ _ -> ()) |> withView view
