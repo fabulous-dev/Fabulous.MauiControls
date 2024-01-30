@@ -162,7 +162,7 @@ module NavigationPageUpdaters =
 
                 // Trigger the unmounted event for the old child
                 Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
-                prevItemNode.Disconnect()
+                prevItemNode.Dispose()
 
                 if index = 0 && pages.Length = 1 then
                     // We are trying to replace the root page
@@ -203,7 +203,7 @@ module NavigationPageUpdaters =
 
                     // Trigger the unmounted event for the old child
                     Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
-                    prevItemNode.Disconnect()
+                    prevItemNode.Dispose()
 
                     if index = pages.Length - 1 then
                         popLastWithAnimation <- true
@@ -263,7 +263,7 @@ module NavigationPageUpdaters =
 
                     // Trigger the unmounted event for the old child
                     Dispatcher.dispatchEventForAllChildren prevItemNode span[i] Lifecycle.Unmounted
-                    prevItemNode.Disconnect()
+                    prevItemNode.Dispose()
 
 module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()

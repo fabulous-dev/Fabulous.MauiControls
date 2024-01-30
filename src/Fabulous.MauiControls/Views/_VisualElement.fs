@@ -1,11 +1,9 @@
 namespace Fabulous.Maui
 
-open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-open Microsoft.Maui.Graphics
 
 type IFabVisualElement =
     inherit IFabNavigableElement
@@ -40,21 +38,18 @@ module VisualElementUpdaters =
         let target = node.Target :?> VisualElement
 
         let onEventName = "Focus_On"
-        let onEvent = target.Focused
-
         let offEventName = "Focus_Off"
-        let offEvent = target.Unfocused
 
         match newValueOpt with
         | ValueNone ->
             // The attribute is no longer applied, so we clean up the events
             match node.TryGetHandler(onEventName) with
             | ValueNone -> ()
-            | ValueSome handler -> onEvent.RemoveHandler(handler)
+            | ValueSome handler -> handler.Dispose()
 
             match node.TryGetHandler(offEventName) with
             | ValueNone -> ()
-            | ValueSome handler -> offEvent.RemoveHandler(handler)
+            | ValueSome handler -> handler.Dispose()
 
             // Only clear the property if a value was set before
             match oldValueOpt with
@@ -67,11 +62,11 @@ module VisualElementUpdaters =
             // Clean up the old event handlers if any
             match node.TryGetHandler(onEventName) with
             | ValueNone -> ()
-            | ValueSome handler -> onEvent.RemoveHandler(handler)
+            | ValueSome handler -> handler.Dispose()
 
             match node.TryGetHandler(offEventName) with
             | ValueNone -> ()
-            | ValueSome handler -> offEvent.RemoveHandler(handler)
+            | ValueSome handler -> handler.Dispose()
 
             // Set the new value
             if target.IsFocused <> curr.Value then
@@ -82,20 +77,18 @@ module VisualElementUpdaters =
 
             // Set the new event handlers
             let onHandler =
-                EventHandler<FocusEventArgs>(fun _ args ->
+                target.Focused.Subscribe(fun _args ->
                     let (MsgValue r) = curr.Event true
                     Dispatcher.dispatch node r)
 
-            node.SetHandler(onEventName, ValueSome onHandler)
-            onEvent.AddHandler(onHandler)
+            node.SetHandler(onEventName, onHandler)
 
             let offHandler =
-                EventHandler<FocusEventArgs>(fun _ args ->
+                target.Unfocused.Subscribe(fun _args ->
                     let (MsgValue r) = curr.Event false
                     Dispatcher.dispatch node r)
 
-            node.SetHandler(offEventName, ValueSome offHandler)
-            offEvent.AddHandler(offHandler)
+            node.SetHandler(offEventName, offHandler)
 
 module VisualElement =
     let AnchorX = Attributes.defineBindableFloat VisualElement.AnchorXProperty

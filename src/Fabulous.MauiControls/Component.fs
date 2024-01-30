@@ -11,9 +11,7 @@ module Component =
         (target :?> BindableObject).GetValue(ComponentProperty)
 
     let set (comp: obj) (target: obj) =
-        let target = target :?> VisualElement
-        target.Unloaded.Add(fun _ -> (comp :?> Component).Dispose())
-        target.SetValue(ComponentProperty, comp)
+        (target :?> BindableObject).SetValue(ComponentProperty, comp)
 
 [<AutoOpen>]
 module ComponentBuilders =
