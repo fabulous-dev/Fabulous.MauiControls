@@ -15,20 +15,20 @@ module Window =
 
     let Page = Attributes.defineBindableWidget Window.PageProperty
 
-    let FlowDirection = Attributes.defineBindableWithEquality Window.FlowDirectionProperty
+    let FlowDirection =
+        Attributes.defineBindableWithEquality Window.FlowDirectionProperty
 
     let Height = Attributes.defineBindableWithEquality Window.HeightProperty
 
-    let MaximumHeight = Attributes.defineBindableWithEquality Window.MaximumHeightProperty
+    let MaximumHeight =
+        Attributes.defineBindableWithEquality Window.MaximumHeightProperty
 
-    let MaximumWidth =
-        Attributes.defineBindableWithEquality Window.MaximumWidthProperty
+    let MaximumWidth = Attributes.defineBindableWithEquality Window.MaximumWidthProperty
 
     let MinimumHeight =
         Attributes.defineBindableWithEquality Window.MinimumHeightProperty
 
-    let MinimumWidth =
-        Attributes.defineBindableWithEquality Window.MinimumWidthProperty
+    let MinimumWidth = Attributes.defineBindableWithEquality Window.MinimumWidthProperty
 
     let Activated =
         Attributes.defineEventNoArg "Window_Activated" (fun target -> (target :?> Window).Activated)
@@ -57,17 +57,13 @@ module Window =
     let Stopped =
         Attributes.defineEventNoArg "Window_Stopped" (fun target -> (target :?> Window).Stopped)
 
-    let Title =
-        Attributes.defineBindableWithEquality Window.TitleProperty
+    let Title = Attributes.defineBindableWithEquality Window.TitleProperty
 
-    let Width =
-        Attributes.defineBindableWithEquality Window.WidthProperty
+    let Width = Attributes.defineBindableWithEquality Window.WidthProperty
 
-    let X =
-        Attributes.defineBindableWithEquality Window.XProperty
+    let X = Attributes.defineBindableWithEquality Window.XProperty
 
-    let Y =
-        Attributes.defineBindableWithEquality Window.YProperty
+    let Y = Attributes.defineBindableWithEquality Window.YProperty
 
 [<AutoOpen>]
 module WindowBuilders =

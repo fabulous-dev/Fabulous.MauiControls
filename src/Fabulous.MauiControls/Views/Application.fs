@@ -19,9 +19,9 @@ type FabApplication() =
     let sleep = Event<EventHandler, EventArgs>()
     let resume = Event<EventHandler, EventArgs>()
     let appLinkRequestReceived = Event<EventHandler<Uri>, Uri>()
-    
+
     let windows = List<Window>()
-    
+
     member this.Windows = windows
     member this.EditableWindows = windows
 
@@ -45,15 +45,16 @@ type FabApplication() =
 
     override this.OnAppLinkRequestReceived(uri) =
         appLinkRequestReceived.Trigger(this, uri)
-        
-    override this.CreateWindow(activationState) =
-        windows[0]
-        
+
+    override this.CreateWindow(activationState) = windows[0]
+
     override this.OpenWindow(window) =
         windows.Add(window)
-        
+        base.OpenWindow(window)
+
     override this.CloseWindow(window) =
         windows.Remove(window) |> ignore
+        base.CloseWindow(window)
 
 module Application =
     let WidgetKey = Widgets.register<FabApplication>()
@@ -99,7 +100,7 @@ module Application =
                 | ValueSome v -> v
 
             application.UserAppTheme <- value)
-        
+
     let Windows =
         Attributes.defineListWidgetCollection "Application_Windows" (fun target -> (target :?> FabApplication).EditableWindows)
 
@@ -111,10 +112,8 @@ module ApplicationBuilders =
         /// <param name="mainPage">The main page widget</param>
         static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
-        
-        // static member inline Application<'msg, 'childMarker when 'childMarker :> IFabPage>() =
-        //     SingleChildBuilder<'msg, IFabApplication, 'childMarker>(Application.WidgetKey, Application.MainPage)
 
+        /// <summary>Create an Application widget with a list of windows</summary>
         static member inline Application<'msg, 'itemMarker when 'itemMarker :> IFabWindow>() =
             CollectionBuilder<'msg, IFabApplication, 'itemMarker>(Application.WidgetKey, Application.Windows)
 

@@ -13,8 +13,8 @@
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="FSharp.Maui.WinUICompat" Version="1.1.0" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="8.0.6" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />

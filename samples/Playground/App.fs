@@ -11,7 +11,9 @@ module App =
         | Entry2
         | Entry3
 
-    type Model = { Focus: FieldFocused option; WindowOpened: bool }
+    type Model =
+        { Focus: FieldFocused option
+          WindowOpened: bool }
 
     type Msg =
         | TextChanged of string
@@ -67,14 +69,14 @@ module App =
                         .margin(20.)
                 )
             )
-            
+
             if model.WindowOpened then
                 Window(
                     ContentPage(
-                        VStack(spacing = 20.) {
+                        (VStack(spacing = 20.) {
                             Label("Window opened")
                             Button("Close window", CloseWindow)
-                        }
+                        })
                             .margin(20.)
                     )
                 )
