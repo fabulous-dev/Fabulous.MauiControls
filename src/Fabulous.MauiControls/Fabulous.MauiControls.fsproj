@@ -139,6 +139,7 @@
     <Compile Include="Views\Collections\ListView.fs" />
     <Compile Include="Views\Collections\CollectionView.fs" />
     <Compile Include="Views\Collections\CarouselView.fs" />
+    <Compile Include="Views\Window.fs" />
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Any.fs" />
     <Compile Include="Views\_Semantics.fs" />

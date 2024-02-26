@@ -1,9 +1,11 @@
 ﻿namespace Fabulous.Maui
 
 open System
-open System.Reflection
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.Maui
+open Fabulous.StackAllocatedCollections
 open Microsoft.Maui.Controls
 open Microsoft.Maui.ApplicationModel
 
@@ -17,6 +19,11 @@ type FabApplication() =
     let sleep = Event<EventHandler, EventArgs>()
     let resume = Event<EventHandler, EventArgs>()
     let appLinkRequestReceived = Event<EventHandler<Uri>, Uri>()
+
+    let windows = List<Window>()
+
+    member this.Windows = windows
+    member this.EditableWindows = windows
 
     [<CLIEvent>]
     member _.Start = start.Publish
@@ -38,6 +45,16 @@ type FabApplication() =
 
     override this.OnAppLinkRequestReceived(uri) =
         appLinkRequestReceived.Trigger(this, uri)
+
+    override this.CreateWindow(activationState) = windows[0]
+
+    override this.OpenWindow(window) =
+        windows.Add(window)
+        base.OpenWindow(window)
+
+    override this.CloseWindow(window) =
+        windows.Remove(window) |> ignore
+        base.CloseWindow(window)
 
 module Application =
     let WidgetKey = Widgets.register<FabApplication>()
@@ -84,6 +101,9 @@ module Application =
 
             application.UserAppTheme <- value)
 
+    let Windows =
+        Attributes.defineListWidgetCollection "Application_Windows" (fun target -> (target :?> FabApplication).EditableWindows)
+
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.Maui.View with
@@ -93,8 +113,9 @@ module ApplicationBuilders =
         static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
-        static member inline Application<'msg, 'childMarker>() =
-            SingleChildBuilder<'msg, IFabApplication, 'childMarker>(Application.WidgetKey, Application.MainPage)
+        /// <summary>Create an Application widget with a list of windows</summary>
+        static member inline Application<'msg, 'itemMarker when 'itemMarker :> IFabWindow>() =
+            CollectionBuilder<'msg, IFabApplication, 'itemMarker>(Application.WidgetKey, Application.Windows)
 
 [<Extension>]
 type ApplicationModifiers =
@@ -174,3 +195,13 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IFabApplication>, value: ViewRef<Application>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type ApplicationYieldExtensions =
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabApplication and 'itemType :> IFabWindow>
+        (
+            _: CollectionBuilder<'msg, 'marker, IFabWindow>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
