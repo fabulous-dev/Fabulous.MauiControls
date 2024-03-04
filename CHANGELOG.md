@@ -12,9 +12,6 @@ _No unreleased changes_
 ## [8.1.0-pre15] - 2024-04-02
 - Set correct VersionOverride
 
-### Changed
-- Use Fabulous 3.0.0-pre1
-
 ## [8.1.0-pre14] - 2024-03-02
 
 ### Changed
