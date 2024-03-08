@@ -55,7 +55,7 @@ module App =
         Component(program) {
             let! model = Mvu.State
 
-            Application() {
+            Application(
                 ContentPage() {
                     (VStack() {
                         Label($"%d{model.Count}").centerTextHorizontal()
@@ -80,5 +80,5 @@ module App =
                     })
                         .center()
                 }
-            }
+            )
         }
