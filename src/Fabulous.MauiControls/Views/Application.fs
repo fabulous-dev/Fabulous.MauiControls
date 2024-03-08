@@ -46,7 +46,11 @@ type FabApplication() =
     override this.OnAppLinkRequestReceived(uri) =
         appLinkRequestReceived.Trigger(this, uri)
 
-    override this.CreateWindow(activationState) = windows[0]
+    override this.CreateWindow(activationState) =
+        if windows.Count > 0 then
+            windows[0]
+        else
+            base.CreateWindow(activationState)
 
     override this.OpenWindow(window) =
         windows.Add(window)

@@ -53,6 +53,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BasicNavigation", "samples\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NavigationPath", "samples\Navigation\NavigationPath\NavigationPath.fsproj", "{5B3F6C4E-82CF-442F-BFB4-216C1CD85700}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ComponentNavigation", "samples\Navigation\ComponentNavigation\ComponentNavigation.fsproj", "{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,10 @@ Global
 		{5B3F6C4E-82CF-442F-BFB4-216C1CD85700}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B3F6C4E-82CF-442F-BFB4-216C1CD85700}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B3F6C4E-82CF-442F-BFB4-216C1CD85700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{67FB01A1-1A3E-4A3B-83DC-7D63B56FB1A1} = {35A6823C-8312-4F92-818A-5117BB31A569}
@@ -146,5 +152,6 @@ Global
 		{3A3581BD-4228-49B0-84D5-AF39D620BA34} = {87C8E9E8-497E-46DB-90FE-4402E0CB230A}
 		{CE61493B-86CC-49CE-9443-F25F1ECB15C9} = {3A3581BD-4228-49B0-84D5-AF39D620BA34}
 		{5B3F6C4E-82CF-442F-BFB4-216C1CD85700} = {3A3581BD-4228-49B0-84D5-AF39D620BA34}
+		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7} = {3A3581BD-4228-49B0-84D5-AF39D620BA34}
 	EndGlobalSection
 EndGlobal
