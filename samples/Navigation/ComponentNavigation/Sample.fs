@@ -33,7 +33,7 @@ module Sample =
             nav.NavigationRequested.Subscribe(fun route -> dispatch(NavigationMsg route))
 
         let backNavRequestedSub dispatch =
-            nav.BackNavigationRequested.Subscribe(fun () -> dispatch BackButtonPressed)
+            nav.BackNavigationRequested.Subscribe(fun () -> dispatch BackNavigationMsg)
 
         [ [ nameof navRequestedSub ], navRequestedSub
           [ nameof backNavRequestedSub ], backNavRequestedSub ]
@@ -56,11 +56,12 @@ module Sample =
                 (NavigationPage() {
                     // We inject in the NavigationPage history the back stack of our navigation
                     for navPath in List.rev model.Navigation.BackStack do
-                        (navView nav appMsgDispatcher navPath).hasBackButton(false)
+                        navView nav appMsgDispatcher navPath
 
                     // The page currently displayed is the one on top of the stack
-                    (navView nav appMsgDispatcher model.Navigation.CurrentPage).hasBackButton(false)
+                    navView nav appMsgDispatcher model.Navigation.CurrentPage
                 })
                     .onBackButtonPressed(BackButtonPressed)
+                    .onBackNavigated(BackNavigationMsg)
             )
         }
