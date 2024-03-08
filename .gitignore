@@ -353,3 +353,4 @@ MigrationBackup/
 
 Resource.designer.cs
 nupkgs/
+.DS_Store
