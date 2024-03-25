@@ -27,6 +27,12 @@ module Page =
 
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 
+    let NavigatedTo =
+        Attributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
+
+    let NavigatedFrom =
+        Attributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
+
     let Padding = Attributes.defineBindableWithEquality Page.PaddingProperty
 
     let Title = Attributes.defineBindableWithEquality Page.TitleProperty
@@ -81,6 +87,14 @@ type PageModifiers =
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
         this.AddScalar(Page.Disappearing.WithValue(MsgValue(msg)))
+
+    [<Extension>]
+    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
+        this.AddScalar(Page.NavigatedTo.WithValue(fun _ -> msg))
+
+    [<Extension>]
+    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
+        this.AddScalar(Page.NavigatedFrom.WithValue(fun _ -> msg))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
