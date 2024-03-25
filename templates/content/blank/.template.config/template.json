@@ -46,7 +46,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgVersion",
-      "defaultValue": "3.0.0-pre1"
+      "defaultValue": "3.0.0-pre2"
     },
     "FabulousMauiControlsPkgVersion": {
       "type": "parameter",
@@ -70,7 +70,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "MicrosoftMauiControlsPkgVersion",
-      "defaultValue": "8.0.3"
+      "defaultValue": "8.0.14"
     }
   }
 }
