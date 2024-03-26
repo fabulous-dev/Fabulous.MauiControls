@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
-## [8.1.0-pre17] - 2024-03-25
+## [8.1.0-pre17] - 2024-03-26
 
 ### Fixed
 - Use Fabulous 3.0.0-pre2
