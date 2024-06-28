@@ -2,6 +2,7 @@ namespace ComponentNavigation
 
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
 

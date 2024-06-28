@@ -3,6 +3,7 @@ namespace Calculator
 open System
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 

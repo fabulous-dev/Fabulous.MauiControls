@@ -1,6 +1,7 @@
 namespace Gallery
 
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 open type Fabulous.Maui.View
 
 module Overview =

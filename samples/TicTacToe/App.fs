@@ -6,6 +6,7 @@ open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Devices
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
 
