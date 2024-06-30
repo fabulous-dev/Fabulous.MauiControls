@@ -269,10 +269,10 @@ module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
+        MvuAttributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
     let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
+        MvuAttributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty

@@ -14,7 +14,7 @@ module TapGestureRecognizer =
         Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
 
     let Tapped =
-        Attributes.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
+        MvuAttributes.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =

@@ -15,7 +15,7 @@ module SwipeItem =
         Attributes.defineBindableColor SwipeItem.BackgroundColorProperty
 
     let Invoked =
-        Attributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
+        MvuAttributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
 
     let IsVisible = Attributes.defineBindableBool SwipeItem.IsVisibleProperty
 

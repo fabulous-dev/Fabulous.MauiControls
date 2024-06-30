@@ -8,27 +8,27 @@ open Fabulous.Maui
 type IFabComponentButton =
     inherit IFabButton
     inherit IFabComponentView
-    
+
 module Button =
     let Clicked =
-        Attributes.defineEventNoArgNoDispatch "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+        ComponentAttributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
 
     let Pressed =
-        Attributes.defineEventNoArgNoDispatch "Button_Pressed" (fun target -> (target :?> Button).Pressed)
-    
+        ComponentAttributes.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
+
     let Released =
-        Attributes.defineEventNoArgNoDispatch "Button_Released" (fun target -> (target :?> Button).Released)
+        ComponentAttributes.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
 
 [<AutoOpen>]
 module ButtonBuilders =
     type Fabulous.Maui.View with
-    
+
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Function to execute</param>
         static member inline Button(text: string, onClicked: unit -> unit) =
             WidgetBuilder<unit, IFabComponentButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(onClicked))
-            
+
 [<Extension>]
 type ButtonModifiers =
 

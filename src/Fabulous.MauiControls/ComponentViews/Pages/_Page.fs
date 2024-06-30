@@ -11,17 +11,17 @@ type IFabComponentPage =
 
 module Page =
     let Appearing =
-        Attributes.defineEventNoArgNoDispatch "Page_Appearing" (fun target -> (target :?> Page).Appearing)
+        ComponentAttributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
 
     let Disappearing =
-        Attributes.defineEventNoArgNoDispatch "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
+        ComponentAttributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
 
     let NavigatedTo =
-        Attributes.defineEventNoDispatch "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
+        ComponentAttributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
 
     let NavigatedFrom =
-        Attributes.defineEventNoDispatch "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
-        
+        ComponentAttributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
+
 [<Extension>]
 type PageModifiers =
     /// <summary>Listen to the Appearing event</summary>
@@ -39,9 +39,9 @@ type PageModifiers =
         this.AddScalar(Page.Disappearing.WithValue(fn))
 
     [<Extension>]
-    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
+    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: NavigatedToEventArgs -> unit) =
         this.AddScalar(Page.NavigatedTo.WithValue(fn))
 
     [<Extension>]
-    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
+    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: NavigatedFromEventArgs -> unit) =
         this.AddScalar(Page.NavigatedFrom.WithValue(fn))

@@ -10,10 +10,10 @@ type IFabCell =
 
 module Cell =
     let Appearing =
-        Attributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
+        MvuAttributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
 
     let Disappearing =
-        Attributes.defineEventNoArg "Cell_Disappearing" (fun target -> (target :?> Cell).Disappearing)
+        MvuAttributes.defineEventNoArg "Cell_Disappearing" (fun target -> (target :?> Cell).Disappearing)
 
     let Height =
         Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->
@@ -29,7 +29,7 @@ module Cell =
     let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Tapped =
-        Attributes.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
+        MvuAttributes.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
 
     let ContextActions =
         Attributes.defineListWidgetCollection "Cell_ContextActions" (fun target -> (target :?> Cell).ContextActions)

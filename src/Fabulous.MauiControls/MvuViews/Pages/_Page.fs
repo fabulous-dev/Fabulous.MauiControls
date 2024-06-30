@@ -11,17 +11,17 @@ type IFabMvuPage =
 
 module Page =
     let Appearing =
-        Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
+        MvuAttributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
 
     let Disappearing =
-        Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
+        MvuAttributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
 
     let NavigatedTo =
-        Attributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
+        MvuAttributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
 
     let NavigatedFrom =
-        Attributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
-        
+        MvuAttributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
+
 [<Extension>]
 type PageModifiers =
     /// <summary>Listen to the Appearing event</summary>

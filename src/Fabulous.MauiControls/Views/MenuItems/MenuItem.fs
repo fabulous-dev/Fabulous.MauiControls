@@ -18,7 +18,7 @@ module MenuItem =
     let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
 
     let Clicked =
-        Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
+        MvuAttributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
 
     let IconImageSource =
         Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty

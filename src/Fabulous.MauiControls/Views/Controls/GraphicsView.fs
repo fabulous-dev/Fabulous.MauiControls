@@ -12,28 +12,28 @@ module GraphicsView =
     let WidgetKey = Widgets.register<GraphicsView>()
 
     let CancelInteraction =
-        Attributes.defineEventNoArg "GraphicsView_CancelInteraction" (fun target -> (target :?> GraphicsView).CancelInteraction)
+        MvuAttributes.defineEventNoArg "GraphicsView_CancelInteraction" (fun target -> (target :?> GraphicsView).CancelInteraction)
 
     let DragInteraction =
-        Attributes.defineEvent<TouchEventArgs> "GraphicsView_DragInteraction" (fun target -> (target :?> GraphicsView).DragInteraction)
+        MvuAttributes.defineEvent<TouchEventArgs> "GraphicsView_DragInteraction" (fun target -> (target :?> GraphicsView).DragInteraction)
 
     let Drawable =
         Attributes.defineBindableWithEquality<IDrawable> GraphicsView.DrawableProperty
 
     let EndHoverInteraction =
-        Attributes.defineEventNoArg "GraphicsView_EndHoverInteraction" (fun target -> (target :?> GraphicsView).EndHoverInteraction)
+        MvuAttributes.defineEventNoArg "GraphicsView_EndHoverInteraction" (fun target -> (target :?> GraphicsView).EndHoverInteraction)
 
     let EndInteraction =
-        Attributes.defineEvent<TouchEventArgs> "GraphicsView_EndInteraction" (fun target -> (target :?> GraphicsView).EndInteraction)
+        MvuAttributes.defineEvent<TouchEventArgs> "GraphicsView_EndInteraction" (fun target -> (target :?> GraphicsView).EndInteraction)
 
     let MoveHoverInteraction =
-        Attributes.defineEvent<TouchEventArgs> "GraphicsView_MoveHoverInteraction" (fun target -> (target :?> GraphicsView).MoveHoverInteraction)
+        MvuAttributes.defineEvent<TouchEventArgs> "GraphicsView_MoveHoverInteraction" (fun target -> (target :?> GraphicsView).MoveHoverInteraction)
 
     let StartHoverInteraction =
-        Attributes.defineEvent<TouchEventArgs> "GraphicsView_StartHoverInteraction" (fun target -> (target :?> GraphicsView).StartHoverInteraction)
+        MvuAttributes.defineEvent<TouchEventArgs> "GraphicsView_StartHoverInteraction" (fun target -> (target :?> GraphicsView).StartHoverInteraction)
 
     let StartInteraction =
-        Attributes.defineEvent<TouchEventArgs> "GraphicsView_StartInteraction" (fun target -> (target :?> GraphicsView).StartInteraction)
+        MvuAttributes.defineEvent<TouchEventArgs> "GraphicsView_StartInteraction" (fun target -> (target :?> GraphicsView).StartInteraction)
 
 [<AutoOpen>]
 module GraphicsViewBuilders =

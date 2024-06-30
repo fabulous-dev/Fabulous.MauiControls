@@ -4,7 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.Maui
 
-type IFabMvuElement = inherit IFabElement
+type IFabMvuElement =
+    inherit IFabElement
 
 [<Extension>]
 type ElementModifiers =

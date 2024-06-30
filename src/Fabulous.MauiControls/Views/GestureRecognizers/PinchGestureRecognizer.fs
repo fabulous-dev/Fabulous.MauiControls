@@ -11,7 +11,7 @@ module PinchGestureRecognizer =
     let WidgetKey = Widgets.register<PinchGestureRecognizer>()
 
     let PinchUpdated =
-        Attributes.defineEvent<PinchGestureUpdatedEventArgs> "PinchGestureRecognizer_PinchUpdated" (fun target ->
+        MvuAttributes.defineEvent<PinchGestureUpdatedEventArgs> "PinchGestureRecognizer_PinchUpdated" (fun target ->
             (target :?> PinchGestureRecognizer).PinchUpdated)
 
 [<AutoOpen>]

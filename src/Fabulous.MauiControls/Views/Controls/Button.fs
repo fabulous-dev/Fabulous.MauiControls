@@ -67,7 +67,7 @@ type ButtonModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IFabButton>, value: float) =
         this.AddScalar(Button.CharacterSpacing.WithValue(value))
-    
+
     /// <summary>Set the border width</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The border width</param>

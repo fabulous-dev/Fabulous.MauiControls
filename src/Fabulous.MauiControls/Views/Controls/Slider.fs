@@ -32,10 +32,10 @@ module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
     let DragCompleted =
-        Attributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
+        MvuAttributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
 
     let DragStarted =
-        Attributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
+        MvuAttributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
 
     let MaximumTrackColor =
         Attributes.defineBindableColor Slider.MaximumTrackColorProperty
@@ -52,7 +52,7 @@ module Slider =
         Attributes.defineBindableImageSource Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
-        Attributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
+        MvuAttributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
 
 [<AutoOpen>]
 module SliderBuilders =
@@ -67,7 +67,7 @@ module SliderBuilders =
             WidgetBuilder<'msg, IFabSlider>(
                 Slider.WidgetKey,
                 Slider.MinimumMaximum.WithValue(struct (min, max)),
-                Slider.ValueWithEvent.WithValue(ValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
+                Slider.ValueWithEvent.WithValue(MvuValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
             )
 
 [<Extension>]

@@ -68,7 +68,7 @@ module Picker =
             | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
     let SelectedIndexWithEvent =
-        Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
+        MvuAttributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
             (target :?> FabPicker).CustomSelectedIndexChanged)
 
     let TextColor = Attributes.defineBindableColor Picker.TextColorProperty
@@ -105,7 +105,7 @@ module PickerBuilders =
                 Picker.WidgetKey,
                 Picker.ItemsSource.WithValue(Array.ofList items),
                 Picker.SelectedIndexWithEvent.WithValue(
-                    ValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
+                    MvuValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
                 )
             )
 

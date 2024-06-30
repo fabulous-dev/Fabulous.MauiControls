@@ -42,7 +42,7 @@ module RadioButton =
         Attributes.defineBindableWithEquality<string> RadioButton.GroupNameProperty
 
     let IsCheckedWithEvent =
-        Attributes.defineBindableWithEvent "RadioButton_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
+        MvuAttributes.defineBindableWithEvent "RadioButton_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
 
     let TextColor = Attributes.defineBindableColor RadioButton.TextColorProperty
 
@@ -64,7 +64,7 @@ module RadioButtonBuilders =
         static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IFabRadioButton>(
                 RadioButton.WidgetKey,
-                RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
+                RadioButton.IsCheckedWithEvent.WithValue(MvuValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
                 RadioButton.ContentString.WithValue(content)
             )
 
@@ -77,7 +77,9 @@ module RadioButtonBuilders =
                 RadioButton.WidgetKey,
                 AttributesBundle(
                     StackList.one(
-                        RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
+                        RadioButton.IsCheckedWithEvent.WithValue(
+                            MvuValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)
+                        )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
                     ValueNone

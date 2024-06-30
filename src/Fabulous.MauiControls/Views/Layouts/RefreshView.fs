@@ -17,7 +17,7 @@ module RefreshView =
     let RefreshColor = Attributes.defineBindableColor RefreshView.RefreshColorProperty
 
     let Refreshing =
-        Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
+        MvuAttributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =

@@ -35,7 +35,7 @@ module InputView =
         Attributes.defineBindableEnum<TextTransform> InputView.TextTransformProperty
 
     let TextWithEvent =
-        Attributes.defineBindableWithEvent<string, TextChangedEventArgs> "InputView_TextChanged" InputView.TextProperty (fun target ->
+        MvuAttributes.defineBindableWithEvent<string, TextChangedEventArgs> "InputView_TextChanged" InputView.TextProperty (fun target ->
             (target :?> InputView).TextChanged)
 
 [<Extension>]

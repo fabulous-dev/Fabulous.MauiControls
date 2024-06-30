@@ -8,17 +8,16 @@ open Fabulous.Maui
 type IFabMvuButton =
     inherit IFabButton
     inherit IFabMvuView
-    
+
 module Button =
     let Clicked =
-        Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
-    
+        MvuAttributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+
     let Pressed =
-        Attributes.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
+        MvuAttributes.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
 
     let Released =
-        Attributes.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
-
+        MvuAttributes.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
 
 [<AutoOpen>]
 module ButtonBuilders =

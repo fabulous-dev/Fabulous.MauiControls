@@ -21,10 +21,10 @@ module WebView =
         Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
 
     let Navigated =
-        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
+        MvuAttributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
     let Navigating =
-        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
+        MvuAttributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty

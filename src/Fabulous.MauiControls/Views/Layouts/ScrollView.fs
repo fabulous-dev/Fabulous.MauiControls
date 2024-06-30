@@ -27,7 +27,7 @@ module ScrollView =
         Attributes.defineBindableEnum<ScrollOrientation> ScrollView.OrientationProperty
 
     let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
+        MvuAttributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
 
     let ScrollPosition =
         Attributes.defineSimpleScalarWithEquality<ScrollToData> "ScrollView_ScrollPosition" (fun _ newValueOpt node ->

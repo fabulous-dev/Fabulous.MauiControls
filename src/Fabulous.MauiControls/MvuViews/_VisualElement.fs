@@ -8,9 +8,9 @@ open Microsoft.Maui.Controls
 type IFabMvuVisualElement =
     inherit IFabVisualElement
     inherit IFabMvuNavigableElement
-    
+
 module VisualElementUpdaters =
-    let updateVisualElementFocus oldValueOpt (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
+    let updateVisualElementFocus oldValueOpt (newValueOpt: MvuValueEventData<bool, bool> voption) (node: IViewNode) =
         let target = node.Target :?> VisualElement
 
         let onEventName = "Focus_On"
@@ -65,11 +65,11 @@ module VisualElementUpdaters =
                     Dispatcher.dispatch node r)
 
             node.SetHandler(offEventName, offHandler)
-    
+
 module VisualElement =
     let FocusWithEvent =
         Attributes.defineSimpleScalar "VisualElement_FocusWithEvent" ScalarAttributeComparers.noCompare VisualElementUpdaters.updateVisualElementFocus
-    
+
 [<Extension>]
 type VisualElementModifiers =
     /// <summary>Set the current focus state of the widget, and listen to focus state changes</summary>
@@ -78,4 +78,4 @@ type VisualElementModifiers =
     /// <param name="onFocusChanged">Message to dispatch when the widget's focus state changes</param>
     [<Extension>]
     static member inline focus(this: WidgetBuilder<'msg, #IFabMvuVisualElement>, value: bool, onFocusChanged: bool -> 'msg) =
-        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ValueEventData.create value onFocusChanged))
+        this.AddScalar(VisualElement.FocusWithEvent.WithValue(MvuValueEventData.create value onFocusChanged))

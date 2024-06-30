@@ -25,7 +25,7 @@ module DatePicker =
         let key =
             ScalarAttributeDefinitions.SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: ValueEventData<struct (DateTime * DateTime * DateTime), DateChangedEventArgs> voption) node ->
+                (fun oldValueOpt (newValueOpt: MvuValueEventData<struct (DateTime * DateTime * DateTime), DateChangedEventArgs> voption) node ->
                     let target = node.Target :?> DatePicker
 
                     match newValueOpt with
@@ -66,7 +66,7 @@ module DatePicker =
             |> AttributeDefinitionStore.registerScalar
 
         { Key = key; Name = name }
-        : ScalarAttributeDefinitions.SimpleScalarAttributeDefinition<ValueEventData<struct (DateTime * DateTime * DateTime), DateChangedEventArgs>>
+        : ScalarAttributeDefinitions.SimpleScalarAttributeDefinition<MvuValueEventData<struct (DateTime * DateTime * DateTime), DateChangedEventArgs>>
 
     let FontAttributes =
         Attributes.defineBindableWithEquality<FontAttributes> DatePicker.FontAttributesProperty
@@ -108,7 +108,7 @@ module DatePickerBuilders =
             WidgetBuilder<'msg, IFabDatePicker>(
                 DatePicker.WidgetKey,
                 DatePicker.DateWithEvent.WithValue(
-                    ValueEventData.create (struct (min, max, date)) (fun (args: DateChangedEventArgs) -> onDateSelected args.NewDate)
+                    MvuValueEventData.create (struct (min, max, date)) (fun (args: DateChangedEventArgs) -> onDateSelected args.NewDate)
                 )
             )
 

@@ -14,7 +14,7 @@ module CheckBox =
     let Color = Attributes.defineBindableColor CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
-        Attributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
+        MvuAttributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
 
 [<AutoOpen>]
 module CheckBoxBuilders =
@@ -26,7 +26,7 @@ module CheckBoxBuilders =
         static member inline CheckBox<'msg>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabCheckBox>(
                 CheckBox.WidgetKey,
-                CheckBox.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
+                CheckBox.IsCheckedWithEvent.WithValue(MvuValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
             )
 
 [<Extension>]

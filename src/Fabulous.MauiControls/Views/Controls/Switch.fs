@@ -16,7 +16,7 @@ module Switch =
     let ThumbColor = Attributes.defineBindableColor Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
-        Attributes.defineBindableWithEvent "Switch_Toggled" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
+        MvuAttributes.defineBindableWithEvent "Switch_Toggled" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
 
 [<AutoOpen>]
 module SwitchBuilders =
@@ -28,7 +28,7 @@ module SwitchBuilders =
         static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitch>(
                 Switch.WidgetKey,
-                Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
+                Switch.IsToggledWithEvent.WithValue(MvuValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
             )
 
 [<Extension>]

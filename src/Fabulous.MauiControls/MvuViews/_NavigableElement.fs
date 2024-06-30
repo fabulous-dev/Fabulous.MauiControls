@@ -5,4 +5,3 @@ open Fabulous.Maui
 type IFabMvuNavigableElement =
     inherit IFabNavigableElement
     inherit IFabMvuElement
-

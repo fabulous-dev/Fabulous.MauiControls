@@ -34,7 +34,7 @@ module Stepper =
         Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Stepper_MinimumMaximum" StepperUpdaters.updateStepperMinMax
 
     let ValueWithEvent =
-        Attributes.defineBindableWithEvent "Stepper_ValueChanged" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
+        MvuAttributes.defineBindableWithEvent "Stepper_ValueChanged" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
 
 [<AutoOpen>]
 module StepperBuilders =
@@ -49,7 +49,7 @@ module StepperBuilders =
             WidgetBuilder<'msg, IFabStepper>(
                 Stepper.WidgetKey,
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),
-                Stepper.ValueWithEvent.WithValue(ValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
+                Stepper.ValueWithEvent.WithValue(MvuValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
             )
 
 [<Extension>]

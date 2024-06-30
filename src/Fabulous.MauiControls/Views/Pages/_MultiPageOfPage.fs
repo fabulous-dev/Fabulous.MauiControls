@@ -15,7 +15,7 @@ module MultiPageOfPage =
 
     [<Obsolete("Use CurrentPageWithEvent instead")>]
     let CurrentPageChanged =
-        Attributes.defineEventNoArg "MultiPageOfPage_CurrentPageChanged" (fun target -> (target :?> MultiPage<Page>).CurrentPageChanged)
+        MvuAttributes.defineEventNoArg "MultiPageOfPage_CurrentPageChanged" (fun target -> (target :?> MultiPage<Page>).CurrentPageChanged)
 
     let CurrentPageWithEvent =
         let name = "MultiPageOfPage_CurrentPageWithEvent"
@@ -23,7 +23,7 @@ module MultiPageOfPage =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: ValueEventData<int, int> voption) node ->
+                (fun oldValueOpt (newValueOpt: MvuValueEventData<int, int> voption) node ->
                     let target = node.Target :?> MultiPage<Page>
 
                     match newValueOpt with
@@ -58,7 +58,7 @@ module MultiPageOfPage =
             )
             |> AttributeDefinitionStore.registerScalar
 
-        { Key = key; Name = name }: SimpleScalarAttributeDefinition<ValueEventData<int, int>>
+        { Key = key; Name = name }: SimpleScalarAttributeDefinition<MvuValueEventData<int, int>>
 
 [<Extension>]
 type MultiPageOfPageModifiers =
@@ -75,4 +75,4 @@ type MultiPageOfPageModifiers =
     /// <param name="onCurrentPageChanged">Function to invoke</param>
     [<Extension>]
     static member inline currentPage(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, currentPage: int, onCurrentPageChanged: int -> 'msg) =
-        this.AddScalar(MultiPageOfPage.CurrentPageWithEvent.WithValue(ValueEventData.create currentPage onCurrentPageChanged))
+        this.AddScalar(MultiPageOfPage.CurrentPageWithEvent.WithValue(MvuValueEventData.create currentPage onCurrentPageChanged))

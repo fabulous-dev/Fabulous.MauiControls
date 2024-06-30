@@ -12,7 +12,7 @@ type IFabComponentContentPage =
 
 module ContentPage =
     let SizeAllocated =
-        Attributes.defineEventNoDispatch<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabContentPage).SizeAllocated)
+        ComponentAttributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabContentPage).SizeAllocated)
 
 [<AutoOpen>]
 module ContentPageBuilders =
@@ -28,7 +28,7 @@ module ContentPageBuilders =
 
         static member inline ContentPage<'msg, 'childMarker>() =
             SingleChildBuilder<'msg, IFabComponentContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)
-            
+
 [<Extension>]
 type ContentPageModifiers =
     /// <summary>Listen for SizeAllocated event</summary>
@@ -37,7 +37,7 @@ type ContentPageModifiers =
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabComponentContentPage>, fn: SizeAllocatedEventArgs -> unit) =
         this.AddScalar(ContentPage.SizeAllocated.WithValue(fn))
-        
+
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

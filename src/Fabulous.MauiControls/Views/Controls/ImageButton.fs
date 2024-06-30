@@ -22,7 +22,7 @@ module ImageButton =
     let BorderWidth = Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 
     let Clicked =
-        Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> ImageButton).Clicked)
+        MvuAttributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> ImageButton).Clicked)
 
     let CornerRadius = Attributes.defineBindableFloat ImageButton.CornerRadiusProperty
 
@@ -36,10 +36,10 @@ module ImageButton =
         Attributes.defineBindableWithEquality<Thickness> ImageButton.PaddingProperty
 
     let Pressed =
-        Attributes.defineEventNoArg "ImageButton_Pressed" (fun target -> (target :?> ImageButton).Pressed)
+        MvuAttributes.defineEventNoArg "ImageButton_Pressed" (fun target -> (target :?> ImageButton).Pressed)
 
     let Released =
-        Attributes.defineEventNoArg "ImageButton_Released" (fun target -> (target :?> ImageButton).Released)
+        MvuAttributes.defineEventNoArg "ImageButton_Released" (fun target -> (target :?> ImageButton).Released)
 
     let Source = Attributes.defineBindableImageSource ImageButton.SourceProperty
 

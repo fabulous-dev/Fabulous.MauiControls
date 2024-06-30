@@ -68,31 +68,31 @@ module Application =
             (target :?> Application).MainPage <- value)
 
     let ModalPopped =
-        Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
+        MvuAttributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
 
     let ModalPopping =
-        Attributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
+        MvuAttributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
 
     let ModalPushed =
-        Attributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
+        MvuAttributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
 
     let ModalPushing =
-        Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
+        MvuAttributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
     let RequestedThemeChanged =
-        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
+        MvuAttributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
 
     let Resume =
-        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
+        MvuAttributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
 
     let Sleep =
-        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
+        MvuAttributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
 
     let Start =
-        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
+        MvuAttributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
 
     let AppLinkRequestReceived =
-        Attributes.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
+        MvuAttributes.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
 
     let UserAppTheme =
         Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->

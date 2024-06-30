@@ -55,22 +55,22 @@ module ListView =
     let IsRefreshing = Attributes.defineBindableBool ListView.IsRefreshingProperty
 
     let ItemAppearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
+        MvuAttributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
 
     let ItemDisappearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
+        MvuAttributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
 
     let ItemSelected =
-        Attributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
+        MvuAttributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
 
     let ItemTapped =
-        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
+        MvuAttributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
 
     let RefreshControlColor =
         Attributes.defineBindableColor ListView.RefreshControlColorProperty
 
     let Refreshing =
-        Attributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
+        MvuAttributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
 
     let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
 
@@ -83,10 +83,10 @@ module ListView =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
+        MvuAttributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
+        MvuAttributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
 
     let VerticalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty

@@ -36,7 +36,7 @@ module TimePicker =
         Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty
 
     let TimeWithEvent =
-        Attributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
+        MvuAttributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> TimePicker.FontAttributesProperty
@@ -75,7 +75,7 @@ module TimePickerBuilders =
         static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
             WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
-                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
+                TimePicker.TimeWithEvent.WithValue(MvuValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
             )
 
 [<Extension>]

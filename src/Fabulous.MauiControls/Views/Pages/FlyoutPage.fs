@@ -26,7 +26,7 @@ module FlyoutPage =
     let WidgetKey = Widgets.register<FabFlyoutPage>()
 
     let BackButtonPressed =
-        Attributes.defineEvent "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
+        MvuAttributes.defineEvent "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
     let Detail =
         Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->
@@ -43,7 +43,7 @@ module FlyoutPage =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
     let IsPresented =
-        Attributes.defineBindableWithEvent "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
+        MvuAttributes.defineBindableWithEvent "FlyoutPage_IsPresentedChanged" FlyoutPage.IsPresentedProperty (fun target ->
             (target :?> FabFlyoutPage).CustomIsPresentedChanged)
 
 [<AutoOpen>]
@@ -74,7 +74,7 @@ type FlyoutPageModifiers =
     /// <param name="onChanged">Message to dispatch</param>
     [<Extension>]
     static member inline isPresented(this: WidgetBuilder<'msg, #IFabFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
-        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value onChanged))
+        this.AddScalar(FlyoutPage.IsPresented.WithValue(MvuValueEventData.create value onChanged))
 
     /// <summary>Set whether gesture is enabled to open the flyout</summary>
     /// <param name="this">Current widget</param>
