@@ -3,9 +3,11 @@ namespace Gallery
 open Microsoft.FSharp.Core
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 open Microsoft.Maui.Controls
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module App =
     type Path =

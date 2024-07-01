@@ -10,8 +10,7 @@ type IFabComponentVisualElement =
     inherit IFabComponentNavigableElement
 
 module VisualElementUpdaters =
-    // TODO: ValueEventData is Mvu specific
-    let updateVisualElementFocus oldValueOpt (newValueOpt: MvuValueEventData<bool, bool> voption) (node: IViewNode) =
+    let updateVisualElementFocus oldValueOpt (newValueOpt: ComponentValueEventData<bool, bool> voption) (node: IViewNode) =
         let target = node.Target :?> VisualElement
 
         let onEventName = "Focus_On"
@@ -53,17 +52,11 @@ module VisualElementUpdaters =
                     target.Unfocus()
 
             // Set the new event handlers
-            let onHandler =
-                target.Focused.Subscribe(fun _args ->
-                    let (MsgValue r) = curr.Event true
-                    Dispatcher.dispatch node r)
+            let onHandler = target.Focused.Subscribe(fun _args -> curr.Event(true))
 
             node.SetHandler(onEventName, onHandler)
 
-            let offHandler =
-                target.Unfocused.Subscribe(fun _args ->
-                    let (MsgValue r) = curr.Event false
-                    Dispatcher.dispatch node r)
+            let offHandler = target.Unfocused.Subscribe(fun _args -> curr.Event(false))
 
             node.SetHandler(offEventName, offHandler)
 
@@ -79,4 +72,4 @@ type VisualElementModifiers =
     /// <param name="onFocusChanged">Message to dispatch when the widget's focus state changes</param>
     [<Extension>]
     static member inline focus(this: WidgetBuilder<'msg, #IFabComponentVisualElement>, value: bool, onFocusChanged: bool -> unit) =
-        this.AddScalar(VisualElement.FocusWithEvent.WithValue(MvuValueEventData.create value onFocusChanged))
+        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ComponentValueEventData.create value onFocusChanged))

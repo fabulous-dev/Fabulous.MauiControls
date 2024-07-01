@@ -8,6 +8,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module App =
     type Operator =
@@ -110,8 +111,7 @@ module App =
         Application(
             ContentPage(
                 (Grid(rowdefs = [ Star; Star; Star; Star; Star; Star ], coldefs = [ Star; Star; Star; Star ]) {
-                    View
-                        .Label(display model)
+                    Label(display model)
                         .font(size = 48.0, attributes = FontAttributes.Bold)
                         .background(Colors.Black)
                         .textColor(Colors.White)

@@ -2,8 +2,11 @@ namespace ComponentNavigation
 
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Components
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Components.View
+open type Fabulous.Maui.Mvu.View
 
 /// This is the root of the app
 module Sample =

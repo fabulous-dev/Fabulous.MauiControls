@@ -4,7 +4,9 @@ open Gallery
 open Fabulous.Maui
 open Fabulous.Maui.Mvu
 open Microsoft.Maui.Graphics
+
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module TextButton =
     let view () =

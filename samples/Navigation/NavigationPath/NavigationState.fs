@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.Maui
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 /// MVU is a very explicit but also very verbose pattern.
 /// Everything needs to be explicitly written out.

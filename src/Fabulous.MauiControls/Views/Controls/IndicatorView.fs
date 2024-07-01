@@ -38,14 +38,6 @@ module IndicatorView =
     let SelectedIndicatorColor =
         Attributes.defineBindableColor IndicatorView.SelectedIndicatorColorProperty
 
-[<AutoOpen>]
-module IndicatorViewBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create an IndicatorView widget with a reference</summary>
-        static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
-            WidgetBuilder<'msg, IFabIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
-
 [<Extension>]
 type IndicatorViewModifiers =
     /// <summary>Set whether to hide the indicator if there is only one item</summary>

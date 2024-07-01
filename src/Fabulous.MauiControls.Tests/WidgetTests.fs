@@ -6,9 +6,11 @@ open Microsoft.Maui.ApplicationModel
 open NUnit.Framework
 
 open Fabulous.Maui
+open Fabulous.Maui.Components
 open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 [<TestFixture>]
 type WidgetTests() =

@@ -54,10 +54,7 @@ module ComponentAttributes =
                         // Set the new event handler
                         let event = getEvent target
 
-                        let handler =
-                            event.Subscribe(fun args ->
-                                let r = curr.Event args
-                                Dispatcher.dispatch node r)
+                        let handler = event.Subscribe(curr.Event)
 
                         node.SetHandler(name, handler))
             )

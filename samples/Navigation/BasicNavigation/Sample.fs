@@ -5,6 +5,7 @@ open Fabulous.Maui
 open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 /// The most basic navigation with Fabulous is done by swapping widgets.
 ///

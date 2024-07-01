@@ -26,22 +26,22 @@ module Page =
 type PageModifiers =
     /// <summary>Listen to the Appearing event</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="msg">Message to dispatch</param>
+    /// <param name="fn">TODO</param>
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
         this.AddScalar(Page.Appearing.WithValue(fn))
 
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
-    /// <param name="msg">Message to dispatch</param>
+    /// <param name="fn">TODO</param>
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
         this.AddScalar(Page.Disappearing.WithValue(fn))
 
     [<Extension>]
-    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: NavigatedToEventArgs -> unit) =
-        this.AddScalar(Page.NavigatedTo.WithValue(fn))
+    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
+        this.AddScalar(Page.NavigatedTo.WithValue(ignore >> fn))
 
     [<Extension>]
-    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: NavigatedFromEventArgs -> unit) =
-        this.AddScalar(Page.NavigatedFrom.WithValue(fn))
+    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabComponentPage>, fn: unit -> unit) =
+        this.AddScalar(Page.NavigatedFrom.WithValue(ignore >> fn))

@@ -3,7 +3,9 @@ namespace Gallery
 open Fabulous
 open Fabulous.Maui
 open Fabulous.Maui.Mvu
+
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module SamplePage =
     let view (pop: 'msg) mapMsg index model =

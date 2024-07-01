@@ -34,28 +34,10 @@ module SearchBar =
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool SearchBar.IsTextPredictionEnabledProperty
 
-    let SearchButtonPressed =
-        MvuAttributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> SearchBar).SearchButtonPressed)
-
     let SelectionLength = Attributes.defineBindableInt SearchBar.SelectionLengthProperty
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> SearchBar.VerticalTextAlignmentProperty
-
-[<AutoOpen>]
-module SearchBarBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a SearchBar widget with a text and listen for both text changes and search button presses</summary>
-        /// <param name="text">The text value</param>
-        /// <param name="onTextChanged">Message to dispatch</param>
-        /// <param name="onSearchButtonPressed">Message to dispatch</param>
-        static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
-            WidgetBuilder<'msg, IFabSearchBar>(
-                SearchBar.WidgetKey,
-                InputView.TextWithEvent.WithValue(MvuValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue)),
-                SearchBar.SearchButtonPressed.WithValue(MsgValue(onSearchButtonPressed))
-            )
 
 [<Extension>]
 type SearchBarModifiers =
@@ -136,10 +118,3 @@ type SearchBarModifiers =
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabSearchBar>, value: TextAlignment) =
         this.AddScalar(SearchBar.VerticalTextAlignment.WithValue(value))
-
-    /// <summary>Link a ViewRef to access the direct SearchBar control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabSearchBar>, value: ViewRef<SearchBar>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

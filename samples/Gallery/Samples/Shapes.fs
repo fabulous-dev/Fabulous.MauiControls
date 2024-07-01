@@ -2,10 +2,13 @@ namespace Gallery.Samples
 
 open Gallery
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
+
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module Shapes =
     type Model = Id

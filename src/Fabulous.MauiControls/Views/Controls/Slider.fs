@@ -31,12 +31,6 @@ module SliderUpdaters =
 module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
-    let DragCompleted =
-        MvuAttributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
-
-    let DragStarted =
-        MvuAttributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
-
     let MaximumTrackColor =
         Attributes.defineBindableColor Slider.MaximumTrackColorProperty
 
@@ -51,41 +45,8 @@ module Slider =
     let ThumbImageSource =
         Attributes.defineBindableImageSource Slider.ThumbImageSourceProperty
 
-    let ValueWithEvent =
-        MvuAttributes.defineBindableWithEvent "Slider_ValueWithEvent" Slider.ValueProperty (fun target -> (target :?> Slider).ValueChanged)
-
-[<AutoOpen>]
-module SliderBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a Slider widget with a min/max bounds and a value, listen for the value changes</summary>
-        /// <param name="min">The minimum bound</param>
-        /// <param name="max">The maximum bound</param>
-        /// <param name="value">The current value</param>
-        /// <param name="onValueChanged">Message to dispatch</param>
-        static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
-            WidgetBuilder<'msg, IFabSlider>(
-                Slider.WidgetKey,
-                Slider.MinimumMaximum.WithValue(struct (min, max)),
-                Slider.ValueWithEvent.WithValue(MvuValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
-            )
-
 [<Extension>]
 type SliderModifiers =
-    /// <summary>Listen for the DragCompleted event</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="msg">Message to dispatch</param>
-    [<Extension>]
-    static member inline onDragCompleted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
-        this.AddScalar(Slider.DragCompleted.WithValue(MsgValue(msg)))
-
-    /// <summary>Listen for the DragStarted event</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="msg">Message to dispatch</param>
-    [<Extension>]
-    static member inline onDragStarted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
-        this.AddScalar(Slider.DragStarted.WithValue(MsgValue(msg)))
-
     /// <summary>Set the color of the maximum track</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The color of the maximum track</param>
@@ -113,13 +74,6 @@ type SliderModifiers =
     [<Extension>]
     static member inline thumbImage(this: WidgetBuilder<'msg, #IFabSlider>, value: ImageSource) =
         this.AddScalar(Slider.ThumbImageSource.WithValue(ImageSourceValue.Source value))
-
-    /// <summary>Link a ViewRef to access the direct Slider control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabSlider>, value: ViewRef<Slider>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type SliderExtraModifiers =

@@ -67,10 +67,6 @@ module Picker =
             | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
             | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
-    let SelectedIndexWithEvent =
-        MvuAttributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
-            (target :?> FabPicker).CustomSelectedIndexChanged)
-
     let TextColor = Attributes.defineBindableColor Picker.TextColorProperty
 
     let Title = Attributes.defineBindableWithEquality<string> Picker.TitleProperty
@@ -91,23 +87,6 @@ module PickerPlatform =
                 | ValueSome v -> v
 
             iOSSpecific.Picker.SetUpdateMode(picker, value))
-
-[<AutoOpen>]
-module PickerBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a Picker widget with a list of items, the selected index and listen to the selected index changes</summary>
-        /// <param name="items">The items list</param>
-        /// <param name="selectedIndex">The selected index</param>
-        /// <param name="onSelectedIndexChanged">Message to dispatch</param>
-        static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
-            WidgetBuilder<'msg, IFabPicker>(
-                Picker.WidgetKey,
-                Picker.ItemsSource.WithValue(Array.ofList items),
-                Picker.SelectedIndexWithEvent.WithValue(
-                    MvuValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
-                )
-            )
 
 [<Extension>]
 type PickerModifiers =
@@ -188,13 +167,6 @@ type PickerModifiers =
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabPicker>, value: TextAlignment) =
         this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
-
-    /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabPicker>, value: ViewRef<Picker>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type PickerPlatformModifiers =

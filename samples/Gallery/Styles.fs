@@ -1,10 +1,7 @@
 namespace Gallery
 
-open Microsoft.Maui
 open Fabulous
 open Fabulous.Maui
-
-open type Fabulous.Maui.View
 
 module Fonts =
     let OpenSansRegular = "OpenSansRegular"

@@ -21,7 +21,7 @@ module Button =
 
 [<AutoOpen>]
 module ButtonBuilders =
-    type Fabulous.Maui.View with
+    type Fabulous.Maui.Mvu.View with
 
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>

@@ -6,6 +6,7 @@ open Fabulous.Maui.Components
 open Microsoft.Maui.Hosting
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Components.View
 
 module App =
     let view () =
