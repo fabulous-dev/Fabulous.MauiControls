@@ -32,29 +32,6 @@ module ProgressBarAnimations =
             | ValueNone -> view.ProgressTo(0., uint32 0, Easing.Linear) |> ignore
             | ValueSome data -> view.ProgressTo(data.Progress, data.AnimationDuration, data.Easing) |> ignore)
 
-[<AutoOpen>]
-module ProgressBarBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a ProgressBar widget with a current progress value</summary>
-        /// <param name="progress">The progress value</param>
-        static member inline ProgressBar<'msg>(progress: float) =
-            WidgetBuilder<'msg, IFabProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
-
-        /// <summary>Create a ProgressBar widget with a progress value that will animate when changed</summary>
-        /// <param name="progress">The progress value</param>
-        /// <param name="duration">The duration of the animation</param>
-        /// <param name="easing">The easing of the animation</param>
-        static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
-            WidgetBuilder<'msg, IFabProgressBar>(
-                ProgressBar.WidgetKey,
-                ProgressBarAnimations.ProgressTo.WithValue(
-                    { Progress = progress
-                      AnimationDuration = uint32 duration
-                      Easing = easing }
-                )
-            )
-
 [<Extension>]
 type ProgressBarModifiers =
     /// <summary>Set the color of the progress bar</summary>
@@ -63,10 +40,3 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IFabProgressBar>, value: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(value))
-
-    /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabProgressBar>, value: ViewRef<ProgressBar>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

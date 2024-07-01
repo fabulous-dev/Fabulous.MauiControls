@@ -2,8 +2,12 @@ namespace ComponentNavigation
 
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Components
+open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Components.View
+open type Fabulous.Maui.Mvu.View
 
 /// Each page is "isolated". They have their own MVU loop and own types.
 /// The only dependency they receive from outside is the NavigationController, which is passed to the update function.

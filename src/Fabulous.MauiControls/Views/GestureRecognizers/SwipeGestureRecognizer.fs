@@ -15,7 +15,7 @@ module SwipeGestureRecognizer =
         Attributes.defineBindableEnum<SwipeDirection> SwipeGestureRecognizer.DirectionProperty
 
     let Swiped =
-        Attributes.defineEvent<SwipedEventArgs> "SwipeGestureRecognizer_Swiped" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
+        MvuAttributes.defineEvent<SwipedEventArgs> "SwipeGestureRecognizer_Swiped" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
 
     let Threshold =
         Attributes.defineBindableInt SwipeGestureRecognizer.ThresholdProperty

@@ -1,4 +1,4 @@
-namespace Fabulous.Maui
+namespace Fabulous.Maui.Components
 
 open Fabulous
 open Microsoft.Maui.Controls
@@ -15,7 +15,7 @@ module Component =
 
 [<AutoOpen>]
 module ComponentBuilders =
-    type Fabulous.Maui.View with
+    type Fabulous.Maui.Components.View with
 
         static member inline Component<'msg, 'marker>() = ComponentBuilder<'msg>()
 

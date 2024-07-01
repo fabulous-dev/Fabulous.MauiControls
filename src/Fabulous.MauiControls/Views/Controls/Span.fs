@@ -43,15 +43,6 @@ module Span =
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Span.TextTransformProperty
 
-[<AutoOpen>]
-module SpanBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a Span widget with a text</summary>
-        /// <param name="text">The text value</param>
-        static member inline Span<'msg>(text: string) =
-            WidgetBuilder<'msg, IFabSpan>(Span.WidgetKey, Span.Text.WithValue(text))
-
 [<Extension>]
 type SpanModifiers =
     /// <summary>Set the background color</summary>
@@ -131,13 +122,6 @@ type SpanModifiers =
     static member inline textTransform(this: WidgetBuilder<'msg, #IFabSpan>, value: TextTransform) =
         this.AddScalar(Span.TextTransform.WithValue(value))
 
-    /// <summary>Link a ViewRef to access the direct Span control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabSpan>, value: ViewRef<Span>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-
 [<Extension>]
 type SpanYieldExtensions =
     [<Extension>]
@@ -157,7 +141,7 @@ type SpanYieldExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
 [<Extension>]
-type SpanAttachedCollectionModifiers =
+type SpanExtraModifiers =
     /// <summary>Set the gesture recognizer associated with this widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The gesture recognizer</param>

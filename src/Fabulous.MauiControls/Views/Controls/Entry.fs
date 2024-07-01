@@ -16,9 +16,6 @@ module Entry =
     let ClearButtonVisibility =
         Attributes.defineBindableEnum<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
-    let Completed =
-        Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
-
     let CursorPosition = Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
@@ -58,19 +55,6 @@ module EntryPlatform =
                 | ValueSome x -> x
 
             iOSSpecific.Entry.SetCursorColor(entry, value))
-
-[<AutoOpen>]
-module EntryBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create an Entry widget with a text and listen for text changes</summary>
-        /// <param name="text">The text value</param>
-        /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
-            WidgetBuilder<'msg, IFabEntry>(
-                Entry.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
-            )
 
 [<Extension>]
 type EntryModifiers =
@@ -145,13 +129,6 @@ type EntryModifiers =
     static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #IFabEntry>, value: bool) =
         this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value))
 
-    /// <summary>Listen for the Completed event</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="msg">Message to dispatch</param>
-    [<Extension>]
-    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, msg: 'msg) =
-        this.AddScalar(Entry.Completed.WithValue(MsgValue(msg)))
-
     /// <summary>Set the return type of the keyboard</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The return type of the keyboard</param>
@@ -172,13 +149,6 @@ type EntryModifiers =
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IFabEntry>, value: TextAlignment) =
         this.AddScalar(Entry.VerticalTextAlignment.WithValue(value))
-
-    /// <summary>Link a ViewRef to access the direct Entry control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabEntry>, value: ViewRef<Entry>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type EntryPlatformModifiers =

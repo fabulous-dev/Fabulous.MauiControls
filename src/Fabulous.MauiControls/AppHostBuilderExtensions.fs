@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.Maui
 
 open Fabulous
+open Fabulous.Maui.Components
 open System.Runtime.CompilerServices
 open Microsoft.Maui.Hosting
 open Microsoft.Maui.Controls.Hosting

@@ -35,9 +35,6 @@ module TimePicker =
     let CharacterSpacing =
         Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty
 
-    let TimeWithEvent =
-        Attributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
-
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> TimePicker.FontAttributesProperty
 
@@ -64,19 +61,6 @@ module TimePickerPlatform =
                 | ValueSome v -> v
 
             iOSSpecific.TimePicker.SetUpdateMode(timePicker, value))
-
-[<AutoOpen>]
-module TimePickerBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a TimePicker widget with a selected time and listen for the selected time changes</summary>
-        /// <param name="time">The selected time</param>
-        /// <param name="onTimeSelected">Message to dispatch</param>
-        static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
-            WidgetBuilder<'msg, IFabTimePicker>(
-                TimePicker.WidgetKey,
-                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
-            )
 
 [<Extension>]
 type TimePickerModifiers =
@@ -136,13 +120,6 @@ type TimePickerModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IFabTimePicker>, value: Color) =
         this.AddScalar(TimePicker.TextColor.WithValue(value))
-
-    /// <summary>Link a ViewRef to access the direct TimePicker control instance</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IFabTimePicker>, value: ViewRef<TimePicker>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
 [<Extension>]
 type TimePickerPlatformModifiers =

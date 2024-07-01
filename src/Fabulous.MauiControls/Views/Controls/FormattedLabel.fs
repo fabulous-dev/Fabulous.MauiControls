@@ -10,7 +10,7 @@ type IFabFormattedLabel =
 
 module FormattedLabel =
     let WidgetKey = Widgets.register<Label>()
-
+    
     let Spans =
         Attributes.defineListWidgetCollection "FormattedString_Spans" (fun target ->
             let label = target :?> Label
@@ -19,15 +19,7 @@ module FormattedLabel =
                 label.FormattedText <- FormattedString()
 
             label.FormattedText.Spans)
-
-[<AutoOpen>]
-module FormattedLabelBuilders =
-    type Fabulous.Maui.View with
-
-        /// <summary>Create a FormattedLabel widget</summary>
-        static member inline FormattedLabel<'msg>() =
-            CollectionBuilder<'msg, IFabFormattedLabel, IFabSpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
-
+        
 [<Extension>]
 type FormattedLabelModifiers =
     /// <summary>Link a ViewRef to access the direct FormattedLabel control instance</summary>

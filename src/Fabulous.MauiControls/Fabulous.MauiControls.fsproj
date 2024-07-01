@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <UseLocalProjectReference>false</UseLocalProjectReference>    
+    <UseLocalProjectReference>true</UseLocalProjectReference>    
     
     <TargetFramework>net8.0</TargetFramework>
     <UseMaui>true</UseMaui>
@@ -26,6 +26,8 @@
     <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
     <Compile Include="ViewNode.fs" />
     <Compile Include="Attributes.fs" />
+    <Compile Include="Attributes.Components.fs" />
+    <Compile Include="Attributes.Mvu.fs" />
     <Compile Include="VirtualizedCollection.fs" />
     <Compile Include="Widgets.fs" />
     <Compile Include="Views\_Element.fs" />
@@ -143,6 +145,74 @@
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Any.fs" />
     <Compile Include="Views\_Semantics.fs" />
+    <Compile Include="MvuViews\_Element.fs" />
+    <Compile Include="MvuViews\_Geometry.fs" />
+    <Compile Include="MvuViews\_NavigableElement.fs" />
+    <Compile Include="MvuViews\Shadow.fs" />
+    <Compile Include="MvuViews\_VisualElement.fs" />
+    <Compile Include="MvuViews\_View.fs" />
+    <Compile Include="MvuViews\Layouts\_Layout.fs" />
+    <Compile Include="MvuViews\Layouts\_TemplatedView.fs" />
+    <Compile Include="MvuViews\Controls\IndicatorView.fs" />
+    <Compile Include="MvuViews\Controls\Label.fs" />
+    <Compile Include="MvuViews\Controls\Span.fs" />
+    <Compile Include="MvuViews\Controls\FormattedLabel.fs" />
+    <Compile Include="MvuViews\Controls\Button.fs" />
+    <Compile Include="MvuViews\Controls\Switch.fs" />
+    <Compile Include="MvuViews\Controls\Slider.fs" />
+    <Compile Include="MvuViews\Controls\ActivityIndicator.fs" />
+    <Compile Include="MvuViews\Controls\Image.fs" />
+    <Compile Include="MvuViews\Controls\BoxView.fs" />
+    <Compile Include="MvuViews\Controls\_InputView.fs" />
+    <Compile Include="MvuViews\Controls\Entry.fs" />
+    <Compile Include="MvuViews\Controls\SearchBar.fs" />
+    <Compile Include="MvuViews\Controls\Editor.fs" />
+    <Compile Include="MvuViews\Controls\ImageButton.fs" />
+    <Compile Include="MvuViews\Controls\DatePicker.fs" />
+    <Compile Include="MvuViews\Controls\Picker.fs" />
+    <Compile Include="MvuViews\Controls\TimePicker.fs" />
+    <Compile Include="MvuViews\Controls\Stepper.fs" />
+    <Compile Include="MvuViews\Controls\WebView.fs" />
+    <Compile Include="MvuViews\Controls\CheckBox.fs" />
+    <Compile Include="MvuViews\Controls\ProgressBar.fs" />
+    <Compile Include="MvuViews\Controls\RadioButton.fs" />
+    <Compile Include="MvuViews\Controls\GraphicsView.fs" />
+    <Compile Include="MvuViews\Pages\_Page.fs" />
+    <Compile Include="MvuViews\Pages\ContentPage.fs" />
+    <Compile Include="ComponentViews\_Element.fs" />
+    <Compile Include="ComponentViews\_Geometry.fs" />
+    <Compile Include="ComponentViews\_NavigableElement.fs" />
+    <Compile Include="ComponentViews\Shadow.fs" />
+    <Compile Include="ComponentViews\_VisualElement.fs" />
+    <Compile Include="ComponentViews\_View.fs" />
+    <Compile Include="ComponentViews\Layouts\_Layout.fs" />
+    <Compile Include="ComponentViews\Layouts\_TemplatedView.fs" />
+    <Compile Include="ComponentViews\Controls\IndicatorView.fs" />
+    <Compile Include="ComponentViews\Controls\Label.fs" />
+    <Compile Include="ComponentViews\Controls\Span.fs" />
+    <Compile Include="ComponentViews\Controls\FormattedLabel.fs" />
+    <Compile Include="ComponentViews\Controls\Button.fs" />
+    <Compile Include="ComponentViews\Controls\Switch.fs" />
+    <Compile Include="ComponentViews\Controls\Slider.fs" />
+    <Compile Include="ComponentViews\Controls\ActivityIndicator.fs" />
+    <Compile Include="ComponentViews\Controls\Image.fs" />
+    <Compile Include="ComponentViews\Controls\BoxView.fs" />
+    <Compile Include="ComponentViews\Controls\_InputView.fs" />
+    <Compile Include="ComponentViews\Controls\Entry.fs" />
+    <Compile Include="ComponentViews\Controls\SearchBar.fs" />
+    <Compile Include="ComponentViews\Controls\Editor.fs" />
+    <Compile Include="ComponentViews\Controls\ImageButton.fs" />
+    <Compile Include="ComponentViews\Controls\DatePicker.fs" />
+    <Compile Include="ComponentViews\Controls\Picker.fs" />
+    <Compile Include="ComponentViews\Controls\TimePicker.fs" />
+    <Compile Include="ComponentViews\Controls\Stepper.fs" />
+    <Compile Include="ComponentViews\Controls\WebView.fs" />
+    <Compile Include="ComponentViews\Controls\CheckBox.fs" />
+    <Compile Include="ComponentViews\Controls\ProgressBar.fs" />
+    <Compile Include="ComponentViews\Controls\RadioButton.fs" />
+    <Compile Include="ComponentViews\Controls\GraphicsView.fs" />
+    <Compile Include="ComponentViews\Pages\_Page.fs" />
+    <Compile Include="ComponentViews\Pages\ContentPage.fs" />
     <Compile Include="ThemeAware.fs" />
     <Compile Include="Component.fs" />
     <Compile Include="Program.fs" />

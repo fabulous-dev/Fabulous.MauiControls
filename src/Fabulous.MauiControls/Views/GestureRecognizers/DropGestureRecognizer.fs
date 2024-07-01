@@ -14,13 +14,13 @@ module DropGestureRecognizer =
         Attributes.defineBindableBool DropGestureRecognizer.AllowDropProperty
 
     let Drop =
-        Attributes.defineEvent<DropEventArgs> "DropGestureRecognizer_Drop" (fun target -> (target :?> DropGestureRecognizer).Drop)
+        MvuAttributes.defineEvent<DropEventArgs> "DropGestureRecognizer_Drop" (fun target -> (target :?> DropGestureRecognizer).Drop)
 
     let DragOver =
-        Attributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragOver" (fun target -> (target :?> DropGestureRecognizer).DragOver)
+        MvuAttributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragOver" (fun target -> (target :?> DropGestureRecognizer).DragOver)
 
     let DragLeave =
-        Attributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragLeave" (fun target -> (target :?> DropGestureRecognizer).DragLeave)
+        MvuAttributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragLeave" (fun target -> (target :?> DropGestureRecognizer).DragLeave)
 
 [<AutoOpen>]
 module DropGestureRecognizerBuilders =

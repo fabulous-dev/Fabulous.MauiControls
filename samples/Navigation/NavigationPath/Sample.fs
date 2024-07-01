@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.Maui
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 /// This is the root of the app
 module Sample =

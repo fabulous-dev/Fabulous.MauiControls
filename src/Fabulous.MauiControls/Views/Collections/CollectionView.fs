@@ -49,7 +49,7 @@ module CollectionView =
         Attributes.defineBindableEnum<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
 
     let SelectionChanged =
-        Attributes.defineEvent<SelectionChangedEventArgs> "CollectionView_SelectionChanged" (fun target -> (target :?> CollectionView).SelectionChanged)
+        MvuAttributes.defineEvent<SelectionChangedEventArgs> "CollectionView_SelectionChanged" (fun target -> (target :?> CollectionView).SelectionChanged)
 
     let SelectionMode =
         Attributes.defineBindableEnum<SelectionMode> CollectionView.SelectionModeProperty

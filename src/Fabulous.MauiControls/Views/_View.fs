@@ -12,7 +12,7 @@ type IFabView =
 module View' =
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> View).GestureRecognizers)
-
+        
     let HorizontalOptions =
         Attributes.defineSmallBindable<LayoutOptions> View.HorizontalOptionsProperty SmallScalars.LayoutOptions.decode
 
@@ -28,7 +28,7 @@ type ViewModifiers =
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> View'.GestureRecognizers this
-
+        
     /// <summary>Set the LayoutOptions that define how the widget gets laid in a layout cycle</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">A LayoutOptions which defines how to lay out the widget</param>
@@ -49,6 +49,24 @@ type ViewModifiers =
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IFabView>, value: Thickness) =
         this.AddScalar(View'.Margin.WithValue(value))
+
+[<Extension>]
+type ViewYieldExtensions =
+    [<Extension>]
+    static member inline Yield
+        (
+            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
+            x: WidgetBuilder<'msg, #IFabGestureRecognizer>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield
+        (
+            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
+            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
 
 [<Extension>]
 type ViewExtraModifiers =
@@ -120,27 +138,7 @@ type ViewExtraModifiers =
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IFabView>, left: float, top: float, right: float, bottom: float) =
         this.margin(Thickness(left, top, right, bottom))
-
-[<Extension>]
-type ViewYieldExtensions =
-    [<Extension>]
-    static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, #IFabGestureRecognizer>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-[<Extension>]
-type ViewAttachedCollectionModifiers =
+        
     /// <summary>Set the gesture recognizer associated with this widget</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The gesture recognizer</param>

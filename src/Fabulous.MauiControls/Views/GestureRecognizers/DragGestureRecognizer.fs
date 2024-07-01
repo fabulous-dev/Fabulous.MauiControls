@@ -13,10 +13,10 @@ module DragGestureRecognizer =
     let CanDrag = Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
 
     let DragStarting =
-        Attributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
+        MvuAttributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
 
     let DropCompleted =
-        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
+        MvuAttributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
 
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =

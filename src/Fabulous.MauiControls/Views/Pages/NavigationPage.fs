@@ -132,7 +132,7 @@ module NavigationPageUpdaters =
 
 
                 // Trigger the mounted event
-                Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
+                Dispatcher.dispatchEventForAllChildren itemNode widget MvuLifecycle.Mounted
 
             | WidgetCollectionItemChange.Update(index, diff) ->
                 let page = pages[index]
@@ -161,7 +161,7 @@ module NavigationPageUpdaters =
                 )
 
                 // Trigger the unmounted event for the old child
-                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
+                Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget MvuLifecycle.Unmounted
                 prevItemNode.Dispose()
 
                 if index = 0 && pages.Length = 1 then
@@ -181,7 +181,7 @@ module NavigationPageUpdaters =
                     navigationPage.InsertPageBeforeSync(currPage, index)
 
                 // Trigger the mounted event for the new child
-                Dispatcher.dispatchEventForAllChildren currItemNode currWidget Lifecycle.Mounted
+                Dispatcher.dispatchEventForAllChildren currItemNode currWidget MvuLifecycle.Mounted
 
             | WidgetCollectionItemChange.Remove(index, prevWidget) ->
                 // If back navigation is triggered by user via the back button, Maui would have already removed the page from the stack
@@ -202,7 +202,7 @@ module NavigationPageUpdaters =
                     )
 
                     // Trigger the unmounted event for the old child
-                    Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget Lifecycle.Unmounted
+                    Dispatcher.dispatchEventForAllChildren prevItemNode prevWidget MvuLifecycle.Unmounted
                     prevItemNode.Dispose()
 
                     if index = pages.Length - 1 then
@@ -238,7 +238,7 @@ module NavigationPageUpdaters =
                 navigationPage.PushSync(page, animateIfLastPage)
 
                 // Trigger the mounted event
-                Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
+                Dispatcher.dispatchEventForAllChildren itemNode widget MvuLifecycle.Mounted
 
                 i <- i + 1
 
@@ -262,17 +262,17 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(prevPage)
 
                     // Trigger the unmounted event for the old child
-                    Dispatcher.dispatchEventForAllChildren prevItemNode span[i] Lifecycle.Unmounted
+                    Dispatcher.dispatchEventForAllChildren prevItemNode span[i] MvuLifecycle.Unmounted
                     prevItemNode.Dispose()
 
 module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
+        MvuAttributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
     let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
+        MvuAttributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty

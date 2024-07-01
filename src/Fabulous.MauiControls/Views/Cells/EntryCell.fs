@@ -47,13 +47,13 @@ module EntryCell =
     let LabelColor = Attributes.defineBindableColor EntryCell.LabelColorProperty
 
     let OnCompleted =
-        Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
+        MvuAttributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
 
     let Placeholder =
         Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
 
     let TextWithEvent =
-        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
+        MvuAttributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> EntryCell.VerticalTextAlignmentProperty
@@ -70,7 +70,7 @@ module EntryCellBuilders =
             WidgetBuilder<'msg, IFabEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+                EntryCell.TextWithEvent.WithValue(MvuValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]

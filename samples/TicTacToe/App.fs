@@ -6,8 +6,10 @@ open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Devices
 open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 /// Represents a player and a player's move
 type Player =

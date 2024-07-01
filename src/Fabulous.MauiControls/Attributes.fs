@@ -15,16 +15,6 @@ type ImageSourceValue =
     | Uri of uri: Uri
     | Stream of stream: Stream
 
-[<Struct>]
-type ValueEventData<'data, 'eventArgs> =
-    { Value: 'data
-      Event: 'eventArgs -> MsgValue }
-
-module ValueEventData =
-    let create (value: 'data) (event: 'eventArgs -> 'msg) =
-        { Value = value
-          Event = event >> box >> MsgValue }
-
 /// Maui.Controls specific attributes that can be encoded as 8 bytes
 module SmallScalars =
     module LayoutOptions =
@@ -116,7 +106,7 @@ module Attributes =
             | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Performance optimization: avoid allocating a new ImageSource instance on each update
-    /// we store the user value (eg. string, Uri, Stream) and convert it to an ImageSource only when needed
+    /// we store the user value (e.g. string, Uri, Stream) and convert it to an ImageSource only when needed
     let inline defineBindableImageSource (bindableProperty: BindableProperty) =
         Attributes.defineScalar<ImageSourceValue, ImageSourceValue>
             bindableProperty.PropertyName
@@ -149,53 +139,3 @@ module Attributes =
                     bindableObject.ClearValue(bindableProperty)
                 else
                     bindableObject.SetValue(bindableProperty, value))
-
-    /// Update both a property and its related event.
-    /// This definition makes sure that the event is only raised when the property is changed by the user,
-    /// and not when the property is set by the code
-    let defineBindableWithEvent<'data, 'args>
-        name
-        (bindableProperty: BindableProperty)
-        (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<ValueEventData<'data, 'args>> =
-
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: ValueEventData<'data, 'args> voption) node ->
-                    let target = node.Target :?> BindableObject
-
-                    match newValueOpt with
-                    | ValueNone ->
-                        // The attribute is no longer applied, so we clean up the event
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
-
-                        // Only clear the property if a value was set before
-                        match oldValueOpt with
-                        | ValueNone -> ()
-                        | ValueSome _ -> target.ClearValue(bindableProperty)
-
-                    | ValueSome curr ->
-                        // Clean up the old event handler if any
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
-
-                        // Set the new value
-                        target.SetValue(bindableProperty, curr.Value)
-
-                        // Set the new event handler
-                        let event = getEvent target
-
-                        let handler =
-                            event.Subscribe(fun args ->
-                                let (MsgValue r) = curr.Event args
-                                Dispatcher.dispatch node r)
-
-                        node.SetHandler(name, handler))
-            )
-            |> AttributeDefinitionStore.registerScalar
-
-        { Key = key; Name = name }

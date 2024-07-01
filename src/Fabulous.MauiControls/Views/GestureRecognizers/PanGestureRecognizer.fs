@@ -11,7 +11,7 @@ module PanGestureRecognizer =
     let WidgetKey = Widgets.register<PanGestureRecognizer>()
 
     let PanUpdated =
-        Attributes.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizer_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
+        MvuAttributes.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizer_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
 
     let TouchPoints =
         Attributes.defineBindableInt PanGestureRecognizer.TouchPointsProperty

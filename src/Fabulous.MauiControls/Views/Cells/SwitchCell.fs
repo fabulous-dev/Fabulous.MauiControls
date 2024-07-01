@@ -14,7 +14,7 @@ module SwitchCell =
     let OnColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
 
     let OnWithEvent =
-        Attributes.defineBindableWithEvent "SwitchCell_OnChanged" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
+        MvuAttributes.defineBindableWithEvent "SwitchCell_OnChanged" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
 
     let Text = Attributes.defineBindableWithEquality SwitchCell.TextProperty
 
@@ -29,7 +29,7 @@ module SwitchCellBuilders =
         static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitchCell>(
                 SwitchCell.WidgetKey,
-                SwitchCell.OnWithEvent.WithValue(ValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),
+                SwitchCell.OnWithEvent.WithValue(MvuValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),
                 SwitchCell.Text.WithValue(text)
             )
 

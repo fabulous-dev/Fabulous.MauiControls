@@ -1,10 +1,12 @@
 namespace Gallery.Samples
 
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
 open Microsoft.Maui.Graphics
 open Gallery
 
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module ThemeAware =
     let view () =

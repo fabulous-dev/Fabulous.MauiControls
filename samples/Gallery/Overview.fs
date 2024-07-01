@@ -1,7 +1,10 @@
 namespace Gallery
 
 open Fabulous.Maui
+open Fabulous.Maui.Mvu
+
 open type Fabulous.Maui.View
+open type Fabulous.Maui.Mvu.View
 
 module Overview =
     let view (push: int -> 'msg) =

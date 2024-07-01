@@ -101,7 +101,6 @@
   
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
-    <PackageReference Include="Fabulous" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />

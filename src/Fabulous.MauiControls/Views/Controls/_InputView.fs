@@ -34,10 +34,6 @@ module InputView =
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> InputView.TextTransformProperty
 
-    let TextWithEvent =
-        Attributes.defineBindableWithEvent<string, TextChangedEventArgs> "InputView_TextChanged" InputView.TextProperty (fun target ->
-            (target :?> InputView).TextChanged)
-
 [<Extension>]
 type InputViewModifiers =
     /// <summary>Set the character spacing</summary>
