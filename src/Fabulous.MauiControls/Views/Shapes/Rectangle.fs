@@ -3,7 +3,6 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
-open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
 type IFabRectangle =

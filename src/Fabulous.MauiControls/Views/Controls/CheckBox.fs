@@ -13,8 +13,11 @@ module CheckBox =
 
     let Color = Attributes.defineBindableColor CheckBox.ColorProperty
 
-    let IsCheckedWithEvent =
-        Attributes.defineBindableWithEvent "CheckBox_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
+    let IsCheckedWithEventMsg =
+        Attributes.defineBindableWithEvent "CheckBox_CheckedChangedMsg" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
+
+    let IsCheckedWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "CheckBox_CheckedChangedFn" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
 
 [<AutoOpen>]
 module CheckBoxBuilders =
@@ -23,10 +26,19 @@ module CheckBoxBuilders =
         /// <summary>Create a CheckBox widget with a state and listen for state changes</summary>
         /// <param name="isChecked">The state of the checkbox</param>
         /// <param name="onCheckedChanged">Message to dispatch</param>
-        static member inline CheckBox<'msg>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
+        static member inline CheckBox(isChecked: bool, onCheckedChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabCheckBox>(
                 CheckBox.WidgetKey,
-                CheckBox.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
+                CheckBox.IsCheckedWithEventMsg.WithValue(MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
+            )
+
+        /// <summary>Create a CheckBox widget with a state and listen for state changes</summary>
+        /// <param name="isChecked">The state of the checkbox</param>
+        /// <param name="onCheckedChanged">Message to dispatch</param>
+        static member inline CheckBox(isChecked: bool, onCheckedChanged: bool -> unit) =
+            WidgetBuilder<'msg, IFabCheckBox>(
+                CheckBox.WidgetKey,
+                CheckBox.IsCheckedWithEventFn.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
             )
 
 [<Extension>]

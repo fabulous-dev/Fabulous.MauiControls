@@ -35,8 +35,11 @@ module TimePicker =
     let CharacterSpacing =
         Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty
 
-    let TimeWithEvent =
-        Attributes.defineBindableWithEvent "TimePicker_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
+    let TimeWithEventMsg =
+        Attributes.defineBindableWithEvent "TimePicker_TimeSelectedMsg" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
+
+    let TimeWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "TimePicker_TimeSelectedFn" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> TimePicker.FontAttributesProperty
@@ -72,10 +75,19 @@ module TimePickerBuilders =
         /// <summary>Create a TimePicker widget with a selected time and listen for the selected time changes</summary>
         /// <param name="time">The selected time</param>
         /// <param name="onTimeSelected">Message to dispatch</param>
-        static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
+        static member inline TimePicker(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
             WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
-                TimePicker.TimeWithEvent.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
+                TimePicker.TimeWithEventMsg.WithValue(MsgValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
+            )
+
+        /// <summary>Create a TimePicker widget with a selected time and listen for the selected time changes</summary>
+        /// <param name="time">The selected time</param>
+        /// <param name="onTimeSelected">Message to dispatch</param>
+        static member inline TimePicker(time: TimeSpan, onTimeSelected: TimeSpan -> unit) =
+            WidgetBuilder<'msg, IFabTimePicker>(
+                TimePicker.WidgetKey,
+                TimePicker.TimeWithEventFn.WithValue(ValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
             )
 
 [<Extension>]

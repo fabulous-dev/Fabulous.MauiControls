@@ -41,8 +41,11 @@ module RadioButton =
     let GroupName =
         Attributes.defineBindableWithEquality<string> RadioButton.GroupNameProperty
 
-    let IsCheckedWithEvent =
-        Attributes.defineBindableWithEvent "RadioButton_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
+    let IsCheckedWithEventMsg =
+        Attributes.defineBindableWithEvent "RadioButton_CheckedChangedMsg" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
+
+    let IsCheckedWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "RadioButton_CheckedChangedFn" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
 
     let TextColor = Attributes.defineBindableColor RadioButton.TextColorProperty
 
@@ -61,10 +64,21 @@ module RadioButtonBuilders =
         /// <param name="content">The content</param>
         /// <param name="isChecked">The checked state</param>
         /// <param name="onChecked">Message to dispatch</param>
-        static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
+        static member inline RadioButton(content: string, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IFabRadioButton>(
                 RadioButton.WidgetKey,
-                RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
+                RadioButton.IsCheckedWithEventMsg.WithValue(MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
+                RadioButton.ContentString.WithValue(content)
+            )
+
+        /// <summary>Create a RadioButton widget with a content, a checked state and listen for the checked state changes</summary>
+        /// <param name="content">The content</param>
+        /// <param name="isChecked">The checked state</param>
+        /// <param name="onChecked">Message to dispatch</param>
+        static member inline RadioButton(content: string, isChecked: bool, onChecked: bool -> unit) =
+            WidgetBuilder<'msg, IFabRadioButton>(
+                RadioButton.WidgetKey,
+                RadioButton.IsCheckedWithEventFn.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
                 RadioButton.ContentString.WithValue(content)
             )
 
@@ -77,7 +91,23 @@ module RadioButtonBuilders =
                 RadioButton.WidgetKey,
                 AttributesBundle(
                     StackList.one(
-                        RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
+                        RadioButton.IsCheckedWithEventMsg.WithValue(MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
+                    ),
+                    ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
+                    ValueNone
+                )
+            )
+
+        /// <summary>Create a RadioButton widget with a content, a checked state and listen for the checked state changes</summary>
+        /// <param name="content">The content widget</param>
+        /// <param name="isChecked">The checked state</param>
+        /// <param name="onChecked">Message to dispatch</param>
+        static member inline RadioButton(content: WidgetBuilder<'msg, #IFabView>, isChecked: bool, onChecked: bool -> unit) =
+            WidgetBuilder<'msg, IFabRadioButton>(
+                RadioButton.WidgetKey,
+                AttributesBundle(
+                    StackList.one(
+                        RadioButton.IsCheckedWithEventFn.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
                     ValueNone

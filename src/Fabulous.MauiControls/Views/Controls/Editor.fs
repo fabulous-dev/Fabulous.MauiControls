@@ -14,8 +14,11 @@ module Editor =
     let AutoSize =
         Attributes.defineBindableEnum<EditorAutoSizeOption> Editor.AutoSizeProperty
 
-    let Completed =
-        Attributes.defineEventNoArg "Editor_Completed" (fun target -> (target :?> Editor).Completed)
+    let CompletedMsg =
+        Attributes.defineEventNoArg "Editor_CompletedMsg" (fun target -> (target :?> Editor).Completed)
+
+    let CompletedFn =
+        Attributes.defineEventNoArgNoDispatch "Editor_CompletedFn" (fun target -> (target :?> Editor).Completed)
 
     let CursorPosition = Attributes.defineBindableInt Editor.CursorPositionProperty
 
@@ -48,10 +51,19 @@ module EditorBuilders =
         /// <summary>Create an Editor widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
+        static member inline Editor(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEditor>(
                 Editor.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+                InputView.TextWithEventMsg.WithValue(MsgValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+            )
+
+        /// <summary>Create an Editor widget with a text and listen for text changes</summary>
+        /// <param name="text">The text value</param>
+        /// <param name="onTextChanged">Message to dispatch</param>
+        static member inline Editor(text: string, onTextChanged: string -> unit) =
+            WidgetBuilder<'msg, IFabEditor>(
+                Editor.WidgetKey,
+                InputView.TextWithEventFn.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]
@@ -125,7 +137,14 @@ type EditorModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEditor>, msg: 'msg) =
-        this.AddScalar(Editor.Completed.WithValue(MsgValue(msg)))
+        this.AddScalar(Editor.CompletedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Completed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEditor>, fn: unit -> unit) =
+        this.AddScalar(Editor.CompletedFn.WithValue(fn))
 
     /// <summary>Set the selection length</summary>
     /// <param name="this">Current widget</param>

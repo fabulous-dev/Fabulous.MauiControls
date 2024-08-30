@@ -12,11 +12,17 @@ module DragGestureRecognizer =
 
     let CanDrag = Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
 
-    let DragStarting =
-        Attributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
+    let DragStartingMsg =
+        Attributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStartingMsg" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
 
-    let DropCompleted =
-        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
+    let DragStartingFn =
+        Attributes.defineEventNoDispatch<DragStartingEventArgs> "DragGestureRecognizer_DragStartingFn" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
+
+    let DropCompletedMsg =
+        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompletedMsg" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
+
+    let DropCompletedFn =
+        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompletedFn" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
 
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =
@@ -24,10 +30,18 @@ module DragGestureRecognizerBuilders =
 
         /// <summary>Create a DragGestureRecognizer that listens for DragStarting event</summary>
         /// <param name="onDragStarting">Message to dispatch</param>
-        static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
+        static member inline DragGestureRecognizer<'msg when 'msg : equality>(onDragStarting: DragStartingEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDragGestureRecognizer>(
                 DragGestureRecognizer.WidgetKey,
-                DragGestureRecognizer.DragStarting.WithValue(fun args -> onDragStarting args |> box)
+                DragGestureRecognizer.DragStartingMsg.WithValue(fun args -> onDragStarting args |> box)
+            )
+
+        /// <summary>Create a DragGestureRecognizer that listens for DragStarting event</summary>
+        /// <param name="onDragStarting">Message to dispatch</param>
+        static member inline DragGestureRecognizer(onDragStarting: DragStartingEventArgs -> unit) =
+            WidgetBuilder<'msg, IFabDragGestureRecognizer>(
+                DragGestureRecognizer.WidgetKey,
+                DragGestureRecognizer.DragStartingMsg.WithValue(onDragStarting)
             )
 
 [<Extension>]
@@ -43,8 +57,15 @@ type DragGestureRecognizerModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
-    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, msg: 'msg) =
-        this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> box msg))
+    static member inline onDropCompleted<'msg, 'marker when 'msg : equality and 'marker :> IFabDragGestureRecognizer>(this: WidgetBuilder<'msg, 'marker>, msg: 'msg) =
+        this.AddScalar(DragGestureRecognizer.DropCompletedMsg.WithValue(fun _ -> box msg))
+
+    /// <summary>Listen for DropCompleted event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, fn: unit -> unit) =
+        this.AddScalar(DragGestureRecognizer.DropCompletedFn.WithValue(fun _ -> fn()))
 
     /// <summary>Link a ViewRef to access the direct DragGestureRecognizer control instance</summary>
     /// <param name="this">Current widget</param>

@@ -17,10 +17,10 @@ module Component =
 module ComponentBuilders =
     type Fabulous.Maui.View with
 
-        static member inline Component<'msg, 'marker>() = ComponentBuilder<'msg>()
+        static member inline Component<'msg, 'marker when 'msg : equality>() = ComponentBuilder<'msg>()
 
-        static member inline Component<'msg, 'model, 'marker, 'parentMsg>(program: Program<unit, 'model, 'msg>) =
+        static member inline Component<'msg, 'model, 'marker, 'parentMsg when 'msg : equality and 'parentMsg : equality>(program: Program<unit, 'model, 'msg>) =
             MvuComponentBuilder<unit, 'msg, 'model, 'marker, 'parentMsg>(program, ())
 
-        static member inline Component<'arg, 'msg, 'model, 'marker, 'parentMsg>(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
+        static member inline Component<'arg, 'msg, 'model, 'marker, 'parentMsg when 'msg : equality and 'parentMsg : equality>(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
             MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg>(program, arg)

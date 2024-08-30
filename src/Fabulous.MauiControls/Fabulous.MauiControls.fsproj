@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <UseLocalProjectReference>false</UseLocalProjectReference>    
+    <UseLocalProjectReference>true</UseLocalProjectReference>    
     
     <TargetFramework>net8.0</TargetFramework>
     <UseMaui>true</UseMaui>
@@ -102,6 +102,7 @@
     <Compile Include="Views\Layouts\_StackBase.fs" />
     <Compile Include="Views\Layouts\VerticalStackLayout.fs" />
     <Compile Include="Views\Layouts\HorizontalStackLayout.fs" />
+    <Compile Include="Views\Layouts\ZStack.fs" />
     <Compile Include="Views\Layouts\Grid.fs" />
     <Compile Include="Views\Layouts\ScrollView.fs" />
     <Compile Include="Views\Layouts\Border.fs" />

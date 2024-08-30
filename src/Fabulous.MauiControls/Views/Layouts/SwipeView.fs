@@ -12,24 +12,39 @@ module SwipeView =
 
     let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
-    let CloseRequested =
-        Attributes.defineEvent<CloseRequestedEventArgs> "SwipeView_CloseRequested" (fun target -> (target :?> SwipeView).CloseRequested)
+    let CloseRequestedMsg =
+        Attributes.defineEvent<CloseRequestedEventArgs> "SwipeView_CloseRequestedMsg" (fun target -> (target :?> SwipeView).CloseRequested)
+
+    let CloseRequestedFn =
+        Attributes.defineEventNoDispatch<CloseRequestedEventArgs> "SwipeView_CloseRequestedFn" (fun target -> (target :?> SwipeView).CloseRequested)
 
     let LeftSwipeItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
 
-    let OpenRequested =
-        Attributes.defineEvent<OpenRequestedEventArgs> "SwipeView_OpenRequested" (fun target -> (target :?> SwipeView).OpenRequested)
+    let OpenRequestedMsg =
+        Attributes.defineEvent<OpenRequestedEventArgs> "SwipeView_OpenRequestedMsg" (fun target -> (target :?> SwipeView).OpenRequested)
+
+    let OpenRequestedFn =
+        Attributes.defineEventNoDispatch<OpenRequestedEventArgs> "SwipeView_OpenRequestedFn" (fun target -> (target :?> SwipeView).OpenRequested)
 
     let RightSwipeItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty
 
-    let SwipeChanging =
-        Attributes.defineEvent<SwipeChangingEventArgs> "SwipeView_SwipeChanging" (fun target -> (target :?> SwipeView).SwipeChanging)
+    let SwipeChangingMsg =
+        Attributes.defineEvent<SwipeChangingEventArgs> "SwipeView_SwipeChangingMsg" (fun target -> (target :?> SwipeView).SwipeChanging)
 
-    let SwipeEnded =
-        Attributes.defineEvent<SwipeEndedEventArgs> "SwipeView_SwipeEnded" (fun target -> (target :?> SwipeView).SwipeEnded)
+    let SwipeChangingFn =
+        Attributes.defineEventNoDispatch<SwipeChangingEventArgs> "SwipeView_SwipeChangingFn" (fun target -> (target :?> SwipeView).SwipeChanging)
 
-    let SwipeStarted =
-        Attributes.defineEvent<SwipeStartedEventArgs> "SwipeView_SwipeStarted" (fun target -> (target :?> SwipeView).SwipeStarted)
+    let SwipeEndedMsg =
+        Attributes.defineEvent<SwipeEndedEventArgs> "SwipeView_SwipeEndedMsg" (fun target -> (target :?> SwipeView).SwipeEnded)
+
+    let SwipeEndedFn =
+        Attributes.defineEventNoDispatch<SwipeEndedEventArgs> "SwipeView_SwipeEndedFn" (fun target -> (target :?> SwipeView).SwipeEnded)
+
+    let SwipeStartedMsg =
+        Attributes.defineEvent<SwipeStartedEventArgs> "SwipeView_SwipeStartedMsg" (fun target -> (target :?> SwipeView).SwipeStarted)
+
+    let SwipeStartedFn =
+        Attributes.defineEventNoDispatch<SwipeStartedEventArgs> "SwipeView_SwipeStartedFn" (fun target -> (target :?> SwipeView).SwipeStarted)
 
     let SwipeThreshold = Attributes.defineBindableInt SwipeView.ThresholdProperty
 
@@ -79,35 +94,70 @@ type SwipeViewModifiers() =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSwipeStarted(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeStartedEventArgs -> 'msg) =
-        this.AddScalar(SwipeView.SwipeStarted.WithValue(fun args -> fn args |> box))
+        this.AddScalar(SwipeView.SwipeStartedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen to the SwipeStarted event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSwipeStarted(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeStartedEventArgs -> unit) =
+        this.AddScalar(SwipeView.SwipeStartedFn.WithValue(fn))
 
     /// <summary>Listen to the SwipeChanging event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSwipeChanging(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeChangingEventArgs -> 'msg) =
-        this.AddScalar(SwipeView.SwipeChanging.WithValue(fun args -> fn args |> box))
+        this.AddScalar(SwipeView.SwipeChangingMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen to the SwipeChanging event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSwipeChanging(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeChangingEventArgs -> unit) =
+        this.AddScalar(SwipeView.SwipeChangingFn.WithValue(fn))
 
     /// <summary>Listen to the SwipeEnded event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSwipeEnded(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeEndedEventArgs -> 'msg) =
-        this.AddScalar(SwipeView.SwipeEnded.WithValue(fun args -> fn args |> box))
+        this.AddScalar(SwipeView.SwipeEndedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen to the SwipeEnded event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSwipeEnded(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: SwipeEndedEventArgs -> unit) =
+        this.AddScalar(SwipeView.SwipeEndedFn.WithValue(fn))
 
     /// <summary>Listen to the OpenRequested event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onOpenRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: OpenRequestedEventArgs -> 'msg) =
-        this.AddScalar(SwipeView.OpenRequested.WithValue(fun args -> fn args |> box))
+        this.AddScalar(SwipeView.OpenRequestedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen to the OpenRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onOpenRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: OpenRequestedEventArgs -> unit) =
+        this.AddScalar(SwipeView.OpenRequestedFn.WithValue(fn))
 
     /// <summary>Listen to the CloseRequested event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onCloseRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: CloseRequestedEventArgs -> 'msg) =
-        this.AddScalar(SwipeView.CloseRequested.WithValue(fun args -> fn args |> box))
+        this.AddScalar(SwipeView.CloseRequestedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen to the CloseRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onCloseRequested(this: WidgetBuilder<'msg, #IFabSwipeView>, fn: CloseRequestedEventArgs -> unit) =
+        this.AddScalar(SwipeView.CloseRequestedFn.WithValue(fn))
 
     /// <summary>Set the top swipe items</summary>
     /// <param name="this">Current widget</param>

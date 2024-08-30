@@ -67,8 +67,12 @@ module Picker =
             | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
             | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
-    let SelectedIndexWithEvent =
-        Attributes.defineBindableWithEvent "Picker_SelectedIndexChanged" Picker.SelectedIndexProperty (fun target ->
+    let SelectedIndexWithEventMsg =
+        Attributes.defineBindableWithEvent "Picker_SelectedIndexChangedMsg" Picker.SelectedIndexProperty (fun target ->
+            (target :?> FabPicker).CustomSelectedIndexChanged)
+
+    let SelectedIndexWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "Picker_SelectedIndexChangedFn" Picker.SelectedIndexProperty (fun target ->
             (target :?> FabPicker).CustomSelectedIndexChanged)
 
     let TextColor = Attributes.defineBindableColor Picker.TextColorProperty
@@ -100,11 +104,24 @@ module PickerBuilders =
         /// <param name="items">The items list</param>
         /// <param name="selectedIndex">The selected index</param>
         /// <param name="onSelectedIndexChanged">Message to dispatch</param>
-        static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
+        static member inline Picker(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IFabPicker>(
                 Picker.WidgetKey,
                 Picker.ItemsSource.WithValue(Array.ofList items),
-                Picker.SelectedIndexWithEvent.WithValue(
+                Picker.SelectedIndexWithEventMsg.WithValue(
+                    MsgValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
+                )
+            )
+
+        /// <summary>Create a Picker widget with a list of items, the selected index and listen to the selected index changes</summary>
+        /// <param name="items">The items list</param>
+        /// <param name="selectedIndex">The selected index</param>
+        /// <param name="onSelectedIndexChanged">Message to dispatch</param>
+        static member inline Picker(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> unit) =
+            WidgetBuilder<'msg, IFabPicker>(
+                Picker.WidgetKey,
+                Picker.ItemsSource.WithValue(Array.ofList items),
+                Picker.SelectedIndexWithEventFn.WithValue(
                     ValueEventData.create selectedIndex (fun (args: PositionChangedEventArgs) -> onSelectedIndexChanged args.CurrentPosition)
                 )
             )

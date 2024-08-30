@@ -1,6 +1,5 @@
 namespace Fabulous.Maui
 
-open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
@@ -62,7 +61,7 @@ module CarouselViewBuilders =
 
         /// <summary>Create a CarouselView widget with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'msg : equality and 'itemMarker :> IFabView>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabCarouselView, 'itemData, 'itemMarker> CarouselView.WidgetKey ItemsView.ItemsSource items
 
 [<Extension>]

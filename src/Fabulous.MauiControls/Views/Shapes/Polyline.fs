@@ -2,7 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
@@ -43,7 +42,7 @@ module PolylineBuilders =
 
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>
         /// <param name="points">The points list</param>
-        static member inline Polyline<'msg>(points: string) =
+        static member inline Polyline(points: string) =
             WidgetBuilder<'msg, IFabPolyline>(Polyline.WidgetKey, Polyline.PointsString.WithValue(points))
 
         /// <summary>Create a Polyline widget with a list of points, a stroke thickness, a stroke brush</summary>

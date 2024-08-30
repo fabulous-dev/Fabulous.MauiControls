@@ -9,11 +9,17 @@ type IFabCell =
     inherit IFabElement
 
 module Cell =
-    let Appearing =
-        Attributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
+    let AppearingMsg =
+        Attributes.defineEventNoArg "Cell_AppearingMsg" (fun target -> (target :?> Cell).Appearing)
+        
+    let AppearingFn =
+        Attributes.defineEventNoArgNoDispatch "Cell_AppearingFn" (fun target -> (target :?> Cell).Appearing)
 
-    let Disappearing =
-        Attributes.defineEventNoArg "Cell_Disappearing" (fun target -> (target :?> Cell).Disappearing)
+    let DisappearingMsg =
+        Attributes.defineEventNoArg "Cell_DisappearingMsg" (fun target -> (target :?> Cell).Disappearing)
+
+    let DisappearingFn =
+        Attributes.defineEventNoArgNoDispatch "Cell_DisappearingFn" (fun target -> (target :?> Cell).Disappearing)
 
     let Height =
         Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->
@@ -28,8 +34,11 @@ module Cell =
 
     let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
 
-    let Tapped =
-        Attributes.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
+    let TappedMsg =
+        Attributes.defineEventNoArg "Cell_TappedMsg" (fun target -> (target :?> Cell).Tapped)
+
+    let TappedFn =
+        Attributes.defineEventNoArgNoDispatch "Cell_TappedFn" (fun target -> (target :?> Cell).Tapped)
 
     let ContextActions =
         Attributes.defineListWidgetCollection "Cell_ContextActions" (fun target -> (target :?> Cell).ContextActions)
@@ -55,32 +64,53 @@ type CellModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Appearing.WithValue(MsgValue(msg)))
+        this.AddScalar(Cell.AppearingMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Appearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onAppearing(this: WidgetBuilder<'msg, #IFabCell>, fn: unit -> unit) =
+        this.AddScalar(Cell.AppearingFn.WithValue(fn))
 
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Disappearing.WithValue(MsgValue(msg)))
+        this.AddScalar(Cell.DisappearingMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Disappearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabCell>, fn: unit -> unit) =
+        this.AddScalar(Cell.DisappearingFn.WithValue(fn))
 
     /// <summary>Listen to the Tapped event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onTapped(this: WidgetBuilder<'msg, #IFabCell>, msg: 'msg) =
-        this.AddScalar(Cell.Tapped.WithValue(MsgValue(msg)))
+        this.AddScalar(Cell.TappedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Tapped event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onTapped(this: WidgetBuilder<'msg, #IFabCell>, fn: unit -> unit) =
+        this.AddScalar(Cell.TappedFn.WithValue(fn))
 
     /// <summary>Set the context actions of the cell</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline contextActions<'msg, 'marker when 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline contextActions<'msg, 'marker when 'msg : equality and 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabMenuItem> Cell.ContextActions this
 
 [<Extension>]
 type CellYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabCell and 'itemType :> IFabMenuItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg : equality and 'marker :> IFabCell and 'itemType :> IFabMenuItem>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>,
             x: WidgetBuilder<'msg, 'itemType>

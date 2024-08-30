@@ -14,8 +14,11 @@ module SwipeItem =
     let BackgroundColor =
         Attributes.defineBindableColor SwipeItem.BackgroundColorProperty
 
-    let Invoked =
-        Attributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
+    let InvokedMsg =
+        Attributes.defineEvent "SwipeItem_InvokedMsg" (fun target -> (target :?> SwipeItem).Invoked)
+
+    let InvokedFn =
+        Attributes.defineEvent "SwipeItem_InvokedFn" (fun target -> (target :?> SwipeItem).Invoked)
 
     let IsVisible = Attributes.defineBindableBool SwipeItem.IsVisibleProperty
 
@@ -25,8 +28,13 @@ module SwipeItemBuilders =
 
         /// <summary>Create a SwipeItem widget and listen for the Invoke event</summary>
         /// <param name="onInvoked">Message to dispatch</param>
-        static member inline SwipeItem<'msg>(onInvoked: 'msg) =
-            WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, SwipeItem.Invoked.WithValue(fun _ -> box onInvoked))
+        static member inline SwipeItem(onInvoked: 'msg) =
+            WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, SwipeItem.InvokedMsg.WithValue(fun _ -> box onInvoked))
+
+        /// <summary>Create a SwipeItem widget and listen for the Invoke event</summary>
+        /// <param name="onInvoked">Message to dispatch</param>
+        static member inline SwipeItem(onInvoked: unit -> unit) =
+            WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, SwipeItem.InvokedFn.WithValue(fun _ -> onInvoked()))
 
 [<Extension>]
 type SwipeItemModifiers() =

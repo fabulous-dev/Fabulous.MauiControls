@@ -26,8 +26,11 @@ module ScrollView =
     let Orientation =
         Attributes.defineBindableEnum<ScrollOrientation> ScrollView.OrientationProperty
 
-    let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
+    let ScrolledMsg =
+        Attributes.defineEvent<ScrolledEventArgs> "ScrollView_ScrolledMsg" (fun target -> (target :?> ScrollView).Scrolled)
+
+    let ScrolledFn =
+        Attributes.defineEventNoDispatch<ScrolledEventArgs> "ScrollView_ScrolledFn" (fun target -> (target :?> ScrollView).Scrolled)
 
     let ScrollPosition =
         Attributes.defineSimpleScalarWithEquality<ScrollToData> "ScrollView_ScrollPosition" (fun _ newValueOpt node ->
@@ -55,7 +58,7 @@ module ScrollViewBuilders =
 
         /// <summary>Create a ScrollView widget with a content</summary>
         /// <param name="content">The content of the ScrollView</param>
-        static member inline ScrollView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ScrollView(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetHelpers.buildWidgets<'msg, IFabScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
@@ -94,7 +97,14 @@ type ScrollViewModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onScrolled(this: WidgetBuilder<'msg, #IFabScrollView>, fn: ScrolledEventArgs -> 'msg) =
-        this.AddScalar(ScrollView.Scrolled.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ScrollView.ScrolledMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the Scrolled event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabScrollView>, fn: ScrolledEventArgs -> unit) =
+        this.AddScalar(ScrollView.ScrolledFn.WithValue(fn))
 
     /// <summary>Link a ViewRef to access the direct ScrollView control instance</summary>
     /// <param name="this">Current widget</param>

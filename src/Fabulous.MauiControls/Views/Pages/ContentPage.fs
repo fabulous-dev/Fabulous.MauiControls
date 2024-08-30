@@ -30,8 +30,11 @@ module ContentPage =
 
     let Content = Attributes.defineBindableWidget ContentPage.ContentProperty
 
-    let SizeAllocated =
-        Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabContentPage).SizeAllocated)
+    let SizeAllocatedMsg =
+        Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocatedMsg" (fun target -> (target :?> FabContentPage).SizeAllocated)
+
+    let SizeAllocatedFn =
+        Attributes.defineEventNoDispatch<SizeAllocatedEventArgs> "ContentPage_SizeAllocatedFn" (fun target -> (target :?> FabContentPage).SizeAllocated)
 
 [<AutoOpen>]
 module ContentPageBuilders =
@@ -39,13 +42,13 @@ module ContentPageBuilders =
 
         /// <summary>Create a ContentPage with a content widget</summary>
         /// <param name="content">The content widget</param>
-        static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ContentPage<'msg, 'marker when 'msg : equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IFabContentPage>(
                 ContentPage.WidgetKey,
                 AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
-        static member inline ContentPage<'msg, 'childMarker>() =
+        static member inline ContentPage() =
             SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)
 
 [<Extension>]
@@ -55,7 +58,14 @@ type ContentPageModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
-        this.AddScalar(ContentPage.SizeAllocated.WithValue(fn))
+        this.AddScalar(ContentPage.SizeAllocatedMsg.WithValue(fn))
+        
+    /// <summary>Listen for SizeAllocated event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> unit) =
+        this.AddScalar(ContentPage.SizeAllocatedFn.WithValue(fn))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     /// <param name="this">Current widget</param>

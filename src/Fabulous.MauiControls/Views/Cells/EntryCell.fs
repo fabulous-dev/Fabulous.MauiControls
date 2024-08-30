@@ -46,14 +46,20 @@ module EntryCell =
 
     let LabelColor = Attributes.defineBindableColor EntryCell.LabelColorProperty
 
-    let OnCompleted =
-        Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
+    let OnCompletedMsg =
+        Attributes.defineEventNoArg "EntryCell_CompletedMsg" (fun target -> (target :?> EntryCell).Completed)
+
+    let OnCompletedFn =
+        Attributes.defineEventNoArgNoDispatch "EntryCell_CompletedFn" (fun target -> (target :?> EntryCell).Completed)
 
     let Placeholder =
         Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
 
-    let TextWithEvent =
-        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
+    let TextWithEventMsg =
+        Attributes.defineBindableWithEvent "EntryCell_TextChangedMsg" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
+
+    let TextWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "EntryCell_TextChangedFn" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
 
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> EntryCell.VerticalTextAlignmentProperty
@@ -66,11 +72,22 @@ module EntryCellBuilders =
         /// <param name="label">The label value</param>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline EntryCell<'msg>(label: string, text: string, onTextChanged: string -> 'msg) =
+        static member inline EntryCell(label: string, text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+                EntryCell.TextWithEventMsg.WithValue(MsgValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+            )
+
+        /// <summary>Create an EntryCell with a label, a text, and listen to text changes</summary>
+        /// <param name="label">The label value</param>
+        /// <param name="text">The text value</param>
+        /// <param name="onTextChanged">Message to dispatch</param>
+        static member inline EntryCell(label: string, text: string, onTextChanged: string -> unit) =
+            WidgetBuilder<'msg, IFabEntryCell>(
+                EntryCell.WidgetKey,
+                EntryCell.Label.WithValue(label),
+                EntryCell.TextWithEventFn.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]
@@ -101,7 +118,14 @@ type EntryCellModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntryCell>, msg: 'msg) =
-        this.AddScalar(EntryCell.OnCompleted.WithValue(MsgValue(msg)))
+        this.AddScalar(EntryCell.OnCompletedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Completed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntryCell>, fn: unit -> unit) =
+        this.AddScalar(EntryCell.OnCompletedFn.WithValue(fn))
 
     /// <summary>Set the placeholder text</summary>
     /// <param name="this">Current widget</param>

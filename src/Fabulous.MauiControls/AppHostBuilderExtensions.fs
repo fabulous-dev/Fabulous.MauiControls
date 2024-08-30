@@ -54,6 +54,24 @@ type AppHostBuilderExtensions =
         this.UseFabulousApp(program, ())
 
     [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>, arg: 'arg) : MauiAppBuilder =
+        this.UseFabulousApp(
+            program.CanReuseView,
+            program.State.Logger,
+            program.SyncAction,
+            fun () ->
+                (View.Component(program.State, arg) {
+                    let! model = Mvu.State
+                    program.View model
+                })
+                    .Compile()
+        )
+
+    [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : MauiAppBuilder =
+        this.UseFabulousApp(program, ())
+
+    [<Extension>]
     static member UseFabulousApp
         (
             this: MauiAppBuilder,

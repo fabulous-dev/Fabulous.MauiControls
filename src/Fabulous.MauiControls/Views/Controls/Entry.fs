@@ -16,8 +16,11 @@ module Entry =
     let ClearButtonVisibility =
         Attributes.defineBindableEnum<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
-    let Completed =
-        Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
+    let CompletedMsg =
+        Attributes.defineEventNoArg "Entry_CompletedMsg" (fun target -> (target :?> Entry).Completed)
+
+    let CompletedFn =
+        Attributes.defineEventNoArgNoDispatch "Entry_CompletedFn" (fun target -> (target :?> Entry).Completed)
 
     let CursorPosition = Attributes.defineBindableInt Entry.CursorPositionProperty
 
@@ -66,10 +69,19 @@ module EntryBuilders =
         /// <summary>Create an Entry widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
+        static member inline Entry(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntry>(
                 Entry.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+                InputView.TextWithEventMsg.WithValue(MsgValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
+            )
+
+        /// <summary>Create an Entry widget with a text and listen for text changes</summary>
+        /// <param name="text">The text value</param>
+        /// <param name="onTextChanged">Message to dispatch</param>
+        static member inline Entry(text: string, onTextChanged: string -> unit) =
+            WidgetBuilder<'msg, IFabEntry>(
+                Entry.WidgetKey,
+                InputView.TextWithEventFn.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))
             )
 
 [<Extension>]
@@ -150,7 +162,14 @@ type EntryModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, msg: 'msg) =
-        this.AddScalar(Entry.Completed.WithValue(MsgValue(msg)))
+        this.AddScalar(Entry.CompletedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Completed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, fn: unit -> unit) =
+        this.AddScalar(Entry.CompletedFn.WithValue(fn))
 
     /// <summary>Set the return type of the keyboard</summary>
     /// <param name="this">Current widget</param>

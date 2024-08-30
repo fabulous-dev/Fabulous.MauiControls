@@ -33,8 +33,14 @@ module ToolbarItemBuilders =
         /// <summary>Create a ToolbarItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
-        static member inline ToolbarItem<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabToolbarItem>(ToolbarItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(MsgValue(onClicked)))
+        static member inline ToolbarItem(text: string, onClicked: 'msg) =
+            WidgetBuilder<'msg, IFabToolbarItem>(ToolbarItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedMsg.WithValue(MsgValue(onClicked)))
+
+        /// <summary>Create a ToolbarItem widget with a text and a Click callback</summary>
+        /// <param name="text">The text</param>
+        /// <param name="onClicked">The click callback</param>
+        static member inline ToolbarItem(text: string, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabToolbarItem>(ToolbarItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedFn.WithValue(onClicked))
 
 [<Extension>]
 type ToolbarItemModifiers =

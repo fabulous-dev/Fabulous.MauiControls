@@ -14,11 +14,11 @@ type IFabMenuItem =
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
 
-    [<Obsolete("MenuItem.Accelerator is obsolete in Maui and might be removed soon. Use MenuFlyoutItem.KeyboardAccelerators instead.")>]
-    let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
+    let ClickedMsg =
+        Attributes.defineEventNoArg "MenuItem_ClickedMsg" (fun target -> (target :?> MenuItem).Clicked)
 
-    let Clicked =
-        Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
+    let ClickedFn =
+        Attributes.defineEventNoArgNoDispatch "MenuItem_ClickedFn" (fun target -> (target :?> MenuItem).Clicked)
 
     let IconImageSource =
         Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
@@ -34,19 +34,17 @@ module MenuItemBuilders =
         /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
-        static member inline MenuItem<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(MsgValue(onClicked)))
+        static member inline MenuItem(text: string, onClicked: 'msg) =
+            WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedMsg.WithValue(MsgValue(onClicked)))
+
+        /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
+        /// <param name="text">The text</param>
+        /// <param name="onClicked">The click callback</param>
+        static member inline MenuItem(text: string, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedFn.WithValue(onClicked))
 
 [<Extension>]
 type MenuItemModifiers =
-    /// <summary>Set the accelerator of this widget</summary>
-    /// <param name="this">Current widget</param>
-    /// <param name="value">The accelerator value</param>
-    [<Extension>]
-    [<Obsolete("Modifier accelerator is obsolete in Maui and might be removed soon. Please use MenuFlyoutItem.keyboardAccelerators instead.")>]
-    static member inline accelerator(this: WidgetBuilder<'msg, #IFabMenuItem>, value: Accelerator) =
-        this.AddScalar(MenuItem.Accelerator.WithValue(value))
-
     /// <summary>Set the source of the icon image</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The source of the icon image</param>

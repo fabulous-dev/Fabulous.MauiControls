@@ -13,8 +13,11 @@ module SwitchCell =
 
     let OnColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
 
-    let OnWithEvent =
-        Attributes.defineBindableWithEvent "SwitchCell_OnChanged" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
+    let OnWithEventMsg =
+        Attributes.defineBindableWithEvent "SwitchCell_OnChangedMsg" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
+
+    let OnWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "SwitchCell_OnChangedFn" SwitchCell.OnProperty (fun target -> (target :?> SwitchCell).OnChanged)
 
     let Text = Attributes.defineBindableWithEquality SwitchCell.TextProperty
 
@@ -26,10 +29,21 @@ module SwitchCellBuilders =
         /// <param name="text">The text value</param>
         /// <param name="value">The toggle state value</param>
         /// <param name="onChanged">Change callback</param>
-        static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
+        static member inline SwitchCell(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitchCell>(
                 SwitchCell.WidgetKey,
-                SwitchCell.OnWithEvent.WithValue(ValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),
+                SwitchCell.OnWithEventMsg.WithValue(MsgValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),
+                SwitchCell.Text.WithValue(text)
+            )
+
+        /// <summary>Create a SwitchCell with a text, a toggle state, and listen to toggle state changes</summary>
+        /// <param name="text">The text value</param>
+        /// <param name="value">The toggle state value</param>
+        /// <param name="onChanged">Change callback</param>
+        static member inline SwitchCell(text: string, value: bool, onChanged: bool -> unit) =
+            WidgetBuilder<'msg, IFabSwitchCell>(
+                SwitchCell.WidgetKey,
+                SwitchCell.OnWithEventFn.WithValue(ValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),
                 SwitchCell.Text.WithValue(text)
             )
 

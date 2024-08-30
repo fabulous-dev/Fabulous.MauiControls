@@ -20,11 +20,17 @@ module WebView =
     let Cookies =
         Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
 
-    let Navigated =
-        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
+    let NavigatedMsg =
+        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_NavigatedMsg" (fun target -> (target :?> WebView).Navigated)
 
-    let Navigating =
-        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
+    let NavigatedFn =
+        Attributes.defineEventNoDispatch<WebNavigatedEventArgs> "WebView_NavigatedFn" (fun target -> (target :?> WebView).Navigated)
+
+    let NavigatingMsg =
+        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_NavigatingMsg" (fun target -> (target :?> WebView).Navigating)
+
+    let NavigatingFn =
+        Attributes.defineEventNoDispatch<WebNavigatingEventArgs> "WebView_NavigatingFn" (fun target -> (target :?> WebView).Navigating)
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
@@ -58,29 +64,29 @@ module WebViewBuilders =
 
         /// <summary>Create a WebView with a source</summary>
         /// <param name="source">The web source</param>
-        static member inline WebView<'msg>(source: WebViewSource) =
+        static member inline WebView(source: WebViewSource) =
             WidgetBuilder<'msg, IFabWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
         /// <summary>Create a WebView with an HTML content</summary>
         /// <param name="html">The HTML content</param>
         /// <param name="baseUrl">The base URL</param>
-        static member inline WebView<'msg>(html: string, ?baseUrl: string) =
+        static member inline WebView(html: string, ?baseUrl: string) =
             let source =
                 match baseUrl with
                 | Some url -> HtmlWebViewSource(Html = html, BaseUrl = url)
                 | None -> HtmlWebViewSource(Html = html)
 
-            View.WebView<'msg>(source)
+            View.WebView(source)
 
         /// <summary>Create a WebView with a Uri source</summary>
         /// <param name="uri">The Uri source</param>
-        static member inline WebView<'msg>(uri: Uri) =
-            View.WebView<'msg>(WebViewSource.op_Implicit uri)
+        static member inline WebView(uri: Uri) =
+            View.WebView(WebViewSource.op_Implicit uri)
 
         /// <summary>Create a WebView with a Url source</summary>
         /// <param name="url">The Url source</param>
-        static member inline WebView<'msg>(url: string) =
-            View.WebView<'msg>(WebViewSource.op_Implicit url)
+        static member inline WebView(url: string) =
+            View.WebView(WebViewSource.op_Implicit url)
 
 [<Extension>]
 type WebViewModifiers() =
@@ -110,14 +116,28 @@ type WebViewModifiers() =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatedEventArgs -> 'msg) =
-        this.AddScalar(WebView.Navigated.WithValue(fun args -> fn args |> box))
+        this.AddScalar(WebView.NavigatedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the Navigated event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onNavigated(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatedEventArgs -> unit) =
+        this.AddScalar(WebView.NavigatedFn.WithValue(fn))
 
     /// <summary>Listen for the Navigating event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onNavigating(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatingEventArgs -> 'msg) =
-        this.AddScalar(WebView.Navigating.WithValue(fun args -> fn args |> box))
+        this.AddScalar(WebView.NavigatingMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the Navigating event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onNavigating(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebNavigatingEventArgs -> unit) =
+        this.AddScalar(WebView.NavigatingFn.WithValue(fn))
 
     /// <summary>Link a ViewRef to access the direct WebView control instance</summary>
     /// <param name="this">Current widget</param>

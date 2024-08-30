@@ -21,15 +21,21 @@ module MenuFlyoutItemBuilders =
         /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
-        static member inline MenuFlyoutItem<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabMenuFlyoutItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(MsgValue(onClicked)))
+        static member inline MenuFlyoutItem(text: string, onClicked: 'msg) =
+            WidgetBuilder<'msg, IFabMenuFlyoutItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedMsg.WithValue(MsgValue(onClicked)))
+
+        /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
+        /// <param name="text">The text</param>
+        /// <param name="onClicked">The click callback</param>
+        static member inline MenuFlyoutItem(text: string, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabMenuFlyoutItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.ClickedFn.WithValue(onClicked))
 
 [<Extension>]
 type MenuFlyoutItemModifiers =
     /// <summary>Set the keyboard accelerators of this widget</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline keyboardAccelerators<'msg, 'marker when 'marker :> IFabMenuFlyoutItem>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline keyboardAccelerators<'msg, 'marker when 'msg : equality and 'marker :> IFabMenuFlyoutItem>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabKeyboardAccelerator> MenuFlyoutItem.KeyboardAccelerators this
 
 [<Extension>]

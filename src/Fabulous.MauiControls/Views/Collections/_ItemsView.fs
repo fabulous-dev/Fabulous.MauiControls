@@ -36,14 +36,23 @@ module ItemsView =
     let RemainingItemsThreshold =
         Attributes.defineBindableInt ItemsView.RemainingItemsThresholdProperty
 
-    let RemainingItemsThresholdReached =
-        Attributes.defineEventNoArg "ItemsView_RemainingItemsThresholdReached" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
+    let RemainingItemsThresholdReachedMsg =
+        Attributes.defineEventNoArg "ItemsView_RemainingItemsThresholdReachedMsg" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
 
-    let Scrolled =
-        Attributes.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
+    let RemainingItemsThresholdReachedFn =
+        Attributes.defineEventNoArgNoDispatch "ItemsView_RemainingItemsThresholdReachedFn" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
 
-    let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestEventArgs> "ItemsView_ScrolledRequested" (fun target -> (target :?> ItemsView).ScrollToRequested)
+    let ScrolledMsg =
+        Attributes.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_ScrolledMsg" (fun target -> (target :?> ItemsView).Scrolled)
+
+    let ScrolledFn =
+        Attributes.defineEventNoDispatch<ItemsViewScrolledEventArgs> "ItemsView_ScrolledFn" (fun target -> (target :?> ItemsView).Scrolled)
+
+    let ScrollToRequestedMsg =
+        Attributes.defineEvent<ScrollToRequestEventArgs> "ItemsView_ScrolledRequestedMsg" (fun target -> (target :?> ItemsView).ScrollToRequested)
+
+    let ScrollToRequestedFn =
+        Attributes.defineEventNoDispatch<ScrollToRequestEventArgs> "ItemsView_ScrolledRequestedFn" (fun target -> (target :?> ItemsView).ScrollToRequested)
 
     let VerticalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty
@@ -76,14 +85,28 @@ type ItemsViewModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onScrolled(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ItemsViewScrolledEventArgs -> 'msg) =
-        this.AddScalar(ItemsView.Scrolled.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ItemsView.ScrolledMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the Scrolled event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ItemsViewScrolledEventArgs -> unit) =
+        this.AddScalar(ItemsView.ScrolledFn.WithValue(fn))
 
     /// <summary>Listen for the ScrollToRequested event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ScrollToRequestEventArgs -> 'msg) =
-        this.AddScalar(ItemsView.ScrollToRequested.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ItemsView.ScrollToRequestedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ScrollToRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabItemsView>, fn: ScrollToRequestEventArgs -> unit) =
+        this.AddScalar(ItemsView.ScrollToRequestedFn.WithValue(fn))
 
     /// <summary>Set the threshold of items not yet visible in the list at which the RemainingItemsThresholdReached event will be fired</summary>
     /// <param name="this">Current widget</param>
@@ -93,7 +116,17 @@ type ItemsViewModifiers =
     static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #IFabItemsView>, value: int, onThresholdReached: 'msg) =
         this
             .AddScalar(ItemsView.RemainingItemsThreshold.WithValue(value))
-            .AddScalar(ItemsView.RemainingItemsThresholdReached.WithValue(MsgValue(onThresholdReached)))
+            .AddScalar(ItemsView.RemainingItemsThresholdReachedMsg.WithValue(MsgValue(onThresholdReached)))
+
+    /// <summary>Set the threshold of items not yet visible in the list at which the RemainingItemsThresholdReached event will be fired</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The threshold of items not yet visible in the list</param>
+    /// <param name="onThresholdReached">Message to dispatch</param>
+    [<Extension>]
+    static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #IFabItemsView>, value: int, onThresholdReached: unit -> unit) =
+        this
+            .AddScalar(ItemsView.RemainingItemsThreshold.WithValue(value))
+            .AddScalar(ItemsView.RemainingItemsThresholdReachedFn.WithValue(onThresholdReached))
 
     /// <summary>Set the visibility of the vertical scroll bar</summary>
     /// <param name="this">Current widget</param>
