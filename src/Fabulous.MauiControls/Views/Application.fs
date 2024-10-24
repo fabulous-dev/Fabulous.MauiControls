@@ -67,32 +67,60 @@ module Application =
         Attributes.definePropertyWidget "Application_MainPage" (fun target -> (target :?> Application).MainPage :> obj) (fun target value ->
             (target :?> Application).MainPage <- value)
 
-    let ModalPopped =
-        Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
+    let ModalPoppedMsg =
+        Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPoppedMsg" (fun target -> (target :?> Application).ModalPopped)
 
-    let ModalPopping =
-        Attributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
+    let ModalPoppedFn =
+        Attributes.defineEventNoDispatch<ModalPoppedEventArgs> "Application_ModalPoppedFn" (fun target -> (target :?> Application).ModalPopped)
 
-    let ModalPushed =
-        Attributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
+    let ModalPoppingMsg =
+        Attributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPoppingMsg" (fun target -> (target :?> Application).ModalPopping)
 
-    let ModalPushing =
-        Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
+    let ModalPoppingFn =
+        Attributes.defineEventNoDispatch<ModalPoppingEventArgs> "Application_ModalPoppingFn" (fun target -> (target :?> Application).ModalPopping)
 
-    let RequestedThemeChanged =
-        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
+    let ModalPushedMsg =
+        Attributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushedMsg" (fun target -> (target :?> Application).ModalPushed)
 
-    let Resume =
-        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
+    let ModalPushedFn =
+        Attributes.defineEventNoDispatch<ModalPushedEventArgs> "Application_ModalPushedFn" (fun target -> (target :?> Application).ModalPushed)
 
-    let Sleep =
-        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
+    let ModalPushingMsg =
+        Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushingMsg" (fun target -> (target :?> Application).ModalPushing)
 
-    let Start =
-        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
+    let ModalPushingFn =
+        Attributes.defineEventNoDispatch<ModalPushingEventArgs> "Application_ModalPushingFn" (fun target -> (target :?> Application).ModalPushing)
 
-    let AppLinkRequestReceived =
-        Attributes.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
+    let RequestedThemeChangedMsg =
+        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChangedMsg" (fun target -> (target :?> Application).RequestedThemeChanged)
+
+    let RequestedThemeChangedFn =
+        Attributes.defineEventNoDispatch<AppThemeChangedEventArgs> "Application_RequestedThemeChangedFn" (fun target ->
+            (target :?> Application).RequestedThemeChanged)
+
+    let ResumeMsg =
+        Attributes.defineEventNoArg "Application_ResumeMsg" (fun target -> (target :?> FabApplication).Resume)
+
+    let ResumeFn =
+        Attributes.defineEventNoArgNoDispatch "Application_ResumeFn" (fun target -> (target :?> FabApplication).Resume)
+
+    let SleepMsg =
+        Attributes.defineEventNoArg "Application_SleepMsg" (fun target -> (target :?> FabApplication).Sleep)
+
+    let SleepFn =
+        Attributes.defineEventNoArgNoDispatch "Application_SleepFn" (fun target -> (target :?> FabApplication).Sleep)
+
+    let StartMsg =
+        Attributes.defineEventNoArg "Application_StartMsg" (fun target -> (target :?> FabApplication).Start)
+
+    let StartFn =
+        Attributes.defineEventNoArgNoDispatch "Application_StartFn" (fun target -> (target :?> FabApplication).Start)
+
+    let AppLinkRequestReceivedMsg =
+        Attributes.defineEvent "Application_AppLinkRequestReceivedMsg" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
+
+    let AppLinkRequestReceivedFn =
+        Attributes.defineEventNoDispatch "Application_AppLinkRequestReceivedFn" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
 
     let UserAppTheme =
         Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
@@ -118,7 +146,7 @@ module ApplicationBuilders =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
         /// <summary>Create an Application widget with a list of windows</summary>
-        static member inline Application<'msg, 'itemMarker when 'itemMarker :> IFabWindow>() =
+        static member inline Application<'msg, 'itemMarker when 'msg: equality and 'itemMarker :> IFabWindow>() =
             CollectionBuilder<'msg, IFabApplication, 'itemMarker>(Application.WidgetKey, Application.Windows)
 
 [<Extension>]
@@ -128,63 +156,126 @@ type ApplicationModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopped.WithValue(fn))
+        this.AddScalar(Application.ModalPoppedMsg.WithValue(fn))
+
+    /// <summary>Listen for the ModalPopped event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppedEventArgs -> unit) =
+        this.AddScalar(Application.ModalPoppedFn.WithValue(fn))
 
     /// <summary>Listen for the ModalPopping event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPopping.WithValue(fn))
+        this.AddScalar(Application.ModalPoppingMsg.WithValue(fn))
+
+    /// <summary>Listen for the ModalPopping event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPopping(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppingEventArgs -> unit) =
+        this.AddScalar(Application.ModalPoppingFn.WithValue(fn))
 
     /// <summary>Listen for the ModalPushed event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushedEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushed.WithValue(fn))
+        this.AddScalar(Application.ModalPushedMsg.WithValue(fn))
+
+    /// <summary>Listen for the ModalPushed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPushed(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushedEventArgs -> unit) =
+        this.AddScalar(Application.ModalPushedFn.WithValue(fn))
 
     /// <summary>Listen for the ModalPushing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushing.WithValue(fn))
+        this.AddScalar(Application.ModalPushingMsg.WithValue(fn))
+
+    /// <summary>Listen for the ModalPushing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPushingEventArgs -> unit) =
+        this.AddScalar(Application.ModalPushingFn.WithValue(fn))
 
     /// <summary>Listen for the Resume event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Resume.WithValue(MsgValue(msg)))
+        this.AddScalar(Application.ResumeMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Resume event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onResume(this: WidgetBuilder<'msg, #IFabApplication>, fn: unit -> unit) =
+        this.AddScalar(Application.ResumeFn.WithValue(fn))
 
     /// <summary>Listen for the Start event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Start.WithValue(MsgValue(msg)))
+        this.AddScalar(Application.StartMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Start event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onStart(this: WidgetBuilder<'msg, #IFabApplication>, fn: unit -> unit) =
+        this.AddScalar(Application.StartFn.WithValue(fn))
 
     /// <summary>Listen for the Sleep event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, msg: 'msg) =
-        this.AddScalar(Application.Sleep.WithValue(MsgValue(msg)))
+        this.AddScalar(Application.SleepMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Sleep event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onSleep(this: WidgetBuilder<'msg, #IFabApplication>, fn: unit -> unit) =
+        this.AddScalar(Application.SleepFn.WithValue(fn))
 
     /// <summary>Listen for the RequestedThemeChanged event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, fn: AppTheme -> 'msg) =
-        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
+        this.AddScalar(Application.RequestedThemeChangedMsg.WithValue(fun args -> fn args.RequestedTheme |> box))
+
+    /// <summary>Listen for the RequestedThemeChanged event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IFabApplication>, fn: AppTheme -> unit) =
+        this.AddScalar(Application.RequestedThemeChangedFn.WithValue(fun args -> fn args.RequestedTheme))
 
     /// <summary>Listen for the AppLinkRequestReceived event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onAppLinkRequestReceived(this: WidgetBuilder<'msg, #IFabApplication>, fn: Uri -> 'msg) =
-        this.AddScalar(Application.AppLinkRequestReceived.WithValue(fun args -> fn args |> box))
+        this.AddScalar(Application.AppLinkRequestReceivedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the AppLinkRequestReceived event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onAppLinkRequestReceived(this: WidgetBuilder<'msg, #IFabApplication>, fn: Uri -> unit) =
+        this.AddScalar(Application.AppLinkRequestReceivedFn.WithValue(fun args -> fn args))
 
     /// <summary>Set the user app theme</summary>
     /// <param name="this">Current widget</param>
@@ -203,7 +294,7 @@ type ApplicationModifiers =
 [<Extension>]
 type ApplicationYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabApplication and 'itemType :> IFabWindow>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabApplication and 'itemType :> IFabWindow>
         (
             _: CollectionBuilder<'msg, 'marker, IFabWindow>,
             x: WidgetBuilder<'msg, 'itemType>

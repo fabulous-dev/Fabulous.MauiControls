@@ -13,8 +13,11 @@ module TapGestureRecognizer =
     let NumberOfTapsRequired =
         Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
 
-    let Tapped =
-        Attributes.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
+    let TappedMsg =
+        Attributes.defineEvent "TapGestureRecognizer_TappedMsg" (fun target -> (target :?> TapGestureRecognizer).Tapped)
+
+    let TappedFn =
+        Attributes.defineEventNoDispatch "TapGestureRecognizer_TappedFn" (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
@@ -22,8 +25,13 @@ module TapGestureRecognizerBuilders =
 
         /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
         /// <param name="onTapped">Message to dispatch</param>
-        static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =
-            WidgetBuilder<'msg, IFabTapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.Tapped.WithValue(fun _ -> box onTapped))
+        static member inline TapGestureRecognizer<'msg when 'msg: equality>(onTapped: 'msg) =
+            WidgetBuilder<'msg, IFabTapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.TappedMsg.WithValue(fun _ -> box onTapped))
+
+        /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
+        /// <param name="onTapped">Message to dispatch</param>
+        static member inline TapGestureRecognizer(onTapped: unit -> unit) =
+            WidgetBuilder<'msg, IFabTapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.TappedFn.WithValue(fun _ -> onTapped()))
 
 [<Extension>]
 type TapGestureRecognizerModifiers =

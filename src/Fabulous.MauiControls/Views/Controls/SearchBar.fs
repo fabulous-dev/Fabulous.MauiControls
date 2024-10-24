@@ -34,8 +34,11 @@ module SearchBar =
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool SearchBar.IsTextPredictionEnabledProperty
 
-    let SearchButtonPressed =
-        Attributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> SearchBar).SearchButtonPressed)
+    let SearchButtonPressedMsg =
+        Attributes.defineEventNoArg "SearchBar_SearchButtonPressedMsg" (fun target -> (target :?> SearchBar).SearchButtonPressed)
+
+    let SearchButtonPressedFn =
+        Attributes.defineEventNoArgNoDispatch "SearchBar_SearchButtonPressedFn" (fun target -> (target :?> SearchBar).SearchButtonPressed)
 
     let SelectionLength = Attributes.defineBindableInt SearchBar.SelectionLengthProperty
 
@@ -50,11 +53,22 @@ module SearchBarBuilders =
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
         /// <param name="onSearchButtonPressed">Message to dispatch</param>
-        static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
+        static member inline SearchBar(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
             WidgetBuilder<'msg, IFabSearchBar>(
                 SearchBar.WidgetKey,
-                InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue)),
-                SearchBar.SearchButtonPressed.WithValue(MsgValue(onSearchButtonPressed))
+                InputView.TextWithEventMsg.WithValue(MsgValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue)),
+                SearchBar.SearchButtonPressedMsg.WithValue(MsgValue(onSearchButtonPressed))
+            )
+
+        /// <summary>Create a SearchBar widget with a text and listen for both text changes and search button presses</summary>
+        /// <param name="text">The text value</param>
+        /// <param name="onTextChanged">Message to dispatch</param>
+        /// <param name="onSearchButtonPressed">Message to dispatch</param>
+        static member inline SearchBar(text: string, onTextChanged: string -> unit, onSearchButtonPressed: unit -> unit) =
+            WidgetBuilder<'msg, IFabSearchBar>(
+                SearchBar.WidgetKey,
+                InputView.TextWithEventFn.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue)),
+                SearchBar.SearchButtonPressedFn.WithValue(onSearchButtonPressed)
             )
 
 [<Extension>]

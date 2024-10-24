@@ -30,32 +30,59 @@ module Window =
 
     let MinimumWidth = Attributes.defineBindableWithEquality Window.MinimumWidthProperty
 
-    let Activated =
-        Attributes.defineEventNoArg "Window_Activated" (fun target -> (target :?> Window).Activated)
+    let ActivatedMsg =
+        Attributes.defineEventNoArg "Window_ActivatedMsg" (fun target -> (target :?> Window).Activated)
 
-    let Backgrounding =
-        Attributes.defineEvent "Window_Backgrounding" (fun target -> (target :?> Window).Backgrounding)
+    let ActivatedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_ActivatedFn" (fun target -> (target :?> Window).Activated)
 
-    let Created =
-        Attributes.defineEventNoArg "Window_Created" (fun target -> (target :?> Window).Created)
+    let BackgroundingMsg =
+        Attributes.defineEvent "Window_BackgroundingMsg" (fun target -> (target :?> Window).Backgrounding)
 
-    let Deactivated =
-        Attributes.defineEventNoArg "Window_Deactivated" (fun target -> (target :?> Window).Deactivated)
+    let BackgroundingFn =
+        Attributes.defineEventNoDispatch "Window_BackgroundingFn" (fun target -> (target :?> Window).Backgrounding)
 
-    let Destroying =
-        Attributes.defineEventNoArg "Window_Destroying" (fun target -> (target :?> Window).Destroying)
+    let CreatedMsg =
+        Attributes.defineEventNoArg "Window_CreatedMsg" (fun target -> (target :?> Window).Created)
 
-    let DisplayDensityChanged =
-        Attributes.defineEvent "Window_DisplayDensityChanged" (fun target -> (target :?> Window).DisplayDensityChanged)
+    let CreatedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_CreatedFn" (fun target -> (target :?> Window).Created)
 
-    let SizeChanged =
-        Attributes.defineEventNoArg "Window_SizeChanged" (fun target -> (target :?> Window).SizeChanged)
+    let DeactivatedMsg =
+        Attributes.defineEventNoArg "Window_DeactivatedMsg" (fun target -> (target :?> Window).Deactivated)
 
-    let Resumed =
-        Attributes.defineEventNoArg "Window_Resumed" (fun target -> (target :?> Window).Resumed)
+    let DeactivatedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_DeactivatedFn" (fun target -> (target :?> Window).Deactivated)
 
-    let Stopped =
-        Attributes.defineEventNoArg "Window_Stopped" (fun target -> (target :?> Window).Stopped)
+    let DestroyingMsg =
+        Attributes.defineEventNoArg "Window_DestroyingMsg" (fun target -> (target :?> Window).Destroying)
+
+    let DestroyingFn =
+        Attributes.defineEventNoArgNoDispatch "Window_DestroyingFn" (fun target -> (target :?> Window).Destroying)
+
+    let DisplayDensityChangedMsg =
+        Attributes.defineEvent "Window_DisplayDensityChangedMsg" (fun target -> (target :?> Window).DisplayDensityChanged)
+
+    let DisplayDensityChangedFn =
+        Attributes.defineEventNoDispatch "Window_DisplayDensityChangedFn" (fun target -> (target :?> Window).DisplayDensityChanged)
+
+    let SizeChangedMsg =
+        Attributes.defineEventNoArg "Window_SizeChangedMsg" (fun target -> (target :?> Window).SizeChanged)
+
+    let SizeChangedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_SizeChangedFn" (fun target -> (target :?> Window).SizeChanged)
+
+    let ResumedMsg =
+        Attributes.defineEventNoArg "Window_ResumedMsg" (fun target -> (target :?> Window).Resumed)
+
+    let ResumedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_ResumedFn" (fun target -> (target :?> Window).Resumed)
+
+    let StoppedMsg =
+        Attributes.defineEventNoArg "Window_StoppedMsg" (fun target -> (target :?> Window).Stopped)
+
+    let StoppedFn =
+        Attributes.defineEventNoArgNoDispatch "Window_StoppedFn" (fun target -> (target :?> Window).Stopped)
 
     let Title = Attributes.defineBindableWithEquality Window.TitleProperty
 
@@ -74,6 +101,9 @@ module WindowBuilders =
                 Window.WidgetKey,
                 AttributesBundle(StackList.empty(), ValueSome [| Window.Page.WithValue(content.Compile()) |], ValueNone)
             )
+
+        static member inline Window() =
+            SingleChildBuilder<'msg, IFabWindow, #IFabPage>(Window.WidgetKey, Window.Page)
 
 [<Extension>]
 type WindowModifiers =
@@ -103,39 +133,75 @@ type WindowModifiers =
 
     [<Extension>]
     static member inline onActivated(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Activated.WithValue(MsgValue msg))
+        this.AddScalar(Window.ActivatedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onActivated(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.ActivatedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onBackgrounding(this: WidgetBuilder<'msg, #IFabWindow>, fn: BackgroundingEventArgs -> 'msg) =
-        this.AddScalar(Window.Backgrounding.WithValue(fn))
+        this.AddScalar(Window.BackgroundingMsg.WithValue(fn))
+
+    [<Extension>]
+    static member inline onBackgrounding(this: WidgetBuilder<'msg, #IFabWindow>, fn: BackgroundingEventArgs -> unit) =
+        this.AddScalar(Window.BackgroundingFn.WithValue(fn))
 
     [<Extension>]
     static member inline onCreated(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Created.WithValue(MsgValue msg))
+        this.AddScalar(Window.CreatedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onCreated(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.CreatedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onDeactivated(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Deactivated.WithValue(MsgValue msg))
+        this.AddScalar(Window.DeactivatedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onDeactivated(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.DeactivatedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onDestroying(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Destroying.WithValue(MsgValue msg))
+        this.AddScalar(Window.DestroyingMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onDestroying(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.DestroyingFn.WithValue(fn))
 
     [<Extension>]
     static member inline onDisplayDensityChanged(this: WidgetBuilder<'msg, #IFabWindow>, fn: DisplayDensityChangedEventArgs -> 'msg) =
-        this.AddScalar(Window.DisplayDensityChanged.WithValue(fn))
+        this.AddScalar(Window.DisplayDensityChangedMsg.WithValue(fn))
+
+    [<Extension>]
+    static member inline onDisplayDensityChanged(this: WidgetBuilder<'msg, #IFabWindow>, fn: DisplayDensityChangedEventArgs -> unit) =
+        this.AddScalar(Window.DisplayDensityChangedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onSizeChanged(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.SizeChanged.WithValue(MsgValue msg))
+        this.AddScalar(Window.SizeChangedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onSizeChanged(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.SizeChangedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onResumed(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Resumed.WithValue(MsgValue msg))
+        this.AddScalar(Window.ResumedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onResumed(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.ResumedFn.WithValue(fn))
 
     [<Extension>]
     static member inline onStopped(this: WidgetBuilder<'msg, #IFabWindow>, msg: 'msg) =
-        this.AddScalar(Window.Stopped.WithValue(MsgValue msg))
+        this.AddScalar(Window.StoppedMsg.WithValue(MsgValue msg))
+
+    [<Extension>]
+    static member inline onStopped(this: WidgetBuilder<'msg, #IFabWindow>, fn: unit -> unit) =
+        this.AddScalar(Window.StoppedFn.WithValue(fn))
 
     [<Extension>]
     static member inline title(this: WidgetBuilder<'msg, #IFabWindow>, value: string) =

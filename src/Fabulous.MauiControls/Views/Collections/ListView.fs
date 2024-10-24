@@ -1,6 +1,5 @@
 namespace Fabulous.Maui
 
-open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
@@ -54,23 +53,38 @@ module ListView =
 
     let IsRefreshing = Attributes.defineBindableBool ListView.IsRefreshingProperty
 
-    let ItemAppearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
+    let ItemAppearingMsg =
+        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearingMsg" (fun target -> (target :?> ListView).ItemAppearing)
 
-    let ItemDisappearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
+    let ItemAppearingFn =
+        Attributes.defineEventNoDispatch<ItemVisibilityEventArgs> "ListView_ItemAppearingFn" (fun target -> (target :?> ListView).ItemAppearing)
 
-    let ItemSelected =
-        Attributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
+    let ItemDisappearingMsg =
+        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearingMsg" (fun target -> (target :?> ListView).ItemDisappearing)
 
-    let ItemTapped =
-        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
+    let ItemDisappearingFn =
+        Attributes.defineEventNoDispatch<ItemVisibilityEventArgs> "ListView_ItemDisappearingFn" (fun target -> (target :?> ListView).ItemDisappearing)
+
+    let ItemSelectedMsg =
+        Attributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelectedMsg" (fun target -> (target :?> ListView).ItemSelected)
+
+    let ItemSelectedFn =
+        Attributes.defineEventNoDispatch<SelectedItemChangedEventArgs> "ListView_ItemSelectedFn" (fun target -> (target :?> ListView).ItemSelected)
+
+    let ItemTappedMsg =
+        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTappedMsg" (fun target -> (target :?> ListView).ItemTapped)
+
+    let ItemTappedFn =
+        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTappedFn" (fun target -> (target :?> ListView).ItemTapped)
 
     let RefreshControlColor =
         Attributes.defineBindableColor ListView.RefreshControlColorProperty
 
-    let Refreshing =
-        Attributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
+    let RefreshingMsg =
+        Attributes.defineEventNoArg "ListView_RefreshingMsg" (fun target -> (target :?> ListView).Refreshing)
+
+    let RefreshingFn =
+        Attributes.defineEventNoArgNoDispatch "ListView_RefreshingFn" (fun target -> (target :?> ListView).Refreshing)
 
     let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
 
@@ -82,11 +96,17 @@ module ListView =
     let SeparatorVisibility =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
-    let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
+    let ScrolledMsg =
+        Attributes.defineEvent<ScrolledEventArgs> "ListView_ScrolledMsg" (fun target -> (target :?> ListView).Scrolled)
 
-    let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
+    let ScrolledFn =
+        Attributes.defineEventNoDispatch<ScrolledEventArgs> "ListView_ScrolledFn" (fun target -> (target :?> ListView).Scrolled)
+
+    let ScrollToRequestedMsg =
+        Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequestedMsg" (fun target -> (target :?> ListView).ScrollToRequested)
+
+    let ScrollToRequestedFn =
+        Attributes.defineEventNoDispatch<ScrollToRequestedEventArgs> "ListView_ScrollToRequestedFn" (fun target -> (target :?> ListView).ScrollToRequested)
 
     let VerticalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
@@ -97,13 +117,13 @@ module ListViewBuilders =
 
         /// <summary>Create a ListView with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>(items: seq<'itemData>) =
+        static member inline ListView<'msg, 'itemData, 'itemMarker when 'msg: equality and 'itemMarker :> IFabCell>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
 
         /// <summary>Create a ListView with a list of grouped items</summary>
         /// <param name="items">The grouped items list</param>
         static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
-            when 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+            when 'msg: equality and 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItemsNoFooter<'msg, IFabListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
@@ -160,49 +180,98 @@ type ListViewModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onItemAppearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> 'msg) =
-        this.AddScalar(ListView.ItemAppearing.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ListView.ItemAppearingMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ItemAppearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onItemAppearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> unit) =
+        this.AddScalar(ListView.ItemAppearingFn.WithValue(fn))
 
     /// <summary>Listen for the ItemDisappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onItemDisappearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> 'msg) =
-        this.AddScalar(ListView.ItemDisappearing.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ListView.ItemDisappearingMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ItemDisappearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onItemDisappearing(this: WidgetBuilder<'msg, #IFabListView>, fn: ItemVisibilityEventArgs -> unit) =
+        this.AddScalar(ListView.ItemDisappearingFn.WithValue(fn))
 
     /// <summary>Listen for the ItemTapped event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onItemTapped(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> 'msg) =
-        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
+        this.AddScalar(ListView.ItemTappedMsg.WithValue(fun args -> fn args.ItemIndex |> box))
+
+    /// <summary>Listen for the ItemTapped event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onItemTapped(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> unit) =
+        this.AddScalar(ListView.ItemTappedFn.WithValue(fun args -> fn args.ItemIndex))
 
     /// <summary>Listen for the ItemSelected event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> 'msg) =
-        this.AddScalar(ListView.ItemSelected.WithValue(fun args -> fn args.SelectedItemIndex |> box))
+        this.AddScalar(ListView.ItemSelectedMsg.WithValue(fun args -> fn args.SelectedItemIndex |> box))
+
+    /// <summary>Listen for the ItemSelected event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onItemSelected(this: WidgetBuilder<'msg, #IFabListView>, fn: int -> unit) =
+        this.AddScalar(ListView.ItemSelectedFn.WithValue(fun args -> fn args.SelectedItemIndex))
 
     /// <summary>Listen for the Refreshing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onRefreshing(this: WidgetBuilder<'msg, #IFabListView>, msg: 'msg) =
-        this.AddScalar(ListView.Refreshing.WithValue(MsgValue(msg)))
+        this.AddScalar(ListView.RefreshingMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Refreshing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onRefreshing(this: WidgetBuilder<'msg, #IFabListView>, fn: unit -> unit) =
+        this.AddScalar(ListView.RefreshingFn.WithValue(fn))
 
     /// <summary>Listen for the Scrolled event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onScrolled(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrolledEventArgs -> 'msg) =
-        this.AddScalar(ListView.Scrolled.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ListView.ScrolledMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the Scrolled event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrolled(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrolledEventArgs -> unit) =
+        this.AddScalar(ListView.ScrolledFn.WithValue(fn))
 
     /// <summary>Listen for the ScrollToRequested event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrollToRequestedEventArgs -> 'msg) =
-        this.AddScalar(ListView.ScrollToRequested.WithValue(fun args -> fn args |> box))
+        this.AddScalar(ListView.ScrollToRequestedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the ScrollToRequested event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onScrollToRequested(this: WidgetBuilder<'msg, #IFabListView>, fn: ScrollToRequestedEventArgs -> unit) =
+        this.AddScalar(ListView.ScrollToRequestedFn.WithValue(fn))
 
     /// <summary>Set the refresh control color</summary>
     /// <param name="this">Current widget</param>

@@ -33,8 +33,11 @@ module Stepper =
     let MinimumMaximum =
         Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Stepper_MinimumMaximum" StepperUpdaters.updateStepperMinMax
 
-    let ValueWithEvent =
-        Attributes.defineBindableWithEvent "Stepper_ValueChanged" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
+    let ValueWithEventMsg =
+        Attributes.defineBindableWithEvent "Stepper_ValueChangedMsg" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
+
+    let ValueWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "Stepper_ValueChangedFn" Stepper.ValueProperty (fun target -> (target :?> Stepper).ValueChanged)
 
 [<AutoOpen>]
 module StepperBuilders =
@@ -45,11 +48,23 @@ module StepperBuilders =
         /// <param name="max">The maximum value</param>
         /// <param name="value">The current value</param>
         /// <param name="onValueChanged">Message to dispatch</param>
-        static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
+        static member inline Stepper(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IFabStepper>(
                 Stepper.WidgetKey,
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),
-                Stepper.ValueWithEvent.WithValue(ValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
+                Stepper.ValueWithEventMsg.WithValue(MsgValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
+            )
+
+        /// <summary>Create a Stepper widget with min and max values, a current value, and listen for value changes</summary>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <param name="value">The current value</param>
+        /// <param name="onValueChanged">Message to dispatch</param>
+        static member inline Stepper(min: float, max: float, value: float, onValueChanged: float -> unit) =
+            WidgetBuilder<'msg, IFabStepper>(
+                Stepper.WidgetKey,
+                Stepper.MinimumMaximum.WithValue(struct (min, max)),
+                Stepper.ValueWithEventFn.WithValue(ValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
             )
 
 [<Extension>]

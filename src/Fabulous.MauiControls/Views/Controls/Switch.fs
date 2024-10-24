@@ -15,8 +15,11 @@ module Switch =
 
     let ThumbColor = Attributes.defineBindableColor Switch.ThumbColorProperty
 
-    let IsToggledWithEvent =
-        Attributes.defineBindableWithEvent "Switch_Toggled" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
+    let IsToggledWithEventMsg =
+        Attributes.defineBindableWithEvent "Switch_ToggledMsg" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
+
+    let IsToggledWithEventFn =
+        Attributes.defineBindableWithEventNoDispatch "Switch_ToggledFn" Switch.IsToggledProperty (fun target -> (target :?> Switch).Toggled)
 
 [<AutoOpen>]
 module SwitchBuilders =
@@ -25,10 +28,19 @@ module SwitchBuilders =
         /// <summary>Create a Switch widget with a toggle state and listen for toggle state changes</summary>
         /// <param name="isToggled">The toggle state</param>
         /// <param name="onToggled">Message to dispatch</param>
-        static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
+        static member inline Switch(isToggled: bool, onToggled: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitch>(
                 Switch.WidgetKey,
-                Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
+                Switch.IsToggledWithEventMsg.WithValue(MsgValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
+            )
+
+        /// <summary>Create a Switch widget with a toggle state and listen for toggle state changes</summary>
+        /// <param name="isToggled">The toggle state</param>
+        /// <param name="onToggled">Message to dispatch</param>
+        static member inline Switch(isToggled: bool, onToggled: bool -> unit) =
+            WidgetBuilder<'msg, IFabSwitch>(
+                Switch.WidgetKey,
+                Switch.IsToggledWithEventFn.WithValue(ValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))
             )
 
 [<Extension>]

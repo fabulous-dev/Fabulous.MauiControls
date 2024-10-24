@@ -21,8 +21,11 @@ module ImageButton =
 
     let BorderWidth = Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 
-    let Clicked =
-        Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> ImageButton).Clicked)
+    let ClickedMsg =
+        Attributes.defineEventNoArg "ImageButton_ClickedMsg" (fun target -> (target :?> ImageButton).Clicked)
+
+    let ClickedFn =
+        Attributes.defineEventNoArgNoDispatch "ImageButton_ClickedFn" (fun target -> (target :?> ImageButton).Clicked)
 
     let CornerRadius = Attributes.defineBindableFloat ImageButton.CornerRadiusProperty
 
@@ -35,11 +38,17 @@ module ImageButton =
     let Padding =
         Attributes.defineBindableWithEquality<Thickness> ImageButton.PaddingProperty
 
-    let Pressed =
-        Attributes.defineEventNoArg "ImageButton_Pressed" (fun target -> (target :?> ImageButton).Pressed)
+    let PressedMsg =
+        Attributes.defineEventNoArg "ImageButton_PressedMsg" (fun target -> (target :?> ImageButton).Pressed)
 
-    let Released =
-        Attributes.defineEventNoArg "ImageButton_Released" (fun target -> (target :?> ImageButton).Released)
+    let PressedFn =
+        Attributes.defineEventNoArgNoDispatch "ImageButton_PressedFn" (fun target -> (target :?> ImageButton).Pressed)
+
+    let ReleasedMsg =
+        Attributes.defineEventNoArg "ImageButton_ReleasedMsg" (fun target -> (target :?> ImageButton).Released)
+
+    let ReleasedFn =
+        Attributes.defineEventNoArgNoDispatch "ImageButton_ReleasedFn" (fun target -> (target :?> ImageButton).Released)
 
     let Source = Attributes.defineBindableImageSource ImageButton.SourceProperty
 
@@ -50,10 +59,10 @@ module ImageButtonBuilders =
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg) =
+        static member inline ImageButton(source: ImageSource, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.Source source)
             )
 
@@ -61,10 +70,10 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
-        static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg, aspect: Aspect) =
+        static member inline ImageButton(source: ImageSource, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.Source source),
                 ImageButton.Aspect.WithValue(aspect)
             )
@@ -72,10 +81,10 @@ module ImageButtonBuilders =
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline ImageButton<'msg>(source: string, onClicked: 'msg) =
+        static member inline ImageButton(source: string, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.File source)
             )
 
@@ -83,10 +92,10 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
-        static member inline ImageButton<'msg>(source: string, onClicked: 'msg, aspect: Aspect) =
+        static member inline ImageButton(source: string, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.File source),
                 ImageButton.Aspect.WithValue(aspect)
             )
@@ -94,10 +103,10 @@ module ImageButtonBuilders =
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg) =
+        static member inline ImageButton(source: Uri, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.Uri source)
             )
 
@@ -105,10 +114,10 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
-        static member inline ImageButton<'msg>(source: Uri, onClicked: 'msg, aspect: Aspect) =
+        static member inline ImageButton(source: Uri, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.Uri source),
                 ImageButton.Aspect.WithValue(aspect)
             )
@@ -116,10 +125,10 @@ module ImageButtonBuilders =
         /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg) =
+        static member inline ImageButton(source: Stream, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
                 ImageButton.Source.WithValue(ImageSourceValue.Stream source)
             )
 
@@ -127,10 +136,98 @@ module ImageButtonBuilders =
         /// <param name="source">The image source</param>
         /// <param name="onClicked">Message to dispatch</param>
         /// <param name="aspect">The aspect value</param>
-        static member inline ImageButton<'msg>(source: Stream, onClicked: 'msg, aspect: Aspect) =
+        static member inline ImageButton(source: Stream, onClicked: 'msg, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImageButton>(
                 ImageButton.WidgetKey,
-                ImageButton.Clicked.WithValue(MsgValue(onClicked)),
+                ImageButton.ClickedMsg.WithValue(MsgValue(onClicked)),
+                ImageButton.Source.WithValue(ImageSourceValue.Stream source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
+
+        /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        static member inline ImageButton(source: ImageSource, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.Source source)
+            )
+
+        /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        /// <param name="aspect">The aspect value</param>
+        static member inline ImageButton(source: ImageSource, onClicked: unit -> unit, aspect: Aspect) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.Source source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
+
+        /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        static member inline ImageButton(source: string, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.File source)
+            )
+
+        /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        /// <param name="aspect">The aspect value</param>
+        static member inline ImageButton(source: string, onClicked: unit -> unit, aspect: Aspect) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.File source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
+
+        /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        static member inline ImageButton(source: Uri, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.Uri source)
+            )
+
+        /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        /// <param name="aspect">The aspect value</param>
+        static member inline ImageButton(source: Uri, onClicked: unit -> unit, aspect: Aspect) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.Uri source),
+                ImageButton.Aspect.WithValue(aspect)
+            )
+
+        /// <summary>Create an ImageButton with an image source and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        static member inline ImageButton(source: Stream, onClicked: unit -> unit) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
+                ImageButton.Source.WithValue(ImageSourceValue.Stream source)
+            )
+
+        /// <summary>Create an ImageButton with an image source and an aspect and listen for the Click event</summary>
+        /// <param name="source">The image source</param>
+        /// <param name="onClicked">Message to dispatch</param>
+        /// <param name="aspect">The aspect value</param>
+        static member inline ImageButton(source: Stream, onClicked: unit -> unit, aspect: Aspect) =
+            WidgetBuilder<'msg, IFabImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.ClickedFn.WithValue(onClicked),
                 ImageButton.Source.WithValue(ImageSourceValue.Stream source),
                 ImageButton.Aspect.WithValue(aspect)
             )
@@ -184,14 +281,28 @@ type ImageButtonModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IFabImageButton>, msg: 'msg) =
-        this.AddScalar(ImageButton.Pressed.WithValue(MsgValue(msg)))
+        this.AddScalar(ImageButton.PressedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Pressed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onPressed(this: WidgetBuilder<'msg, #IFabImageButton>, fn: unit -> unit) =
+        this.AddScalar(ImageButton.PressedFn.WithValue(fn))
 
     /// <summary>Listen for the Released event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IFabImageButton>, msg: 'msg) =
-        this.AddScalar(ImageButton.Released.WithValue(MsgValue(msg)))
+        this.AddScalar(ImageButton.ReleasedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Released event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onReleased(this: WidgetBuilder<'msg, #IFabImageButton>, fn: unit -> unit) =
+        this.AddScalar(ImageButton.ReleasedFn.WithValue(fn))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>
@@ -214,6 +325,14 @@ type ImageButtonExtraModifiers =
     /// <param name="uniformSize">The uniform padding inside the button</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabImageButton>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The padding value that will be applied to both left and right sides</param>
+    /// <param name="verticalSize">The padding value that will be applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabImageButton>, horizontalSize: float, verticalSize: float) =
+        this.padding(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

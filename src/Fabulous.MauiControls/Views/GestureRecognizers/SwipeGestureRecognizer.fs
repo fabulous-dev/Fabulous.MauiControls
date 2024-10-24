@@ -14,8 +14,11 @@ module SwipeGestureRecognizer =
     let Direction =
         Attributes.defineBindableEnum<SwipeDirection> SwipeGestureRecognizer.DirectionProperty
 
-    let Swiped =
-        Attributes.defineEvent<SwipedEventArgs> "SwipeGestureRecognizer_Swiped" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
+    let SwipedMsg =
+        Attributes.defineEvent<SwipedEventArgs> "SwipeGestureRecognizer_SwipedMsg" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
+
+    let SwipedFn =
+        Attributes.defineEventNoDispatch<SwipedEventArgs> "SwipeGestureRecognizer_SwipedFn" (fun target -> (target :?> SwipeGestureRecognizer).Swiped)
 
     let Threshold =
         Attributes.defineBindableInt SwipeGestureRecognizer.ThresholdProperty
@@ -26,10 +29,18 @@ module SwipeGestureRecognizerBuilders =
 
         /// <summary>Create a SwipeGestureRecognizer that listens for Swipe event</summary>
         /// <param name="onSwiped">Message to dispatch</param>
-        static member inline SwipeGestureRecognizer<'msg>(onSwiped: SwipeDirection -> 'msg) =
+        static member inline SwipeGestureRecognizer<'msg when 'msg: equality>(onSwiped: SwipeDirection -> 'msg) =
             WidgetBuilder<'msg, IFabSwipeGestureRecognizer>(
                 SwipeGestureRecognizer.WidgetKey,
-                SwipeGestureRecognizer.Swiped.WithValue(fun args -> onSwiped args.Direction |> box)
+                SwipeGestureRecognizer.SwipedMsg.WithValue(fun args -> onSwiped args.Direction |> box)
+            )
+
+        /// <summary>Create a SwipeGestureRecognizer that listens for Swipe event</summary>
+        /// <param name="onSwiped">Message to dispatch</param>
+        static member inline SwipeGestureRecognizer(onSwiped: SwipeDirection -> unit) =
+            WidgetBuilder<'msg, IFabSwipeGestureRecognizer>(
+                SwipeGestureRecognizer.WidgetKey,
+                SwipeGestureRecognizer.SwipedFn.WithValue(fun args -> onSwiped args.Direction)
             )
 
 [<Extension>]

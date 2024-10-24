@@ -18,8 +18,12 @@ module ContentViewBuilders =
 
         /// <summary>Create a ContentView widget with a content</summary>
         /// <param name="content">The content widget</param>
-        static member inline ContentView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ContentView(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetHelpers.buildWidgets<'msg, IFabContentView> ContentView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
+
+        /// <summary>Create a ContentView widget with a content</summary>
+        static member inline ContentView() =
+            SingleChildBuilder<'msg, IFabContentView, #IFabView>(ContentView.WidgetKey, ContentView.Content)
 
 [<Extension>]
 type ContentViewModifiers =

@@ -48,8 +48,12 @@ module CollectionView =
     let ItemSizingStrategy =
         Attributes.defineBindableEnum<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
 
-    let SelectionChanged =
-        Attributes.defineEvent<SelectionChangedEventArgs> "CollectionView_SelectionChanged" (fun target -> (target :?> CollectionView).SelectionChanged)
+    let SelectionChangedMsg =
+        Attributes.defineEvent<SelectionChangedEventArgs> "CollectionView_SelectionChangedMsg" (fun target -> (target :?> CollectionView).SelectionChanged)
+
+    let SelectionChangedFn =
+        Attributes.defineEventNoDispatch<SelectionChangedEventArgs> "CollectionView_SelectionChangedFn" (fun target ->
+            (target :?> CollectionView).SelectionChanged)
 
     let SelectionMode =
         Attributes.defineBindableEnum<SelectionMode> CollectionView.SelectionModeProperty
@@ -60,13 +64,13 @@ module CollectionViewBuilders =
 
         /// <summary>Create a CollectionView widget with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabView>(items: seq<'itemData>) =
+        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'msg: equality and 'itemMarker :> IFabView>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabCollectionView, 'itemData, 'itemMarker> CollectionView.WidgetKey ItemsView.ItemsSource items
 
         /// <summary>Create a CollectionView widget with a list of grouped items</summary>
         /// <param name="items">The grouped items list</param>
         static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
-            when 'itemMarker :> IFabView and 'groupMarker :> IFabView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+            when 'msg: equality and 'itemMarker :> IFabView and 'groupMarker :> IFabView and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItems<'msg, IFabCollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
@@ -102,7 +106,14 @@ type CollectionViewModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onSelectionChanged(this: WidgetBuilder<'msg, #IFabCollectionView>, fn: SelectionChangedEventArgs -> 'msg) =
-        this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> fn args |> box))
+        this.AddScalar(CollectionView.SelectionChangedMsg.WithValue(fun args -> fn args |> box))
+
+    /// <summary>Listen for the SelectionChanged event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onSelectionChanged(this: WidgetBuilder<'msg, #IFabCollectionView>, fn: SelectionChangedEventArgs -> unit) =
+        this.AddScalar(CollectionView.SelectionChangedFn.WithValue(fn))
 
     /// <summary>Set the selection mode</summary>
     /// <param name="this">Current widget</param>

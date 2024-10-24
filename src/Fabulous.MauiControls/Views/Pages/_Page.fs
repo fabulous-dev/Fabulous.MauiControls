@@ -13,25 +13,37 @@ type IFabPage =
     inherit IFabVisualElement
 
 module Page =
-    let Appearing =
-        Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
+    let AppearingMsg =
+        Attributes.defineEventNoArg "Page_AppearingMsg" (fun target -> (target :?> Page).Appearing)
+
+    let AppearingFn =
+        Attributes.defineEventNoArgNoDispatch "Page_AppearingFn" (fun target -> (target :?> Page).Appearing)
 
     let BackgroundImageSource =
         Attributes.defineBindableImageSource Page.BackgroundImageSourceProperty
 
-    let Disappearing =
-        Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
+    let DisappearingMsg =
+        Attributes.defineEventNoArg "Page_DisappearingMsg" (fun target -> (target :?> Page).Disappearing)
+
+    let DisappearingFn =
+        Attributes.defineEventNoArgNoDispatch "Page_DisappearingFn" (fun target -> (target :?> Page).Disappearing)
 
     let IconImageSource =
         Attributes.defineBindableImageSource Page.IconImageSourceProperty
 
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 
-    let NavigatedTo =
-        Attributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
+    let NavigatedToMsg =
+        Attributes.defineEvent "NavigatedToMsg" (fun target -> (target :?> Page).NavigatedTo)
 
-    let NavigatedFrom =
-        Attributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
+    let NavigatedToFn =
+        Attributes.defineEventNoDispatch "NavigatedToFn" (fun target -> (target :?> Page).NavigatedTo)
+
+    let NavigatedFromMsg =
+        Attributes.defineEvent "NavigatedFromMsg" (fun target -> (target :?> Page).NavigatedFrom)
+
+    let NavigatedFromFn =
+        Attributes.defineEventNoDispatch "NavigatedFromFn" (fun target -> (target :?> Page).NavigatedFrom)
 
     let Padding = Attributes.defineBindableWithEquality Page.PaddingProperty
 
@@ -79,22 +91,44 @@ type PageModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.Appearing.WithValue(MsgValue(msg)))
+        this.AddScalar(Page.AppearingMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Appearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onAppearing(this: WidgetBuilder<'msg, #IFabPage>, fn: unit -> unit) =
+        this.AddScalar(Page.AppearingFn.WithValue(fn))
 
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.Disappearing.WithValue(MsgValue(msg)))
+        this.AddScalar(Page.DisappearingMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the Disappearing event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onDisappearing(this: WidgetBuilder<'msg, #IFabPage>, fn: unit -> unit) =
+        this.AddScalar(Page.DisappearingFn.WithValue(fn))
 
     [<Extension>]
     static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.NavigatedTo.WithValue(fun _ -> msg))
+        this.AddScalar(Page.NavigatedToMsg.WithValue(fun _ -> msg))
+
+    [<Extension>]
+    static member inline onNavigatedTo(this: WidgetBuilder<'msg, #IFabPage>, fn: unit -> unit) =
+        this.AddScalar(Page.NavigatedToFn.WithValue(fun _ -> fn()))
 
     [<Extension>]
     static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabPage>, msg: 'msg) =
-        this.AddScalar(Page.NavigatedFrom.WithValue(fun _ -> msg))
+        this.AddScalar(Page.NavigatedFromMsg.WithValue(fun _ -> msg))
+
+    [<Extension>]
+    static member inline onNavigatedFrom(this: WidgetBuilder<'msg, #IFabPage>, fn: unit -> unit) =
+        this.AddScalar(Page.NavigatedFromFn.WithValue(fun _ -> fn()))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>
@@ -113,7 +147,7 @@ type PageModifiers =
     /// <summary>Set the toolbar items of this page menu</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline toolbarItems<'msg, 'marker when 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline toolbarItems<'msg, 'marker when 'msg: equality and 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabToolbarItem> Page.ToolbarItems this
 
 [<Extension>]
@@ -165,6 +199,14 @@ type PageExtraModifiers =
     /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The padding value that will be applied to both left and right sides</param>
+    /// <param name="verticalSize">The padding value that will be applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, horizontalSize: float, verticalSize: float) =
+        this.padding(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>

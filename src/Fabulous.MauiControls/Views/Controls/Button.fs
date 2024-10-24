@@ -21,11 +21,11 @@ module Button =
     let CharacterSpacing =
         Attributes.defineBindableFloat Button.CharacterSpacingProperty
 
-    let Clicked =
-        Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+    let ClickedMsg =
+        Attributes.defineEventNoArg "Button_ClickedMsg" (fun target -> (target :?> Button).Clicked)
 
-    let Clicked' =
-        Attributes.defineEventNoArgNoDispatch "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+    let ClickedFn =
+        Attributes.defineEventNoArgNoDispatch "Button_ClickedFn" (fun target -> (target :?> Button).Clicked)
 
     let ContentLayout =
         Attributes.defineBindableWithEquality<Button.ButtonContentLayout> Button.ContentLayoutProperty
@@ -51,11 +51,17 @@ module Button =
     let Padding =
         Attributes.defineBindableWithEquality<Thickness> Button.PaddingProperty
 
-    let Pressed =
-        Attributes.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
+    let PressedMsg =
+        Attributes.defineEventNoArg "Button_PressedMsg" (fun target -> (target :?> Button).Pressed)
 
-    let Released =
-        Attributes.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
+    let PressedFn =
+        Attributes.defineEventNoArgNoDispatch "Button_PressedFn" (fun target -> (target :?> Button).Pressed)
+
+    let ReleasedMsg =
+        Attributes.defineEventNoArg "Button_ReleasedMsg" (fun target -> (target :?> Button).Released)
+
+    let ReleasedFn =
+        Attributes.defineEventNoArgNoDispatch "Button_ReleasedFn" (fun target -> (target :?> Button).Released)
 
     let Text = Attributes.defineBindableWithEquality<string> Button.TextProperty
 
@@ -71,14 +77,14 @@ module ButtonBuilders =
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline Button<'msg>(text: string, onClicked: 'msg) =
-            WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(MsgValue(onClicked)))
+        static member inline Button(text: string, onClicked: 'msg) =
+            WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.ClickedMsg.WithValue(MsgValue(onClicked)))
 
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Function to execute</param>
         static member inline Button(text: string, onClicked: unit -> unit) =
-            WidgetBuilder<unit, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked'.WithValue(onClicked))
+            WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.ClickedFn.WithValue(onClicked))
 
 [<Extension>]
 type ButtonModifiers =
@@ -178,14 +184,28 @@ type ButtonModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IFabButton>, msg: 'msg) =
-        this.AddScalar(Button.Pressed.WithValue(MsgValue(msg)))
+        this.AddScalar(Button.PressedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Pressed event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onPressed(this: WidgetBuilder<'msg, #IFabButton>, fn: unit -> unit) =
+        this.AddScalar(Button.PressedFn.WithValue(fn))
 
     /// <summary>Listen for the Released event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IFabButton>, msg: 'msg) =
-        this.AddScalar(Button.Released.WithValue(MsgValue(msg)))
+        this.AddScalar(Button.ReleasedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen for the Released event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onReleased(this: WidgetBuilder<'msg, #IFabButton>, fn: unit -> unit) =
+        this.AddScalar(Button.ReleasedFn.WithValue(fn))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>
@@ -243,6 +263,14 @@ type ButtonExtraModifiers =
     /// <param name="uniformSize">The uniform padding inside the button</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The padding value that will be applied to both left and right sides</param>
+    /// <param name="verticalSize">The padding value that will be applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabButton>, horizontalSize: float, verticalSize: float) =
+        this.padding(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the padding inside the button</summary>
     /// <param name="this">Current widget</param>

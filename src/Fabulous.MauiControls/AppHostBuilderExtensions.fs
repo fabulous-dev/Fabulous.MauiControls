@@ -42,7 +42,7 @@ type AppHostBuilderExtensions =
             program.State.Logger,
             program.SyncAction,
             fun () ->
-                (View.Component(program.State, arg) {
+                (View.Component("_", program.State, arg) {
                     let! model = Mvu.State
                     program.View model
                 })
@@ -51,6 +51,24 @@ type AppHostBuilderExtensions =
 
     [<Extension>]
     static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, #IFabApplication>) : MauiAppBuilder =
+        this.UseFabulousApp(program, ())
+
+    [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, Memo.Memoized<#IFabApplication>>, arg: 'arg) : MauiAppBuilder =
+        this.UseFabulousApp(
+            program.CanReuseView,
+            program.State.Logger,
+            program.SyncAction,
+            fun () ->
+                (View.Component("_", program.State, arg) {
+                    let! model = Mvu.State
+                    program.View model
+                })
+                    .Compile()
+        )
+
+    [<Extension>]
+    static member UseFabulousApp(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, Memo.Memoized<#IFabApplication>>) : MauiAppBuilder =
         this.UseFabulousApp(program, ())
 
     [<Extension>]
@@ -72,5 +90,5 @@ type AppHostBuilderExtensions =
             (match syncAction with
              | Some synAction -> synAction
              | None -> MauiViewHelpers.defaultSyncAction),
-            fun () -> (View.Component() { view() }).Compile()
+            fun () -> (View.Component("_") { view() }).Compile()
         )

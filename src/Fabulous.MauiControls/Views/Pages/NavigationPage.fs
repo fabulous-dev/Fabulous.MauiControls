@@ -42,7 +42,7 @@ type RequiresSubscriptionEvent() =
 
 /// Maui handles pages asynchronously, meaning a page will be added to the stack only after the animation is finished.
 /// This is a problem for Fabulous, because the nav stack needs to be synchronized with the widget trees.
-/// Otherwise rapid consecutive updates might end up with a wrong nav stack.
+/// Otherwise, rapid consecutive updates might end up with a wrong nav stack.
 ///
 /// To work around that, we keep our own nav stack, and we update it synchronously.
 type FabNavigationPage() as this =
@@ -268,11 +268,17 @@ module NavigationPageUpdaters =
 module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()
 
-    let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
+    let BackButtonPressedMsg =
+        Attributes.defineEventNoArg "NavigationPage_BackButtonPressedMsg" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
-    let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
+    let BackButtonPressedFn =
+        Attributes.defineEventNoArgNoDispatch "NavigationPage_BackButtonPressedFn" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
+
+    let BackNavigatedMsg =
+        Attributes.defineEventNoArg "NavigationPage_BackNavigatedMsg" (fun target -> (target :?> FabNavigationPage).BackNavigated)
+
+    let BackNavigatedFn =
+        Attributes.defineEventNoArgNoDispatch "NavigationPage_BackNavigatedFn" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty
@@ -345,7 +351,7 @@ module NavigationPageBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a NavigationPage widget</summary>
-        static member inline NavigationPage<'msg>() =
+        static member inline NavigationPage() =
             CollectionBuilder<'msg, IFabNavigationPage, IFabPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
 
 [<Extension>]
@@ -377,14 +383,29 @@ type NavigationPageModifiers =
     /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
     [<Extension>]
     static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabNavigationPage>, msg: 'msg) =
-        this.AddScalar(NavigationPage.BackButtonPressed.WithValue(MsgValue(msg)))
+        this.AddScalar(NavigationPage.BackButtonPressedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the user pressing the system back button. Doesn't support the iOS back button</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
+    [<Extension>]
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #IFabNavigationPage>, fn: unit -> unit) =
+        this.AddScalar(NavigationPage.BackButtonPressedFn.WithValue(fn))
 
     /// <summary>Listen to the user back navigating</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onBackNavigated(this: WidgetBuilder<'msg, #IFabNavigationPage>, msg: 'msg) =
-        this.AddScalar(NavigationPage.BackNavigated.WithValue(MsgValue(msg)))
+        this.AddScalar(NavigationPage.BackNavigatedMsg.WithValue(MsgValue(msg)))
+
+    /// <summary>Listen to the user back navigating</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Function to execute</param>
+    [<Extension>]
+    static member inline onBackNavigated(this: WidgetBuilder<'msg, #IFabNavigationPage>, fn: unit -> unit) =
+        this.AddScalar(NavigationPage.BackNavigatedFn.WithValue(fn))
 
     /// <summary>Link a ViewRef to access the direct NavigationPage control instance</summary>
     /// <param name="this">Current widget</param>

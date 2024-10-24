@@ -35,12 +35,15 @@ module TabbedPage =
     let UnselectedTabColor =
         Attributes.defineBindableColor TabbedPage.UnselectedTabColorProperty
 
+    let SwipePagingEnabled =
+        Attributes.defineBindableBool AndroidSpecific.TabbedPage.IsSwipePagingEnabledProperty
+
 [<AutoOpen>]
 module TabbedPageBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a TabbedPage widget</summary>
-        static member inline TabbedPage<'msg>() =
+        static member inline TabbedPage() =
             CollectionBuilder<'msg, IFabTabbedPage, IFabPage>(TabbedPage.WidgetKey, MultiPageOfPage.Children)
 
 [<Extension>]
@@ -88,6 +91,13 @@ type TabbedPagePlatformModifiers =
     [<Extension>]
     static member inline toolbarPlacement(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: AndroidSpecific.ToolbarPlacement) =
         this.AddScalar(TabbedPage.ToolbarPlacement.WithValue(value))
+
+    /// <summary>Android platform specific. Set whether the user can swipe between tabs</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name= "value">True if the user can swipe between tabs; false otherwise</param>
+    [<Extension>]
+    static member inline isSwipePagingEnabled(this: WidgetBuilder<'msg, #IFabTabbedPage>, value: bool) =
+        this.AddScalar(TabbedPage.SwipePagingEnabled.WithValue(value))
 
 [<Extension>]
 type TabbedPageYieldExtensions =

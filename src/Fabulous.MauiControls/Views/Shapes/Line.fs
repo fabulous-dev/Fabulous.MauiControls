@@ -2,8 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.StackAllocatedCollections.StackList
-open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
@@ -36,7 +34,7 @@ module LineBuilders =
         /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
-        static member inline Line<'msg>(startPoint: Point, endPoint: Point) =
+        static member inline Line(startPoint: Point, endPoint: Point) =
             WidgetBuilder<'msg, IFabLine>(Line.WidgetKey, Line.Points.WithValue(struct (startPoint, endPoint)))
 
 [<Extension>]

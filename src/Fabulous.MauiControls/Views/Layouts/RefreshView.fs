@@ -16,8 +16,11 @@ module RefreshView =
 
     let RefreshColor = Attributes.defineBindableColor RefreshView.RefreshColorProperty
 
-    let Refreshing =
-        Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
+    let RefreshingMsg =
+        Attributes.defineEventNoArg "RefreshView_RefreshingMsg" (fun target -> (target :?> RefreshView).Refreshing)
+
+    let RefreshingFn =
+        Attributes.defineEventNoArgNoDispatch "RefreshView_RefreshingFn" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =
@@ -31,7 +34,21 @@ module RefreshViewBuilders =
             WidgetBuilder<'msg, IFabRefreshView>(
                 RefreshView.WidgetKey,
                 AttributesBundle(
-                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.Refreshing.WithValue(MsgValue(onRefreshing))),
+                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.RefreshingMsg.WithValue(MsgValue(onRefreshing))),
+                    ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
+                    ValueNone
+                )
+            )
+
+        /// <summary>Create a RefreshView widget with content</summary>
+        /// <param name="isRefreshing">The refresh state</param>
+        /// <param name="onRefreshing">Message to dispatch when refresh state changes</param>
+        /// <param name="content">The content widget</param>
+        static member inline RefreshView(isRefreshing: bool, onRefreshing: unit -> unit, content: WidgetBuilder<'msg, #IFabView>) =
+            WidgetBuilder<'msg, IFabRefreshView>(
+                RefreshView.WidgetKey,
+                AttributesBundle(
+                    StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.RefreshingFn.WithValue(onRefreshing)),
                     ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )
