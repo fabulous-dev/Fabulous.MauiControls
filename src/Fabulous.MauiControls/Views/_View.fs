@@ -26,7 +26,7 @@ type ViewModifiers =
     /// <summary>Set the gesture recognizers associated with this widget</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline gestureRecognizers<'msg, 'marker when 'msg : equality and 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline gestureRecognizers<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> View'.GestureRecognizers this
 
     /// <summary>Set the LayoutOptions that define how the widget gets laid in a layout cycle</summary>
@@ -110,6 +110,14 @@ type ViewExtraModifiers =
     /// <param name="uniformSize">The margin value uniformly applied to all sides</param>
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IFabView>, uniformSize: float) = this.margin(Thickness(uniformSize))
+
+    /// <summary>Set the margin for the view</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The margin value uniformly applied to both left and right sides</param>
+    /// <param name="verticalSize">The margin value uniformly applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline margin(this: WidgetBuilder<'msg, #IFabView>, horizontalSize: float, verticalSize: float) =
+        this.margin(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the margin for the view</summary>
     /// <param name="this">Current widget</param>

@@ -25,7 +25,7 @@ module PanGestureRecognizerBuilders =
 
         /// <summary>Create a PanGestureRecognizer that listens for Pan event</summary>
         /// <param name="onPanUpdated">Message to dispatch</param>
-        static member inline PanGestureRecognizer<'msg when 'msg : equality>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
+        static member inline PanGestureRecognizer<'msg when 'msg: equality>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabPanGestureRecognizer>(
                 PanGestureRecognizer.WidgetKey,
                 PanGestureRecognizer.PanUpdatedMsg.WithValue(fun args -> onPanUpdated args |> box)
@@ -34,10 +34,7 @@ module PanGestureRecognizerBuilders =
         /// <summary>Create a PanGestureRecognizer that listens for Pan event</summary>
         /// <param name="onPanUpdated">Message to dispatch</param>
         static member inline PanGestureRecognizer(onPanUpdated: PanUpdatedEventArgs -> unit) =
-            WidgetBuilder<'msg, IFabPanGestureRecognizer>(
-                PanGestureRecognizer.WidgetKey,
-                PanGestureRecognizer.PanUpdatedFn.WithValue(onPanUpdated)
-            )
+            WidgetBuilder<'msg, IFabPanGestureRecognizer>(PanGestureRecognizer.WidgetKey, PanGestureRecognizer.PanUpdatedFn.WithValue(onPanUpdated))
 
 [<Extension>]
 type PanGestureRecognizerModifiers =

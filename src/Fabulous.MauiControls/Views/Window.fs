@@ -102,6 +102,9 @@ module WindowBuilders =
                 AttributesBundle(StackList.empty(), ValueSome [| Window.Page.WithValue(content.Compile()) |], ValueNone)
             )
 
+        static member inline Window() =
+            SingleChildBuilder<'msg, IFabWindow, #IFabPage>(Window.WidgetKey, Window.Page)
+
 [<Extension>]
 type WindowModifiers =
     [<Extension>]

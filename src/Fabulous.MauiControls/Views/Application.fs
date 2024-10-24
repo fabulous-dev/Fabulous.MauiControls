@@ -95,7 +95,8 @@ module Application =
         Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChangedMsg" (fun target -> (target :?> Application).RequestedThemeChanged)
 
     let RequestedThemeChangedFn =
-        Attributes.defineEventNoDispatch<AppThemeChangedEventArgs> "Application_RequestedThemeChangedFn" (fun target -> (target :?> Application).RequestedThemeChanged)
+        Attributes.defineEventNoDispatch<AppThemeChangedEventArgs> "Application_RequestedThemeChangedFn" (fun target ->
+            (target :?> Application).RequestedThemeChanged)
 
     let ResumeMsg =
         Attributes.defineEventNoArg "Application_ResumeMsg" (fun target -> (target :?> FabApplication).Resume)
@@ -145,7 +146,7 @@ module ApplicationBuilders =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
         /// <summary>Create an Application widget with a list of windows</summary>
-        static member inline Application<'msg, 'itemMarker when 'msg : equality and 'itemMarker :> IFabWindow>() =
+        static member inline Application<'msg, 'itemMarker when 'msg: equality and 'itemMarker :> IFabWindow>() =
             CollectionBuilder<'msg, IFabApplication, 'itemMarker>(Application.WidgetKey, Application.Windows)
 
 [<Extension>]
@@ -156,7 +157,7 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline onModalPopped(this: WidgetBuilder<'msg, #IFabApplication>, fn: ModalPoppedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPoppedMsg.WithValue(fn))
-        
+
     /// <summary>Listen for the ModalPopped event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
@@ -293,7 +294,7 @@ type ApplicationModifiers =
 [<Extension>]
 type ApplicationYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'msg : equality and 'marker :> IFabApplication and 'itemType :> IFabWindow>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabApplication and 'itemType :> IFabWindow>
         (
             _: CollectionBuilder<'msg, 'marker, IFabWindow>,
             x: WidgetBuilder<'msg, 'itemType>

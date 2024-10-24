@@ -106,7 +106,7 @@ type MultiPageOfPageModifiers =
     [<Extension>]
     static member inline currentPage(this: WidgetBuilder<'msg, #IFabMultiPageOfPage>, currentPage: int, onCurrentPageChanged: int -> 'msg) =
         this.AddScalar(MultiPageOfPage.CurrentPageWithEventMsg.WithValue(MsgValueEventData.create currentPage onCurrentPageChanged))
-        
+
     /// <summary>Set the current page and listen for changes</summary>
     /// <param name="this">Current widget</param>
     /// <param name="currentPage">The current page index</param>

@@ -72,16 +72,16 @@ module WidgetHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, 'marker>>) =
         items |> Seq.map(fun item -> item.Compile()) |> Seq.toArray
 
-    let inline buildWidgets<'msg, 'marker when 'msg : equality> (key: WidgetKey) (attrs: WidgetAttribute[]) =
+    let inline buildWidgets<'msg, 'marker when 'msg: equality> (key: WidgetKey) (attrs: WidgetAttribute[]) =
         WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))
 
-    let inline buildAttributeCollection<'msg, 'marker, 'item when 'msg : equality>
+    let inline buildAttributeCollection<'msg, 'marker, 'item when 'msg: equality>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)
         (widget: WidgetBuilder<'msg, 'marker>)
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
 
-    let buildItems<'msg, 'marker, 'itemData, 'itemMarker when 'msg : equality>
+    let buildItems<'msg, 'marker, 'itemData, 'itemMarker when 'msg: equality>
         key
         (attrDef: SimpleScalarAttributeDefinition<WidgetItems>)
         (items: seq<'itemData>)
@@ -97,7 +97,7 @@ module WidgetHelpers =
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
-    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'msg : equality and 'groupData :> seq<'itemData>>
+    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'msg: equality and 'groupData :> seq<'itemData>>
         key
         (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems>)
         (items: seq<'groupData>)
@@ -113,7 +113,7 @@ module WidgetHelpers =
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
-    let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'msg : equality and 'groupData :> seq<'itemData>>
+    let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'msg: equality and 'groupData :> seq<'itemData>>
         key
         (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems>)
         (items: seq<'groupData>)

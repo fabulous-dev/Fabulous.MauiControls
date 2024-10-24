@@ -85,6 +85,10 @@ module BorderBuilders =
                 AttributesBundle(StackList.empty(), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
             )
 
+        /// <summary>Create a Border widget with a content widget</summary>
+        static member inline Border() =
+            SingleChildBuilder<'msg, IFabBorder, #IFabView>(Border.WidgetKey, Border.Content)
+
 [<Extension>]
 type BorderModifiers =
     /// <summary>Set the padding inside the border</summary>
@@ -192,6 +196,14 @@ type BorderExtraModifiers =
     /// <param name="uniformSize">The uniform padding inside the border</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The padding value that will be applied to both left and right sides</param>
+    /// <param name="verticalSize">The padding value that will be applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabBorder>, horizontalSize: float, verticalSize: float) =
+        this.padding(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the padding inside the border</summary>
     /// <param name="this">Current widget</param>

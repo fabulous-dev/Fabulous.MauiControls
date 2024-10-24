@@ -15,7 +15,7 @@ type IFabPage =
 module Page =
     let AppearingMsg =
         Attributes.defineEventNoArg "Page_AppearingMsg" (fun target -> (target :?> Page).Appearing)
-         
+
     let AppearingFn =
         Attributes.defineEventNoArgNoDispatch "Page_AppearingFn" (fun target -> (target :?> Page).Appearing)
 
@@ -147,7 +147,7 @@ type PageModifiers =
     /// <summary>Set the toolbar items of this page menu</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline toolbarItems<'msg, 'marker when 'msg : equality and 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline toolbarItems<'msg, 'marker when 'msg: equality and 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabToolbarItem> Page.ToolbarItems this
 
 [<Extension>]
@@ -199,6 +199,14 @@ type PageExtraModifiers =
     /// <param name="uniformSize">The uniform padding value that will be applied to all sides</param>
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, uniformSize: float) = this.padding(Thickness(uniformSize))
+
+    /// <summary>Set the padding inside the widget</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="horizontalSize">The padding value that will be applied to both left and right sides</param>
+    /// <param name="verticalSize">The padding value that will be applied to both top and bottom sides</param>
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #IFabPage>, horizontalSize: float, verticalSize: float) =
+        this.padding(Thickness(horizontalSize, verticalSize))
 
     /// <summary>Set the padding inside the widget</summary>
     /// <param name="this">Current widget</param>

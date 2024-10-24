@@ -35,7 +35,7 @@ type MenuFlyoutItemModifiers =
     /// <summary>Set the keyboard accelerators of this widget</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline keyboardAccelerators<'msg, 'marker when 'msg : equality and 'marker :> IFabMenuFlyoutItem>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline keyboardAccelerators<'msg, 'marker when 'msg: equality and 'marker :> IFabMenuFlyoutItem>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabKeyboardAccelerator> MenuFlyoutItem.KeyboardAccelerators this
 
 [<Extension>]

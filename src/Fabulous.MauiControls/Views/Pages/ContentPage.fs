@@ -42,7 +42,7 @@ module ContentPageBuilders =
 
         /// <summary>Create a ContentPage with a content widget</summary>
         /// <param name="content">The content widget</param>
-        static member inline ContentPage<'msg, 'marker when 'msg : equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ContentPage<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IFabContentPage>(
                 ContentPage.WidgetKey,
                 AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
@@ -59,7 +59,7 @@ type ContentPageModifiers =
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IFabContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
         this.AddScalar(ContentPage.SizeAllocatedMsg.WithValue(fn))
-        
+
     /// <summary>Listen for SizeAllocated event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>

@@ -29,7 +29,7 @@ module SwipeGestureRecognizerBuilders =
 
         /// <summary>Create a SwipeGestureRecognizer that listens for Swipe event</summary>
         /// <param name="onSwiped">Message to dispatch</param>
-        static member inline SwipeGestureRecognizer<'msg when 'msg : equality>(onSwiped: SwipeDirection -> 'msg) =
+        static member inline SwipeGestureRecognizer<'msg when 'msg: equality>(onSwiped: SwipeDirection -> 'msg) =
             WidgetBuilder<'msg, IFabSwipeGestureRecognizer>(
                 SwipeGestureRecognizer.WidgetKey,
                 SwipeGestureRecognizer.SwipedMsg.WithValue(fun args -> onSwiped args.Direction |> box)

@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 
 type IFabZStack =
     inherit IFabLayoutOfView
-    
+
 module ZStack =
     // Remark: ZStack control is not available in Maui, so we use a Grid control instead to simulate the ZStack behavior
     let WidgetKey = Widgets.register<Grid>()
@@ -14,9 +14,10 @@ module ZStack =
 [<AutoOpen>]
 module ZStackBuilders =
     type Fabulous.Maui.View with
+
         static member inline ZStack() =
             CollectionBuilder<'msg, IFabZStack, IFabView>(ZStack.WidgetKey, LayoutOfView.Children)
-            
+
 [<Extension>]
 type ZStackModifiers =
     /// <summary>Link a ViewRef to access the direct Grid control instance</summary>

@@ -99,7 +99,7 @@ type SliderModifiers =
     [<Extension>]
     static member inline onDragCompleted(this: WidgetBuilder<'msg, #IFabSlider>, msg: 'msg) =
         this.AddScalar(Slider.DragCompletedMsg.WithValue(MsgValue(msg)))
-        
+
     /// <summary>Listen for the DragCompleted event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Function to execute</param>

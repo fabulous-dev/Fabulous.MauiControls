@@ -37,7 +37,7 @@ module DropGestureRecognizerBuilders =
 
         /// <summary>Create a DropGestureRecognizer that listens for Drop event</summary>
         /// <param name="onDrop">Message to dispatch</param>
-        static member inline DropGestureRecognizer<'msg when 'msg : equality>(onDrop: DropEventArgs -> 'msg) =
+        static member inline DropGestureRecognizer<'msg when 'msg: equality>(onDrop: DropEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDropGestureRecognizer>(
                 DropGestureRecognizer.WidgetKey,
                 DropGestureRecognizer.DropMsg.WithValue(fun args -> onDrop args |> box)
@@ -46,10 +46,7 @@ module DropGestureRecognizerBuilders =
         /// <summary>Create a DropGestureRecognizer that listens for Drop event</summary>
         /// <param name="onDrop">Message to dispatch</param>
         static member inline DropGestureRecognizer(onDrop: DropEventArgs -> unit) =
-            WidgetBuilder<'msg, IFabDropGestureRecognizer>(
-                DropGestureRecognizer.WidgetKey,
-                DropGestureRecognizer.DropFn.WithValue(onDrop)
-            )
+            WidgetBuilder<'msg, IFabDropGestureRecognizer>(DropGestureRecognizer.WidgetKey, DropGestureRecognizer.DropFn.WithValue(onDrop))
 
 [<Extension>]
 type DropGestureRecognizerModifiers =
@@ -64,7 +61,11 @@ type DropGestureRecognizerModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onDragOver<'msg, 'marker when 'msg : equality and 'marker :> IFabDropGestureRecognizer>(this: WidgetBuilder<'msg, 'marker>, fn: DragEventArgs -> 'msg) =
+    static member inline onDragOver<'msg, 'marker when 'msg: equality and 'marker :> IFabDropGestureRecognizer>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            fn: DragEventArgs -> 'msg
+        ) =
         this.AddScalar(DropGestureRecognizer.DragOverMsg.WithValue(fun args -> fn args |> box))
 
     /// <summary>Listen for the DragOver event</summary>
@@ -78,7 +79,11 @@ type DropGestureRecognizerModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
-    static member inline onDragLeave<'msg, 'marker when 'msg : equality and 'marker :> IFabDragGestureRecognizer>(this: WidgetBuilder<'msg, 'marker>, fn: DragEventArgs -> 'msg) =
+    static member inline onDragLeave<'msg, 'marker when 'msg: equality and 'marker :> IFabDragGestureRecognizer>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            fn: DragEventArgs -> 'msg
+        ) =
         this.AddScalar(DropGestureRecognizer.DragLeaveMsg.WithValue(fun args -> fn args |> box))
 
     /// <summary>Listen for the DragLeave event</summary>

@@ -24,7 +24,7 @@ module PinchGestureRecognizerBuilders =
 
         /// <summary>Create a PinchGestureRecognizer that listens for Pinch event</summary>
         /// <param name="onPinchUpdated">Message to dispatch</param>
-        static member inline PinchGestureRecognizer<'msg when 'msg : equality>(onPinchUpdated: PinchGestureUpdatedEventArgs -> 'msg) =
+        static member inline PinchGestureRecognizer<'msg when 'msg: equality>(onPinchUpdated: PinchGestureUpdatedEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabPinchGestureRecognizer>(
                 PinchGestureRecognizer.WidgetKey,
                 PinchGestureRecognizer.PinchUpdatedMsg.WithValue(fun args -> onPinchUpdated args |> box)
@@ -33,10 +33,7 @@ module PinchGestureRecognizerBuilders =
         /// <summary>Create a PinchGestureRecognizer that listens for Pinch event</summary>
         /// <param name="onPinchUpdated">Message to dispatch</param>
         static member inline PinchGestureRecognizer(onPinchUpdated: PinchGestureUpdatedEventArgs -> unit) =
-            WidgetBuilder<'msg, IFabPinchGestureRecognizer>(
-                PinchGestureRecognizer.WidgetKey,
-                PinchGestureRecognizer.PinchUpdatedFn.WithValue(onPinchUpdated)
-            )
+            WidgetBuilder<'msg, IFabPinchGestureRecognizer>(PinchGestureRecognizer.WidgetKey, PinchGestureRecognizer.PinchUpdatedFn.WithValue(onPinchUpdated))
 
 [<Extension>]
 type PinchGestureRecognizerModifiers =

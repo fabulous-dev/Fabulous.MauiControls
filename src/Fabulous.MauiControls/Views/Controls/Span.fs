@@ -100,7 +100,7 @@ type SpanModifiers =
     /// <summary>Set the gesture recognizers</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline gestureRecognizers<'msg, 'marker when 'msg : equality and 'marker :> IFabSpan>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline gestureRecognizers<'msg, 'marker when 'msg: equality and 'marker :> IFabSpan>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> Span.GestureRecognizers this
 
     /// <summary>Set the line height</summary>

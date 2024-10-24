@@ -45,7 +45,8 @@ module RadioButton =
         Attributes.defineBindableWithEvent "RadioButton_CheckedChangedMsg" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
 
     let IsCheckedWithEventFn =
-        Attributes.defineBindableWithEventNoDispatch "RadioButton_CheckedChangedFn" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
+        Attributes.defineBindableWithEventNoDispatch "RadioButton_CheckedChangedFn" RadioButton.IsCheckedProperty (fun target ->
+            (target :?> RadioButton).CheckedChanged)
 
     let TextColor = Attributes.defineBindableColor RadioButton.TextColorProperty
 
@@ -91,7 +92,9 @@ module RadioButtonBuilders =
                 RadioButton.WidgetKey,
                 AttributesBundle(
                     StackList.one(
-                        RadioButton.IsCheckedWithEventMsg.WithValue(MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
+                        RadioButton.IsCheckedWithEventMsg.WithValue(
+                            MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)
+                        )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
                     ValueNone
@@ -107,7 +110,9 @@ module RadioButtonBuilders =
                 RadioButton.WidgetKey,
                 AttributesBundle(
                     StackList.one(
-                        RadioButton.IsCheckedWithEventFn.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
+                        RadioButton.IsCheckedWithEventFn.WithValue(
+                            ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)
+                        )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
                     ValueNone

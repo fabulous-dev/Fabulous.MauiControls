@@ -61,6 +61,10 @@ module ScrollViewBuilders =
         static member inline ScrollView(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetHelpers.buildWidgets<'msg, IFabScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
 
+        /// <summary>Create a ScrollView widget</summary>
+        static member inline ScrollView() =
+            SingleChildBuilder<'msg, IFabScrollView, #IFabView>(ScrollView.WidgetKey, ScrollView.Content)
+
 [<Extension>]
 type ScrollViewModifiers =
     /// <summary>Set the horizontal scrollbar visibility</summary>

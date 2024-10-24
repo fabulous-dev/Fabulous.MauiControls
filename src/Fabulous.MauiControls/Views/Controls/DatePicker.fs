@@ -108,8 +108,7 @@ module DatePicker =
                         target.SetValue(valueProperty, value)
 
                         // Set the new event handler
-                        let handler =
-                            target.DateSelected.Subscribe(curr.Event)
+                        let handler = target.DateSelected.Subscribe(curr.Event)
 
                         node.SetHandler(name, handler))
             )

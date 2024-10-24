@@ -74,7 +74,7 @@ type GraphicsViewModifiers =
     [<Extension>]
     static member inline onCancelInteraction(this: WidgetBuilder<'msg, #IGraphicsView>, msg: 'msg) =
         this.AddScalar(GraphicsView.CancelInteractionMsg.WithValue(MsgValue(msg)))
-        
+
     /// <summary>Listen for the CancelInteraction event, which is raised when the press that made contact with the GraphicsView loses contact</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Function to execute</param>

@@ -117,13 +117,13 @@ module ListViewBuilders =
 
         /// <summary>Create a ListView with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline ListView<'msg, 'itemData, 'itemMarker when 'msg : equality and 'itemMarker :> IFabCell>(items: seq<'itemData>) =
+        static member inline ListView<'msg, 'itemData, 'itemMarker when 'msg: equality and 'itemMarker :> IFabCell>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
 
         /// <summary>Create a ListView with a list of grouped items</summary>
         /// <param name="items">The grouped items list</param>
         static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
-            when 'msg : equality and 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+            when 'msg: equality and 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItemsNoFooter<'msg, IFabListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>

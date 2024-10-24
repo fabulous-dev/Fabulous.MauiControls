@@ -24,16 +24,14 @@ module MsgValueEventData =
     let create (value: 'data) (event: 'eventArgs -> 'msg) =
         { Value = value
           Event = event >> box >> MsgValue }
-        
+
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
     { Value: 'data
       Event: 'eventArgs -> unit }
 
 module ValueEventData =
-    let create (value: 'data) (event: 'eventArgs -> unit) =
-        { Value = value
-          Event = event }
+    let create (value: 'data) (event: 'eventArgs -> unit) = { Value = value; Event = event }
 
 /// Maui.Controls specific attributes that can be encoded as 8 bytes
 module SmallScalars =
@@ -249,8 +247,7 @@ module Attributes =
                         // Set the new event handler
                         let event = getEvent target
 
-                        let handler =
-                            event.Subscribe(curr.Event)
+                        let handler = event.Subscribe(curr.Event)
 
                         node.SetHandler(name, handler))
             )

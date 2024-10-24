@@ -11,7 +11,7 @@ type IFabCell =
 module Cell =
     let AppearingMsg =
         Attributes.defineEventNoArg "Cell_AppearingMsg" (fun target -> (target :?> Cell).Appearing)
-        
+
     let AppearingFn =
         Attributes.defineEventNoArgNoDispatch "Cell_AppearingFn" (fun target -> (target :?> Cell).Appearing)
 
@@ -104,13 +104,13 @@ type CellModifiers =
     /// <summary>Set the context actions of the cell</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline contextActions<'msg, 'marker when 'msg : equality and 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline contextActions<'msg, 'marker when 'msg: equality and 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabMenuItem> Cell.ContextActions this
 
 [<Extension>]
 type CellYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'msg : equality and 'marker :> IFabCell and 'itemType :> IFabMenuItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabCell and 'itemType :> IFabMenuItem>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>,
             x: WidgetBuilder<'msg, 'itemType>

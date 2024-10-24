@@ -25,7 +25,7 @@ module TapGestureRecognizerBuilders =
 
         /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
         /// <param name="onTapped">Message to dispatch</param>
-        static member inline TapGestureRecognizer<'msg when 'msg : equality>(onTapped: 'msg) =
+        static member inline TapGestureRecognizer<'msg when 'msg: equality>(onTapped: 'msg) =
             WidgetBuilder<'msg, IFabTapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.TappedMsg.WithValue(fun _ -> box onTapped))
 
         /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
