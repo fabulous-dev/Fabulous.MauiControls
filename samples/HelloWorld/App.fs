@@ -1,9 +1,9 @@
 namespace HelloWorld
 
 open Fabulous.Maui
+open Microsoft.Maui.Hosting
 
 open type Fabulous.Maui.View
-open Microsoft.Maui.Hosting
 
 module App =
     let view () =

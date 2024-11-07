@@ -1,6 +1,5 @@
 namespace Gallery
 
-open Fabulous.Maui.SmallScalars
 open Microsoft.FSharp.Core
 open Fabulous
 open Fabulous.Maui

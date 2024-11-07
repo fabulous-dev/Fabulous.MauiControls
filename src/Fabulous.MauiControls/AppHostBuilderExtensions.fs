@@ -28,11 +28,22 @@ type AppHostBuilderExtensions =
                   GetViewNode = ViewNode.get
                   GetComponent = Component.get
                   SetComponent = Component.set }
+                
+            let envContext = new EnvironmentContext()
+            let app = FabApplication()
+            
+            envContext.Set(EnvironmentKeys.Theme, app.RequestedTheme, false)
 
             let def = WidgetDefinitionStore.get widget.Key
-            let struct (_, view) = def.CreateView(widget, treeContext, ValueNone)
-            let app = view :?> Microsoft.Maui.Controls.Application
-            Theme.ListenForChanges(app)
+            let node = def.AttachView(widget, envContext, treeContext, ValueNone, app)
+            
+            node.SetHandler(
+                "Theme",
+                app.RequestedThemeChanged.Subscribe(fun args ->
+                    envContext.Set(EnvironmentKeys.Theme, args.RequestedTheme, false)
+                )
+            )
+            
             app)
 
     [<Extension>]
@@ -42,8 +53,8 @@ type AppHostBuilderExtensions =
             program.State.Logger,
             program.SyncAction,
             fun () ->
-                (View.Component("_", program.State, arg) {
-                    let! model = Mvu.State
+                (View.Component("_") {
+                    let! model = Context.Mvu(program.State, arg)
                     program.View model
                 })
                     .Compile()
@@ -60,8 +71,8 @@ type AppHostBuilderExtensions =
             program.State.Logger,
             program.SyncAction,
             fun () ->
-                (View.Component("_", program.State, arg) {
-                    let! model = Mvu.State
+                (View.Component("_") {
+                    let! model = Context.Mvu(program.State, arg)
                     program.View model
                 })
                     .Compile()
@@ -81,14 +92,8 @@ type AppHostBuilderExtensions =
             ?syncAction: (unit -> unit) -> unit
         ) : MauiAppBuilder =
         this.UseFabulousApp(
-            (match canReuseView with
-             | Some fn -> fn
-             | None -> MauiViewHelpers.canReuseView),
-            (match logger with
-             | Some logger -> logger
-             | None -> ProgramDefaults.defaultLogger()),
-            (match syncAction with
-             | Some synAction -> synAction
-             | None -> MauiViewHelpers.defaultSyncAction),
-            fun () -> (View.Component("_") { view() }).Compile()
+            (defaultArg canReuseView MauiViewHelpers.canReuseView),
+            (defaultArg logger (ProgramDefaults.defaultLogger())),
+            (defaultArg syncAction MauiViewHelpers.defaultSyncAction),
+            fun () -> view().Compile()
         )

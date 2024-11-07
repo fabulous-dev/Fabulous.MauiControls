@@ -5,9 +5,21 @@ open Microsoft.Maui.Hosting
 
 open type Fabulous.Maui.View
 
-module App =
+module App =    
     let view () =
-        Component() { Application(ContentPage() { Label("Hello Component").center() }) }
+        Component("root") {
+            Application() {
+                Window() {
+                    ContentPage() {
+                        (VStack() {
+                            Label("Hello Component")
+                                .centerTextHorizontal()
+                        })
+                            .centerVertical()
+                    }
+                }
+            }
+        }
 
     let createMauiApp () =
         MauiApp.CreateBuilder().UseFabulousApp(view).Build()

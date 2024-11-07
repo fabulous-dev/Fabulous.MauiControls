@@ -144,10 +144,10 @@
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Any.fs" />
     <Compile Include="Views\_Semantics.fs" />
-    <Compile Include="ThemeAware.fs" />
     <Compile Include="Component.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Async.fs" />
+    <Compile Include="Environment.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />
     <Compile Include="Style.fs" />
   </ItemGroup>
@@ -157,7 +157,7 @@
       This version will be used as the lower bound in the NuGet package
     -->
     <PackageReference Include="FSharp.Core" VersionOverride="8.0.100" PrivateAssets="All" />
-    <PackageReference Include="Fabulous" Condition="'$(UseLocalProjectReference)' != 'true'" VersionOverride="[3.0.0-pre7]" />
+    <PackageReference Include="Fabulous" Condition="'$(UseLocalProjectReference)' != 'true'" VersionOverride="[3.0.0-pre8]" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.3" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.3" />

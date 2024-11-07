@@ -52,8 +52,8 @@ module App =
     let program = Program.statefulWithCmd init update
 
     let view () =
-        Component(program) {
-            let! model = Mvu.State
+        Component("Counter") {
+            let! model = Context.Mvu(program)
 
             Application(
                 ContentPage() {

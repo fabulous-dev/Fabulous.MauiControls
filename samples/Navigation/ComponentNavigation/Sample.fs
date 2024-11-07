@@ -49,8 +49,8 @@ module Sample =
         | NavigationRoute.PageC(someArgs, stepCount) -> AnyPage(PageC.view nav appMsgDispatcher (someArgs, stepCount))
 
     let view nav appMsgDispatcher () =
-        Component(program nav appMsgDispatcher) {
-            let! model = Mvu.State
+        Component("Sample") {
+            let! model = Context.Mvu(program nav appMsgDispatcher)
 
             Application(
                 (NavigationPage() {

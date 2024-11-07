@@ -52,6 +52,8 @@ type WidgetTests() =
                 ContentPage(Label("Hello")).automationId("yourAddress")
             }
 
+        let envContext = new EnvironmentContext()
+        
         let treeContext: ViewTreeContext =
             { CanReuseView = MauiViewHelpers.canReuseView
               GetViewNode = ViewNode.get
@@ -64,7 +66,7 @@ type WidgetTests() =
         let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)
 
-        let node = new ViewNode(None, treeContext, weakRef)
+        let node = new ViewNode(None, envContext, treeContext, weakRef)
 
         Reconciler.update treeContext.CanReuseView ValueNone (oldWidget.Compile()) node
         Reconciler.update treeContext.CanReuseView (ValueSome(oldWidget.Compile())) (newWidget.Compile()) node

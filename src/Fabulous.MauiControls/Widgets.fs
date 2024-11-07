@@ -22,7 +22,7 @@ module Widgets =
               Name = typeof<'T>.Name
               TargetType = typeof<'T>
               CreateView =
-                fun (widget, treeContext, parentNode) ->
+                fun (widget, envContext, treeContext, parentNode) ->
                     treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
 
                     let view = new 'T()
@@ -33,7 +33,7 @@ module Widgets =
                         | ValueNone -> None
                         | ValueSome node -> Some node
 
-                    let node = new ViewNode(parentNode, treeContext, weakReference)
+                    let node = new ViewNode(parentNode, envContext, treeContext, weakReference)
 
                     ViewNode.set node view
 
@@ -42,7 +42,7 @@ module Widgets =
                     Reconciler.update treeContext.CanReuseView ValueNone widget node
                     struct (node :> IViewNode, box view)
               AttachView =
-                fun (widget, treeContext, parentNode, view) ->
+                fun (widget, envContext, treeContext, parentNode, view) ->
                     treeContext.Logger.Debug("Attaching view for {0}", typeof<'T>.Name)
 
                     let view = unbox<'T> view
@@ -53,7 +53,7 @@ module Widgets =
                         | ValueNone -> None
                         | ValueSome node -> Some node
 
-                    let node = new ViewNode(parentNode, treeContext, weakReference)
+                    let node = new ViewNode(parentNode, envContext, treeContext, weakReference)
 
                     ViewNode.set node view
 
@@ -70,7 +70,7 @@ module Widgets =
 
 module WidgetHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, 'marker>>) =
-        items |> Seq.map(fun item -> item.Compile()) |> Seq.toArray
+        items |> Seq.map(_.Compile()) |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker when 'msg: equality> (key: WidgetKey) (attrs: WidgetAttribute[]) =
         WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))

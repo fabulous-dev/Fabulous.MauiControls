@@ -7,7 +7,6 @@ module RegisteredSamples =
         [ ImageButton.sample
           Label.sample
           TextButton.sample
-          ThemeAware.sample
           Border.sample
           Shadow.sample
           Shapes.sample
