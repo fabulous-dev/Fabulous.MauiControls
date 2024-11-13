@@ -157,100 +157,102 @@ module Attributes =
                     bindableObject.ClearValue(bindableProperty)
                 else
                     bindableObject.SetValue(bindableProperty, value))
+            
+    module Mvu =
+        /// Update both a property and its related event.
+        /// This definition makes sure that the event is only raised when the property is changed by the user,
+        /// and not when the property is set by the code
+        let defineBindableWithEvent<'data, 'args>
+            name
+            (bindableProperty: BindableProperty)
+            (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+            : SimpleScalarAttributeDefinition<MsgValueEventData<'data, 'args>> =
 
-    /// Update both a property and its related event.
-    /// This definition makes sure that the event is only raised when the property is changed by the user,
-    /// and not when the property is set by the code
-    let defineBindableWithEvent<'data, 'args>
-        name
-        (bindableProperty: BindableProperty)
-        (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<MsgValueEventData<'data, 'args>> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun oldValueOpt (newValueOpt: MsgValueEventData<'data, 'args> voption) node ->
+                        let target = node.Target :?> BindableObject
 
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: MsgValueEventData<'data, 'args> voption) node ->
-                    let target = node.Target :?> BindableObject
+                        match newValueOpt with
+                        | ValueNone ->
+                            // The attribute is no longer applied, so we clean up the event
+                            match node.TryGetHandler(name) with
+                            | ValueNone -> ()
+                            | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone ->
-                        // The attribute is no longer applied, so we clean up the event
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
+                            // Only clear the property if a value was set before
+                            match oldValueOpt with
+                            | ValueNone -> ()
+                            | ValueSome _ -> target.ClearValue(bindableProperty)
 
-                        // Only clear the property if a value was set before
-                        match oldValueOpt with
-                        | ValueNone -> ()
-                        | ValueSome _ -> target.ClearValue(bindableProperty)
+                        | ValueSome curr ->
+                            // Clean up the old event handler if any
+                            match node.TryGetHandler(name) with
+                            | ValueNone -> ()
+                            | ValueSome handler -> handler.Dispose()
 
-                    | ValueSome curr ->
-                        // Clean up the old event handler if any
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
+                            // Set the new value
+                            target.SetValue(bindableProperty, curr.Value)
 
-                        // Set the new value
-                        target.SetValue(bindableProperty, curr.Value)
+                            // Set the new event handler
+                            let event = getEvent target
 
-                        // Set the new event handler
-                        let event = getEvent target
+                            let handler =
+                                event.Subscribe(fun args ->
+                                    let (MsgValue r) = curr.Event args
+                                    Dispatcher.dispatch node r)
 
-                        let handler =
-                            event.Subscribe(fun args ->
-                                let (MsgValue r) = curr.Event args
-                                Dispatcher.dispatch node r)
+                            node.SetHandler(name, handler))
+                )
+                |> AttributeDefinitionStore.registerScalar
 
-                        node.SetHandler(name, handler))
-            )
-            |> AttributeDefinitionStore.registerScalar
+            { Key = key; Name = name }
 
-        { Key = key; Name = name }
+    module Component =
+        /// Update both a property and its related event.
+        /// This definition makes sure that the event is only raised when the property is changed by the user,
+        /// and not when the property is set by the code
+        let defineBindableWithEvent<'data, 'args>
+            name
+            (bindableProperty: BindableProperty)
+            (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+            : SimpleScalarAttributeDefinition<ValueEventData<'data, 'args>> =
 
-    /// Update both a property and its related event.
-    /// This definition makes sure that the event is only raised when the property is changed by the user,
-    /// and not when the property is set by the code
-    let defineBindableWithEventNoDispatch<'data, 'args>
-        name
-        (bindableProperty: BindableProperty)
-        (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<ValueEventData<'data, 'args>> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun oldValueOpt (newValueOpt: ValueEventData<'data, 'args> voption) node ->
+                        let target = node.Target :?> BindableObject
 
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: ValueEventData<'data, 'args> voption) node ->
-                    let target = node.Target :?> BindableObject
+                        match newValueOpt with
+                        | ValueNone ->
+                            // The attribute is no longer applied, so we clean up the event
+                            match node.TryGetHandler(name) with
+                            | ValueNone -> ()
+                            | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone ->
-                        // The attribute is no longer applied, so we clean up the event
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
+                            // Only clear the property if a value was set before
+                            match oldValueOpt with
+                            | ValueNone -> ()
+                            | ValueSome _ -> target.ClearValue(bindableProperty)
 
-                        // Only clear the property if a value was set before
-                        match oldValueOpt with
-                        | ValueNone -> ()
-                        | ValueSome _ -> target.ClearValue(bindableProperty)
+                        | ValueSome curr ->
+                            // Clean up the old event handler if any
+                            match node.TryGetHandler(name) with
+                            | ValueNone -> ()
+                            | ValueSome handler -> handler.Dispose()
 
-                    | ValueSome curr ->
-                        // Clean up the old event handler if any
-                        match node.TryGetHandler(name) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> handler.Dispose()
+                            // Set the new value
+                            target.SetValue(bindableProperty, curr.Value)
 
-                        // Set the new value
-                        target.SetValue(bindableProperty, curr.Value)
+                            // Set the new event handler
+                            let event = getEvent target
 
-                        // Set the new event handler
-                        let event = getEvent target
+                            let handler = event.Subscribe(curr.Event)
 
-                        let handler = event.Subscribe(curr.Event)
+                            node.SetHandler(name, handler))
+                )
+                |> AttributeDefinitionStore.registerScalar
 
-                        node.SetHandler(name, handler))
-            )
-            |> AttributeDefinitionStore.registerScalar
-
-        { Key = key; Name = name }
+            { Key = key; Name = name }

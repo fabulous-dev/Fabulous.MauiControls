@@ -57,6 +57,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ComponentNavigation", "samp
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Calculator", "samples\Calculator\Calculator.fsproj", "{E24F96A8-B1FF-45AA-A7D9-379F3F88F422}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous", "..\Fabulous\src\Fabulous\Fabulous.fsproj", "{A5D5A010-8A72-4B4F-8266-8D25FD9662B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,10 @@ Global
 		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66532A61-1BB8-4BD1-A281-A160ABB0EFE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5D5A010-8A72-4B4F-8266-8D25FD9662B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5D5A010-8A72-4B4F-8266-8D25FD9662B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5D5A010-8A72-4B4F-8266-8D25FD9662B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5D5A010-8A72-4B4F-8266-8D25FD9662B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{67FB01A1-1A3E-4A3B-83DC-7D63B56FB1A1} = {35A6823C-8312-4F92-818A-5117BB31A569}

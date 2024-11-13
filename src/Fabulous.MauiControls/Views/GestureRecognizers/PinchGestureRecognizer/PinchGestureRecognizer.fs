@@ -1,0 +1,20 @@
+namespace Fabulous.Maui
+
+open System.Runtime.CompilerServices
+open Fabulous
+open Microsoft.Maui.Controls
+
+type IFabPinchGestureRecognizer =
+    inherit IFabGestureRecognizer
+
+module PinchGestureRecognizer =
+    let WidgetKey = Widgets.register<PinchGestureRecognizer>()
+
+[<Extension>]
+type PinchGestureRecognizerModifiers =
+    /// <summary>Link a ViewRef to access the direct PinchGestureRecognizer control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabPinchGestureRecognizer>, value: ViewRef<PinchGestureRecognizer>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

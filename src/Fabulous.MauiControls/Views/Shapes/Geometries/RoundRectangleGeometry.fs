@@ -1,6 +1,5 @@
 namespace Fabulous.Maui
 
-open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
