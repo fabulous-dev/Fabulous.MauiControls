@@ -5,8 +5,9 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 module HybridWebViewComponent =
-    let RawMessageReceived = Attributes.Component.defineEvent "HybridWebViewComponent_RawMessageReceived" (fun target -> (target :?> HybridWebView).RawMessageReceived)
-    
+    let RawMessageReceived =
+        Attributes.Component.defineEvent "HybridWebViewComponent_RawMessageReceived" (fun target -> (target :?> HybridWebView).RawMessageReceived)
+
 [<Extension>]
 type HybridWebViewComponentModifiers =
     /// <summary>Listen for the RawMessageReceived event</summary>

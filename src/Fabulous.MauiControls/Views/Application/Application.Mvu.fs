@@ -21,7 +21,8 @@ module ApplicationMvu =
         Attributes.Mvu.defineEvent<ModalPushingEventArgs> "ApplicationMvu_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
     let RequestedThemeChanged =
-        Attributes.Mvu.defineEvent<AppThemeChangedEventArgs> "ApplicationMvu_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
+        Attributes.Mvu.defineEvent<AppThemeChangedEventArgs> "ApplicationMvu_RequestedThemeChanged" (fun target ->
+            (target :?> Application).RequestedThemeChanged)
 
     let Resume =
         Attributes.Mvu.defineEventNoArg "ApplicationMvu_Resume" (fun target -> (target :?> FabApplication).Resume)

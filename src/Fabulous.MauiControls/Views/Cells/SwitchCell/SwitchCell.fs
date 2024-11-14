@@ -13,8 +13,9 @@ module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
     let OnColor = Attributes.defineBindableColor SwitchCell.OnColorProperty
-    
-    let Text : SimpleScalarAttributeDefinition<string> = Attributes.defineBindableWithEquality SwitchCell.TextProperty
+
+    let Text: SimpleScalarAttributeDefinition<string> =
+        Attributes.defineBindableWithEquality SwitchCell.TextProperty
 
 [<Extension>]
 type SwitchCellModifiers =

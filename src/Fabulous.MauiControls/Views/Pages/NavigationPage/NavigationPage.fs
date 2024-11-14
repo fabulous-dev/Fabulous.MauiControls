@@ -267,7 +267,7 @@ module NavigationPageUpdaters =
 
 module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()
-    
+
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty
 

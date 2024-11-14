@@ -25,7 +25,7 @@ type PageComponentModifiers =
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<unit, #IFabPage>, fn: unit -> unit) =
         this.AddScalar(PageComponent.Appearing.WithValue(fn))
-        
+
     /// <summary>Listen to the Disappearing event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Function to execute</param>

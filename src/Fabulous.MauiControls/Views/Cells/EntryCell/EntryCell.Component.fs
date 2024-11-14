@@ -9,12 +9,13 @@ module EntryCellComponent =
         Attributes.Component.defineEventNoArg "EntryCellComponent_Completed" (fun target -> (target :?> EntryCell).Completed)
 
     let TextWithEvent =
-        Attributes.Component.defineBindableWithEvent "EntryCellComponent_TextChanged" EntryCell.TextProperty (fun target -> (target :?> FabEntryCell).TextChanged)
+        Attributes.Component.defineBindableWithEvent "EntryCellComponent_TextChanged" EntryCell.TextProperty (fun target ->
+            (target :?> FabEntryCell).TextChanged)
 
 [<AutoOpen>]
 module EntryCellComponentBuilders =
     type Fabulous.Maui.View with
-    
+
         /// <summary>Create an EntryCell with a label, a text, and listen to text changes</summary>
         /// <param name="label">The label value</param>
         /// <param name="text">The text value</param>

@@ -4,9 +4,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
 
-type IFabElement =
-    interface
-    end
+type IFabElement = interface end
 
 module Element =
     let AutomationId =

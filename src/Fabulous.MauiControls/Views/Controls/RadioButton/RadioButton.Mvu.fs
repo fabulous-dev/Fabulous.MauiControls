@@ -6,7 +6,8 @@ open Microsoft.Maui.Controls
 
 module RadioButtonMvu =
     let IsCheckedWithEvent =
-        Attributes.Mvu.defineBindableWithEvent "RadioButtonMvu_CheckedChanged" RadioButton.IsCheckedProperty (fun target -> (target :?> RadioButton).CheckedChanged)
+        Attributes.Mvu.defineBindableWithEvent "RadioButtonMvu_CheckedChanged" RadioButton.IsCheckedProperty (fun target ->
+            (target :?> RadioButton).CheckedChanged)
 
 [<AutoOpen>]
 module RadioButtonMvuBuilders =

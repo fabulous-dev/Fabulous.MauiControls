@@ -105,13 +105,8 @@ type PickerModifiers =
     /// <param name="autoScalingEnabled">The value indicating whether auto-scaling is enabled</param>
     [<Extension>]
     static member inline font
-        (
-            this: WidgetBuilder<'msg, #IFabPicker>,
-            ?size: float,
-            ?attributes: FontAttributes,
-            ?fontFamily: string,
-            ?autoScalingEnabled: bool
-        ) =
+        (this: WidgetBuilder<'msg, #IFabPicker>, ?size: float, ?attributes: FontAttributes, ?fontFamily: string, ?autoScalingEnabled: bool)
+        =
 
         let mutable res = this
 

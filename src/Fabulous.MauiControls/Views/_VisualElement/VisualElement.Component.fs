@@ -57,7 +57,10 @@ module VisualElementComponentUpdaters =
 
 module VisualElementComponent =
     let FocusWithEvent =
-        Attributes.defineSimpleScalar "VisualElementComponent_FocusWithEvent" ScalarAttributeComparers.noCompare VisualElementComponentUpdaters.updateVisualElementFocus
+        Attributes.defineSimpleScalar
+            "VisualElementComponent_FocusWithEvent"
+            ScalarAttributeComparers.noCompare
+            VisualElementComponentUpdaters.updateVisualElementFocus
 
 [<Extension>]
 type VisualElementComponentModifiers =

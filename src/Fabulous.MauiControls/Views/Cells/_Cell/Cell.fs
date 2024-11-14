@@ -51,8 +51,6 @@ type CellModifiers =
 type CellYieldExtensions =
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabCell and 'itemType :> IFabMenuItem>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>,
-            x: WidgetBuilder<'msg, 'itemType>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>, x: WidgetBuilder<'msg, 'itemType>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

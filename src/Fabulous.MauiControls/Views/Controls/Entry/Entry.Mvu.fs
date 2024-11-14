@@ -29,4 +29,3 @@ type EntryMvuModifiers =
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IFabEntry>, msg: 'msg) =
         this.AddScalar(EntryMvu.Completed.WithValue(MsgValue(msg)))
-        

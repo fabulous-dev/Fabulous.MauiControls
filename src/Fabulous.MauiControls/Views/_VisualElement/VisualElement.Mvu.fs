@@ -73,9 +73,6 @@ type VisualElementMvuModifiers =
     /// <param name="onFocusChanged">Message to dispatch when the widget's focus state changes</param>
     [<Extension>]
     static member inline focus<'msg, 'marker when 'msg: equality and 'marker :> IFabVisualElement>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            value: bool,
-            onFocusChanged: bool -> 'msg
-        ) =
+        (this: WidgetBuilder<'msg, 'marker>, value: bool, onFocusChanged: bool -> 'msg)
+        =
         this.AddScalar(VisualElementMvu.FocusWithEvent.WithValue(MsgValueEventData.create value onFocusChanged))

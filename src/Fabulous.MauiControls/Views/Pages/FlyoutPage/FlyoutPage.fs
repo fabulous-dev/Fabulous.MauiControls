@@ -24,7 +24,7 @@ type FabFlyoutPage() as this =
 
 module FlyoutPage =
     let WidgetKey = Widgets.register<FabFlyoutPage>()
-    
+
     let Detail =
         Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->
             (target :?> FlyoutPage).Detail <- value)

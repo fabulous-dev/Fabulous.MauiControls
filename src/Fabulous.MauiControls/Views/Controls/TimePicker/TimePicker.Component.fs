@@ -6,7 +6,8 @@ open Microsoft.Maui.Controls
 
 module TimePickerComponent =
     let TimeWithEvent =
-        Attributes.Component.defineBindableWithEvent "TimePickerComponent_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> TimePicker).TimeSelected)
+        Attributes.Component.defineBindableWithEvent "TimePickerComponent_TimeSelected" TimePicker.TimeProperty (fun target ->
+            (target :?> TimePicker).TimeSelected)
 
 [<AutoOpen>]
 module TimePickerComponentBuilders =

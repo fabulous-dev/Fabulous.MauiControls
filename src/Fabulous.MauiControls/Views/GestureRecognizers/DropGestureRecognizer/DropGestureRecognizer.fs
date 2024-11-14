@@ -12,7 +12,7 @@ module DropGestureRecognizer =
 
     let AllowDrop =
         Attributes.defineBindableBool DropGestureRecognizer.AllowDropProperty
-        
+
 [<Extension>]
 type DropGestureRecognizerModifiers =
     /// <summary>Set whether users are allowed to drop</summary>

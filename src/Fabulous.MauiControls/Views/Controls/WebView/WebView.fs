@@ -22,7 +22,7 @@ module WebView =
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
-        
+
     let UserAgent =
         Attributes.defineBindableWithEquality<string> WebView.UserAgentProperty
 
@@ -101,7 +101,7 @@ type WebViewModifiers() =
     [<Extension>]
     static member inline cookies(this: WidgetBuilder<'msg, #IFabWebView>, value: CookieContainer) =
         this.AddScalar(WebView.Cookies.WithValue(value))
-        
+
     /// <summary>Set the user agent</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The user agent</param>

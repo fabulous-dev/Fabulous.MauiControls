@@ -30,7 +30,7 @@ module SliderUpdaters =
 
 module Slider =
     let WidgetKey = Widgets.register<Slider>()
-    
+
     let MaximumTrackColor =
         Attributes.defineBindableColor Slider.MaximumTrackColorProperty
 

@@ -4,9 +4,7 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
 
-type IFabKeyboardAccelerator =
-    interface
-    end
+type IFabKeyboardAccelerator = interface end
 
 module KeyboardAccelerator =
     let WidgetKey = Widgets.register<KeyboardAccelerator>()

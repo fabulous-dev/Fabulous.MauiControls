@@ -14,4 +14,7 @@ module PinchGestureRecognizerComponentBuilders =
         /// <summary>Create a PinchGestureRecognizer that listens for Pinch event</summary>
         /// <param name="onPinchUpdated">Message to dispatch</param>
         static member inline PinchGestureRecognizer(onPinchUpdated: PinchGestureUpdatedEventArgs -> unit) =
-            WidgetBuilder<unit, IFabPinchGestureRecognizer>(PinchGestureRecognizer.WidgetKey, PinchGestureRecognizerComponent.PinchUpdated.WithValue(onPinchUpdated))
+            WidgetBuilder<unit, IFabPinchGestureRecognizer>(
+                PinchGestureRecognizer.WidgetKey,
+                PinchGestureRecognizerComponent.PinchUpdated.WithValue(onPinchUpdated)
+            )

@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 module SwipeItemComponent =
     let Invoked =
         Attributes.Component.defineEvent "SwipeItemComponent_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
-        
+
 [<AutoOpen>]
 module SwipeItemComponentBuilders =
     type Fabulous.Maui.View with

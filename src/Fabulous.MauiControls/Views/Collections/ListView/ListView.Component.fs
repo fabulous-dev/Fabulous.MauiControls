@@ -24,7 +24,8 @@ module ListViewComponent =
         Attributes.Component.defineEvent<ScrolledEventArgs> "ListViewComponent_Scrolled" (fun target -> (target :?> ListView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.Component.defineEvent<ScrollToRequestedEventArgs> "ListViewComponent_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
+        Attributes.Component.defineEvent<ScrollToRequestedEventArgs> "ListViewComponent_ScrollToRequested" (fun target ->
+            (target :?> ListView).ScrollToRequested)
 
 [<Extension>]
 type ListViewComponentModifiers =

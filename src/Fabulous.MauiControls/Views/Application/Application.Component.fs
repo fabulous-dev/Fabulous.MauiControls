@@ -99,4 +99,4 @@ type ApplicationComponentModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onAppLinkRequestReceived(this: WidgetBuilder<unit, #IFabApplication>, fn: Uri -> unit) =
-        this.AddScalar(ApplicationComponent.AppLinkRequestReceived.WithValue(fn) )
+        this.AddScalar(ApplicationComponent.AppLinkRequestReceived.WithValue(fn))

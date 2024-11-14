@@ -6,13 +6,15 @@ open Microsoft.Maui.Controls
 
 module ItemsViewComponent =
     let RemainingItemsThresholdReached =
-        Attributes.Component.defineEventNoArg "ItemsViewComponent_RemainingItemsThresholdReached" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
+        Attributes.Component.defineEventNoArg "ItemsViewComponent_RemainingItemsThresholdReached" (fun target ->
+            (target :?> ItemsView).RemainingItemsThresholdReached)
 
     let Scrolled =
         Attributes.Component.defineEvent<ItemsViewScrolledEventArgs> "ItemsViewComponent_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.Component.defineEvent<ScrollToRequestEventArgs> "ItemsViewComponent_ScrolledRequested" (fun target -> (target :?> ItemsView).ScrollToRequested)
+        Attributes.Component.defineEvent<ScrollToRequestEventArgs> "ItemsViewComponent_ScrolledRequested" (fun target ->
+            (target :?> ItemsView).ScrollToRequested)
 
 [<Extension>]
 type ItemsViewComponentModifiers =

@@ -18,10 +18,12 @@ module GraphicsViewComponent =
         Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_EndInteraction" (fun target -> (target :?> GraphicsView).EndInteraction)
 
     let MoveHoverInteraction =
-        Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_MoveHoverInteraction" (fun target -> (target :?> GraphicsView).MoveHoverInteraction)
+        Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_MoveHoverInteraction" (fun target ->
+            (target :?> GraphicsView).MoveHoverInteraction)
 
     let StartHoverInteraction =
-        Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_StartHoverInteraction" (fun target -> (target :?> GraphicsView).StartHoverInteraction)
+        Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_StartHoverInteraction" (fun target ->
+            (target :?> GraphicsView).StartHoverInteraction)
 
     let StartInteraction =
         Attributes.Component.defineEvent<TouchEventArgs> "GraphicsViewComponent_StartInteraction" (fun target -> (target :?> GraphicsView).StartInteraction)

@@ -11,7 +11,7 @@ module SwipeView =
     let WidgetKey = Widgets.register<SwipeView>()
 
     let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
-    
+
     let LeftSwipeItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
 
     let RightSwipeItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty

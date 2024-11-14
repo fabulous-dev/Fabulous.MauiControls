@@ -88,11 +88,8 @@ type ButtonModifiers =
     /// <param name="spacing">The spacing</param>
     [<Extension>]
     static member inline contentLayout
-        (
-            this: WidgetBuilder<'msg, #IFabButton>,
-            position: Microsoft.Maui.Controls.Button.ButtonContentLayout.ImagePosition,
-            spacing: float
-        ) =
+        (this: WidgetBuilder<'msg, #IFabButton>, position: Microsoft.Maui.Controls.Button.ButtonContentLayout.ImagePosition, spacing: float)
+        =
         this.AddScalar(Button.ContentLayout.WithValue(Button.ButtonContentLayout(position, spacing)))
 
     /// <summary>Set the font</summary>
@@ -103,13 +100,8 @@ type ButtonModifiers =
     /// <param name="autoScalingEnabled">The value indicating whether auto-scaling is enabled</param>
     [<Extension>]
     static member inline font
-        (
-            this: WidgetBuilder<'msg, #IFabButton>,
-            ?size: float,
-            ?attributes: FontAttributes,
-            ?fontFamily: string,
-            ?autoScalingEnabled: bool
-        ) =
+        (this: WidgetBuilder<'msg, #IFabButton>, ?size: float, ?attributes: FontAttributes, ?fontFamily: string, ?autoScalingEnabled: bool)
+        =
 
         let mutable res = this
 

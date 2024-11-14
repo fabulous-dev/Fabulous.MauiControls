@@ -22,4 +22,3 @@ module StepperMvuBuilders =
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),
                 StepperMvu.ValueWithEvent.WithValue(MsgValueEventData.create value (fun (args: ValueChangedEventArgs) -> onValueChanged args.NewValue))
             )
-            

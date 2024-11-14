@@ -21,16 +21,14 @@ module App =
         | Increment
         | Decrement
         | CountChanged of int
-        
+
     let program =
-        Program.stateful
-            (fun () -> 0)
-            (fun msg model ->
-                match msg with
-                | Increment -> model + 1
-                | Decrement -> model - 1
-                | CountChanged count -> count)
-    
+        Program.stateful (fun () -> 0) (fun msg model ->
+            match msg with
+            | Increment -> model + 1
+            | Decrement -> model - 1
+            | CountChanged count -> count)
+
     let view () =
         Component("root") {
             let! theme = Context.Environment(EnvironmentKeys.Theme)

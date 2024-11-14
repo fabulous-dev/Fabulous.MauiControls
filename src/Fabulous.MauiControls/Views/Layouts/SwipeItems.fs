@@ -61,8 +61,6 @@ type SwipeItemsYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: CollectionBuilder<'msg, #IFabSwipeItems, IFabSwipeItem>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabSwipeItem>>
-        ) : Content<'msg> =
+        (_: CollectionBuilder<'msg, #IFabSwipeItems, IFabSwipeItem>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabSwipeItem>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

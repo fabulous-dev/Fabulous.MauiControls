@@ -5,7 +5,8 @@ open Microsoft.Maui.Controls
 
 module CheckBoxComponent =
     let IsCheckedWithEvent =
-        Attributes.Component.defineBindableWithEvent "CheckBoxComponent_CheckedChanged" CheckBox.IsCheckedProperty (fun target -> (target :?> CheckBox).CheckedChanged)
+        Attributes.Component.defineBindableWithEvent "CheckBoxComponent_CheckedChanged" CheckBox.IsCheckedProperty (fun target ->
+            (target :?> CheckBox).CheckedChanged)
 
 [<AutoOpen>]
 module CheckBoxComponentBuilders =
@@ -17,5 +18,7 @@ module CheckBoxComponentBuilders =
         static member inline CheckBox(isChecked: bool, onCheckedChanged: bool -> unit) =
             WidgetBuilder<unit, IFabCheckBox>(
                 CheckBox.WidgetKey,
-                CheckBoxComponent.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))
+                CheckBoxComponent.IsCheckedWithEvent.WithValue(
+                    ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value)
+                )
             )

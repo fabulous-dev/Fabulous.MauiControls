@@ -5,7 +5,7 @@ open Fabulous
 [<AutoOpen>]
 module ToolbarItemComponentBuilders =
     type Fabulous.Maui.View with
-    
+
         /// <summary>Create a ToolbarItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>

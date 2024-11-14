@@ -5,8 +5,9 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 module WebViewMvu =
-    let ProcessTerminated = Attributes.Mvu.defineEvent "WebViewMvu_ProcessTerminated" (fun target -> (target :?> WebView).ProcessTerminated)
-    
+    let ProcessTerminated =
+        Attributes.Mvu.defineEvent "WebViewMvu_ProcessTerminated" (fun target -> (target :?> WebView).ProcessTerminated)
+
     let Navigated =
         Attributes.Mvu.defineEvent<WebNavigatedEventArgs> "WebViewMvu_Navigated" (fun target -> (target :?> WebView).Navigated)
 
@@ -21,7 +22,7 @@ type WebViewMvuModifiers() =
     [<Extension>]
     static member inline onProcessTerminated(this: WidgetBuilder<'msg, #IFabWebView>, fn: WebViewProcessTerminatedEventArgs -> 'msg) =
         this.AddScalar(WebViewMvu.ProcessTerminated.WithValue(fun args -> fn args |> box))
-        
+
     /// <summary>Listen for the Navigated event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>

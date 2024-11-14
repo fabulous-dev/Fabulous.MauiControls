@@ -26,16 +26,14 @@ type MenuFlyoutItemModifiers =
 type MenuFlyoutItemYieldExtensions =
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabMenuFlyoutItem, IFabKeyboardAccelerator>,
-            x: WidgetBuilder<'msg, #IFabKeyboardAccelerator>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabMenuFlyoutItem, IFabKeyboardAccelerator>, x: WidgetBuilder<'msg, #IFabKeyboardAccelerator>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabMenuFlyoutItem, IFabKeyboardAccelerator>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabKeyboardAccelerator>>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabMenuFlyoutItem, IFabKeyboardAccelerator>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabKeyboardAccelerator>>) : Content<
+                                                                                                                                                                   'msg
+                                                                                                                                                                >
+        =
         { Widgets = MutStackArray1.One(x.Compile()) }

@@ -5,7 +5,7 @@ open Fabulous
 
 module NavigationPageComponent =
     let WidgetKey = Widgets.register<FabNavigationPage>()
-    
+
     let BackButtonPressed =
         Attributes.Component.defineEventNoArg "NavigationPageComponent_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 

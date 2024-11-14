@@ -157,7 +157,7 @@ module Attributes =
                     bindableObject.ClearValue(bindableProperty)
                 else
                     bindableObject.SetValue(bindableProperty, value))
-            
+
     module Mvu =
         /// Update both a property and its related event.
         /// This definition makes sure that the event is only raised when the property is changed by the user,

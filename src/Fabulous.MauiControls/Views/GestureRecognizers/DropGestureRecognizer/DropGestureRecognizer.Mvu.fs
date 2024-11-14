@@ -25,7 +25,7 @@ module DropGestureRecognizerMvuBuilders =
                 DropGestureRecognizer.WidgetKey,
                 DropGestureRecognizerMvu.Drop.WithValue(fun args -> onDrop args |> box)
             )
-            
+
 [<Extension>]
 type DropGestureRecognizerMvuModifiers =
     /// <summary>Listen for the DragOver event</summary>
@@ -33,10 +33,8 @@ type DropGestureRecognizerMvuModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onDragOver<'msg, 'marker when 'msg: equality and 'marker :> IFabDropGestureRecognizer>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            fn: DragEventArgs -> 'msg
-        ) =
+        (this: WidgetBuilder<'msg, 'marker>, fn: DragEventArgs -> 'msg)
+        =
         this.AddScalar(DropGestureRecognizerMvu.DragOver.WithValue(fun args -> fn args |> box))
 
     /// <summary>Listen for the DragLeave event</summary>
@@ -44,8 +42,6 @@ type DropGestureRecognizerMvuModifiers =
     /// <param name="fn">Message to dispatch</param>
     [<Extension>]
     static member inline onDragLeave<'msg, 'marker when 'msg: equality and 'marker :> IFabDragGestureRecognizer>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            fn: DragEventArgs -> 'msg
-        ) =
+        (this: WidgetBuilder<'msg, 'marker>, fn: DragEventArgs -> 'msg)
+        =
         this.AddScalar(DropGestureRecognizerMvu.DragLeave.WithValue(fun args -> fn args |> box))

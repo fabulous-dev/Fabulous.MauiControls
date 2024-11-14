@@ -5,7 +5,8 @@ open Microsoft.Maui.Controls
 
 module PanGestureRecognizerComponent =
     let PanUpdated =
-        Attributes.Component.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizerComponent_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
+        Attributes.Component.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizerComponent_PanUpdated" (fun target ->
+            (target :?> PanGestureRecognizer).PanUpdated)
 
 [<AutoOpen>]
 module PanGestureRecognizerComponentBuilders =

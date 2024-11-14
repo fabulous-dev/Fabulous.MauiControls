@@ -10,7 +10,7 @@ type IFabPointerGestureRecognizer =
 
 module PointerGestureRecognizer =
     let WidgetKey = Widgets.register<PointerGestureRecognizer>()
-    
+
 [<AutoOpen>]
 module PointerGestureRecognizerBuilders =
     type Fabulous.Maui.View with

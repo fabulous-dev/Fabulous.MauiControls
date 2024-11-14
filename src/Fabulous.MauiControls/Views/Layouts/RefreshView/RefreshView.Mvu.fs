@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 module RefreshViewMvu =
     let Refreshing =
         Attributes.Mvu.defineEventNoArg "RefreshViewMvu_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
-        
+
 [<AutoOpen>]
 module RefreshViewMvuBuilders =
     type Fabulous.Maui.View with

@@ -12,13 +12,14 @@ type IFabMenuItem =
 
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
-    
+
     let IconImageSource =
         Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
 
     let IsDestructive = Attributes.defineBindableBool MenuItem.IsDestructiveProperty
 
-    let Text: SimpleScalarAttributeDefinition<string> = Attributes.defineBindableWithEquality MenuItem.TextProperty
+    let Text: SimpleScalarAttributeDefinition<string> =
+        Attributes.defineBindableWithEquality MenuItem.TextProperty
 
 [<Extension>]
 type MenuItemModifiers =

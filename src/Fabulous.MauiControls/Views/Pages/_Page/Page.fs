@@ -165,8 +165,6 @@ type PageYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabPage, IFabToolbarItem>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabToolbarItem>>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabPage, IFabToolbarItem>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabToolbarItem>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

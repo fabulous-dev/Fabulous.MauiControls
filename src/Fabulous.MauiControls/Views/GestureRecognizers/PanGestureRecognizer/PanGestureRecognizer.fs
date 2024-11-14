@@ -9,7 +9,7 @@ type IFabPanGestureRecognizer =
 
 module PanGestureRecognizer =
     let WidgetKey = Widgets.register<PanGestureRecognizer>()
-    
+
     let TouchPoints =
         Attributes.defineBindableInt PanGestureRecognizer.TouchPointsProperty
 
