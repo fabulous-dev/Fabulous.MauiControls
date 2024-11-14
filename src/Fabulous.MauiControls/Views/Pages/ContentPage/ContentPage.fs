@@ -30,6 +30,8 @@ module ContentPage =
 
     let Content = Attributes.defineBindableWidget ContentPage.ContentProperty
     
+    let HideSoftInputOnTapped = Attributes.defineBindableBool ContentPage.HideSoftInputOnTappedProperty
+    
 [<AutoOpen>]
 module ContentPageBuilders =
     type Fabulous.Maui.View with
@@ -47,6 +49,13 @@ module ContentPageBuilders =
 
 [<Extension>]
 type ContentPageModifiers =
+    /// <summary>Sets a value that indicates whether tapping anywhere on the page will cause the soft input to hide</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true will cause the soft input to hide on tap; false otherwise</param>
+    [<Extension>]
+    static member inline hideSoftInputOnTapped(this: WidgetBuilder<'msg, IFabContentPage>, value: bool) =
+        this.AddScalar(ContentPage.HideSoftInputOnTapped.WithValue(value))
+    
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>

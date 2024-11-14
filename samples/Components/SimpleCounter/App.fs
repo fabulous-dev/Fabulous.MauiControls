@@ -36,20 +36,22 @@ module App =
             let! theme = Context.Environment(EnvironmentKeys.Theme)
             let! model = Context.Mvu(program)
 
-            Application(
-                ContentPage(
-                    (VStack() {
-                        Label("Theme is: " + theme.ToString()).centerTextHorizontal()
-                        Label($"%d{model}").centerTextHorizontal()
-                        Button("Increment", Increment)
-                        Button("Decrement", Decrement)
-                        Child.view "Child 1"
-                        Child.view "Child 2"
-                        Child.view "Child 3"
-                    })
-                        .center()
-                )
-            )
+            (Application() {
+                Window() {
+                    ContentPage(
+                        (VStack() {
+                            Label("Theme is: " + theme.ToString()).centerTextHorizontal()
+                            Label($"%d{model}").centerTextHorizontal()
+                            Button("Increment", Increment)
+                            Button("Decrement", Decrement)
+                            Child.view "Child 1"
+                            Child.view "Child 2"
+                            Child.view "Child 3"
+                        })
+                            .center()
+                    )
+                }
+            })
                 .environment(EnvironmentKeys.Count, model)
         }
 

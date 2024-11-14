@@ -22,6 +22,9 @@ module WebView =
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
+        
+    let UserAgent =
+        Attributes.defineBindableWithEquality<string> WebView.UserAgentProperty
 
 module WebViewPlatform =
     let DisplayZoomControls =
@@ -98,6 +101,13 @@ type WebViewModifiers() =
     [<Extension>]
     static member inline cookies(this: WidgetBuilder<'msg, #IFabWebView>, value: CookieContainer) =
         this.AddScalar(WebView.Cookies.WithValue(value))
+        
+    /// <summary>Set the user agent</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The user agent</param>
+    [<Extension>]
+    static member inline userAgent(this: WidgetBuilder<'msg, #IFabWebView>, value: string) =
+        this.AddScalar(WebView.UserAgent.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct WebView control instance</summary>
     /// <param name="this">Current widget</param>

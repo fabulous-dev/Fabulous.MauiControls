@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 
 module TimePickerMvu =
     let TimeWithEvent =
-        Attributes.Mvu.defineBindableWithEvent "TimePickerMvu_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> FabTimePicker).TimeSelected)
+        Attributes.Mvu.defineBindableWithEvent "TimePickerMvu_TimeSelected" TimePicker.TimeProperty (fun target -> (target :?> TimePicker).TimeSelected)
 
 [<AutoOpen>]
 module TimePickerMvuBuilders =
@@ -18,5 +18,5 @@ module TimePickerMvuBuilders =
         static member inline TimePicker(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
             WidgetBuilder<'msg, IFabTimePicker>(
                 TimePicker.WidgetKey,
-                TimePickerMvu.TimeWithEvent.WithValue(MsgValueEventData.create time (fun (args: TimeSelectedEventArgs) -> onTimeSelected args.NewTime))
+                TimePickerMvu.TimeWithEvent.WithValue(MsgValueEventData.create time (fun (args: TimeChangedEventArgs) -> onTimeSelected args.NewTime))
             )

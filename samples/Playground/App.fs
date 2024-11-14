@@ -41,7 +41,7 @@ module App =
 
     let view model =
         Application() {
-            Window(
+            Window() {
                 ContentPage(
                     (VStack(spacing = 20.) {
                         let text =
@@ -68,10 +68,10 @@ module App =
                     })
                         .margin(20.)
                 )
-            )
+            }
 
             if model.WindowOpened then
-                Window(
+                Window() {
                     ContentPage(
                         (VStack(spacing = 20.) {
                             Label("Window opened")
@@ -79,7 +79,7 @@ module App =
                         })
                             .margin(20.)
                     )
-                )
+                }
         }
 
     let program = Program.stateful init update |> Program.withView view

@@ -55,30 +55,32 @@ module App =
         Component("Counter") {
             let! model = Context.Mvu(program)
 
-            Application(
-                ContentPage() {
-                    (VStack() {
-                        Label($"%d{model.Count}").centerTextHorizontal()
+            Application() {
+                Window() {
+                    ContentPage() {
+                        (VStack() {
+                            Label($"%d{model.Count}").centerTextHorizontal()
 
-                        Button("Increment", Increment)
+                            Button("Increment", Increment)
 
-                        Button("Decrement", Decrement)
+                            Button("Decrement", Decrement)
 
-                        (HStack() {
-                            Label("Timer")
+                            (HStack() {
+                                Label("Timer")
 
-                            Switch(model.TimerOn, TimerToggled)
+                                Switch(model.TimerOn, TimerToggled)
+                            })
+                                .padding(20.)
+                                .centerHorizontal()
+
+                            Slider(0.0, 10.0, double model.Step, SetStep)
+
+                            Label($"Step size: %d{model.Step}").centerTextHorizontal()
+
+                            Button("Reset", Reset)
                         })
-                            .padding(20.)
-                            .centerHorizontal()
-
-                        Slider(0.0, 10.0, double model.Step, SetStep)
-
-                        Label($"Step size: %d{model.Step}").centerTextHorizontal()
-
-                        Button("Reset", Reset)
-                    })
-                        .center()
+                            .center()
+                    }
                 }
-            )
+            }
         }

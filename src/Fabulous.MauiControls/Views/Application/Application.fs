@@ -63,10 +63,6 @@ type FabApplication() =
 module Application =
     let WidgetKey = Widgets.register<FabApplication>()
 
-    let MainPage =
-        Attributes.definePropertyWidget "Application_MainPage" (fun target -> (target :?> Application).MainPage :> obj) (fun target value ->
-            (target :?> Application).MainPage <- value)
-
     let UserAppTheme =
         Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
             let application = node.Target :?> Application
@@ -84,11 +80,6 @@ module Application =
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.Maui.View with
-
-        /// <summary>Create an Application widget with a main page</summary>
-        /// <param name="mainPage">The main page widget</param>
-        static member inline Application(mainPage: WidgetBuilder<'msg, #IFabPage>) =
-            WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
         /// <summary>Create an Application widget with a list of windows</summary>
         static member inline Application<'msg, 'itemMarker when 'msg: equality and 'itemMarker :> IFabWindow>() =

@@ -61,17 +61,19 @@ module Sample =
     /// Because of MVU, all the pages need to return the same Msg type but they all have their own.
     /// To be able to wrap those Msgs into the app's root Msg type, we use the View.map helper function.
     let view model =
-        Application(
-            (NavigationPage() {
-                // We inject in the NavigationPage history the back stack of our navigation
-                for navModel in List.rev model.Navigation.BackStack do
-                    (View.map NavigationMsg (NavigationState.view navModel)).hasBackButton(false)
+        Application() {
+            Window() {
+                (NavigationPage() {
+                    // We inject in the NavigationPage history the back stack of our navigation
+                    for navModel in List.rev model.Navigation.BackStack do
+                        (View.map NavigationMsg (NavigationState.view navModel)).hasBackButton(false)
 
-                // The page currently displayed is the one on top of the stack
-                (View.map NavigationMsg (NavigationState.view model.Navigation.CurrentPage))
-                    .hasBackButton(false)
-            })
-                .onBackButtonPressed(BackButtonPressed)
-        )
+                    // The page currently displayed is the one on top of the stack
+                    (View.map NavigationMsg (NavigationState.view model.Navigation.CurrentPage))
+                        .hasBackButton(false)
+                })
+                    .onBackButtonPressed(BackButtonPressed)
+            }
+        }
 
     let program = Program.statefulWithCmd init update |> Program.withView view

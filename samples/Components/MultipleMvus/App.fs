@@ -39,32 +39,34 @@ module Form =
 
 module App =
     let view () =
-        Application(
-            ContentPage() {
-                (VStack(spacing = 25.) {
-                    Label("App")
+        Application() {
+            Window() {
+                ContentPage() {
+                    (VStack(spacing = 25.) {
+                        Label("App")
 
-                    Component("Counter") {
-                        let! model = Context.Mvu(Counter.program)
+                        Component("Counter") {
+                            let! model = Context.Mvu(Counter.program)
 
-                        VStack() {
-                            Label($"Count = {model.Count}")
-                            Button("Increment", Counter.Increment)
-                            Button("Decrement", Counter.Decrement)
+                            VStack() {
+                                Label($"Count = {model.Count}")
+                                Button("Increment", Counter.Increment)
+                                Button("Decrement", Counter.Decrement)
+                            }
                         }
-                    }
 
-                    Component("Form") {
-                        let! model = Context.Mvu(Form.program)
+                        Component("Form") {
+                            let! model = Context.Mvu(Form.program)
 
-                        VStack() {
-                            Label($"Hello {model.FirstName} {model.LastName}")
-                            Entry(model.FirstName, Form.FirstNameChanged)
-                            Entry(model.LastName, Form.LastNameChanged)
+                            VStack() {
+                                Label($"Hello {model.FirstName} {model.LastName}")
+                                Entry(model.FirstName, Form.FirstNameChanged)
+                                Entry(model.LastName, Form.LastNameChanged)
+                            }
                         }
-                    }
-                })
-                    .width(250.)
-                    .center()
+                    })
+                        .width(250.)
+                        .center()
+                }
             }
-        )
+        }

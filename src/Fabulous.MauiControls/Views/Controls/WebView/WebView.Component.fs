@@ -5,6 +5,8 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 module WebViewComponent =
+    let ProcessTerminated = Attributes.Component.defineEvent "WebViewComponent_ProcessTerminated" (fun target -> (target :?> WebView).ProcessTerminated)
+    
     let Navigated =
         Attributes.Component.defineEvent<WebNavigatedEventArgs> "WebViewComponent_Navigated" (fun target -> (target :?> WebView).Navigated)
 
@@ -13,6 +15,13 @@ module WebViewComponent =
 
 [<Extension>]
 type WebViewComponentModifiers() =
+    /// <summary>Listen for the ProcessTerminated event</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="fn">Message to dispatch</param>
+    [<Extension>]
+    static member inline onProcessTerminated(this: WidgetBuilder<unit, #IFabWebView>, fn: WebViewProcessTerminatedEventArgs -> unit) =
+        this.AddScalar(WebViewComponent.ProcessTerminated.WithValue(fn))
+    
     /// <summary>Listen for the Navigated event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="fn">Message to dispatch</param>

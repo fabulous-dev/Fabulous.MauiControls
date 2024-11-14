@@ -10,27 +10,8 @@ open Microsoft.Maui.Graphics
 type IFabTimePicker =
     inherit IFabView
 
-type TimeSelectedEventArgs(newTime: TimeSpan) =
-    inherit EventArgs()
-    member _.NewTime = newTime
-
-/// Microsoft.Maui doesn't provide an event for selecting the time on a TimePicker, so we implement it
-type FabTimePicker() =
-    inherit TimePicker()
-
-    let timeSelected = Event<EventHandler<TimeSelectedEventArgs>, _>()
-
-    [<CLIEvent>]
-    member _.TimeSelected = timeSelected.Publish
-
-    override this.OnPropertyChanged(propertyName) =
-        base.OnPropertyChanged(propertyName)
-
-        if propertyName = TimePicker.TimeProperty.PropertyName then
-            timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
-
 module TimePicker =
-    let WidgetKey = Widgets.register<FabTimePicker>()
+    let WidgetKey = Widgets.register<TimePicker>()
 
     let CharacterSpacing =
         Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty

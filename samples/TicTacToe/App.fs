@@ -189,65 +189,67 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model =
-        Application(
-            ContentPage(
-                Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
-                    (Grid(coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ], rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]) {
+        Application() {
+            Window() {
+                ContentPage(
+                    Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
+                        (Grid(coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ], rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]) {
 
-                        let gridColor =
-                            match model.Theme with
-                            | AppTheme.Dark -> Controls.SolidColorBrush(Colors.White)
-                            | _ -> Controls.SolidColorBrush(Colors.Black)
+                            let gridColor =
+                                match model.Theme with
+                                | AppTheme.Dark -> Controls.SolidColorBrush(Colors.White)
+                                | _ -> Controls.SolidColorBrush(Colors.Black)
 
-                        Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(1).gridColumnSpan(5)
+                            Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(1).gridColumnSpan(5)
 
-                        Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(3).gridColumnSpan(5)
+                            Rectangle().stroke(gridColor).strokeThickness(5.).gridRow(3).gridColumnSpan(5)
 
-                        Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(1).gridRowSpan(5)
+                            Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(1).gridRowSpan(5)
 
-                        Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(3).gridRowSpan(5)
+                            Rectangle().stroke(gridColor).strokeThickness(5.).gridColumn(3).gridRowSpan(5)
 
-                        for row, col as pos in positions do
-                            if canPlay model model.Board[pos] then
-                                Button("", Play pos)
-                                    .background(Colors.LightBlue)
-                                    .gridRow(row * 2)
-                                    .gridColumn(col * 2)
-                            else
-                                match model.Board[pos] with
-                                | Empty -> ()
-                                | Full X ->
-                                    Label("X")
-                                        .font(size = model.VisualBoardSize / 3.)
-                                        .centerText()
-                                        .margin(10.)
+                            for row, col as pos in positions do
+                                if canPlay model model.Board[pos] then
+                                    Button("", Play pos)
+                                        .background(Colors.LightBlue)
                                         .gridRow(row * 2)
                                         .gridColumn(col * 2)
+                                else
+                                    match model.Board[pos] with
+                                    | Empty -> ()
+                                    | Full X ->
+                                        Label("X")
+                                            .font(size = model.VisualBoardSize / 3.)
+                                            .centerText()
+                                            .margin(10.)
+                                            .gridRow(row * 2)
+                                            .gridColumn(col * 2)
 
-                                | Full O ->
-                                    Label("O")
-                                        .font(size = model.VisualBoardSize / 3.)
-                                        .centerText()
-                                        .margin(10.)
-                                        .gridRow(row * 2)
-                                        .gridColumn(col * 2)
-                    })
-                        .rowSpacing(0.)
-                        .columnSpacing(0.)
-                        .centerVertical()
-                        .size(model.VisualBoardSize, model.VisualBoardSize)
-                        .gridRow(0)
+                                    | Full O ->
+                                        Label("O")
+                                            .font(size = model.VisualBoardSize / 3.)
+                                            .centerText()
+                                            .margin(10.)
+                                            .gridRow(row * 2)
+                                            .gridColumn(col * 2)
+                        })
+                            .rowSpacing(0.)
+                            .columnSpacing(0.)
+                            .centerVertical()
+                            .size(model.VisualBoardSize, model.VisualBoardSize)
+                            .gridRow(0)
 
-                    Label(getMessage model).font(size = 32.).center().margin(10.).gridRow(1)
+                        Label(getMessage model).font(size = 32.).center().margin(10.).gridRow(1)
 
-                    Button("Restart game", Restart)
-                        .textColor(Colors.Black)
-                        .background(Colors.LightBlue)
-                        .font(size = 32.)
-                        .gridRow(2)
-                }
-            )
-        )
+                        Button("Restart game", Restart)
+                            .textColor(Colors.Black)
+                            .background(Colors.LightBlue)
+                            .font(size = 32.)
+                            .gridRow(2)
+                    }
+                )
+            }
+        }
 
     let subscribe _ =
         let displayInfoChanged dispatch =
