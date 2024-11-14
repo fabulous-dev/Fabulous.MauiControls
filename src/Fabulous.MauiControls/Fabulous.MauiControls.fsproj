@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <UseLocalProjectReference>true</UseLocalProjectReference>    
+    <UseLocalProjectReference>false</UseLocalProjectReference>    
     
     <TargetFramework>net9.0</TargetFramework>
     <UseMaui>true</UseMaui>
