@@ -25,18 +25,20 @@ let update msg model =
     | Decrement -> { model with Count = model.Count - 1 }
 
 let view model =
-    Application(
-        ContentPage(
-            VStack(spacing = 16.) {
-                Image("fabulous.png")
-
-                Label($"Count is {model.Count}")
-
-                Button("Increment", Increment)
-                Button("Decrement", Decrement)
+    Application() {
+        Window() {
+            ContentPage() {
+                VStack(spacing = 16.) {
+                    Image("fabulous.png")
+    
+                    Label($"Count is {model.Count}")
+    
+                    Button("Increment", Increment)
+                    Button("Decrement", Decrement)
+                }
             }
-        )
-    )
+        }
+    }
 ```
 
 ## Getting Started
