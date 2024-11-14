@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [9.0.0-pre1] - 2024-11-14
+
+### Added
+- Added HybridWebView widget
+- Added TitleBar widget
+- Added PointerGestureRecognizer widget
+- Added hideSoftInputOnTapped modifier on ContentPage widget
+
+### Changed
+- Upgraded to .NET MAUI 9.0.0
+- Upgraded to Fabulous 3.0.0-pre10
+- Removed custom TimeSelected event from TimePicker widget to use the standard TimeSelected event from MAUI
+
+### Removed
+- Removed MainPage support on Application widget
+
 ## [8.1.0-pre21] - 2024-11-08
 
 ### Fixed
@@ -260,7 +276,8 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/8.1.0-pre21...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/9.0.0-pre1...HEAD
+[9.0.0-pre1]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre1
 [8.1.0-pre21]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre21
 [8.1.0-pre20]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre20
 [8.1.0-pre19]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/8.1.0-pre19

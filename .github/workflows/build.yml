@@ -12,11 +12,11 @@ env:
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
   TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates
   NUPKG_FOLDER: nupkgs
-  XCODE_PATH: /Applications/Xcode_15.2.app/Contents/Developer
+  XCODE_PATH: /Applications/Xcode_16.0.app/Contents/Developer
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.x
+        dotnet-version: 9.x
     - name: Use correct Xcode version
       run: sudo xcode-select -s ${XCODE_PATH}
     - name: Install dotnet workload

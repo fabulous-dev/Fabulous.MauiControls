@@ -67,8 +67,6 @@ type PathFigureYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: CollectionBuilder<'msg, #IFabPathFigure, IFabPathSegment>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabPathSegment>>
-        ) : Content<'msg> =
+        (_: CollectionBuilder<'msg, #IFabPathFigure, IFabPathSegment>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabPathSegment>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

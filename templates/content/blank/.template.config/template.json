@@ -46,7 +46,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgVersion",
-      "defaultValue": "3.0.0-pre2"
+      "defaultValue": "3.0.0-pre10"
     },
     "FabulousMauiControlsPkgVersion": {
       "type": "parameter",
@@ -58,7 +58,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "8.0.100"
+      "defaultValue": "9.0.100"
     },
     "FSharpMauiWinUICompatPkgVersion": {
       "type": "parameter",
@@ -70,7 +70,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "MicrosoftMauiControlsPkgVersion",
-      "defaultValue": "8.0.14"
+      "defaultValue": "9.0.0"
     }
   }
 }

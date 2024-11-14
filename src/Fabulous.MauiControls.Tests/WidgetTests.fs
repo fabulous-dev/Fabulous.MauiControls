@@ -53,7 +53,7 @@ type WidgetTests() =
             }
 
         let envContext = new EnvironmentContext()
-        
+
         let treeContext: ViewTreeContext =
             { CanReuseView = MauiViewHelpers.canReuseView
               GetViewNode = ViewNode.get

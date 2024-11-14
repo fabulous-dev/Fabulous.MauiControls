@@ -40,24 +40,26 @@ module App =
         | GoBack -> { Paths = List.tail model.Paths }
 
     let view model =
-        Application(
-            TabbedPage() {
-                ContentPage(
-                    match List.head model.Paths with
-                    | Overview -> AnyView(Overview.view GoToSample)
-                    | Sample(index, sampleModel) -> AnyView(SamplePage.view GoBack SampleMsg index sampleModel)
-                )
-                    .title("Samples")
+        Application() {
+            Window() {
+                TabbedPage() {
+                    ContentPage(
+                        match List.head model.Paths with
+                        | Overview -> AnyView(Overview.view GoToSample)
+                        | Sample(index, sampleModel) -> AnyView(SamplePage.view GoBack SampleMsg index sampleModel)
+                    )
+                        .title("Samples")
 
-                ContentPage(
-                    VStack() {
-                        Label("Fabulous.Maui Gallery")
-                            .horizontalOptions(LayoutOptions.Center)
-                            .verticalOptions(LayoutOptions.Center)
-                    }
-                )
-                    .title("Info")
+                    ContentPage(
+                        VStack() {
+                            Label("Fabulous.Maui Gallery")
+                                .horizontalOptions(LayoutOptions.Center)
+                                .verticalOptions(LayoutOptions.Center)
+                        }
+                    )
+                        .title("Info")
+                }
             }
-        )
+        }
 
     let program = Program.stateful init update |> Program.withView view

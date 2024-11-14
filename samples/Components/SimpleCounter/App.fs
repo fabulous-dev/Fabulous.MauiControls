@@ -21,35 +21,35 @@ module App =
         | Increment
         | Decrement
         | CountChanged of int
-        
+
     let program =
-        Program.stateful
-            (fun () -> 0)
-            (fun msg model ->
-                match msg with
-                | Increment -> model + 1
-                | Decrement -> model - 1
-                | CountChanged count -> count)
-    
+        Program.stateful (fun () -> 0) (fun msg model ->
+            match msg with
+            | Increment -> model + 1
+            | Decrement -> model - 1
+            | CountChanged count -> count)
+
     let view () =
         Component("root") {
             let! theme = Context.Environment(EnvironmentKeys.Theme)
             let! model = Context.Mvu(program)
 
-            Application(
-                ContentPage(
-                    (VStack() {
-                        Label("Theme is: " + theme.ToString()).centerTextHorizontal()
-                        Label($"%d{model}").centerTextHorizontal()
-                        Button("Increment", Increment)
-                        Button("Decrement", Decrement)
-                        Child.view "Child 1"
-                        Child.view "Child 2"
-                        Child.view "Child 3"
-                    })
-                        .center()
-                )
-            )
+            (Application() {
+                Window() {
+                    ContentPage(
+                        (VStack() {
+                            Label("Theme is: " + theme.ToString()).centerTextHorizontal()
+                            Label($"%d{model}").centerTextHorizontal()
+                            Button("Increment", Increment)
+                            Button("Decrement", Decrement)
+                            Child.view "Child 1"
+                            Child.view "Child 2"
+                            Child.view "Child 3"
+                        })
+                            .center()
+                    )
+                }
+            })
                 .environment(EnvironmentKeys.Count, model)
         }
 

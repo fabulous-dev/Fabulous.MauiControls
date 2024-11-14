@@ -7,7 +7,7 @@ open type Fabulous.Maui.View
 
 module App =
     let view () =
-        Application(ContentPage(Label("Hello World").center()))
+        Application() { Window() { ContentPage(Label("Hello World").center()) } }
 
 type MauiProgram =
     static member CreateMauiApp() =

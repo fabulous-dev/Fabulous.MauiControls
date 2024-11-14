@@ -9,9 +9,7 @@ open Fabulous.Maui
 open Microsoft.FSharp.Core
 
 [<AbstractClass; Sealed>]
-type View =
-    class
-    end
+type View = class end
 
 module Widgets =
     let registerWithAdditionalSetup<'T when 'T :> Microsoft.Maui.Controls.BindableObject and 'T: (new: unit -> 'T)> (additionalSetup: 'T -> IViewNode -> unit) =

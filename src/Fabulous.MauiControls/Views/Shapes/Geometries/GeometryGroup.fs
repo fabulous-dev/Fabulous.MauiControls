@@ -52,8 +52,6 @@ type GeometryGroupYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: CollectionBuilder<'msg, #IFabGeometryGroup, IFabGeometry>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGeometry>>
-        ) : Content<'msg> =
+        (_: CollectionBuilder<'msg, #IFabGeometryGroup, IFabGeometry>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabGeometry>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

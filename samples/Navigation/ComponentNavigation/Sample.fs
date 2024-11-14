@@ -52,16 +52,18 @@ module Sample =
         Component("Sample") {
             let! model = Context.Mvu(program nav appMsgDispatcher)
 
-            Application(
-                (NavigationPage() {
-                    // We inject in the NavigationPage history the back stack of our navigation
-                    for navPath in List.rev model.Navigation.BackStack do
-                        navView nav appMsgDispatcher navPath
+            Application() {
+                Window() {
+                    (NavigationPage() {
+                        // We inject in the NavigationPage history the back stack of our navigation
+                        for navPath in List.rev model.Navigation.BackStack do
+                            navView nav appMsgDispatcher navPath
 
-                    // The page currently displayed is the one on top of the stack
-                    navView nav appMsgDispatcher model.Navigation.CurrentPage
-                })
-                    .onBackButtonPressed(BackButtonPressed)
-                    .onBackNavigated(BackNavigationMsg)
-            )
+                        // The page currently displayed is the one on top of the stack
+                        navView nav appMsgDispatcher model.Navigation.CurrentPage
+                    })
+                        .onBackButtonPressed(BackButtonPressed)
+                        .onBackNavigated(BackNavigationMsg)
+                }
+            }
         }

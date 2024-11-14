@@ -106,47 +106,49 @@ module App =
                 .background(orange)
                 .textColor(Colors.Black)
 
-        Application(
-            ContentPage(
-                (Grid(rowdefs = [ Star; Star; Star; Star; Star; Star ], coldefs = [ Star; Star; Star; Star ]) {
-                    View
-                        .Label(display model)
-                        .font(size = 48.0, attributes = FontAttributes.Bold)
-                        .background(Colors.Black)
-                        .textColor(Colors.White)
-                        .alignEndTextHorizontal()
-                        .centerTextVertical()
-                        .gridColumnSpan(4)
+        Application() {
+            Window() {
+                ContentPage(
+                    (Grid(rowdefs = [ Star; Star; Star; Star; Star; Star ], coldefs = [ Star; Star; Star; Star ]) {
+                        View
+                            .Label(display model)
+                            .font(size = 48.0, attributes = FontAttributes.Bold)
+                            .background(Colors.Black)
+                            .textColor(Colors.White)
+                            .alignEndTextHorizontal()
+                            .centerTextVertical()
+                            .gridColumnSpan(4)
 
-                    mkNumberButton 7 1 0
-                    mkNumberButton 8 1 1
-                    mkNumberButton 9 1 2
-                    mkNumberButton 4 2 0
-                    mkNumberButton 5 2 1
-                    mkNumberButton 6 2 2
-                    mkNumberButton 1 3 0
-                    mkNumberButton 2 3 1
-                    mkNumberButton 3 3 2
+                        mkNumberButton 7 1 0
+                        mkNumberButton 8 1 1
+                        mkNumberButton 9 1 2
+                        mkNumberButton 4 2 0
+                        mkNumberButton 5 2 1
+                        mkNumberButton 6 2 2
+                        mkNumberButton 1 3 0
+                        mkNumberButton 2 3 1
+                        mkNumberButton 3 3 2
 
-                    (mkNumberButton 0 4 0).gridColumnSpan(3)
+                        (mkNumberButton 0 4 0).gridColumnSpan(3)
 
-                    mkOperatorButton "÷" Divide 1 3
-                    mkOperatorButton "×" Multiply 2 3
-                    mkOperatorButton "-" Subtract 3 3
-                    mkOperatorButton "+" Add 4 3
-                    (mkButton "A" Clear 5 0).background(gray).textColor(Colors.White)
-                    (mkButton "." Equals 5 1).background(orange).textColor(Colors.Black)
+                        mkOperatorButton "÷" Divide 1 3
+                        mkOperatorButton "×" Multiply 2 3
+                        mkOperatorButton "-" Subtract 3 3
+                        mkOperatorButton "+" Add 4 3
+                        (mkButton "A" Clear 5 0).background(gray).textColor(Colors.White)
+                        (mkButton "." Equals 5 1).background(orange).textColor(Colors.Black)
 
-                    (mkButton "=" Equals 5 2)
-                        .background(orange)
-                        .gridColumnSpan(2)
-                        .textColor(Colors.White)
-                })
-                    .rowSpacing(1.0)
-                    .columnSpacing(1.0)
-                    .background(gray)
-            )
-        )
+                        (mkButton "=" Equals 5 2)
+                            .background(orange)
+                            .gridColumnSpan(2)
+                            .textColor(Colors.White)
+                    })
+                        .rowSpacing(1.0)
+                        .columnSpacing(1.0)
+                        .background(gray)
+                )
+            }
+        }
 
     let program =
         Program.stateful (fun () -> Initial) update

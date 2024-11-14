@@ -22,8 +22,6 @@ type GradientBrushYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: CollectionBuilder<'msg, #IFabGradientBrush, IFabGradientStop>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGradientStop>>
-        ) : Content<'msg> =
+        (_: CollectionBuilder<'msg, #IFabGradientBrush, IFabGradientStop>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabGradientStop>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

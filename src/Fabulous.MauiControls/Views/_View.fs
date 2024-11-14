@@ -133,18 +133,14 @@ type ViewExtraModifiers =
 type ViewYieldExtensions =
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, #IFabGestureRecognizer>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>, x: WidgetBuilder<'msg, #IFabGestureRecognizer>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabView, IFabGestureRecognizer>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
 [<Extension>]

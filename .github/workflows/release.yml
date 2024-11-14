@@ -10,11 +10,11 @@ env:
   CONFIG: Release
   SLN_FILE: Fabulous.MauiControls.NoSamples.sln
   TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
-  XCODE_PATH: /Applications/Xcode_15.0.1.app/Contents/Developer
+  XCODE_PATH: /Applications/Xcode_16.0.app/Contents/Developer
 
 jobs:
   release:
-    runs-on: macos-13
+    runs-on: macos-15
     environment: nuget
     steps:
     - name: Checkout sources
@@ -40,7 +40,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.x
+        dotnet-version: 9.x
     - name: Use correct Xcode version
       run: sudo xcode-select -s ${XCODE_PATH}
     - name: Install dotnet workload

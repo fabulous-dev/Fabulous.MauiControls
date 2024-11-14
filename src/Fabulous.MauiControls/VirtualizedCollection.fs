@@ -33,6 +33,7 @@ type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Wi
             let bindableObject = Activator.CreateInstance ``type`` :?> BindableObject
 
             let envContext = new EnvironmentContext(parent.EnvironmentContext)
+
             let viewNode =
                 new ViewNode(Some parent, envContext, parent.TreeContext, WeakReference(bindableObject))
 

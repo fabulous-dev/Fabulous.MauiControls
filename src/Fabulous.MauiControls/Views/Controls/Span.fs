@@ -142,18 +142,14 @@ type SpanModifiers =
 type SpanYieldExtensions =
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, #IFabGestureRecognizer>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>, x: WidgetBuilder<'msg, #IFabGestureRecognizer>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
     static member inline Yield
-        (
-            _: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>
-        ) : Content<'msg> =
+        (_: AttributeCollectionBuilder<'msg, #IFabSpan, IFabGestureRecognizer>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabGestureRecognizer>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
 [<Extension>]

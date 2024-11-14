@@ -40,8 +40,6 @@ type TransformGroupYieldExtensions =
 
     [<Extension>]
     static member inline Yield
-        (
-            _: CollectionBuilder<'msg, #IFabTransformGroup, IFabTransform>,
-            x: WidgetBuilder<'msg, Memo.Memoized<#IFabTransform>>
-        ) : Content<'msg> =
+        (_: CollectionBuilder<'msg, #IFabTransformGroup, IFabTransform>, x: WidgetBuilder<'msg, Memo.Memoized<#IFabTransform>>)
+        : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

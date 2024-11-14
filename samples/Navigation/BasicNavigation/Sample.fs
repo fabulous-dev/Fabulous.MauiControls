@@ -56,25 +56,27 @@ module Sample =
         | GoToPageC -> { model with CurrentStep = Step.PageC }
 
     let view model =
-        Application(
-            ContentPage(
-                (Grid(coldefs = [ Star; Star; Star ], rowdefs = [ Auto; Star ]) {
-                    Button("Page A", GoToPageA).gridColumn(0)
+        Application() {
+            Window() {
+                ContentPage(
+                    (Grid(coldefs = [ Star; Star; Star ], rowdefs = [ Auto; Star ]) {
+                        Button("Page A", GoToPageA).gridColumn(0)
 
-                    Button("Page B", GoToPageB).gridColumn(1)
+                        Button("Page B", GoToPageB).gridColumn(1)
 
-                    Button("Page C", GoToPageC).gridColumn(2)
+                        Button("Page C", GoToPageC).gridColumn(2)
 
 
-                    (match model.CurrentStep with
-                     | Step.PageA -> View.map PageAMsg (PageA.view model.PageAModel)
-                     | Step.PageB -> View.map PageBMsg (PageB.view model.PageBModel)
-                     | Step.PageC -> View.map PageCMsg (PageC.view model.PageCModel))
-                        .gridRow(1)
-                        .gridColumnSpan(3)
-                })
-                    .rowSpacing(30.)
-            )
-        )
+                        (match model.CurrentStep with
+                         | Step.PageA -> View.map PageAMsg (PageA.view model.PageAModel)
+                         | Step.PageB -> View.map PageBMsg (PageB.view model.PageBModel)
+                         | Step.PageC -> View.map PageCMsg (PageC.view model.PageCModel))
+                            .gridRow(1)
+                            .gridColumnSpan(3)
+                    })
+                        .rowSpacing(30.)
+                )
+            }
+        }
 
     let program = Program.stateful init update |> Program.withView view

@@ -1,0 +1,29 @@
+namespace Fabulous.Maui
+
+open System.Runtime.CompilerServices
+open Fabulous
+open Microsoft.Maui.Controls
+
+type IFabDragGestureRecognizer =
+    inherit IFabGestureRecognizer
+
+module DragGestureRecognizer =
+    let WidgetKey = Widgets.register<DragGestureRecognizer>()
+
+    let CanDrag = Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
+
+[<Extension>]
+type DragGestureRecognizerModifiers =
+    /// <summary>Set whether users are allowed to drag</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">true to allow users to drag; otherwise, false</param>
+    [<Extension>]
+    static member inline canDrag(this: WidgetBuilder<'msg, #IFabDragGestureRecognizer>, value: bool) =
+        this.AddScalar(DragGestureRecognizer.CanDrag.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct DragGestureRecognizer control instance</summary>
+    /// <param name="this">Current widget</param>
+    /// <param name="value">The ViewRef instance that will receive access to the underlying control</param>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFabDragGestureRecognizer>, value: ViewRef<DragGestureRecognizer>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
