@@ -19,7 +19,7 @@ module SwipeItems =
     let SwipeItems =
         Attributes.defineListWidgetCollection "SwipeItems_SwipeItems" (fun target -> (target :?> SwipeItems) :> IList<_>)
 
-    let SwipeMode =
+    let Mode =
         Attributes.defineBindableEnum<SwipeMode> Microsoft.Maui.Controls.SwipeItems.ModeProperty
 
 [<AutoOpen>]
@@ -36,8 +36,8 @@ type SwipeItemsModifiers =
     /// <param name="this">Current widget</param>
     /// <param name="value">The swipe mode</param>
     [<Extension>]
-    static member inline swipeMode(this: WidgetBuilder<'msg, #IFabSwipeItems>, value: SwipeMode) =
-        this.AddScalar(SwipeItems.SwipeMode.WithValue(value))
+    static member inline mode(this: WidgetBuilder<'msg, #IFabSwipeItems>, value: SwipeMode) =
+        this.AddScalar(SwipeItems.Mode.WithValue(value))
 
     /// <summary>Set the swipe behavior when invoked</summary>
     /// <param name="this">Current widget</param>

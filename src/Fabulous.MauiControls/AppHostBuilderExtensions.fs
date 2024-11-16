@@ -24,7 +24,7 @@ type AppHostBuilderExtensions =
                   GetComponent = Component.get
                   SetComponent = Component.set }
 
-            let envContext = new EnvironmentContext()
+            let envContext = new EnvironmentContext(logger)
             let app = FabApplication()
 
             envContext.Set(EnvironmentKeys.Theme, app.RequestedTheme, false)

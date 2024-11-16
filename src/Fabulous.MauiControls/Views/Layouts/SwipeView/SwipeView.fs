@@ -10,15 +10,15 @@ type IFabSwipeView =
 module SwipeView =
     let WidgetKey = Widgets.register<SwipeView>()
 
-    let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
+    let BottomItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
-    let LeftSwipeItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
+    let LeftItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
 
-    let RightSwipeItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty
+    let RightItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty
 
-    let SwipeThreshold = Attributes.defineBindableInt SwipeView.ThresholdProperty
+    let Threshold = Attributes.defineBindableInt SwipeView.ThresholdProperty
 
-    let TopSwipeItems = Attributes.defineBindableWidget SwipeView.TopItemsProperty
+    let TopItems = Attributes.defineBindableWidget SwipeView.TopItemsProperty
 
 [<AutoOpen>]
 module SwipeViewBuilders =
@@ -29,6 +29,10 @@ module SwipeViewBuilders =
         static member inline SwipeView(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetHelpers.buildWidgets<'msg, IFabSwipeView> SwipeView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
 
+        /// <summary>Create a SwipeView widget with a content</summary>
+        static member inline SwipeView() =
+            SingleChildBuilder<'msg, IFabSwipeView, IFabView>(SwipeView.WidgetKey, ContentView.Content)
+
 [<Extension>]
 type SwipeViewModifiers() =
     /// <summary>Set the bottom swipe items</summary>
@@ -36,35 +40,35 @@ type SwipeViewModifiers() =
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
     static member inline bottomItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
-        this.AddWidget(SwipeView.BottomSwipeItems.WithValue(content.Compile()))
+        this.AddWidget(SwipeView.BottomItems.WithValue(content.Compile()))
 
     /// <summary>Set the left swipe items</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
     static member inline leftItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
-        this.AddWidget(SwipeView.LeftSwipeItems.WithValue(content.Compile()))
+        this.AddWidget(SwipeView.LeftItems.WithValue(content.Compile()))
 
     /// <summary>Set the right swipe items</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
     static member inline rightItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
-        this.AddWidget(SwipeView.RightSwipeItems.WithValue(content.Compile()))
+        this.AddWidget(SwipeView.RightItems.WithValue(content.Compile()))
 
     /// <summary>Set the swipe threshold</summary>
     /// <param name="this">Current widget</param>
     /// <param name="value">The threshold value</param>
     [<Extension>]
     static member inline threshold(this: WidgetBuilder<'msg, #IFabSwipeView>, value: int) =
-        this.AddScalar(SwipeView.SwipeThreshold.WithValue(value))
+        this.AddScalar(SwipeView.Threshold.WithValue(value))
 
     /// <summary>Set the top swipe items</summary>
     /// <param name="this">Current widget</param>
     /// <param name="content">The SwipeItems widget</param>
     [<Extension>]
     static member inline topItems(this: WidgetBuilder<'msg, #IFabSwipeView>, content: WidgetBuilder<'msg, #IFabSwipeItems>) =
-        this.AddWidget(SwipeView.TopSwipeItems.WithValue(content.Compile()))
+        this.AddWidget(SwipeView.TopItems.WithValue(content.Compile()))
 
     /// <summary>Link a ViewRef to access the direct SwipeView control instance</summary>
     /// <param name="this">Current widget</param>
