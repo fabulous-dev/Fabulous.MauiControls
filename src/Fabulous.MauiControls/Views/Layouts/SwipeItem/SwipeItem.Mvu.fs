@@ -15,8 +15,4 @@ module SwipeItemMvuBuilders =
         /// <param name="text">The text</param>
         /// <param name="onInvoked">Message to dispatch</param>
         static member inline SwipeItem(text: string, onInvoked: 'msg) =
-            WidgetBuilder<'msg, IFabSwipeItem>(
-                SwipeItem.WidgetKey,
-                MenuItem.Text.WithValue(text),
-                SwipeItemMvu.Invoked.WithValue(fun _ -> box onInvoked)
-            )
+            WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, MenuItem.Text.WithValue(text), SwipeItemMvu.Invoked.WithValue(fun _ -> box onInvoked))

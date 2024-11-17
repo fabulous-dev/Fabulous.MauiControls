@@ -14,8 +14,4 @@ module SwipeItemComponentBuilders =
         /// <param name="text">The text</param>
         /// <param name="onInvoked">Message to dispatch</param>
         static member inline SwipeItem(text: string, onInvoked: unit -> unit) =
-            WidgetBuilder<unit, IFabSwipeItem>(
-                SwipeItem.WidgetKey,
-                MenuItem.Text.WithValue(text),
-                SwipeItemComponent.Invoked.WithValue(fun _ -> onInvoked())
-            )
+            WidgetBuilder<unit, IFabSwipeItem>(SwipeItem.WidgetKey, MenuItem.Text.WithValue(text), SwipeItemComponent.Invoked.WithValue(fun _ -> onInvoked()))

@@ -52,12 +52,14 @@ type WidgetTests() =
                 ContentPage(Label("Hello")).automationId("yourAddress")
             }
 
-        let envContext = new EnvironmentContext()
+        let logger = ProgramDefaults.defaultLogger()
+
+        let envContext = new EnvironmentContext(logger)
 
         let treeContext: ViewTreeContext =
             { CanReuseView = MauiViewHelpers.canReuseView
               GetViewNode = ViewNode.get
-              Logger = ProgramDefaults.defaultLogger()
+              Logger = logger
               Dispatch = dispatch
               GetComponent = Component.get
               SetComponent = Component.set
