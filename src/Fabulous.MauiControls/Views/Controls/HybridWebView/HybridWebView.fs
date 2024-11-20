@@ -21,7 +21,7 @@ module HybridWebView =
 module HybridWebViewBuilders =
     type Fabulous.Maui.View with
         static member inline HybridWebView() =
-            WidgetBuilder<'msg, IFabHybridWebView>(HybridWebView.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+            WidgetBuilder<'msg, IFabHybridWebView>(HybridWebView.WidgetKey)
 
 [<Extension>]
 type HybridWebViewModifiers =

@@ -43,10 +43,7 @@ module WindowBuilders =
     type Fabulous.Maui.View with
 
         static member inline Window(content: WidgetBuilder<'msg, #IFabPage>) =
-            WidgetBuilder<'msg, IFabWindow>(
-                Window.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| Window.Page.WithValue(content.Compile()) |], ValueNone)
-            )
+            WidgetBuilder<'msg, IFabWindow>(Window.WidgetKey, Window.Page.WithValue(content.Compile()))
 
         static member inline Window() =
             SingleChildBuilder<'msg, IFabWindow, #IFabPage>(Window.WidgetKey, Window.Page)

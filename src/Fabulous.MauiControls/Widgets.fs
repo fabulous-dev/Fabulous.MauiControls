@@ -71,7 +71,7 @@ module WidgetHelpers =
         items |> Seq.map(_.Compile()) |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker when 'msg: equality> (key: WidgetKey) (attrs: WidgetAttribute[]) =
-        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))
+        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone, ValueNone))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item when 'msg: equality>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)

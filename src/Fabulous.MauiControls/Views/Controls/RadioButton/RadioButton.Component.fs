@@ -38,6 +38,7 @@ module RadioButtonComponentBuilders =
                         )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
+                    ValueNone,
                     ValueNone
                 )
             )

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Fabulous" Version="3.0.0-pre11" />
+    <PackageVersion Include="Fabulous" Version="3.0.0-pre12" />
     <PackageVersion Include="FsCheck.NUnit" Version="2.16.6" />
     <PackageVersion Include="FSharp.Core" Version="9.0.100" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />

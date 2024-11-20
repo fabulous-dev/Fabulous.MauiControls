@@ -15,7 +15,7 @@ module PointerGestureRecognizer =
 module PointerGestureRecognizerBuilders =
     type Fabulous.Maui.View with
         static member inline PointerGestureRecognizer() =
-            WidgetBuilder<'msg, IFabPointerGestureRecognizer>(PointerGestureRecognizer.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+            WidgetBuilder<'msg, IFabPointerGestureRecognizer>(PointerGestureRecognizer.WidgetKey)
 
 [<Extension>]
 type PointerGestureRecognizerModifiers =

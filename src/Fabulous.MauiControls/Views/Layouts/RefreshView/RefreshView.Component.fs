@@ -22,6 +22,7 @@ module RefreshViewComponentBuilders =
                 AttributesBundle(
                     StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshViewComponent.Refreshing.WithValue(onRefreshing)),
                     ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
+                    ValueNone,
                     ValueNone
                 )
             )

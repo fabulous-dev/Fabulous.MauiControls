@@ -40,10 +40,7 @@ module ContentPageBuilders =
         /// <summary>Create a ContentPage with a content widget</summary>
         /// <param name="content">The content widget</param>
         static member inline ContentPage<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetBuilder<'msg, IFabContentPage>(
-                ContentPage.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
-            )
+            WidgetBuilder<'msg, IFabContentPage>(ContentPage.WidgetKey, ContentPage.Content.WithValue(content.Compile()))
 
         static member inline ContentPage() =
             SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)

@@ -17,7 +17,7 @@ module EllipseBuilders =
 
         /// <summary>Create an Ellipse widget</summary>
         static member inline Ellipse() =
-            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey)
 
 [<Extension>]
 type EllipseModifiers =

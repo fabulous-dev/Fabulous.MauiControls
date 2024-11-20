@@ -80,10 +80,7 @@ module BorderBuilders =
         /// <summary>Create a Border widget with a content widget</summary>
         /// <param name="content">The content widget</param>
         static member inline Border(content: WidgetBuilder<'msg, #IFabView>) =
-            WidgetBuilder<'msg, IFabBorder>(
-                Border.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
-            )
+            WidgetBuilder<'msg, IFabBorder>(Border.WidgetKey, Border.Content.WithValue(content.Compile()))
 
         /// <summary>Create a Border widget with a content widget</summary>
         static member inline Border() =
