@@ -66,7 +66,7 @@ module Attributes =
     let inline defineBindable<'modelType, 'valueType>
         (bindableProperty: BindableProperty)
         ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
-        ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> AttributeComparison)
+        ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         =
         Attributes.defineScalar<'modelType, 'valueType> bindableProperty.PropertyName convertValue compare (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
