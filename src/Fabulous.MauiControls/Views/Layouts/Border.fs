@@ -82,10 +82,6 @@ module BorderBuilders =
         static member inline Border(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabBorder>(Border.WidgetKey, Border.Content.WithValue(content.Compile()))
 
-        /// <summary>Create a Border widget with a content widget</summary>
-        static member inline Border() =
-            SingleChildBuilder<'msg, IFabBorder, #IFabView>(Border.WidgetKey, Border.Content)
-
 [<Extension>]
 type BorderModifiers =
     /// <summary>Set the padding inside the border</summary>

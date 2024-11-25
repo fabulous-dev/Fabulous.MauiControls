@@ -51,7 +51,7 @@ module App =
 
     let view model =
         Application() {
-            Window() {
+            Window(
                 ContentPage(
                     (VStack() {
                         Label($"%d{model.Count}").centerTextHorizontal()
@@ -76,7 +76,7 @@ module App =
                     })
                         .center()
                 )
-            }
+            )
         }
 
     let program = Program.statefulWithCmd init update |> Program.withView view

@@ -29,10 +29,6 @@ module SwipeViewBuilders =
         static member inline SwipeView(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetHelpers.buildWidgets<'msg, IFabSwipeView> SwipeView.WidgetKey [| ContentView.Content.WithValue(content.Compile()) |]
 
-        /// <summary>Create a SwipeView widget with a content</summary>
-        static member inline SwipeView() =
-            SingleChildBuilder<'msg, IFabSwipeView, IFabView>(SwipeView.WidgetKey, ContentView.Content)
-
 [<Extension>]
 type SwipeViewModifiers() =
     /// <summary>Set the bottom swipe items</summary>

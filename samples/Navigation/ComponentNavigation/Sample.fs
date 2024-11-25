@@ -53,7 +53,7 @@ module Sample =
             let! model = Context.Mvu(program nav appMsgDispatcher)
 
             Application() {
-                Window() {
+                Window(
                     (NavigationPage() {
                         // We inject in the NavigationPage history the back stack of our navigation
                         for navPath in List.rev model.Navigation.BackStack do
@@ -64,6 +64,6 @@ module Sample =
                     })
                         .onBackButtonPressed(BackButtonPressed)
                         .onBackNavigated(BackNavigationMsg)
-                }
+                )
             }
         }

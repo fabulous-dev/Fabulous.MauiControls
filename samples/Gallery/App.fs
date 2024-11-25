@@ -41,7 +41,7 @@ module App =
 
     let view model =
         Application() {
-            Window() {
+            Window(
                 TabbedPage() {
                     ContentPage(
                         match List.head model.Paths with
@@ -59,7 +59,7 @@ module App =
                     )
                         .title("Info")
                 }
-            }
+            )
         }
 
     let program = Program.stateful init update |> Program.withView view

@@ -107,7 +107,7 @@ module App =
                 .textColor(Colors.Black)
 
         Application() {
-            Window() {
+            Window(
                 ContentPage(
                     (Grid(rowdefs = [ Star; Star; Star; Star; Star; Star ], coldefs = [ Star; Star; Star; Star ]) {
                         View
@@ -147,7 +147,7 @@ module App =
                         .columnSpacing(1.0)
                         .background(gray)
                 )
-            }
+            )
         }
 
     let program =

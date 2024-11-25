@@ -29,42 +29,46 @@ module App =
         match msg with
         | Clicked -> { model with Count = model.Count + 1 }, [ SemanticAnnounce $"Clicked {model.Count} times" ]
 
-    let view model =
-        Application() {
-            Window() {
-                ContentPage() {
-                    ScrollView(
-                        (VStack(spacing = 25.) {
-                            Image("dotnet_bot.png")
-                                .semantics(description = "Cute dotnet bot waving hi to you!")
-                                .height(200.)
-                                .centerHorizontal()
+    let program = Program.statefulWithCmdMsg init update mapCmd
 
-                            Label("Hello, World!")
-                                .semantics(SemanticHeadingLevel.Level1)
-                                .font(size = 32.)
-                                .centerTextHorizontal()
+    let view () =
+        Component("NewApp") {
+            let! model = Context.Mvu(program)
 
-                            Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                                .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
-                                .font(size = 18.)
-                                .centerTextHorizontal()
+            Application() {
+                Window(
+                    ContentPage(
+                        ScrollView(
+                            (VStack(spacing = 25.) {
+                                Image("dotnet_bot.png")
+                                    .semantics(description = "Cute dotnet bot waving hi to you!")
+                                    .height(200.)
+                                    .centerHorizontal()
 
-                            let text =
-                                if model.Count = 0 then
-                                    "Click me"
-                                else
-                                    $"Clicked {model.Count} times"
+                                Label("Hello, World!")
+                                    .semantics(SemanticHeadingLevel.Level1)
+                                    .font(size = 32.)
+                                    .centerTextHorizontal()
 
-                            Button(text, Clicked)
-                                .semantics(hint = "Counts the number of times you click")
-                                .centerHorizontal()
-                        })
-                            .padding(30., 0., 30., 0.)
-                            .centerVertical()
+                                Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
+                                    .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
+                                    .font(size = 18.)
+                                    .centerTextHorizontal()
+
+                                let text =
+                                    if model.Count = 0 then
+                                        "Click me"
+                                    else
+                                        $"Clicked {model.Count} times"
+
+                                Button(text, Clicked)
+                                    .semantics(hint = "Counts the number of times you click")
+                                    .centerHorizontal()
+                            })
+                                .padding(30., 0., 30., 0.)
+                                .centerVertical()
+                        )
                     )
-                }
+                )
             }
         }
-
-    let program = Program.statefulWithCmdMsg init update mapCmd |> Program.withView view

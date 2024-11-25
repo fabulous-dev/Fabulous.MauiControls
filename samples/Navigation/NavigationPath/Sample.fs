@@ -62,7 +62,7 @@ module Sample =
     /// To be able to wrap those Msgs into the app's root Msg type, we use the View.map helper function.
     let view model =
         Application() {
-            Window() {
+            Window(
                 (NavigationPage() {
                     // We inject in the NavigationPage history the back stack of our navigation
                     for navModel in List.rev model.Navigation.BackStack do
@@ -73,7 +73,7 @@ module Sample =
                         .hasBackButton(false)
                 })
                     .onBackButtonPressed(BackButtonPressed)
-            }
+            )
         }
 
     let program = Program.statefulWithCmd init update |> Program.withView view

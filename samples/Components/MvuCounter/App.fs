@@ -56,8 +56,8 @@ module App =
             let! model = Context.Mvu(program)
 
             Application() {
-                Window() {
-                    ContentPage() {
+                Window(
+                    ContentPage(
                         (VStack() {
                             Label($"%d{model.Count}").centerTextHorizontal()
 
@@ -80,7 +80,7 @@ module App =
                             Button("Reset", Reset)
                         })
                             .center()
-                    }
-                }
+                    )
+                )
             }
         }

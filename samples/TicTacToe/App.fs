@@ -190,7 +190,7 @@ module App =
     /// The dynamic 'view' function giving the updated content for the view
     let view model =
         Application() {
-            Window() {
+            Window(
                 ContentPage(
                     Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
                         (Grid(coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ], rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]) {
@@ -248,7 +248,7 @@ module App =
                             .gridRow(2)
                     }
                 )
-            }
+            )
         }
 
     let subscribe _ =

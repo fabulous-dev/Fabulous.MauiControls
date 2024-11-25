@@ -42,9 +42,6 @@ module ContentPageBuilders =
         static member inline ContentPage<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IFabContentPage>(ContentPage.WidgetKey, ContentPage.Content.WithValue(content.Compile()))
 
-        static member inline ContentPage() =
-            SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)
-
 [<Extension>]
 type ContentPageModifiers =
     /// <summary>Sets a value that indicates whether tapping anywhere on the page will cause the soft input to hide</summary>

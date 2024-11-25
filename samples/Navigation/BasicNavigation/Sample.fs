@@ -57,7 +57,7 @@ module Sample =
 
     let view model =
         Application() {
-            Window() {
+            Window(
                 ContentPage(
                     (Grid(coldefs = [ Star; Star; Star ], rowdefs = [ Auto; Star ]) {
                         Button("Page A", GoToPageA).gridColumn(0)
@@ -76,7 +76,7 @@ module Sample =
                     })
                         .rowSpacing(30.)
                 )
-            }
+            )
         }
 
     let program = Program.stateful init update |> Program.withView view

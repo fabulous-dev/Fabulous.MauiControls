@@ -35,7 +35,7 @@ module App =
             let! model = Context.Mvu(program)
 
             (Application() {
-                Window() {
+                Window(
                     ContentPage(
                         (VStack() {
                             Label("Theme is: " + theme.ToString()).centerTextHorizontal()
@@ -48,7 +48,7 @@ module App =
                         })
                             .center()
                     )
-                }
+                )
             })
                 .environment(EnvironmentKeys.Count, model)
         }

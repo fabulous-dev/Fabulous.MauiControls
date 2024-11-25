@@ -40,8 +40,8 @@ module Form =
 module App =
     let view () =
         Application() {
-            Window() {
-                ContentPage() {
+            Window(
+                ContentPage(
                     (VStack(spacing = 25.) {
                         Label("App")
 
@@ -67,6 +67,6 @@ module App =
                     })
                         .width(250.)
                         .center()
-                }
-            }
+                )
+            )
         }

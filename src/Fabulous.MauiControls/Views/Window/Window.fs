@@ -45,9 +45,6 @@ module WindowBuilders =
         static member inline Window(content: WidgetBuilder<'msg, #IFabPage>) =
             WidgetBuilder<'msg, IFabWindow>(Window.WidgetKey, Window.Page.WithValue(content.Compile()))
 
-        static member inline Window() =
-            SingleChildBuilder<'msg, IFabWindow, #IFabPage>(Window.WidgetKey, Window.Page)
-
 [<Extension>]
 type WindowModifiers =
     [<Extension>]
