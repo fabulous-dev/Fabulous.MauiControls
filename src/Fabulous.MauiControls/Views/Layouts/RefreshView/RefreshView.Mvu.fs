@@ -21,8 +21,8 @@ module RefreshViewMvuBuilders =
                 RefreshView.WidgetKey,
                 AttributesBundle(
                     StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshViewMvu.Refreshing.WithValue(MsgValue(onRefreshing))),
-                    ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
-                    ValueNone,
-                    ValueNone
+                    [| ContentView.Content.WithValue(content.Compile()) |],
+                    [||],
+                    [||]
                 )
             )

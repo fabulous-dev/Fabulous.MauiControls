@@ -37,8 +37,8 @@ module RadioButtonMvuBuilders =
                             MsgValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)
                         )
                     ),
-                    ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
-                    ValueNone,
-                    ValueNone
+                    [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
+                    [||],
+                    [||]
                 )
             )

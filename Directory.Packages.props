@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Fabulous" Version="3.0.0-pre16" />
+    <PackageVersion Include="Fabulous" Version="3.0.0-pre19" />
     <PackageVersion Include="FsCheck.NUnit" Version="2.16.6" />
     <PackageVersion Include="FSharp.Core" Version="9.0.100" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
@@ -13,8 +13,8 @@
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="FSharp.Maui.WinUICompat" Version="1.1.0" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="9.0.30" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.30" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
