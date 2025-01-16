@@ -40,8 +40,7 @@ module Shapes =
                 )
                 .fill(SolidColorBrush(Colors.Red))
 
-            Path("M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z")
-                .fill(SolidColorBrush(Colors.Orange))
+            Path("M 0,0 c 0,0 50,0 50,-50 c 0,0 50,0 50,50 h -50 v 50 l -50,-50 Z").fill(SolidColorBrush(Colors.Orange))
 
             Path(
                 PathGeometry(FillRule.Nonzero) {
@@ -56,9 +55,7 @@ module Shapes =
             )
                 .fill(SolidColorBrush(Colors.OrangeRed))
 
-            Line(Point(120., 185.), Point(30., 115.))
-                .stroke(SolidColorBrush(Colors.Red))
-                .strokeThickness(2.)
+            Line(Point(120., 185.), Point(30., 115.)).stroke(SolidColorBrush(Colors.Red)).strokeThickness(2.)
 
             Polygon(
                 [ Point(75., 0.)
@@ -71,10 +68,7 @@ module Shapes =
                 .strokeThickness(1.)
                 .fill(SolidColorBrush(Colors.Violet))
 
-            Polyline("20 20,250 50,20 120")
-                .strokeLineJoin(PenLineJoin.Round)
-                .stroke(SolidColorBrush(Colors.DarkBlue))
-                .strokeThickness(5.)
+            Polyline("20 20,250 50,20 120").strokeLineJoin(PenLineJoin.Round).stroke(SolidColorBrush(Colors.DarkBlue)).strokeThickness(5.)
 
             Polyline(
                 [ Point(0., 0.)

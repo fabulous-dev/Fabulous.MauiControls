@@ -210,28 +210,13 @@ module App =
 
                             for row, col as pos in positions do
                                 if canPlay model model.Board[pos] then
-                                    Button("", Play pos)
-                                        .background(Colors.LightBlue)
-                                        .gridRow(row * 2)
-                                        .gridColumn(col * 2)
+                                    Button("", Play pos).background(Colors.LightBlue).gridRow(row * 2).gridColumn(col * 2)
                                 else
                                     match model.Board[pos] with
                                     | Empty -> ()
-                                    | Full X ->
-                                        Label("X")
-                                            .font(size = model.VisualBoardSize / 3.)
-                                            .centerText()
-                                            .margin(10.)
-                                            .gridRow(row * 2)
-                                            .gridColumn(col * 2)
+                                    | Full X -> Label("X").font(size = model.VisualBoardSize / 3.).centerText().margin(10.).gridRow(row * 2).gridColumn(col * 2)
 
-                                    | Full O ->
-                                        Label("O")
-                                            .font(size = model.VisualBoardSize / 3.)
-                                            .centerText()
-                                            .margin(10.)
-                                            .gridRow(row * 2)
-                                            .gridColumn(col * 2)
+                                    | Full O -> Label("O").font(size = model.VisualBoardSize / 3.).centerText().margin(10.).gridRow(row * 2).gridColumn(col * 2)
                         })
                             .rowSpacing(0.)
                             .columnSpacing(0.)
@@ -241,11 +226,7 @@ module App =
 
                         Label(getMessage model).font(size = 32.).center().margin(10.).gridRow(1)
 
-                        Button("Restart game", Restart)
-                            .textColor(Colors.Black)
-                            .background(Colors.LightBlue)
-                            .font(size = 32.)
-                            .gridRow(2)
+                        Button("Restart game", Restart).textColor(Colors.Black).background(Colors.LightBlue).font(size = 32.).gridRow(2)
                     }
                 )
             )

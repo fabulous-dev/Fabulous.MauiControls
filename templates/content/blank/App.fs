@@ -40,15 +40,9 @@ module App =
                     ContentPage(
                         ScrollView(
                             (VStack(spacing = 25.) {
-                                Image("dotnet_bot.png")
-                                    .semantics(description = "Cute dotnet bot waving hi to you!")
-                                    .height(200.)
-                                    .centerHorizontal()
+                                Image("dotnet_bot.png").semantics(description = "Cute dotnet bot waving hi to you!").height(200.).centerHorizontal()
 
-                                Label("Hello, World!")
-                                    .semantics(SemanticHeadingLevel.Level1)
-                                    .font(size = 32.)
-                                    .centerTextHorizontal()
+                                Label("Hello, World!").semantics(SemanticHeadingLevel.Level1).font(size = 32.).centerTextHorizontal()
 
                                 Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
                                     .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
@@ -61,9 +55,7 @@ module App =
                                     else
                                         $"Clicked {model.Count} times"
 
-                                Button(text, Clicked)
-                                    .semantics(hint = "Counts the number of times you click")
-                                    .centerHorizontal()
+                                Button(text, Clicked).semantics(hint = "Counts the number of times you click").centerHorizontal()
                             })
                                 .padding(30., 0., 30., 0.)
                                 .centerVertical()

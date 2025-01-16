@@ -26,9 +26,7 @@ module FormattedLabel =
             (FormattedLabel() {
                 Span("Red Bold, ").textColor(Colors.Red).font(attributes = FontAttributes.Bold)
 
-                Span("default, ")
-                    .font(size = 14.)
-                    .gestureRecognizer(TapGestureRecognizer(TapCommand))
+                Span("default, ").font(size = 14.).gestureRecognizer(TapGestureRecognizer(TapCommand))
 
                 Span("italic small.").font(attributes = FontAttributes.Italic, size = 12.)
 

@@ -35,10 +35,7 @@ type WidgetTests() =
 
                 ContentPage(Label("Hello")).automationId("repaymentDate")
 
-                ContentPage(Label("Hello"))
-                    .automationId("verificationCode")
-                    .onMounted("verificationCodeMounted")
-                    .onUnmounted("verificationCodeUnmounted")
+                ContentPage(Label("Hello")).automationId("verificationCode").onMounted("verificationCodeMounted").onUnmounted("verificationCodeUnmounted")
             }
 
         let newWidget2 =

@@ -12,10 +12,7 @@ module TextButton =
 
             Button("Disabled button", ()).isEnabled(false)
 
-            Button("White text, red background", ())
-                .background(Colors.Red)
-                .textColor(Colors.White)
-                .width(250.)
+            Button("White text, red background", ()).background(Colors.Red).textColor(Colors.White).width(250.)
         }
 
     let sampleProgram = Helper.createStatelessProgram view

@@ -87,24 +87,16 @@ module App =
 
     let view (model: Model) =
         let mkButton text (onClicked: 'msg) row column =
-            Button(text, onClicked)
-                .gridRow(row)
-                .gridColumn(column)
-                .font(size = 36.0)
-                .cornerRadius(0)
+            Button(text, onClicked).gridRow(row).gridColumn(column).font(size = 36.0).cornerRadius(0)
 
         let mkNumberButton number row column =
-            (mkButton (string number) (Digit number) row column)
-                .background(Colors.White)
-                .textColor(Colors.Black)
+            (mkButton (string number) (Digit number) row column).background(Colors.White).textColor(Colors.Black)
 
         let orange = Color.FromRgb(0xff, 0xa5, 0)
         let gray = Color.FromRgb(0x80, 0x80, 0x80)
 
         let mkOperatorButton text operator row column =
-            (mkButton text (Operator operator) row column)
-                .background(orange)
-                .textColor(Colors.Black)
+            (mkButton text (Operator operator) row column).background(orange).textColor(Colors.Black)
 
         Application() {
             Window(
@@ -138,10 +130,7 @@ module App =
                         (mkButton "A" Clear 5 0).background(gray).textColor(Colors.White)
                         (mkButton "." Equals 5 1).background(orange).textColor(Colors.Black)
 
-                        (mkButton "=" Equals 5 2)
-                            .background(orange)
-                            .gridColumnSpan(2)
-                            .textColor(Colors.White)
+                        (mkButton "=" Equals 5 2).background(orange).gridColumnSpan(2).textColor(Colors.White)
                     })
                         .rowSpacing(1.0)
                         .columnSpacing(1.0)

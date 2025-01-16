@@ -14,10 +14,7 @@ module ImageButton =
 
             Label("ImageButton with background and width/height")
 
-            ImageButton("dotnet_bot.png", ())
-                .background(Colors.LightBlue)
-                .width(250.)
-                .height(50.)
+            ImageButton("dotnet_bot.png", ()).background(Colors.LightBlue).width(250.).height(50.)
 
             Label("ImageButton with Aspect = Fill")
             ImageButton("dotnet_bot.png", (), Aspect.Fill)

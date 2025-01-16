@@ -9,27 +9,21 @@ open type Fabulous.Maui.View
 module Label =
     let view () =
         VStack(spacing = 15.) {
-            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .alignStartTextHorizontal()
+            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.").alignStartTextHorizontal()
 
-            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .centerTextHorizontal()
+            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.").centerTextHorizontal()
 
-            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .alignEndTextHorizontal()
+            Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.").alignEndTextHorizontal()
 
             ContentView(
                 VStack(8.) {
-                    Label("Custom font regular")
-                        .font(fontFamily = Fonts.SourceSansProRegular, size = 20.)
+                    Label("Custom font regular").font(fontFamily = Fonts.SourceSansProRegular, size = 20.)
 
                     Label("Custom font bold").font(fontFamily = Fonts.SourceSansProBold, size = 20.)
 
-                    Label("Custom font italic")
-                        .font(fontFamily = Fonts.SourceSansProItalic, size = 20.)
+                    Label("Custom font italic").font(fontFamily = Fonts.SourceSansProItalic, size = 20.)
 
-                    Label("Custom font italic bold")
-                        .font(fontFamily = Fonts.SourceSansProBoldItalic, size = 20.)
+                    Label("Custom font italic bold").font(fontFamily = Fonts.SourceSansProBoldItalic, size = 20.)
                 }
             )
 

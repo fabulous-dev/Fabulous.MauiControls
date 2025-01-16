@@ -69,8 +69,7 @@ module Sample =
                         (View.map NavigationMsg (NavigationState.view navModel)).hasBackButton(false)
 
                     // The page currently displayed is the one on top of the stack
-                    (View.map NavigationMsg (NavigationState.view model.Navigation.CurrentPage))
-                        .hasBackButton(false)
+                    (View.map NavigationMsg (NavigationState.view model.Navigation.CurrentPage)).hasBackButton(false)
                 })
                     .onBackButtonPressed(BackButtonPressed)
             )

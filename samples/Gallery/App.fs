@@ -50,13 +50,7 @@ module App =
                     )
                         .title("Samples")
 
-                    ContentPage(
-                        VStack() {
-                            Label("Fabulous.Maui Gallery")
-                                .horizontalOptions(LayoutOptions.Center)
-                                .verticalOptions(LayoutOptions.Center)
-                        }
-                    )
+                    ContentPage(VStack() { Label("Fabulous.Maui Gallery").horizontalOptions(LayoutOptions.Center).verticalOptions(LayoutOptions.Center) })
                         .title("Info")
                 }
             )

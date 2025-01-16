@@ -51,14 +51,11 @@ module App =
 
                         Label($"Field currently selected: {text}")
 
-                        Entry("Entry1", TextChanged)
-                            .focus(model.Focus = Some Entry1, focusChanged Entry1)
+                        Entry("Entry1", TextChanged).focus(model.Focus = Some Entry1, focusChanged Entry1)
 
-                        Entry("Entry2", TextChanged)
-                            .focus(model.Focus = Some Entry2, focusChanged Entry2)
+                        Entry("Entry2", TextChanged).focus(model.Focus = Some Entry2, focusChanged Entry2)
 
-                        Entry("Entry3", TextChanged)
-                            .focus(model.Focus = Some Entry3, focusChanged Entry3)
+                        Entry("Entry3", TextChanged).focus(model.Focus = Some Entry3, focusChanged Entry3)
 
                         Button("Set focus on Entry1", SetFocus(Some Entry1))
                         Button("Set focus on Entry2", SetFocus(Some Entry2))

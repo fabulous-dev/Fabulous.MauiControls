@@ -10,11 +10,7 @@ open type Fabulous.Maui.View
 module Shadow =
     let view () =
         VStack(spacing = 15.) {
-            Image("dotnet_bot.png")
-                .width(250.)
-                .height(310.)
-                .centerHorizontal()
-                .shadow(Shadow(Brush.Black, Point(20., 20.)).opacity(0.8).blurRadius(40.))
+            Image("dotnet_bot.png").width(250.).height(310.).centerHorizontal().shadow(Shadow(Brush.Black, Point(20., 20.)).opacity(0.8).blurRadius(40.))
 
             Image("dotnet_bot.png", Aspect.AspectFill)
                 .width(100.)
