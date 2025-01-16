@@ -12,10 +12,6 @@ jobs:
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
-    - name: Setup .NET for Fantomas
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.x
     - name: Check code formatting
       run: |
         dotnet tool restore
