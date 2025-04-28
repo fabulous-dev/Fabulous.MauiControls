@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
-## [9.0.0-pre7] - 2025-04-28
+## [9.0.0-pre8] - 2025-04-28
 
 ### Changed
 - Use Fabulous 3.0.0-pre21
@@ -309,8 +309,8 @@ Essentially v2.8.1 and v8.0.0 are similar except for the required .NET version.
 ### Changed
 - Fabulous.MauiControls has moved from the Fabulous repository to its own repository: [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/9.0.0-pre7...HEAD
-[9.0.0-pre7]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre7
+[unreleased]: https://github.com/fabulous-dev/Fabulous.MauiControls/compare/9.0.0-pre8...HEAD
+[9.0.0-pre8]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre8
 [9.0.0-pre6]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre6
 [9.0.0-pre5]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre5
 [9.0.0-pre4]: https://github.com/fabulous-dev/Fabulous.MauiControls/releases/tag/9.0.0-pre4
