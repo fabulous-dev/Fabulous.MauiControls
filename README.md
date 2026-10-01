@@ -2,6 +2,24 @@
 
 [![build](https://img.shields.io/github/actions/workflow/status/fabulous-dev/Fabulous.MauiControls/build.yml?branch=main)](https://github.com/fabulous-dev/Fabulous.MauiControls/actions/workflows/build.yml) [![NuGet version](https://img.shields.io/nuget/v/Fabulous.MauiControls)](https://www.nuget.org/packages/Fabulous.MauiControls) [![NuGet downloads](https://img.shields.io/nuget/dt/Fabulous.MauiControls)](https://www.nuget.org/packages/Fabulous.MauiControls) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK) [![Twitter Follow](https://img.shields.io/twitter/follow/FabulousAppDev?style=social)](https://twitter.com/FabulousAppDev)
 
+
+>
+> [!IMPORTANT]
+>
+> This repository is archived.
+>
+> The .NET MAUI flavor of Fabulous is still actively maintained, but it is now part of the unified [Fabulous repository](https://github.com/fabulous-dev/Fabulous).
+>
+> For current .NET MAUI documentation and source code, see:
+>
+> * [Fabulous documentation](https://fabulous-dev.github.io/Fabulous/docs/tutorials/maui/)
+> * [Fabulous repository](https://github.com/fabulous-dev/Fabulous)
+> * [Fabulous source code](https://github.com/fabulous-dev/Fabulous/tree/main/src)
+>
+> The documentation below relates to the **archived Fabulous.MauiControls repository** and may be outdated.
+>
+
+
 Fabulous.MauiControls brings the great development experience of Fabulous to .NET MAUI, allowing you to take advantage of the latest cross-platform UI framework from Microsoft with a tailored declarative UI DSL and clean architecture.
 
 Deploy to any platform supported by .NET MAUI, such as Android, iOS, macOS, Windows, Linux and more!
